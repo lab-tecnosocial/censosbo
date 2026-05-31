@@ -60,7 +60,7 @@ codebook(buscar = "educa")
 #>      tabla       tipo
 #> 40 persona categorica
 #> 42 persona categorica
-#> 43 persona categorica
+#> 43 persona   numerica
 #> 79 persona categorica
 #> 81 persona categorica
 #> 83 persona categorica
@@ -68,7 +68,7 @@ codebook(buscar = "educa")
 #>                                                                                                                                                                                                                                        valores_codigos
 #> 40                                                                                                                                                                                            1, 2, 9, Público o de convenio, Privado, Sin especificar
 #> 42 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 99, Ninguno, Curso de alfabetización, Inicial (Pre kínder, kínder), Básico, Intermedio, Medio, Primaria, Secundaria, Técnico Medio, Técnico Superior, Licenciatura, Maestría, Doctorado, Sin especificar
-#> 43                                                                                                                                                                                                                                  9, Sin especificar
+#> 43                                                                                                                                                                                                                                                NULL
 #> 79                                     1, 2, 3, 7, 8, 9, 10, 11, 12, 13, 99, Ninguno, Curso de Alfabetización, Inicial (Pre kínder, kínder), Primaria, Secundaria, Técnico Medio, Técnico Superior, Licenciatura, Maestría, Doctorado, Sin especificar
 #> 81                                                                                                                                                                                                 1, 2, 3, 4, Ninguno, Primaria, Secundaria, Superior
 #> 83                                                                                                                                                                                                                                        1, 2, Sí, No
