@@ -4,3 +4,9 @@
 .Ruserdata
 
 temporal-data
+*.Rcheck/
+censosbo_*.tar.gz
+/doc/
+/Meta/
+docs
+inst/doc

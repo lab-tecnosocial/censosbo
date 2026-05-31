@@ -1,0 +1,63 @@
+#' Tabla de geografía de Bolivia
+#'
+#' Tabla con los 343 municipios de Bolivia y sus códigos geográficos oficiales
+#' del CPV-2024, extraídos del diccionario Redatam del INE.
+#'
+#' @format Un data.frame con 343 filas y 6 columnas:
+#' \describe{
+#'   \item{idep}{Código de departamento (2 dígitos, con cero a la izquierda)}
+#'   \item{nombre_dep}{Nombre del departamento}
+#'   \item{iprov}{Código de provincia}
+#'   \item{nombre_prov}{Nombre de la provincia}
+#'   \item{imun}{Código de municipio}
+#'   \item{nombre_mun}{Nombre del municipio}
+#' }
+#' @source INE Bolivia, CPV-2024. Diccionario de variables Redatam (CEN24.dicX).
+"geo_bolivia"
+
+#' Lista los departamentos de Bolivia
+#'
+#' @return Un data.frame con columnas `idep` y `nombre_dep`.
+#' @export
+#' @examples
+#' departamentos()
+departamentos <- function() {
+  unique(geo_bolivia[, c("idep", "nombre_dep")])
+}
+
+#' Lista las provincias de un departamento
+#'
+#' @param departamento Código (e.g., `"07"`) o nombre (e.g., `"Santa Cruz"`)
+#'   del departamento. Acepta vectores.
+#' @return Un data.frame con columnas `idep`, `nombre_dep`, `iprov`, `nombre_prov`.
+#' @export
+#' @examples
+#' provincias("Santa Cruz")
+#' provincias("02")
+provincias <- function(departamento) {
+  dep_codes <- .resolve_dep_codes(departamento)
+  geo <- geo_bolivia[geo_bolivia$idep %in% dep_codes, ]
+  unique(geo[, c("idep", "nombre_dep", "iprov", "nombre_prov")])
+}
+
+#' Lista los municipios de Bolivia
+#'
+#' @param departamento Código o nombre del departamento. Opcional.
+#' @param provincia Código de provincia. Opcional.
+#' @return Un data.frame con columnas `idep`, `nombre_dep`, `iprov`,
+#'   `nombre_prov`, `imun`, `nombre_mun`.
+#' @export
+#' @examples
+#' municipios(departamento = "Cochabamba")
+#' municipios(departamento = "02", provincia = "217")
+municipios <- function(departamento = NULL, provincia = NULL) {
+  geo <- geo_bolivia
+  if (!is.null(departamento)) {
+    dep_codes <- .resolve_dep_codes(departamento)
+    geo <- geo[geo$idep %in% dep_codes, ]
+  }
+  if (!is.null(provincia)) {
+    geo <- geo[geo$iprov %in% as.character(provincia), ]
+  }
+  geo
+}

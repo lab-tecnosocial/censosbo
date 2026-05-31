@@ -1,16 +1,49 @@
 Package: censosbo
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Acceso y Análisis de los Datos del Censo de Bolivia 2024
 Version: 0.1.0
-Authors@R: c(
-    person(
-      "Jane", "Doe",
-      email = "jane@example.com",
-      role = c("aut", "cre")
-    )
-  )
-Description: More about what it does (maybe more than one line).
-    Continuation lines should be indented.
-License: What license is it under?
+Authors@R: person("Alex", "Ojeda Copa", email = "alex@labtecnosocial.org",
+    role = c("aut", "cre"))
+Description: Proporciona acceso programático a los microdatos del Censo de
+    Población y Vivienda 2024 de Bolivia (CPV-2024) del INE. Descarga archivos
+    Parquet preprocesados desde GitHub Releases bajo demanda, los almacena en
+    caché local y ofrece una interfaz R para filtrar por departamento, provincia
+    o municipio. Soporta flujos de trabajo estilo dplyr vía Apache Arrow y
+    consultas SQL vía DuckDB. Incluye un diccionario de variables integrado con
+    etiquetas en español.
+License: MIT + file LICENSE
 Encoding: UTF-8
+Language: es
 LazyData: true
+LazyDataCompression: xz
+URL: https://github.com/lab-tecnosocial/censosbo
+BugReports: https://github.com/lab-tecnosocial/censosbo/issues
+Depends:
+    R (>= 4.1.0)
+Imports:
+    arrow (>= 14.0.0),
+    duckdb (>= 0.9.0),
+    DBI,
+    curl,
+    cli,
+    fs,
+    rlang,
+    tools,
+    dplyr
+Suggests:
+    tidyr,
+    ggplot2,
+    piggyback,
+    testthat (>= 3.0.0),
+    knitr,
+    rmarkdown,
+    pkgdown,
+    readxl,
+    withr,
+    jsonlite,
+    xml2,
+    hexSticker
+Config/testthat/edition: 3
+Config/censosbo/data-version: 1.0.0
+VignetteBuilder: knitr
+Config/roxygen2/version: 8.0.0

@@ -1,2 +1,12 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^data-raw$
+^temporal-data$
+^README\.Rmd$
+^_pkgdown\.yml$
+^\.github$
+^NEWS\.md$
+^\.gitignore$
+^LICENSE\.md$
+^docs$
+^pkgdown$
