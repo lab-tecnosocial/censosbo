@@ -1,0 +1,168 @@
+# Análisis de condiciones de vivienda
+
+## Condiciones habitacionales
+
+``` r
+
+library(dplyr)
+library(ggplot2)
+
+# Descargar datos de vivienda de Cochabamba
+viviendas_cbba <- get_viviendas(
+  departamento = "03",
+  variables    = c("urbrur", "v03_pared", "v05_techo", "v06_piso",
+                   "v07_aguapro", "v08_aguadist", "v09_energia",
+                   "v10_combus", "v11_basura", "v15_servsan")
+) |>
+  collect()
+```
+
+``` r
+
+# Acceso al agua potable por área urbano/rural
+agua <- viviendas_cbba |>
+  filter(!is.na(v07_aguapro), !is.na(urbrur)) |>
+  mutate(
+    area  = ifelse(urbrur == 1, "Urbano", "Rural"),
+    agua  = case_when(
+      v07_aguapro == 1 ~ "Red pública",
+      v07_aguapro == 2 ~ "Pozo",
+      v07_aguapro == 3 ~ "Río/vertiente",
+      v07_aguapro == 4 ~ "Lluvia/otro",
+      TRUE             ~ "Otro"
+    )
+  ) |>
+  count(area, agua) |>
+  group_by(area) |>
+  mutate(pct = n / sum(n) * 100)
+
+ggplot(agua, aes(x = area, y = pct, fill = agua)) +
+  geom_col() +
+  scale_fill_brewer(palette = "Blues", direction = -1) +
+  labs(
+    title   = "Fuente de agua potable por área - Cochabamba, CPV-2024",
+    x       = "Área",
+    y       = "Porcentaje de viviendas (%)",
+    fill    = "Fuente de agua",
+    caption = "Fuente: INE Bolivia, CPV-2024"
+  ) +
+  theme_minimal()
+```
+
+``` r
+
+# Tipo de energía por área
+energia <- viviendas_cbba |>
+  filter(!is.na(v09_energia)) |>
+  mutate(
+    area    = ifelse(urbrur == 1, "Urbano", "Rural"),
+    energia = case_when(
+      v09_energia == 1 ~ "Red eléctrica",
+      v09_energia == 2 ~ "Panel solar",
+      v09_energia == 3 ~ "Generador",
+      v09_energia == 4 ~ "Gas/leña/vela",
+      TRUE             ~ "Sin energía/otro"
+    )
+  ) |>
+  count(area, energia) |>
+  group_by(area) |>
+  mutate(pct = n / sum(n) * 100)
+
+ggplot(energia, aes(x = area, y = pct, fill = energia)) +
+  geom_col() +
+  scale_fill_manual(values = c(
+    "Red eléctrica"   = "#003087",
+    "Panel solar"     = "#F4C430",
+    "Generador"       = "#6baed6",
+    "Gas/leña/vela"   = "#fd8d3c",
+    "Sin energía/otro"= "#d9d9d9"
+  )) +
+  labs(
+    title   = "Fuente de energía eléctrica - Cochabamba, CPV-2024",
+    x       = "Área",
+    y       = "Porcentaje de viviendas (%)",
+    fill    = "Tipo de energía",
+    caption = "Fuente: INE Bolivia, CPV-2024"
+  ) +
+  theme_minimal()
+```
+
+## Join personas-viviendas con DuckDB
+
+``` r
+
+library(DBI)
+
+# Conectar ambas tablas en DuckDB para análisis conjunto
+con <- DBI::dbConnect(duckdb::duckdb(), dbdir = ":memory:")
+
+duckdb::duckdb_register_arrow(
+  con, "personas",
+  get_personas(departamento = "03", variables = c("idep","iprov","imun","i00","p25_sexo","p26_edad"))
+)
+duckdb::duckdb_register_arrow(
+  con, "viviendas",
+  get_viviendas(departamento = "03", variables = c("idep","iprov","imun","i00","v07_aguapro","urbrur"))
+)
+
+# Personas en viviendas sin acceso a red de agua pública
+sin_agua <- DBI::dbGetQuery(con, "
+  SELECT
+    p.idep,
+    v.urbrur,
+    COUNT(*) AS personas,
+    AVG(p.p26_edad) AS edad_promedio
+  FROM personas p
+  JOIN viviendas v
+    ON p.idep = v.idep AND p.iprov = v.iprov
+   AND p.imun = v.imun AND p.i00  = v.i00
+  WHERE v.v07_aguapro != 1  -- sin red pública
+  GROUP BY p.idep, v.urbrur
+  ORDER BY personas DESC
+")
+
+DBI::dbDisconnect(con)
+print(sin_agua)
+```
+
+## Índice de hacinamiento
+
+``` r
+
+viviendas_hab <- get_viviendas(
+  departamento = "03",
+  variables    = c("urbrur", "v13_habitac", "v14_dormit", "tot_pers")
+) |>
+  collect()
+
+hacinamiento <- viviendas_hab |>
+  filter(!is.na(tot_pers), !is.na(v14_dormit), v14_dormit > 0, tot_pers > 0) |>
+  mutate(
+    personas_por_dormitorio = tot_pers / v14_dormit,
+    hacinamiento = case_when(
+      personas_por_dormitorio <= 2 ~ "Sin hacinamiento (<=2)",
+      personas_por_dormitorio <= 3 ~ "Hacinamiento medio (2-3)",
+      TRUE                         ~ "Hacinamiento severo (>3)"
+    ),
+    area = ifelse(urbrur == 1, "Urbano", "Rural")
+  ) |>
+  count(area, hacinamiento) |>
+  group_by(area) |>
+  mutate(pct = n / sum(n) * 100)
+
+ggplot(hacinamiento, aes(x = area, y = pct, fill = hacinamiento)) +
+  geom_col() +
+  scale_fill_manual(values = c(
+    "Sin hacinamiento (<=2)"    = "#003087",
+    "Hacinamiento medio (2-3)"  = "#F4C430",
+    "Hacinamiento severo (>3)"  = "#d7191c"
+  )) +
+  labs(
+    title   = "Hacinamiento habitacional - Cochabamba, CPV-2024",
+    x       = "Área",
+    y       = "Porcentaje de viviendas (%)",
+    fill    = "Categoría",
+    caption = "Fuente: INE Bolivia, CPV-2024"
+  ) +
+  theme_minimal()
+```
