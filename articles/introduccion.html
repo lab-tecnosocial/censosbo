@@ -6,6 +6,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Introducción a censosbo • censosbo</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
+<link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="icon" sizes="any" href="../favicon.ico">
+<link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
@@ -32,10 +37,12 @@
 <li class="active nav-item"><a class="nav-link" href="../articles/introduccion.html">Empezar</a></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
-  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/introduccion.html">Introducción a censosbo</a></li>
-    <li><a class="dropdown-item" href="../articles/analisis-demografico.html">Análisis demográfico con censosbo</a></li>
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-art-culos" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Artículos</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-art-culos">
+<li><a class="dropdown-item" href="../articles/introduccion.html">Introducción al paquete</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Tutoriales</h6></li>
+    <li><a class="dropdown-item" href="../articles/analisis-demografico.html">Análisis demográfico</a></li>
     <li><a class="dropdown-item" href="../articles/analisis-vivienda.html">Análisis de condiciones de vivienda</a></li>
     <li><a class="dropdown-item" href="../articles/analisis-avanzado.html">Análisis avanzado con DuckDB y Arrow</a></li>
   </ul>
@@ -43,7 +50,10 @@
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/lab-tecnosocial/censosbo/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
+</form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/lab-tecnosocial/censosbo" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -74,8 +84,9 @@ microdatos del <strong>Censo de Población y Vivienda 2024
 Estadística (INE).</p>
 <p>Los datos originales en CSV pesan más de 3 GB, por lo que el paquete
 los distribuye como archivos <strong>Parquet</strong> comprimidos (mucho
-más livianos y rápidos), descargados <strong>bajo demanda</strong> y
-guardados en un caché local.</p>
+más livianos y rápidos), que se descargan <strong>bajo demanda</strong>
+y se guardan en un caché local. No se necesita descargar todo: se puede
+pedir solo el departamento de interés.</p>
 </div>
 <div class="section level2">
 <h2 id="instalación">Instalación<a class="anchor" aria-label="anchor" href="#instalaci%C3%B3n"></a>
@@ -87,7 +98,8 @@ guardados en un caché local.</p>
 <div class="section level2">
 <h2 id="tablas-disponibles">Tablas disponibles<a class="anchor" aria-label="anchor" href="#tablas-disponibles"></a>
 </h2>
-<p>El CPV-2024 incluye cuatro tablas:</p>
+<p>El CPV-2024 incluye cuatro tablas accesibles con
+<code>censosbo</code>:</p>
 <table class="table">
 <colgroup>
 <col width="19%">
@@ -134,142 +146,250 @@ guardados en un caché local.</p>
 </tr>
 </tbody>
 </table>
-<p>Las tablas se pueden unir usando la clave
+<p>Las tablas se pueden unir usando la clave compuesta
 <code>idep + iprov + imun + i00</code> (identificador de hogar).</p>
 </div>
 <div class="section level2">
-<h2 id="primera-descarga">Primera descarga<a class="anchor" aria-label="anchor" href="#primera-descarga"></a>
+<h2 id="geografía-departamentos-provincias-y-municipios">Geografía: departamentos, provincias y municipios<a class="anchor" aria-label="anchor" href="#geograf%C3%ADa-departamentos-provincias-y-municipios"></a>
+</h2>
+<p>El paquete incluye la división político-administrativa completa de
+Bolivia sin necesidad de descargar nada:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Los 9 departamentos con sus códigos</span></span>
+<span><span class="fu"><a href="../reference/departamentos.html">departamentos</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;     idep nombre_dep</span></span>
+<span><span class="co">#&gt; 1     01 Chuquisaca</span></span>
+<span><span class="co">#&gt; 30    02     La Paz</span></span>
+<span><span class="co">#&gt; 117   03 Cochabamba</span></span>
+<span><span class="co">#&gt; 165   04      Oruro</span></span>
+<span><span class="co">#&gt; 200   05     Potosí</span></span>
+<span><span class="co">#&gt; 242   06     Tarija</span></span>
+<span><span class="co">#&gt; 253   07 Santa Cruz</span></span>
+<span><span class="co">#&gt; 309   08       Beni</span></span>
+<span><span class="co">#&gt; 329   09      Pando</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Provincias de Santa Cruz</span></span>
+<span><span class="fu"><a href="../reference/provincias.html">provincias</a></span><span class="op">(</span><span class="st">"Santa Cruz"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;     idep nombre_dep iprov            nombre_prov</span></span>
+<span><span class="co">#&gt; 253   07 Santa Cruz    01          Andrés Ibáñez</span></span>
+<span><span class="co">#&gt; 258   07 Santa Cruz    02                 Warnes</span></span>
+<span><span class="co">#&gt; 260   07 Santa Cruz    03                Velasco</span></span>
+<span><span class="co">#&gt; 263   07 Santa Cruz    04                 Ichilo</span></span>
+<span><span class="co">#&gt; 267   07 Santa Cruz    05              Chiquitos</span></span>
+<span><span class="co">#&gt; 270   07 Santa Cruz    06                   Sara</span></span>
+<span><span class="co">#&gt; 273   07 Santa Cruz    07             Cordillera</span></span>
+<span><span class="co">#&gt; 280   07 Santa Cruz    08           Valle Grande</span></span>
+<span><span class="co">#&gt; 285   07 Santa Cruz    09                Florida</span></span>
+<span><span class="co">#&gt; 289   07 Santa Cruz    10     Obispo Santisteban</span></span>
+<span><span class="co">#&gt; 294   07 Santa Cruz    11        Ñuflo de Chávez</span></span>
+<span><span class="co">#&gt; 300   07 Santa Cruz    12         Ángel Sandoval</span></span>
+<span><span class="co">#&gt; 301   07 Santa Cruz    13 Manuel María Caballero</span></span>
+<span><span class="co">#&gt; 303   07 Santa Cruz    14           Germán Busch</span></span>
+<span><span class="co">#&gt; 306   07 Santa Cruz    15               Guarayos</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Municipios de la provincia Cercado (Cochabamba)</span></span>
+<span><span class="fu"><a href="../reference/municipios.html">municipios</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"03"</span>, provincia <span class="op">=</span> <span class="st">"01"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;     idep nombre_dep iprov nombre_prov imun nombre_mun</span></span>
+<span><span class="co">#&gt; 117   03 Cochabamba    01     Cercado   01 Cochabamba</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="diccionario-de-variables">Diccionario de variables<a class="anchor" aria-label="anchor" href="#diccionario-de-variables"></a>
+</h2>
+<p>El paquete incluye un diccionario completo de las 168 variables del
+CPV-2024:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Buscar variables relacionadas con educación</span></span>
+<span><span class="fu"><a href="../reference/codebook.html">codebook</a></span><span class="op">(</span>buscar <span class="op">=</span> <span class="st">"educaci"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; No se encontraron variables con esos criterios.</span></span>
+<span><span class="co">#&gt; [1] variable        etiqueta        tabla           tipo           </span></span>
+<span><span class="co">#&gt; [5] valores_codigos</span></span>
+<span><span class="co">#&gt; &lt;0 rows&gt; (or 0-length row.names)</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Ver variables de la tabla de emigración</span></span>
+<span><span class="fu"><a href="../reference/codebook.html">codebook</a></span><span class="op">(</span>tabla <span class="op">=</span> <span class="st">"emigracion"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;             variable                           etiqueta      tabla       tipo</span></span>
+<span><span class="co">#&gt; 159        e203_sexo               20.3. La persona es: emigracion categorica</span></span>
+<span><span class="co">#&gt; 160       e204_ansal    20.4. En qué año salió del país emigracion categorica</span></span>
+<span><span class="co">#&gt; 161        e205_edad            20.5. A qué edad se fue emigracion categorica</span></span>
+<span><span class="co">#&gt; 162 pais_destino_cod 20.2. En que país vive actualmente emigracion categorica</span></span>
+<span><span class="co">#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   valores_codigos</span></span>
+<span><span class="co">#&gt; 159                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       1, 2, 9, Mujer, Hombre, Sin Especificar</span></span>
+<span><span class="co">#&gt; 160                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         9999, Sin especificar</span></span>
+<span><span class="co">#&gt; 161                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          999, Sin especificar</span></span>
+<span><span class="co">#&gt; 162 4, 8, 12, 16, 20, 24, 28, 31, 32, 36, 40, 44, 48, 50, 51, 52, 56, 60, 64, 68, 70, 72, 76, 84, 90, 92, 96, 100, 104, 108, 112, 116, 120, 124, 132, 136, 140, 144, 148, 152, 156, 158, 162, 166, 170, 174, 175, 178, 180, 184, 188, 191, 192, 196, 203, 204, 208, 212, 214, 218, 222, 226, 231, 232, 233, 234, 238, 239, 242, 246, 248, 250, 254, 258, 260, 262, 266, 268, 270, 275, 276, 288, 292, 296, 300, 304, 308, 312, 316, 320, 324, 328, 332, 336, 340, 344, 348, 352, 356, 360, 364, 368, 372, 376, 380, 384, 388, 392, 398, 400, 404, 408, 410, 414, 417, 418, 422, 426, 428, 430, 434, 438, 440, 442, 446, 450, 454, 458, 462, 466, 470, 474, 478, 480, 484, 492, 496, 498, 499, 500, 504, 508, 512, 516, 520, 524, 528, 531, 533, 534, 535, 540, 548, 554, 558, 562, 566, 570, 574, 578, 580, 583, 584, 585, 586, 591, 598, 600, 604, 608, 612, 616, 620, 624, 626, 630, 634, 638, 642, 643, 646, 652, 654, 659, 660, 662, 663, 666, 670, 674, 678, 682, 686, 688, 689, 690, 694, 702, 703, 704, 705, 706, 710, 716, 724, 728, 729, 732, 740, 744, 748, 752, 756, 760, 762, 764, 768, 772, 776, 780, 784, 788, 792, 795, 796, 798, 800, 804, 807, 818, 826, 831, 832, 833, 834, 840, 850, 854, 858, 860, 862, 876, 882, 887, 894, 987, 988, 991, 992, 993, 994, 995, 996, 997, 998, 999, Afganistán, Albania, Argelia, Samoa Americana, Andorra, Angola, Antigua y Barbuda, Azerbaiyán, Argentina, Australia, Austria, Bahamas, Bahrein, Bangladesh, Armenia, Barbados, Bélgica, Bermuda, Bhután, Bolivia (Estado Plurinacional de, Bosnia y Herzegovina, Botswana, Brasil, Belice, Islas Salomón, Islas Vírgenes Británicas, Brunei Darussalam, Bulgaria, Myanmar, Burundi, Belarús, Camboya, Camerún, Canadá, Cabo Verde, Islas Caimán, República Centroafricana, Sri Lanka, Chad, Chile, China, Taiwán (Provincia de China), Isla Christmas, Islas Cocos (Keeling), Colombia, Comoras, Mayotte, Congo, República Democrática del Congo, Islas Cook, Costa Rica, Croacia, Cuba, Chipre, República Checa, Benin, Dinamarca, Dominica, República Dominicana, Ecuador, El Salvador, Guinea Ecuatorial, Etiopía, Eritrea, Estonia, Islas Feroe, Islas Malvinas (Falkland), Georgia del Sur y las Islas Sandwich del Sur, Fiji, Finlandia, Islas Åland, Francia, Guayana Francesa, Polinesia Francesa, Territorio de las Tierras Australes Francesas, Djibouti, Gabón, Georgia, Gambia, Estado de Palestina, Alemania, Ghana, Gibraltar, Kiribati, Grecia, Groenlandia, Granada, Guadalupe, Guam, Guatemala, Guinea, Guyana, Haití, Santa Sede, Honduras, China, región administrativa especial de Hong Kong, Hungría, Islandia, India, Indonesia, Irán (República Islámica del), Iraq, Irlanda, Israel, Italia, Costa de Marfil, Jamaica, Japón, Kazajstán, Jordania, Kenya, República Popular Democrática de Corea, República de Corea, Kuwait, Kirguistán, República Democrática Popular Lao, Líbano, Lesotho, Letonia, Liberia, Libia, Liechtenstein, Lituania, Luxemburgo, China, región administrativa especial de Macao, Madagascar, Malawi, Malasia, Maldivas, Malí, Malta, Martinica, Mauritania, Mauricio, México, Mónaco, Mongolia, República de Moldova, Montenegro, Montserrat, Marruecos, Mozambique, Omán, Namibia, Nauru, Nepal, Países Bajos, Curazao, Aruba, San Martín (parte Holandesa), Bonaire, San Eustaquio y Saba, Nueva Caledonia, Vanuatu, Nueva Zelandia, Nicaragua, Níger, Nigeria, Niue, Isla Norfolk, Noruega, Islas Marianas Septentrionales, Micronesia (Estados Federados de), Islas Marshall, Palau, Pakistán, Panamá, Papua Nueva Guinea, Paraguay, Perú, Filipinas, Pitcairn, Polonia, Portugal, Guinea-Bissau, Timor-Leste, Puerto Rico, Qatar, Reunión, Rumania, Federación de Rusia, Rwanda, San Barthélemy, Santa Elena, Saint Kitts y Nevis, Anguila, Santa Lucía, San Martín (parte francesa), San Pedro y Miquelón, San Vicente y las Granadinas, San Marino, Santo Tomé y Príncipe, Arabia Saudita, Senegal, Serbia, Kosovo, Seychelles, Sierra Leona, Singapur, Eslovaquia, Viet Nam, Eslovenia, Somalia, Sudáfrica, Zimbabwe, España, Sudán del Sur, Sudán, Sáhara Occidental, Suriname, Islas Svalbard y Jan Mayen, Eswatini, Suecia, Suiza, República Árabe Siria, Tayikistán, Tailandia, Togo, Tokelau, Tonga, Trinidad y Tobago, Emiratos Árabes Unidos, Túnez, Turquía, Turkmenistán, Islas Turcas y Caicos, Tuvalu, Uganda, Ucrania, Macedonia del Norte, Egipto, Reino Unido de Gran Bretaña e Irlanda del Norte, Guernsey, Jersey, Isla de Man, República Unida de Tanzanía, Estados Unidos de América, Islas Vírgenes de los Estados Unidos, Burkina Faso, Uruguay, Uzbekistán, Venezuela (República Bolivariana de), Islas Wallis y Futuna, Samoa, Yemen, Zambia, Caracteres aleatorios o descripción ilegible, Otro municipio, África, América, Asia, Europa, Oceanía, Otro país extranjero, No corresponde a país, No sabe, Sin Especificar</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Ver los códigos de una variable categórica</span></span>
+<span><span class="fu"><a href="../reference/codebook_valores.html">codebook_valores</a></span><span class="op">(</span><span class="st">"p25_sexo"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   codigo etiqueta</span></span>
+<span><span class="co">#&gt; 1      1    Mujer</span></span>
+<span><span class="co">#&gt; 2      2   Hombre</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="primera-descarga-de-microdatos">Primera descarga de microdatos<a class="anchor" aria-label="anchor" href="#primera-descarga-de-microdatos"></a>
 </h2>
 <p>Al llamar <code><a href="../reference/get_personas.html">get_personas()</a></code> por primera vez, el paquete
-descargará el archivo Parquet correspondiente y lo guardará en caché
-local. Las siguientes llamadas usarán el caché sin descargar de
-nuevo.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+descarga el archivo Parquet del departamento elegido y lo guarda en
+caché. Las siguientes llamadas ya no descargan nada.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/lab-tecnosocial/censosbo" class="external-link">censosbo</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Descargar datos de un departamento (recomendado para empezar)</span></span>
-<span><span class="co"># Santa Cruz = código "07"</span></span>
+<span><span class="co"># Descargar datos de Santa Cruz (código "07", ~155 MB)</span></span>
 <span><span class="va">personas_sc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_personas.html">get_personas</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Santa Cruz"</span><span class="op">)</span></span>
-<span><span class="va">personas_sc</span></span></code></pre></div>
-<p>El argumento <code>departamento</code> acepta el código numérico
-(<code>"07"</code>) o el nombre (<code>"Santa Cruz"</code>).</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Ver todos los departamentos con sus códigos</span></span>
-<span><span class="fu"><a href="../reference/departamentos.html">departamentos</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">personas_sc</span></span>
+<span><span class="co">#&gt; FileSystemDataset with 2 Parquet files</span></span>
+<span><span class="co">#&gt; idep: string</span></span>
+<span><span class="co">#&gt; iprov: string</span></span>
+<span><span class="co">#&gt; imun: string</span></span>
+<span><span class="co">#&gt; i00: string</span></span>
+<span><span class="co">#&gt; p01_nacion: int32</span></span>
+<span><span class="co">#&gt; ...</span></span>
+<span><span class="co">#&gt; 118 columns</span></span></code></pre></div>
+<p>El resultado por defecto es un <strong>Arrow Dataset</strong> — los
+datos quedan en disco, no en RAM. Solo se cargan a memoria cuando los
+pides explícitamente con <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect()</a></code>.</p>
 </div>
 <div class="section level2">
 <h2 id="filtros-geográficos">Filtros geográficos<a class="anchor" aria-label="anchor" href="#filtros-geogr%C3%A1ficos"></a>
 </h2>
 <p>Todas las funciones <code>get_*()</code> aceptan los mismos
 argumentos geográficos:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Por departamento</span></span>
-<span><span class="fu"><a href="../reference/get_personas.html">get_personas</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"02"</span><span class="op">)</span>          <span class="co"># La Paz</span></span>
-<span><span class="fu"><a href="../reference/get_personas.html">get_personas</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"La Paz"</span><span class="op">)</span>      <span class="co"># equivalente</span></span>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Por nombre de departamento</span></span>
+<span><span class="fu"><a href="../reference/get_personas.html">get_personas</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"La Paz"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Por varios departamentos a la vez</span></span>
-<span><span class="fu"><a href="../reference/get_personas.html">get_personas</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"02"</span>, <span class="st">"03"</span><span class="op">)</span><span class="op">)</span> <span class="co"># La Paz y Cochabamba</span></span>
+<span><span class="co"># Por código de dos dígitos (equivalente al anterior)</span></span>
+<span><span class="fu"><a href="../reference/get_personas.html">get_personas</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"02"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Por provincia (código de provincia)</span></span>
+<span><span class="co"># Varios departamentos a la vez</span></span>
+<span><span class="fu"><a href="../reference/get_personas.html">get_personas</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"La Paz"</span>, <span class="st">"Cochabamba"</span>, <span class="st">"Santa Cruz"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Por provincia (código dentro del departamento)</span></span>
 <span><span class="fu"><a href="../reference/get_personas.html">get_personas</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"07"</span>, provincia <span class="op">=</span> <span class="st">"01"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Ver provincias de un departamento</span></span>
-<span><span class="fu"><a href="../reference/provincias.html">provincias</a></span><span class="op">(</span><span class="st">"Santa Cruz"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Ver municipios</span></span>
-<span><span class="fu"><a href="../reference/municipios.html">municipios</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"07"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co"># Por municipio</span></span>
+<span><span class="fu"><a href="../reference/get_personas.html">get_personas</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"07"</span>, municipio <span class="op">=</span> <span class="st">"01"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="selección-de-variables">Selección de variables<a class="anchor" aria-label="anchor" href="#selecci%C3%B3n-de-variables"></a>
 </h2>
 <p>Por defecto se devuelven todas las variables. Para análisis más
-rápidos, se pueden seleccionar columnas específicas:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+rápidos, se pueden pedir solo las columnas necesarias:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Solo sexo y edad de Santa Cruz</span></span>
 <span><span class="fu"><a href="../reference/get_personas.html">get_personas</a></span><span class="op">(</span></span>
 <span>  departamento <span class="op">=</span> <span class="st">"07"</span>,</span>
 <span>  variables    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"p25_sexo"</span>, <span class="st">"p26_edad"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<p>Las columnas geográficas (<code>idep</code>, <code>iprov</code>,
-<code>imun</code>, <code>i00</code>) siempre se incluyen.</p>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Las columnas idep, iprov, imun, i00 siempre se incluyen</span></span></code></pre></div>
+<p>Usa <code><a href="../reference/codebook.html">codebook()</a></code> para ver qué variables existen en cada
+tabla.</p>
 </div>
 <div class="section level2">
 <h2 id="formatos-de-retorno">Formatos de retorno<a class="anchor" aria-label="anchor" href="#formatos-de-retorno"></a>
 </h2>
 <p>El argumento <code>as</code> controla el tipo de objeto
 retornado:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Arrow Dataset (por defecto): lazy, no carga en RAM</span></span>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># "arrow" (defecto): lazy, no carga en RAM — para datos grandes</span></span>
 <span><span class="va">ds_arrow</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_personas.html">get_personas</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"07"</span>, as <span class="op">=</span> <span class="st">"arrow"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># data.frame: trae los datos a memoria RAM</span></span>
+<span><span class="co"># "tibble": trae los datos a memoria RAM — para conjuntos pequeños</span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_personas.html">get_personas</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"07"</span>, as <span class="op">=</span> <span class="st">"tibble"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Conexión DuckDB: para consultas SQL</span></span>
+<span><span class="co"># "duckdb": conexión DBI para SQL — para queries complejas o JOINs</span></span>
 <span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_personas.html">get_personas</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"07"</span>, as <span class="op">=</span> <span class="st">"duckdb"</span><span class="op">)</span></span>
-<span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbGetQuery.html" class="external-link">dbGetQuery</a></span><span class="op">(</span><span class="va">con</span>, <span class="st">"SELECT COUNT(*) FROM personas"</span><span class="op">)</span></span>
+<span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbGetQuery.html" class="external-link">dbGetQuery</a></span><span class="op">(</span><span class="va">con</span>, <span class="st">"SELECT COUNT(*) AS total FROM personas"</span><span class="op">)</span></span>
 <span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="uso-con-dplyr">Uso con dplyr<a class="anchor" aria-label="anchor" href="#uso-con-dplyr"></a>
 </h2>
-<p>El formato Arrow es compatible directamente con
-<code>dplyr</code>:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<p>El formato Arrow es compatible directamente con <code>dplyr</code>.
+Los verbos se traducen a operaciones sobre el archivo Parquet sin cargar
+todo en RAM:</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Contar personas por sexo en Cochabamba (sin traer todos los datos a RAM)</span></span>
+<span><span class="co"># Distribución por sexo en Cochabamba (sin traer todo a RAM)</span></span>
 <span><span class="fu"><a href="../reference/get_personas.html">get_personas</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"03"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">p25_sexo</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span>  <span class="co"># collect() materializa el resultado</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 2 × 2</span></span>
+<span><span class="co">#&gt;   p25_sexo       n</span></span>
+<span><span class="co">#&gt;   &lt;int&gt;      &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1        1  831062</span></span>
+<span><span class="co">#&gt; 2        2  855433</span></span>
 <span></span>
-<span><span class="co"># Edad promedio en Oruro</span></span>
+<span><span class="co"># Edad promedio por área urbano/rural en Oruro</span></span>
 <span><span class="fu"><a href="../reference/get_personas.html">get_personas</a></span><span class="op">(</span></span>
 <span>  departamento <span class="op">=</span> <span class="st">"04"</span>,</span>
-<span>  variables    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"p26_edad"</span><span class="op">)</span></span>
+<span>  variables    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"p26_edad"</span>, <span class="st">"urbrur"</span><span class="op">)</span></span>
 <span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>edad_promedio <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">p26_edad</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">urbrur</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>edad_prom <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">p26_edad</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="diccionario-de-variables">Diccionario de variables<a class="anchor" aria-label="anchor" href="#diccionario-de-variables"></a>
+<h2 id="consultas-sql-con-duckdb">Consultas SQL con DuckDB<a class="anchor" aria-label="anchor" href="#consultas-sql-con-duckdb"></a>
 </h2>
-<p>Para explorar qué significa cada variable:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Ver descripción de una variable</span></span>
-<span><span class="fu"><a href="../reference/codebook.html">codebook</a></span><span class="op">(</span><span class="st">"p25_sexo"</span><span class="op">)</span></span>
+<p>Para análisis más complejos o JOINs entre tablas:</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dbi.r-dbi.org" class="external-link">DBI</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Buscar variables relacionadas con educación</span></span>
-<span><span class="fu"><a href="../reference/codebook.html">codebook</a></span><span class="op">(</span>buscar <span class="op">=</span> <span class="st">"educaci"</span><span class="op">)</span></span>
+<span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_personas.html">get_personas</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"07"</span>, as <span class="op">=</span> <span class="st">"duckdb"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Ver todas las variables de vivienda</span></span>
-<span><span class="fu"><a href="../reference/codebook.html">codebook</a></span><span class="op">(</span>tabla <span class="op">=</span> <span class="st">"vivienda"</span><span class="op">)</span></span>
+<span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbGetQuery.html" class="external-link">dbGetQuery</a></span><span class="op">(</span><span class="va">con</span>, <span class="st">"</span></span>
+<span><span class="st">  SELECT p25_sexo, COUNT(*) AS total, ROUND(AVG(p26_edad), 1) AS edad_prom</span></span>
+<span><span class="st">  FROM personas</span></span>
+<span><span class="st">  GROUP BY p25_sexo</span></span>
+<span><span class="st">  ORDER BY p25_sexo</span></span>
+<span><span class="st">"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Ver los códigos de una variable categórica</span></span>
-<span><span class="fu"><a href="../reference/codebook_valores.html">codebook_valores</a></span><span class="op">(</span><span class="st">"p25_sexo"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="gestión-del-caché">Gestión del caché<a class="anchor" aria-label="anchor" href="#gesti%C3%B3n-del-cach%C3%A9"></a>
 </h2>
-<p>Los datos descargados se guardan localmente para evitar descargas
-repetidas:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Ver dónde está el caché</span></span>
+<p>Los datos descargados se guardan localmente y se reutilizan en
+sesiones futuras:</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Ver la ruta del caché local</span></span>
 <span><span class="fu"><a href="../reference/censosbo_cache_dir.html">censosbo_cache_dir</a></span><span class="op">(</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Ver qué archivos están descargados</span></span>
+<span><span class="co">#&gt; [1] "/home/runner/.cache/R/censosbo"</span></span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Ver qué archivos están descargados y cuánto pesan</span></span>
 <span><span class="fu"><a href="../reference/censosbo_cache_info.html">censosbo_cache_info</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Limpiar el caché si necesitas liberar espacio</span></span>
 <span><span class="fu"><a href="../reference/censosbo_cache_clear.html">censosbo_cache_clear</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
+<h2 id="siguientes-pasos">Siguientes pasos<a class="anchor" aria-label="anchor" href="#siguientes-pasos"></a>
+</h2>
+<ul>
+<li>
+<strong><a href="analisis-demografico.html">Análisis
+demográfico</a></strong>: pirámide de edades, nivel educativo, pueblos
+indígenas.</li>
+<li>
+<strong><a href="analisis-vivienda.html">Análisis de
+vivienda</a></strong>: agua, energía, hacinamiento, joins
+personas-viviendas.</li>
+<li>
+<strong><a href="analisis-avanzado.html">Análisis
+avanzado</a></strong>: DuckDB, Arrow, datos más grandes que la RAM.</li>
+</ul>
+</div>
+<div class="section level2">
 <h2 id="cómo-citar">Cómo citar<a class="anchor" aria-label="anchor" href="#c%C3%B3mo-citar"></a>
 </h2>
-<p>Si usas <code>censosbo</code> en tu trabajo, por favor cita:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"censosbo"</span><span class="op">)</span></span></code></pre></div>
-<p>También cita la fuente original de los datos:</p>
+<blockquote>
+<p>Ojeda Copa, A. (2024). <em>censosbo: Acceso y análisis de los datos
+del Censo de Bolivia 2024</em>. R package version 0.1.0. <a href="https://github.com/lab-tecnosocial/censosbo" class="external-link uri">https://github.com/lab-tecnosocial/censosbo</a></p>
+</blockquote>
+<p>También cita la fuente original:</p>
 <blockquote>
 <p>Instituto Nacional de Estadística (INE). (2024). <em>Censo de
 Población y Vivienda 2024 — Base de datos de microdatos</em>. Bolivia.

@@ -1,5 +1,9 @@
 # Análisis de condiciones de vivienda
 
+> **Nota:** Los bloques de código de este artículo requieren descargar
+> datos del CPV-2024. Ejecuta los ejemplos en tu sesión de R después de
+> instalar el paquete.
+
 ## Condiciones habitacionales
 
 ``` r

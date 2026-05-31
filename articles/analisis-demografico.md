@@ -1,5 +1,9 @@
 # Análisis demográfico con censosbo
 
+> **Nota:** Los bloques de código de este artículo requieren descargar
+> datos del CPV-2024. Ejecuta los ejemplos en tu sesión de R después de
+> instalar el paquete.
+
 ## Introducción
 
 Esta vignette muestra cómo usar `censosbo` para análisis demográficos

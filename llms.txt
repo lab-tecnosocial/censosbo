@@ -130,9 +130,11 @@ citation("censosbo")
 
 # Package index
 
-## Datos del censo
+## Acceso a microdatos
 
-Funciones para descargar y acceder a los microdatos del CPV-2024.
+Funciones principales para descargar y consultar los cuatro conjuntos de
+datos del CPV-2024. Todos devuelven un Arrow Dataset (lazy), un tibble,
+o una conexión DuckDB.
 
 - [`get_personas()`](https://lab-tecnosocial.github.io/censosbo/reference/get_personas.md)
   : Accede a los microdatos de personas del CPV-2024
@@ -145,7 +147,8 @@ Funciones para descargar y acceder a los microdatos del CPV-2024.
 
 ## Geografía de Bolivia
 
-Tablas y funciones con la división política del país.
+Dataset con la división político-administrativa completa (9
+departamentos, 113 provincias, 343 municipios) y funciones de consulta.
 
 - [`geo_bolivia`](https://lab-tecnosocial.github.io/censosbo/reference/geo_bolivia.md)
   : Tabla de geografía de Bolivia
@@ -158,7 +161,8 @@ Tablas y funciones con la división política del país.
 
 ## Diccionario de variables
 
-Funciones para explorar las variables disponibles en cada tabla.
+Dataset y funciones para explorar las 168 variables del CPV-2024, con
+etiquetas en español y códigos de categorías.
 
 - [`codebook_meta`](https://lab-tecnosocial.github.io/censosbo/reference/codebook_meta.md)
   : Diccionario de variables del CPV-2024
@@ -169,7 +173,8 @@ Funciones para explorar las variables disponibles en cada tabla.
 
 ## Gestión de caché
 
-Funciones para administrar los archivos descargados localmente.
+Los archivos Parquet se descargan una sola vez y quedan en caché local.
+Estas funciones permiten inspeccionar y limpiar el caché.
 
 - [`censosbo_cache_dir()`](https://lab-tecnosocial.github.io/censosbo/reference/censosbo_cache_dir.md)
   : Directorio de caché local del paquete
@@ -178,7 +183,7 @@ Funciones para administrar los archivos descargados localmente.
 - [`censosbo_cache_clear()`](https://lab-tecnosocial.github.io/censosbo/reference/censosbo_cache_clear.md)
   : Limpia el caché local de datos
 
-## Paquete
+## Información del paquete
 
 - [`censosbo`](https://lab-tecnosocial.github.io/censosbo/reference/censosbo-package.md)
   [`censosbo-package`](https://lab-tecnosocial.github.io/censosbo/reference/censosbo-package.md)
@@ -186,10 +191,13 @@ Funciones para administrar los archivos descargados localmente.
 
 # Articles
 
-### Tutoriales
+### Primeros pasos
 
 - [Introducción a
   censosbo](https://lab-tecnosocial.github.io/censosbo/articles/introduccion.md):
+
+### Tutoriales
+
 - [Análisis demográfico con
   censosbo](https://lab-tecnosocial.github.io/censosbo/articles/analisis-demografico.md):
 - [Análisis de condiciones de

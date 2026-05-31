@@ -1,5 +1,9 @@
 # Análisis avanzado con DuckDB y Arrow
 
+> **Nota:** Los bloques de código de este artículo requieren descargar
+> datos del CPV-2024. Ejecuta los ejemplos en tu sesión de R después de
+> instalar el paquete.
+
 ## ¿Por qué usar Arrow o DuckDB?
 
 Con 11 millones de personas, los datos del CPV-2024 pueden ser difíciles
