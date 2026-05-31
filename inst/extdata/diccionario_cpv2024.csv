@@ -17,7 +17,7 @@
 "persona","p24_parentes","24. Que parentesco tiene con la jefa o jefe del hogar","categorica","16","Persona que vive en la calle o en tránsito"
 "persona","p25_sexo","25. Es mujer u hombre","categorica","1","Mujer"
 "persona","p25_sexo","25. Es mujer u hombre","categorica","2","Hombre"
-"persona","p26_edad","26. Cuantos años cumplidos tiene","categorica","100","100 y más"
+"persona","p26_edad","26. Cuantos años cumplidos tiene","numerica",NA,NA
 "persona","p28_cn","28. Su nacimiento está inscrito en el registro civil boliviano","categorica","1","Sí"
 "persona","p28_cn","28. Su nacimiento está inscrito en el registro civil boliviano","categorica","2","No"
 "persona","p28_cn","28. Su nacimiento está inscrito en el registro civil boliviano","categorica","9","Sin especificar"
@@ -553,7 +553,7 @@
 "persona","p35j_deptocod","35.2.A. Departamento de nacimiento","categorica","99","Departamento sin especificar"
 "persona","p35h1_provcod","35.2.B. Provincia de nacimiento","numerica",NA,NA
 "persona","p35h_muncod","35.2.C. Municipio de nacimiento","numerica",NA,NA
-"persona","p354_anllega","35.3. Año que llegó a Bolivia","categorica","9999","Sin especificar"
+"persona","p354_anllega","35.3. Año que llegó a Bolivia","numerica",NA,NA
 "persona","p353_paisnac_cod","35.3. País de nacimiento","categorica","4","Afganistán"
 "persona","p353_paisnac_cod","35.3. País de nacimiento","categorica","8","Albania"
 "persona","p353_paisnac_cod","35.3. País de nacimiento","categorica","12","Argelia"
@@ -814,7 +814,7 @@
 "persona","p36_lugres","36. Donde vive habitualmente","categorica","2","En otro municipio del país"
 "persona","p36_lugres","36. Donde vive habitualmente","categorica","3","En otro país"
 "persona","p36_lugres","36. Donde vive habitualmente","categorica","9","Sin Especificar"
-"persona","p361_anres","36.1. Desde que año reside","categorica","9999","Sin especificar"
+"persona","p361_anres","36.1. Desde que año reside","numerica",NA,NA
 "persona","p36j_deptocod","36.2.A. Departamento de residencia habitual","categorica","1","Chuquisaca"
 "persona","p36j_deptocod","36.2.A. Departamento de residencia habitual","categorica","2","La Paz"
 "persona","p36j_deptocod","36.2.A. Departamento de residencia habitual","categorica","3","Cochabamba"
@@ -1385,7 +1385,7 @@
 "persona","p41a_nivel","41.A. Cuál es el último curso o año que aprobó y en que nivel educativo (Nivel)","categorica","12","Maestría"
 "persona","p41a_nivel","41.A. Cuál es el último curso o año que aprobó y en que nivel educativo (Nivel)","categorica","13","Doctorado"
 "persona","p41a_nivel","41.A. Cuál es el último curso o año que aprobó y en que nivel educativo (Nivel)","categorica","99","Sin especificar"
-"persona","p41b_curso","41.B. Cuál es el último curso o año que aprobó y en que nivel educativo (Curso o Año)","categorica","9","Sin especificar"
+"persona","p41b_curso","41.B. Cuál es el último curso o año que aprobó y en que nivel educativo (Curso o Año)","numerica",NA,NA
 "persona","p42a_ver","42.A Tiene dificultad permanente para ver incluso cuando usa lentes","categorica","1","Ninguna"
 "persona","p42a_ver","42.A Tiene dificultad permanente para ver incluso cuando usa lentes","categorica","2","Algo"
 "persona","p42a_ver","42.A Tiene dificultad permanente para ver incluso cuando usa lentes","categorica","3","Mucha"
@@ -2251,15 +2251,13 @@
 "persona","p53_ecivil","53. Cuál es su estado civil o conyugal","categorica","5","Viuda(o)"
 "persona","p53_ecivil","53. Cuál es su estado civil o conyugal","categorica","6","Soltera(o)"
 "persona","p53_ecivil","53. Cuál es su estado civil o conyugal","categorica","9","Sin especificar"
-"persona","p54_hvtot","54. En total, Cuántas hijas e hijos nacidos vivos ha tenido, incluyendo a los que no vivan con usted o hayan fallecido después de nacer (Total)","categorica","98","Omisión en P54 y con dato en P55"
-"persona","p54_hvtot","54. En total, Cuántas hijas e hijos nacidos vivos ha tenido, incluyendo a los que no vivan con usted o hayan fallecido después de nacer (Total)","categorica","99","Sin especificar"
-"persona","p54a_hvtot_muj","54.A. En total, Cuántas hijas e hijos nacidos vivos ha tenido, incluyendo a los que no vivan con usted o hayan fallecido después de nacer (Mujeres)","categorica","99","Sin especificar"
-"persona","p54b_hvtot_hom","54.B. En total, Cuántas hijas e hijos nacidos vivos ha tenido, incluyendo a los que no vivan con usted o hayan fallecido después de nacer (Hombres)","categorica","99","Sin especificar"
-"persona","p55_hstot","55. De las hijas e hijos que ha tenido, Cuántos viven actualmente (Total)","categorica","98","Omisión en P55 y con dato en P54"
-"persona","p55_hstot","55. De las hijas e hijos que ha tenido, Cuántos viven actualmente (Total)","categorica","99","Sin especificar"
-"persona","p55a_hstot_muj","55.A. De las hijas e hijos que ha tenido, Cuántos viven actualmente (Mujeres)","categorica","99","Sin especificar"
-"persona","p55b_hstot_hom","55.B. De las hijas e hijos que ha tenido, Cuántos viven actualmente (Hombres)","categorica","99","Sin especificar"
-"persona","p56_edadmad","56. A qué edad tuvo su primer hija o hijo nacido vivo","categorica","999","Sin especificar"
+"persona","p54_hvtot","54. En total, Cuántas hijas e hijos nacidos vivos ha tenido, incluyendo a los que no vivan con usted o hayan fallecido después de nacer (Total)","numerica",NA,NA
+"persona","p54a_hvtot_muj","54.A. En total, Cuántas hijas e hijos nacidos vivos ha tenido, incluyendo a los que no vivan con usted o hayan fallecido después de nacer (Mujeres)","numerica",NA,NA
+"persona","p54b_hvtot_hom","54.B. En total, Cuántas hijas e hijos nacidos vivos ha tenido, incluyendo a los que no vivan con usted o hayan fallecido después de nacer (Hombres)","numerica",NA,NA
+"persona","p55_hstot","55. De las hijas e hijos que ha tenido, Cuántos viven actualmente (Total)","numerica",NA,NA
+"persona","p55a_hstot_muj","55.A. De las hijas e hijos que ha tenido, Cuántos viven actualmente (Mujeres)","numerica",NA,NA
+"persona","p55b_hstot_hom","55.B. De las hijas e hijos que ha tenido, Cuántos viven actualmente (Hombres)","numerica",NA,NA
+"persona","p56_edadmad","56. A qué edad tuvo su primer hija o hijo nacido vivo","numerica",NA,NA
 "persona","p57a_uhnacmes","57.A. En qué mes y año nació su última hija o hijo nacido vivo (Mes)","categorica","1","Enero"
 "persona","p57a_uhnacmes","57.A. En qué mes y año nació su última hija o hijo nacido vivo (Mes)","categorica","2","Febrero"
 "persona","p57a_uhnacmes","57.A. En qué mes y año nació su última hija o hijo nacido vivo (Mes)","categorica","3","Marzo"
@@ -2273,7 +2271,7 @@
 "persona","p57a_uhnacmes","57.A. En qué mes y año nació su última hija o hijo nacido vivo (Mes)","categorica","11","Noviembre"
 "persona","p57a_uhnacmes","57.A. En qué mes y año nació su última hija o hijo nacido vivo (Mes)","categorica","12","Diciembre"
 "persona","p57a_uhnacmes","57.A. En qué mes y año nació su última hija o hijo nacido vivo (Mes)","categorica","88","Sin Especificar"
-"persona","p57b_uhnacan","57.B. En qué mes y año nació su última hija o hijo nacido vivo (Año)","categorica","9999","Sin Especificar"
+"persona","p57b_uhnacan","57.B. En qué mes y año nació su última hija o hijo nacido vivo (Año)","numerica",NA,NA
 "persona","p58_uhsobre","58. Su última hija o hijo, vive actualmente","categorica","1","Sí"
 "persona","p58_uhsobre","58. Su última hija o hijo, vive actualmente","categorica","2","No"
 "persona","p58_uhsobre","58. Su última hija o hijo, vive actualmente","categorica","9","Sin especificar"
@@ -2325,7 +2323,7 @@
 "persona","p41a_nivel_act","Nivel educativo alcanzado: sistema actual (5 o más años de edad)","categorica","12","Maestría"
 "persona","p41a_nivel_act","Nivel educativo alcanzado: sistema actual (5 o más años de edad)","categorica","13","Doctorado"
 "persona","p41a_nivel_act","Nivel educativo alcanzado: sistema actual (5 o más años de edad)","categorica","99","Sin especificar"
-"persona","p41b_curso_act","Curso o año aprobado: sistema actual (5 o más años de edad)","categorica","9","Sin especificar"
+"persona","p41b_curso_act","Curso o año aprobado: sistema actual (5 o más años de edad)","numerica",NA,NA
 "persona","nivel_edu","Nivel educativo alcanzado agrupado (19 o más años de edad, residentes en el país y que respondieron a la pregunta)","categorica","1","Ninguno"
 "persona","nivel_edu","Nivel educativo alcanzado agrupado (19 o más años de edad, residentes en el país y que respondieron a la pregunta)","categorica","2","Primaria"
 "persona","nivel_edu","Nivel educativo alcanzado agrupado (19 o más años de edad, residentes en el país y que respondieron a la pregunta)","categorica","3","Secundaria"
@@ -5246,8 +5244,8 @@
 "emigracion","e203_sexo","20.3. La persona es:","categorica","1","Mujer"
 "emigracion","e203_sexo","20.3. La persona es:","categorica","2","Hombre"
 "emigracion","e203_sexo","20.3. La persona es:","categorica","9","Sin Especificar"
-"emigracion","e204_ansal","20.4. En qué año salió del país","categorica","9999","Sin especificar"
-"emigracion","e205_edad","20.5. A qué edad se fue","categorica","999","Sin especificar"
+"emigracion","e204_ansal","20.4. En qué año salió del país","numerica",NA,NA
+"emigracion","e205_edad","20.5. A qué edad se fue","numerica",NA,NA
 "emigracion","pais_destino_cod","20.2. En que país vive actualmente","categorica","4","Afganistán"
 "emigracion","pais_destino_cod","20.2. En que país vive actualmente","categorica","8","Albania"
 "emigracion","pais_destino_cod","20.2. En que país vive actualmente","categorica","12","Argelia"
@@ -5517,8 +5515,8 @@
 "mortalidad","m212a_mes","21.2A. En que mes y año falleció - Mes","categorica","11","Noviembre"
 "mortalidad","m212a_mes","21.2A. En que mes y año falleció - Mes","categorica","12","Diciembre"
 "mortalidad","m212a_mes","21.2A. En que mes y año falleció - Mes","categorica","99","Sin Especificar"
-"mortalidad","m212b_an","21.2B. En que mes y año falleció - Año","categorica","9999","Sin Especificar"
-"mortalidad","m213_edad","21.3. Qué edad tenía al morir","categorica","999","Sin especificar"
+"mortalidad","m212b_an","21.2B. En que mes y año falleció - Año","numerica",NA,NA
+"mortalidad","m213_edad","21.3. Qué edad tenía al morir","numerica",NA,NA
 "mortalidad","m214_cov","21.4. Murió a causa del COVID-19","categorica","1","Sí"
 "mortalidad","m214_cov","21.4. Murió a causa del COVID-19","categorica","2","No"
 "mortalidad","m214_cov","21.4. Murió a causa del COVID-19","categorica","9","Sin Especificar"

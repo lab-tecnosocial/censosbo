@@ -1,25 +1,25 @@
-/* Navbar: texto blanco sobre fondo azul Bolivia */
+/* Navbar: texto negro sobre fondo claro */
 .navbar .navbar-brand,
 .navbar .nav-link,
 .navbar .dropdown-toggle,
 .navbar .navbar-text {
-  color: #ffffff !important;
+  color: #000000 !important;
 }
 
 .navbar .nav-link:hover,
 .navbar .nav-link:focus,
 .navbar .dropdown-toggle:hover {
-  color: #F4C430 !important;
+  color: #003087 !important;
 }
 
 .navbar .nav-link.active {
-  color: #F4C430 !important;
+  color: #003087 !important;
   font-weight: 600;
 }
 
 /* Dropdown menu */
 .navbar .dropdown-item {
-  color: #003087;
+  color: #000000;
 }
 
 .navbar .dropdown-item:hover {
@@ -27,12 +27,7 @@
   color: #ffffff;
 }
 
-/* Search box en navbar */
-.navbar .form-control {
-  color: #003087;
-}
-
 /* Botón toggler (hamburger) en móvil */
 .navbar-toggler-icon {
-  filter: invert(1);
+  filter: none;
 }

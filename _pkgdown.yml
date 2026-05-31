@@ -12,8 +12,6 @@ template:
   bslib:
     primary: "#003087"
     link-color: "#003087"
-    navbar-bg: "#003087"
-    footer-bg: "#003087"
     heading-font: "Source Sans Pro"
 
 home:

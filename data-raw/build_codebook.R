@@ -60,6 +60,19 @@ parse_sheet <- function(hoja, tabla_name) {
     vars[[length(vars) + 1]] <- current
   }
 
+  # Detecta si los únicos códigos son valores centinela (sin especificar, omisión,
+  # top-coding como "100 y más"). En ese caso la variable es numérica aunque tenga
+  # una entrada en valores_codigos.
+  SENTINEL_RE <- paste(
+    "sin especificar", "sin dato", "omisi.n", "y m.s", "no sabe",
+    "no responde", "ignorado", sep = "|"
+  )
+  solo_centinelas <- function(vc_list) {
+    if (length(vc_list) == 0) return(TRUE)
+    vc <- do.call(rbind, vc_list)
+    all(grepl(SENTINEL_RE, tolower(trimws(vc$etiqueta))))
+  }
+
   # Convertir a data.frame
   if (length(vars) == 0) return(NULL)
   result <- data.frame(
@@ -69,14 +82,20 @@ parse_sheet <- function(hoja, tabla_name) {
     tipo             = vapply(vars, function(v) {
       t <- v$tipo
       if (is.na(t) || t %in% c("integer", "string", "chr")) {
-        if (length(v$valores_codigos) > 0) "categorica" else "numerica"
+        if (length(v$valores_codigos) > 0 && !solo_centinelas(v$valores_codigos)) {
+          "categorica"
+        } else {
+          "numerica"
+        }
       } else "numerica"
     }, character(1)),
     stringsAsFactors = FALSE
   )
-  result$valores_codigos <- lapply(vars, function(v) {
-    if (length(v$valores_codigos) == 0) return(NULL)
-    do.call(rbind, v$valores_codigos)
+  result$valores_codigos <- lapply(seq_len(nrow(result)), function(i) {
+    v  <- vars[[i]]
+    vc <- if (length(v$valores_codigos) == 0) NULL else do.call(rbind, v$valores_codigos)
+    # Para variables numéricas, no guardar categorías centinela
+    if (result$tipo[i] == "numerica") NULL else vc
   })
   result
 }
