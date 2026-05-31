@@ -1,9 +1,5 @@
 # Análisis avanzado con DuckDB y Arrow
 
-> **Nota:** Los bloques de código de este artículo requieren descargar
-> datos del CPV-2024. Ejecuta los ejemplos en tu sesión de R después de
-> instalar el paquete.
-
 ## ¿Por qué usar Arrow o DuckDB?
 
 Con 11 millones de personas, los datos del CPV-2024 pueden ser difíciles
@@ -13,6 +9,132 @@ de manejar en RAM. `censosbo` resuelve esto con:
   datos en RAM. Compatible con `dplyr`.
 - **DuckDB**: motor SQL columnar en memoria, extremadamente rápido para
   datos analíticos. Ideal para queries complejas.
+
+## Demostración con datos de muestra
+
+Los siguientes ejemplos funcionan directamente con `sample_personas`
+(incluido en el paquete) y muestran cómo se verían los resultados con
+los datos reales.
+
+``` r
+
+library(censosbo)
+library(dplyr)
+#> 
+#> Attaching package: 'dplyr'
+#> The following objects are masked from 'package:stats':
+#> 
+#>     filter, lag
+#> The following objects are masked from 'package:base':
+#> 
+#>     intersect, setdiff, setequal, union
+
+# Arrow Dataset a partir de los datos de muestra
+# (En producción: ds <- get_personas(departamento = "07"))
+ds <- arrow::as_arrow_table(sample_personas)
+
+# Pipeline dplyr lazy: filtra antes de traer a RAM
+resultado <- ds |>
+  filter(p26_edad >= 15) |>
+  group_by(idep, p25_sexo) |>
+  summarise(
+    personas    = n(),
+    edad_prom   = mean(p26_edad, na.rm = TRUE),
+    anios_edu   = mean(aestudio, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  collect() |>
+  mutate(sexo = ifelse(p25_sexo == 1, "Mujer", "Hombre"))
+
+head(resultado, 10)
+#> # A tibble: 10 × 6
+#>    idep  p25_sexo personas edad_prom anios_edu sexo  
+#>    <chr>    <int>    <int>     <dbl>     <dbl> <chr> 
+#>  1 01           1       31      35.2      6.42 Mujer 
+#>  2 01           2       27      34.4      9.29 Hombre
+#>  3 02           2       43      42.4     14.8  Hombre
+#>  4 02           1       40      42.8     14.6  Mujer 
+#>  5 03           2       65      36.1      8.91 Hombre
+#>  6 03           1       30      35.7      7.86 Mujer 
+#>  7 04           2       35      39.6     10.8  Hombre
+#>  8 04           1       39      41.0     10.3  Mujer 
+#>  9 05           1       38      43.8      6.42 Mujer 
+#> 10 05           2       34      36.2      8.63 Hombre
+```
+
+``` r
+
+# DuckDB: SQL directamente sobre los datos
+library(DBI)
+
+con <- DBI::dbConnect(duckdb::duckdb(), dbdir = ":memory:")
+DBI::dbWriteTable(con, "personas", sample_personas)
+
+# Window function: ranking de departamentos por años de estudio promedio
+DBI::dbGetQuery(con, "
+  SELECT
+    idep,
+    ROUND(AVG(aestudio), 1) AS anios_estudio_prom,
+    COUNT(*) AS personas_15mas,
+    RANK() OVER (ORDER BY AVG(aestudio) DESC) AS ranking
+  FROM personas
+  WHERE p26_edad >= 15 AND aestudio IS NOT NULL
+  GROUP BY idep
+  ORDER BY ranking
+")
+#>   idep anios_estudio_prom personas_15mas ranking
+#> 1   02               14.7             77       1
+#> 2   07               14.5             98       2
+#> 3   08               11.6             62       3
+#> 4   06               11.6             62       4
+#> 5   04               10.5             70       5
+#> 6   09               10.1             67       6
+#> 7   03                8.6             86       7
+#> 8   01                7.8             50       8
+#> 9   05                7.4             58       9
+```
+
+``` r
+
+library(ggplot2)
+
+# Visualizar el resultado anterior
+res <- DBI::dbGetQuery(con, "
+  SELECT idep,
+    AVG(aestudio) AS anios_edu,
+    SUM(CASE WHEN p25_sexo = 1 THEN 1 ELSE 0 END) * 100.0 / COUNT(*) AS pct_mujeres
+  FROM personas WHERE p26_edad >= 15 AND aestudio IS NOT NULL
+  GROUP BY idep
+")
+DBI::dbDisconnect(con)
+
+dep_labels <- c("01"="Chuquisaca","02"="La Paz","03"="Cochabamba",
+                "04"="Oruro","05"="Potosí","06"="Tarija",
+                "07"="Santa Cruz","08"="Beni","09"="Pando")
+
+res |>
+  mutate(departamento = dep_labels[idep]) |>
+  ggplot(aes(x = pct_mujeres, y = anios_edu, label = departamento)) +
+  geom_point(color = "#003087", size = 4) +
+  geom_text(vjust = -0.8, size = 3, color = "#333333") +
+  geom_hline(yintercept = mean(res$anios_edu), linetype = "dashed", color = "gray60") +
+  expand_limits(y = c(min(res$anios_edu) - 1, max(res$anios_edu) + 2)) +
+  labs(
+    title    = "Años de estudio promedio vs % mujeres (15+ años)",
+    subtitle = "Datos de muestra — 100 personas por departamento",
+    x = "% de mujeres en la muestra", y = "Años de estudio promedio",
+    caption = "Fuente: INE Bolivia, CPV-2024 (muestra de prueba)"
+  ) +
+  theme_minimal(base_size = 12)
+```
+
+![](analisis-avanzado_files/figure-html/demo-duckdb-plot-1.png)
+
+------------------------------------------------------------------------
+
+> Los siguientes ejemplos requieren **descargar los datos completos**
+> (~50–500 MB). Ejecuta el código en tu sesión de R después de instalar
+> el paquete.
 
 ## Arrow: análisis lazy con dplyr
 

@@ -15,7 +15,8 @@
 <link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Análisis de condiciones de vivienda">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
+<meta property="og:title" content="Análisis de condiciones de vivienda">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -40,6 +41,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-art-culos" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Artículos</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-art-culos">
 <li><a class="dropdown-item" href="../articles/introduccion.html">Introducción al paquete</a></li>
+    <li><a class="dropdown-item" href="../articles/diccionario.html">Diccionario de datos</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Tutoriales</h6></li>
     <li><a class="dropdown-item" href="../articles/analisis-demografico.html">Análisis demográfico</a></li>
@@ -75,15 +77,87 @@
 
     
     
+<div class="section level2">
+<h2 id="exploración-rápida-con-datos-de-muestra">Exploración rápida con datos de muestra<a class="anchor" aria-label="anchor" href="#exploraci%C3%B3n-r%C3%A1pida-con-datos-de-muestra"></a>
+</h2>
+<p>Antes de descargar los datos completos, puedes explorar el perfil
+demográfico de los hogares con <code>sample_personas</code>:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lab-tecnosocial.github.io/censosbo/">censosbo</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'dplyr'</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:stats':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     filter, lag</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Composición del hogar por relación de parentesco (datos de muestra)</span></span>
+<span><span class="va">sample_personas</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<span>    parentes <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case-and-replace-when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
+<span>      <span class="va">p24_parentes</span> <span class="op">==</span> <span class="fl">1</span> <span class="op">~</span> <span class="st">"Jefe/a"</span>,</span>
+<span>      <span class="va">p24_parentes</span> <span class="op">==</span> <span class="fl">2</span> <span class="op">~</span> <span class="st">"Cónyuge"</span>,</span>
+<span>      <span class="va">p24_parentes</span> <span class="op">==</span> <span class="fl">3</span> <span class="op">~</span> <span class="st">"Hijo/a"</span>,</span>
+<span>      <span class="va">p24_parentes</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">6</span><span class="op">)</span> <span class="op">~</span> <span class="st">"Otros parientes directos"</span>,</span>
+<span>      <span class="va">p24_parentes</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">7</span><span class="op">:</span><span class="fl">12</span><span class="op">)</span> <span class="op">~</span> <span class="st">"Otros parientes"</span>,</span>
+<span>      <span class="cn">TRUE</span> <span class="op">~</span> <span class="st">"Sin parentesco"</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">parentes</span>, sort <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html" class="external-link">reorder</a></span><span class="op">(</span><span class="va">parentes</span>, <span class="va">n</span><span class="op">)</span>, y <span class="op">=</span> <span class="va">n</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"#003087"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html" class="external-link">geom_text</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="va">n</span><span class="op">)</span>, hjust <span class="op">=</span> <span class="op">-</span><span class="fl">0.2</span>, size <span class="op">=</span> <span class="fl">3.5</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html" class="external-link">ylim</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">450</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
+<span>    title   <span class="op">=</span> <span class="st">"Composición del hogar por parentesco (muestra CPV-2024)"</span>,</span>
+<span>    x <span class="op">=</span> <span class="cn">NULL</span>, y <span class="op">=</span> <span class="st">"Número de personas"</span>,</span>
+<span>    caption <span class="op">=</span> <span class="st">"Fuente: INE Bolivia, CPV-2024 (muestra de prueba)"</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span>base_size <span class="op">=</span> <span class="fl">12</span><span class="op">)</span></span></code></pre></div>
+<p><img src="analisis-vivienda_files/figure-html/muestra-hogar-1.png" class="r-plt" alt="" width="672"></p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Tasa de alfabetismo por grupo de edad (datos de muestra)</span></span>
+<span><span class="va">sample_personas</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">p26_edad</span> <span class="op">&gt;=</span> <span class="fl">15</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<span>    lee    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">p40_lee</span> <span class="op">==</span> <span class="fl">1</span>, <span class="st">"Sí sabe leer"</span>, <span class="st">"No sabe leer"</span><span class="op">)</span>,</span>
+<span>    g_edad <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case-and-replace-when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
+<span>      <span class="va">p26_edad</span> <span class="op">&lt;</span> <span class="fl">30</span> <span class="op">~</span> <span class="st">"15–29"</span>,</span>
+<span>      <span class="va">p26_edad</span> <span class="op">&lt;</span> <span class="fl">50</span> <span class="op">~</span> <span class="st">"30–49"</span>,</span>
+<span>      <span class="cn">TRUE</span>          <span class="op">~</span> <span class="st">"50 y más"</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">lee</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">g_edad</span>, <span class="va">lee</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">g_edad</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>pct <span class="op">=</span> <span class="va">n</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">g_edad</span>, y <span class="op">=</span> <span class="va">pct</span>, fill <span class="op">=</span> <span class="va">lee</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_fill_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Sí sabe leer"</span> <span class="op">=</span> <span class="st">"#003087"</span>, <span class="st">"No sabe leer"</span> <span class="op">=</span> <span class="st">"#d73027"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
+<span>    title   <span class="op">=</span> <span class="st">"Alfabetismo (15+ años) por grupo de edad — muestra CPV-2024"</span>,</span>
+<span>    x <span class="op">=</span> <span class="st">"Grupo de edad"</span>, y <span class="op">=</span> <span class="st">"Porcentaje (%)"</span>, fill <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>    caption <span class="op">=</span> <span class="st">"Fuente: INE Bolivia, CPV-2024 (muestra de prueba)"</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span>base_size <span class="op">=</span> <span class="fl">12</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"bottom"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="analisis-vivienda_files/figure-html/muestra-alfabetismo-1.png" class="r-plt" alt="" width="672"></p>
+<hr>
 <blockquote>
-<p><strong>Nota:</strong> Los bloques de código de este artículo
-requieren descargar datos del CPV-2024. Ejecuta los ejemplos en tu
-sesión de R después de instalar el paquete.</p>
+<p>Los siguientes ejemplos requieren <strong>descargar datos de
+vivienda</strong> (~100 MB). Ejecuta el código en tu sesión de R después
+de instalar el paquete.</p>
 </blockquote>
+</div>
 <div class="section level2">
 <h2 id="condiciones-habitacionales">Condiciones habitacionales<a class="anchor" aria-label="anchor" href="#condiciones-habitacionales"></a>
 </h2>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span></span>
@@ -95,7 +169,7 @@ sesión de R después de instalar el paquete.</p>
 <span>                   <span class="st">"v10_combus"</span>, <span class="st">"v11_basura"</span>, <span class="st">"v15_servsan"</span><span class="op">)</span></span>
 <span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Acceso al agua potable por área urbano/rural</span></span>
 <span><span class="va">agua</span> <span class="op">&lt;-</span> <span class="va">viviendas_cbba</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">v07_aguapro</span><span class="op">)</span>, <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">urbrur</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -124,7 +198,7 @@ sesión de R después de instalar el paquete.</p>
 <span>    caption <span class="op">=</span> <span class="st">"Fuente: INE Bolivia, CPV-2024"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Tipo de energía por área</span></span>
 <span><span class="va">energia</span> <span class="op">&lt;-</span> <span class="va">viviendas_cbba</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">v09_energia</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -163,7 +237,7 @@ sesión de R después de instalar el paquete.</p>
 <div class="section level2">
 <h2 id="join-personas-viviendas-con-duckdb">Join personas-viviendas con DuckDB<a class="anchor" aria-label="anchor" href="#join-personas-viviendas-con-duckdb"></a>
 </h2>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dbi.r-dbi.org" class="external-link">DBI</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Conectar ambas tablas en DuckDB para análisis conjunto</span></span>
@@ -200,7 +274,7 @@ sesión de R después de instalar el paquete.</p>
 <div class="section level2">
 <h2 id="índice-de-hacinamiento">Índice de hacinamiento<a class="anchor" aria-label="anchor" href="#%C3%ADndice-de-hacinamiento"></a>
 </h2>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">viviendas_hab</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_viviendas.html">get_viviendas</a></span><span class="op">(</span></span>
 <span>  departamento <span class="op">=</span> <span class="st">"03"</span>,</span>
 <span>  variables    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"urbrur"</span>, <span class="st">"v13_habitac"</span>, <span class="st">"v14_dormit"</span>, <span class="st">"tot_pers"</span><span class="op">)</span></span>

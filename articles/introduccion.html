@@ -15,7 +15,8 @@
 <link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Introducción a censosbo">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
+<meta property="og:title" content="Introducción a censosbo">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -40,6 +41,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-art-culos" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Artículos</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-art-culos">
 <li><a class="dropdown-item" href="../articles/introduccion.html">Introducción al paquete</a></li>
+    <li><a class="dropdown-item" href="../articles/diccionario.html">Diccionario de datos</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Tutoriales</h6></li>
     <li><a class="dropdown-item" href="../articles/analisis-demografico.html">Análisis demográfico</a></li>
@@ -168,6 +170,23 @@ Bolivia sin necesidad de descargar nada:</p>
 <span><span class="co">#&gt; 309   08       Beni</span></span>
 <span><span class="co">#&gt; 329   09      Pando</span></span></code></pre></div>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Número de municipios por departamento</span></span>
+<span><span class="va">geo_bolivia</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">idep</span>, <span class="va">nombre_dep</span>, name <span class="op">=</span> <span class="st">"municipios"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html" class="external-link">reorder</a></span><span class="op">(</span><span class="va">nombre_dep</span>, <span class="va">municipios</span><span class="op">)</span>, y <span class="op">=</span> <span class="va">municipios</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"#003087"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html" class="external-link">geom_text</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="va">municipios</span><span class="op">)</span>, hjust <span class="op">=</span> <span class="op">-</span><span class="fl">0.2</span>, size <span class="op">=</span> <span class="fl">3.5</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html" class="external-link">ylim</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">95</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
+<span>    title   <span class="op">=</span> <span class="st">"Municipios por departamento — Bolivia"</span>,</span>
+<span>    x       <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>    y       <span class="op">=</span> <span class="st">"Número de municipios"</span>,</span>
+<span>    caption <span class="op">=</span> <span class="st">"Fuente: INE Bolivia, CPV-2024"</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span>base_size <span class="op">=</span> <span class="fl">12</span><span class="op">)</span></span></code></pre></div>
+<p><img src="introduccion_files/figure-html/municipios-por-dep-1.png" class="r-plt" alt="" width="672"></p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Provincias de Santa Cruz</span></span>
 <span><span class="fu"><a href="../reference/provincias.html">provincias</a></span><span class="op">(</span><span class="st">"Santa Cruz"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;     idep nombre_dep iprov            nombre_prov</span></span>
@@ -186,7 +205,7 @@ Bolivia sin necesidad de descargar nada:</p>
 <span><span class="co">#&gt; 301   07 Santa Cruz    13 Manuel María Caballero</span></span>
 <span><span class="co">#&gt; 303   07 Santa Cruz    14           Germán Busch</span></span>
 <span><span class="co">#&gt; 306   07 Santa Cruz    15               Guarayos</span></span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Municipios de la provincia Cercado (Cochabamba)</span></span>
 <span><span class="fu"><a href="../reference/municipios.html">municipios</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"03"</span>, provincia <span class="op">=</span> <span class="st">"01"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;     idep nombre_dep iprov nombre_prov imun nombre_mun</span></span>
@@ -197,14 +216,68 @@ Bolivia sin necesidad de descargar nada:</p>
 </h2>
 <p>El paquete incluye un diccionario completo de las 168 variables del
 CPV-2024:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Buscar variables relacionadas con educación</span></span>
-<span><span class="fu"><a href="../reference/codebook.html">codebook</a></span><span class="op">(</span>buscar <span class="op">=</span> <span class="st">"educaci"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; No se encontraron variables con esos criterios.</span></span>
-<span><span class="co">#&gt; [1] variable        etiqueta        tabla           tipo           </span></span>
-<span><span class="co">#&gt; [5] valores_codigos</span></span>
-<span><span class="co">#&gt; &lt;0 rows&gt; (or 0-length row.names)</span></span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Variables disponibles por tabla del CPV-2024</span></span>
+<span><span class="va">codebook_meta</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">tabla</span>, <span class="va">tipo</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html" class="external-link">reorder</a></span><span class="op">(</span><span class="va">tabla</span>, <span class="va">n</span><span class="op">)</span>, y <span class="op">=</span> <span class="va">n</span>, fill <span class="op">=</span> <span class="va">tipo</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_fill_manual</a></span><span class="op">(</span></span>
+<span>    values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>categorica <span class="op">=</span> <span class="st">"#003087"</span>, numerica <span class="op">=</span> <span class="st">"#F4C430"</span><span class="op">)</span>,</span>
+<span>    labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>categorica <span class="op">=</span> <span class="st">"Categórica"</span>, numerica <span class="op">=</span> <span class="st">"Numérica"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
+<span>    title   <span class="op">=</span> <span class="st">"Variables del CPV-2024 por tabla y tipo"</span>,</span>
+<span>    x       <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>    y       <span class="op">=</span> <span class="st">"Número de variables"</span>,</span>
+<span>    fill    <span class="op">=</span> <span class="st">"Tipo"</span>,</span>
+<span>    caption <span class="op">=</span> <span class="st">"Fuente: INE Bolivia, CPV-2024"</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span>base_size <span class="op">=</span> <span class="fl">12</span><span class="op">)</span></span></code></pre></div>
+<p><img src="introduccion_files/figure-html/codebook-grafico-1.png" class="r-plt" alt="" width="672"></p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Buscar variables relacionadas con educación</span></span>
+<span><span class="fu"><a href="../reference/codebook.html">codebook</a></span><span class="op">(</span>buscar <span class="op">=</span> <span class="st">"educa"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;          variable</span></span>
+<span><span class="co">#&gt; 40    p39_tipoest</span></span>
+<span><span class="co">#&gt; 42     p41a_nivel</span></span>
+<span><span class="co">#&gt; 43     p41b_curso</span></span>
+<span><span class="co">#&gt; 79 p41a_nivel_act</span></span>
+<span><span class="co">#&gt; 81      nivel_edu</span></span>
+<span><span class="co">#&gt; 83         asiste</span></span>
+<span><span class="co">#&gt; 84       gedadedu</span></span>
+<span><span class="co">#&gt;                                                                                                              etiqueta</span></span>
+<span><span class="co">#&gt; 40                                                        39. El centro o establecimiento educativo al que asiste es:</span></span>
+<span><span class="co">#&gt; 42                                    41.A. Cuál es el último curso o año que aprobó y en que nivel educativo (Nivel)</span></span>
+<span><span class="co">#&gt; 43                              41.B. Cuál es el último curso o año que aprobó y en que nivel educativo (Curso o Año)</span></span>
+<span><span class="co">#&gt; 79                                                   Nivel educativo alcanzado: sistema actual (5 o más años de edad)</span></span>
+<span><span class="co">#&gt; 81 Nivel educativo alcanzado agrupado (19 o más años de edad, residentes en el país y que respondieron a la pregunta)</span></span>
+<span><span class="co">#&gt; 83                                      Asistencia educativa (residentes en el país y que respondieron a la pregunta)</span></span>
+<span><span class="co">#&gt; 84                  Grupo de edad según asistencia educativa (residentes en el país y que respondieron a la pregunta)</span></span>
+<span><span class="co">#&gt;      tabla       tipo</span></span>
+<span><span class="co">#&gt; 40 persona categorica</span></span>
+<span><span class="co">#&gt; 42 persona categorica</span></span>
+<span><span class="co">#&gt; 43 persona categorica</span></span>
+<span><span class="co">#&gt; 79 persona categorica</span></span>
+<span><span class="co">#&gt; 81 persona categorica</span></span>
+<span><span class="co">#&gt; 83 persona categorica</span></span>
+<span><span class="co">#&gt; 84 persona categorica</span></span>
+<span><span class="co">#&gt;                                                                                                                                                                                                                                        valores_codigos</span></span>
+<span><span class="co">#&gt; 40                                                                                                                                                                                            1, 2, 9, Público o de convenio, Privado, Sin especificar</span></span>
+<span><span class="co">#&gt; 42 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 99, Ninguno, Curso de alfabetización, Inicial (Pre kínder, kínder), Básico, Intermedio, Medio, Primaria, Secundaria, Técnico Medio, Técnico Superior, Licenciatura, Maestría, Doctorado, Sin especificar</span></span>
+<span><span class="co">#&gt; 43                                                                                                                                                                                                                                  9, Sin especificar</span></span>
+<span><span class="co">#&gt; 79                                     1, 2, 3, 7, 8, 9, 10, 11, 12, 13, 99, Ninguno, Curso de Alfabetización, Inicial (Pre kínder, kínder), Primaria, Secundaria, Técnico Medio, Técnico Superior, Licenciatura, Maestría, Doctorado, Sin especificar</span></span>
+<span><span class="co">#&gt; 81                                                                                                                                                                                                 1, 2, 3, 4, Ninguno, Primaria, Secundaria, Superior</span></span>
+<span><span class="co">#&gt; 83                                                                                                                                                                                                                                        1, 2, Sí, No</span></span>
+<span><span class="co">#&gt; 84                                                                                                                                                                      1, 2, 3, 4, 5, 6, 7, 0 - 3, 4 - 5, 6 - 11, 12 - 17, 18 - 24, 25 - 59, 60 o más</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Ver los códigos de una variable categórica</span></span>
+<span><span class="fu"><a href="../reference/codebook_valores.html">codebook_valores</a></span><span class="op">(</span><span class="st">"p25_sexo"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   codigo etiqueta</span></span>
+<span><span class="co">#&gt; 1      1    Mujer</span></span>
+<span><span class="co">#&gt; 2      2   Hombre</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Ver variables de la tabla de emigración</span></span>
 <span><span class="fu"><a href="../reference/codebook.html">codebook</a></span><span class="op">(</span>tabla <span class="op">=</span> <span class="st">"emigracion"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;             variable                           etiqueta      tabla       tipo</span></span>
@@ -217,12 +290,6 @@ CPV-2024:</p>
 <span><span class="co">#&gt; 160                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         9999, Sin especificar</span></span>
 <span><span class="co">#&gt; 161                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          999, Sin especificar</span></span>
 <span><span class="co">#&gt; 162 4, 8, 12, 16, 20, 24, 28, 31, 32, 36, 40, 44, 48, 50, 51, 52, 56, 60, 64, 68, 70, 72, 76, 84, 90, 92, 96, 100, 104, 108, 112, 116, 120, 124, 132, 136, 140, 144, 148, 152, 156, 158, 162, 166, 170, 174, 175, 178, 180, 184, 188, 191, 192, 196, 203, 204, 208, 212, 214, 218, 222, 226, 231, 232, 233, 234, 238, 239, 242, 246, 248, 250, 254, 258, 260, 262, 266, 268, 270, 275, 276, 288, 292, 296, 300, 304, 308, 312, 316, 320, 324, 328, 332, 336, 340, 344, 348, 352, 356, 360, 364, 368, 372, 376, 380, 384, 388, 392, 398, 400, 404, 408, 410, 414, 417, 418, 422, 426, 428, 430, 434, 438, 440, 442, 446, 450, 454, 458, 462, 466, 470, 474, 478, 480, 484, 492, 496, 498, 499, 500, 504, 508, 512, 516, 520, 524, 528, 531, 533, 534, 535, 540, 548, 554, 558, 562, 566, 570, 574, 578, 580, 583, 584, 585, 586, 591, 598, 600, 604, 608, 612, 616, 620, 624, 626, 630, 634, 638, 642, 643, 646, 652, 654, 659, 660, 662, 663, 666, 670, 674, 678, 682, 686, 688, 689, 690, 694, 702, 703, 704, 705, 706, 710, 716, 724, 728, 729, 732, 740, 744, 748, 752, 756, 760, 762, 764, 768, 772, 776, 780, 784, 788, 792, 795, 796, 798, 800, 804, 807, 818, 826, 831, 832, 833, 834, 840, 850, 854, 858, 860, 862, 876, 882, 887, 894, 987, 988, 991, 992, 993, 994, 995, 996, 997, 998, 999, Afganistán, Albania, Argelia, Samoa Americana, Andorra, Angola, Antigua y Barbuda, Azerbaiyán, Argentina, Australia, Austria, Bahamas, Bahrein, Bangladesh, Armenia, Barbados, Bélgica, Bermuda, Bhután, Bolivia (Estado Plurinacional de, Bosnia y Herzegovina, Botswana, Brasil, Belice, Islas Salomón, Islas Vírgenes Británicas, Brunei Darussalam, Bulgaria, Myanmar, Burundi, Belarús, Camboya, Camerún, Canadá, Cabo Verde, Islas Caimán, República Centroafricana, Sri Lanka, Chad, Chile, China, Taiwán (Provincia de China), Isla Christmas, Islas Cocos (Keeling), Colombia, Comoras, Mayotte, Congo, República Democrática del Congo, Islas Cook, Costa Rica, Croacia, Cuba, Chipre, República Checa, Benin, Dinamarca, Dominica, República Dominicana, Ecuador, El Salvador, Guinea Ecuatorial, Etiopía, Eritrea, Estonia, Islas Feroe, Islas Malvinas (Falkland), Georgia del Sur y las Islas Sandwich del Sur, Fiji, Finlandia, Islas Åland, Francia, Guayana Francesa, Polinesia Francesa, Territorio de las Tierras Australes Francesas, Djibouti, Gabón, Georgia, Gambia, Estado de Palestina, Alemania, Ghana, Gibraltar, Kiribati, Grecia, Groenlandia, Granada, Guadalupe, Guam, Guatemala, Guinea, Guyana, Haití, Santa Sede, Honduras, China, región administrativa especial de Hong Kong, Hungría, Islandia, India, Indonesia, Irán (República Islámica del), Iraq, Irlanda, Israel, Italia, Costa de Marfil, Jamaica, Japón, Kazajstán, Jordania, Kenya, República Popular Democrática de Corea, República de Corea, Kuwait, Kirguistán, República Democrática Popular Lao, Líbano, Lesotho, Letonia, Liberia, Libia, Liechtenstein, Lituania, Luxemburgo, China, región administrativa especial de Macao, Madagascar, Malawi, Malasia, Maldivas, Malí, Malta, Martinica, Mauritania, Mauricio, México, Mónaco, Mongolia, República de Moldova, Montenegro, Montserrat, Marruecos, Mozambique, Omán, Namibia, Nauru, Nepal, Países Bajos, Curazao, Aruba, San Martín (parte Holandesa), Bonaire, San Eustaquio y Saba, Nueva Caledonia, Vanuatu, Nueva Zelandia, Nicaragua, Níger, Nigeria, Niue, Isla Norfolk, Noruega, Islas Marianas Septentrionales, Micronesia (Estados Federados de), Islas Marshall, Palau, Pakistán, Panamá, Papua Nueva Guinea, Paraguay, Perú, Filipinas, Pitcairn, Polonia, Portugal, Guinea-Bissau, Timor-Leste, Puerto Rico, Qatar, Reunión, Rumania, Federación de Rusia, Rwanda, San Barthélemy, Santa Elena, Saint Kitts y Nevis, Anguila, Santa Lucía, San Martín (parte francesa), San Pedro y Miquelón, San Vicente y las Granadinas, San Marino, Santo Tomé y Príncipe, Arabia Saudita, Senegal, Serbia, Kosovo, Seychelles, Sierra Leona, Singapur, Eslovaquia, Viet Nam, Eslovenia, Somalia, Sudáfrica, Zimbabwe, España, Sudán del Sur, Sudán, Sáhara Occidental, Suriname, Islas Svalbard y Jan Mayen, Eswatini, Suecia, Suiza, República Árabe Siria, Tayikistán, Tailandia, Togo, Tokelau, Tonga, Trinidad y Tobago, Emiratos Árabes Unidos, Túnez, Turquía, Turkmenistán, Islas Turcas y Caicos, Tuvalu, Uganda, Ucrania, Macedonia del Norte, Egipto, Reino Unido de Gran Bretaña e Irlanda del Norte, Guernsey, Jersey, Isla de Man, República Unida de Tanzanía, Estados Unidos de América, Islas Vírgenes de los Estados Unidos, Burkina Faso, Uruguay, Uzbekistán, Venezuela (República Bolivariana de), Islas Wallis y Futuna, Samoa, Yemen, Zambia, Caracteres aleatorios o descripción ilegible, Otro municipio, África, América, Asia, Europa, Oceanía, Otro país extranjero, No corresponde a país, No sabe, Sin Especificar</span></span></code></pre></div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Ver los códigos de una variable categórica</span></span>
-<span><span class="fu"><a href="../reference/codebook_valores.html">codebook_valores</a></span><span class="op">(</span><span class="st">"p25_sexo"</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   codigo etiqueta</span></span>
-<span><span class="co">#&gt; 1      1    Mujer</span></span>
-<span><span class="co">#&gt; 2      2   Hombre</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="primera-descarga-de-microdatos">Primera descarga de microdatos<a class="anchor" aria-label="anchor" href="#primera-descarga-de-microdatos"></a>
@@ -230,8 +297,8 @@ CPV-2024:</p>
 <p>Al llamar <code><a href="../reference/get_personas.html">get_personas()</a></code> por primera vez, el paquete
 descarga el archivo Parquet del departamento elegido y lo guarda en
 caché. Las siguientes llamadas ya no descargan nada.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/lab-tecnosocial/censosbo" class="external-link">censosbo</a></span><span class="op">)</span></span>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lab-tecnosocial.github.io/censosbo/">censosbo</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Descargar datos de Santa Cruz (código "07", ~155 MB)</span></span>
 <span><span class="va">personas_sc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_personas.html">get_personas</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Santa Cruz"</span><span class="op">)</span></span>
@@ -253,7 +320,7 @@ pides explícitamente con <code><a href="https://dplyr.tidyverse.org/reference/c
 </h2>
 <p>Todas las funciones <code>get_*()</code> aceptan los mismos
 argumentos geográficos:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Por nombre de departamento</span></span>
 <span><span class="fu"><a href="../reference/get_personas.html">get_personas</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"La Paz"</span><span class="op">)</span></span>
 <span></span>
@@ -274,7 +341,7 @@ argumentos geográficos:</p>
 </h2>
 <p>Por defecto se devuelven todas las variables. Para análisis más
 rápidos, se pueden pedir solo las columnas necesarias:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Solo sexo y edad de Santa Cruz</span></span>
 <span><span class="fu"><a href="../reference/get_personas.html">get_personas</a></span><span class="op">(</span></span>
 <span>  departamento <span class="op">=</span> <span class="st">"07"</span>,</span>
@@ -289,7 +356,7 @@ tabla.</p>
 </h2>
 <p>El argumento <code>as</code> controla el tipo de objeto
 retornado:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># "arrow" (defecto): lazy, no carga en RAM — para datos grandes</span></span>
 <span><span class="va">ds_arrow</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_personas.html">get_personas</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"07"</span>, as <span class="op">=</span> <span class="st">"arrow"</span><span class="op">)</span></span>
 <span></span>
@@ -307,7 +374,7 @@ retornado:</p>
 <p>El formato Arrow es compatible directamente con <code>dplyr</code>.
 Los verbos se traducen a operaciones sobre el archivo Parquet sin cargar
 todo en RAM:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Distribución por sexo en Cochabamba (sin traer todo a RAM)</span></span>
@@ -333,7 +400,7 @@ todo en RAM:</p>
 <h2 id="consultas-sql-con-duckdb">Consultas SQL con DuckDB<a class="anchor" aria-label="anchor" href="#consultas-sql-con-duckdb"></a>
 </h2>
 <p>Para análisis más complejos o JOINs entre tablas:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dbi.r-dbi.org" class="external-link">DBI</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_personas.html">get_personas</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"07"</span>, as <span class="op">=</span> <span class="st">"duckdb"</span><span class="op">)</span></span>
@@ -352,11 +419,11 @@ todo en RAM:</p>
 </h2>
 <p>Los datos descargados se guardan localmente y se reutilizan en
 sesiones futuras:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Ver la ruta del caché local</span></span>
 <span><span class="fu"><a href="../reference/censosbo_cache_dir.html">censosbo_cache_dir</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "/home/runner/.cache/R/censosbo"</span></span></code></pre></div>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Ver qué archivos están descargados y cuánto pesan</span></span>
 <span><span class="fu"><a href="../reference/censosbo_cache_info.html">censosbo_cache_info</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
@@ -383,7 +450,7 @@ avanzado</a></strong>: DuckDB, Arrow, datos más grandes que la RAM.</li>
 <div class="section level2">
 <h2 id="cómo-citar">Cómo citar<a class="anchor" aria-label="anchor" href="#c%C3%B3mo-citar"></a>
 </h2>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"censosbo"</span><span class="op">)</span></span></code></pre></div>
 <blockquote>
 <p>Ojeda Copa, A. (2024). <em>censosbo: Acceso y análisis de los datos

@@ -57,6 +57,27 @@ departamentos()
 
 ``` r
 
+# Número de municipios por departamento
+geo_bolivia |>
+  count(idep, nombre_dep, name = "municipios") |>
+  ggplot(aes(x = reorder(nombre_dep, municipios), y = municipios)) +
+  geom_col(fill = "#003087") +
+  geom_text(aes(label = municipios), hjust = -0.2, size = 3.5) +
+  coord_flip() +
+  ylim(0, 95) +
+  labs(
+    title   = "Municipios por departamento — Bolivia",
+    x       = NULL,
+    y       = "Número de municipios",
+    caption = "Fuente: INE Bolivia, CPV-2024"
+  ) +
+  theme_minimal(base_size = 12)
+```
+
+![](introduccion_files/figure-html/municipios-por-dep-1.png)
+
+``` r
+
 # Provincias de Santa Cruz
 provincias("Santa Cruz")
 #>     idep nombre_dep iprov            nombre_prov
@@ -92,12 +113,73 @@ CPV-2024:
 
 ``` r
 
+# Variables disponibles por tabla del CPV-2024
+codebook_meta |>
+  count(tabla, tipo) |>
+  ggplot(aes(x = reorder(tabla, n), y = n, fill = tipo)) +
+  geom_col() +
+  coord_flip() +
+  scale_fill_manual(
+    values = c(categorica = "#003087", numerica = "#F4C430"),
+    labels = c(categorica = "Categórica", numerica = "Numérica")
+  ) +
+  labs(
+    title   = "Variables del CPV-2024 por tabla y tipo",
+    x       = NULL,
+    y       = "Número de variables",
+    fill    = "Tipo",
+    caption = "Fuente: INE Bolivia, CPV-2024"
+  ) +
+  theme_minimal(base_size = 12)
+```
+
+![](introduccion_files/figure-html/codebook-grafico-1.png)
+
+``` r
+
 # Buscar variables relacionadas con educación
-codebook(buscar = "educaci")
-#> No se encontraron variables con esos criterios.
-#> [1] variable        etiqueta        tabla           tipo           
-#> [5] valores_codigos
-#> <0 rows> (or 0-length row.names)
+codebook(buscar = "educa")
+#>          variable
+#> 40    p39_tipoest
+#> 42     p41a_nivel
+#> 43     p41b_curso
+#> 79 p41a_nivel_act
+#> 81      nivel_edu
+#> 83         asiste
+#> 84       gedadedu
+#>                                                                                                              etiqueta
+#> 40                                                        39. El centro o establecimiento educativo al que asiste es:
+#> 42                                    41.A. Cuál es el último curso o año que aprobó y en que nivel educativo (Nivel)
+#> 43                              41.B. Cuál es el último curso o año que aprobó y en que nivel educativo (Curso o Año)
+#> 79                                                   Nivel educativo alcanzado: sistema actual (5 o más años de edad)
+#> 81 Nivel educativo alcanzado agrupado (19 o más años de edad, residentes en el país y que respondieron a la pregunta)
+#> 83                                      Asistencia educativa (residentes en el país y que respondieron a la pregunta)
+#> 84                  Grupo de edad según asistencia educativa (residentes en el país y que respondieron a la pregunta)
+#>      tabla       tipo
+#> 40 persona categorica
+#> 42 persona categorica
+#> 43 persona categorica
+#> 79 persona categorica
+#> 81 persona categorica
+#> 83 persona categorica
+#> 84 persona categorica
+#>                                                                                                                                                                                                                                        valores_codigos
+#> 40                                                                                                                                                                                            1, 2, 9, Público o de convenio, Privado, Sin especificar
+#> 42 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 99, Ninguno, Curso de alfabetización, Inicial (Pre kínder, kínder), Básico, Intermedio, Medio, Primaria, Secundaria, Técnico Medio, Técnico Superior, Licenciatura, Maestría, Doctorado, Sin especificar
+#> 43                                                                                                                                                                                                                                  9, Sin especificar
+#> 79                                     1, 2, 3, 7, 8, 9, 10, 11, 12, 13, 99, Ninguno, Curso de Alfabetización, Inicial (Pre kínder, kínder), Primaria, Secundaria, Técnico Medio, Técnico Superior, Licenciatura, Maestría, Doctorado, Sin especificar
+#> 81                                                                                                                                                                                                 1, 2, 3, 4, Ninguno, Primaria, Secundaria, Superior
+#> 83                                                                                                                                                                                                                                        1, 2, Sí, No
+#> 84                                                                                                                                                                      1, 2, 3, 4, 5, 6, 7, 0 - 3, 4 - 5, 6 - 11, 12 - 17, 18 - 24, 25 - 59, 60 o más
+```
+
+``` r
+
+# Ver los códigos de una variable categórica
+codebook_valores("p25_sexo")
+#>   codigo etiqueta
+#> 1      1    Mujer
+#> 2      2   Hombre
 ```
 
 ``` r
@@ -114,15 +196,6 @@ codebook(tabla = "emigracion")
 #> 160                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         9999, Sin especificar
 #> 161                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          999, Sin especificar
 #> 162 4, 8, 12, 16, 20, 24, 28, 31, 32, 36, 40, 44, 48, 50, 51, 52, 56, 60, 64, 68, 70, 72, 76, 84, 90, 92, 96, 100, 104, 108, 112, 116, 120, 124, 132, 136, 140, 144, 148, 152, 156, 158, 162, 166, 170, 174, 175, 178, 180, 184, 188, 191, 192, 196, 203, 204, 208, 212, 214, 218, 222, 226, 231, 232, 233, 234, 238, 239, 242, 246, 248, 250, 254, 258, 260, 262, 266, 268, 270, 275, 276, 288, 292, 296, 300, 304, 308, 312, 316, 320, 324, 328, 332, 336, 340, 344, 348, 352, 356, 360, 364, 368, 372, 376, 380, 384, 388, 392, 398, 400, 404, 408, 410, 414, 417, 418, 422, 426, 428, 430, 434, 438, 440, 442, 446, 450, 454, 458, 462, 466, 470, 474, 478, 480, 484, 492, 496, 498, 499, 500, 504, 508, 512, 516, 520, 524, 528, 531, 533, 534, 535, 540, 548, 554, 558, 562, 566, 570, 574, 578, 580, 583, 584, 585, 586, 591, 598, 600, 604, 608, 612, 616, 620, 624, 626, 630, 634, 638, 642, 643, 646, 652, 654, 659, 660, 662, 663, 666, 670, 674, 678, 682, 686, 688, 689, 690, 694, 702, 703, 704, 705, 706, 710, 716, 724, 728, 729, 732, 740, 744, 748, 752, 756, 760, 762, 764, 768, 772, 776, 780, 784, 788, 792, 795, 796, 798, 800, 804, 807, 818, 826, 831, 832, 833, 834, 840, 850, 854, 858, 860, 862, 876, 882, 887, 894, 987, 988, 991, 992, 993, 994, 995, 996, 997, 998, 999, Afganistán, Albania, Argelia, Samoa Americana, Andorra, Angola, Antigua y Barbuda, Azerbaiyán, Argentina, Australia, Austria, Bahamas, Bahrein, Bangladesh, Armenia, Barbados, Bélgica, Bermuda, Bhután, Bolivia (Estado Plurinacional de, Bosnia y Herzegovina, Botswana, Brasil, Belice, Islas Salomón, Islas Vírgenes Británicas, Brunei Darussalam, Bulgaria, Myanmar, Burundi, Belarús, Camboya, Camerún, Canadá, Cabo Verde, Islas Caimán, República Centroafricana, Sri Lanka, Chad, Chile, China, Taiwán (Provincia de China), Isla Christmas, Islas Cocos (Keeling), Colombia, Comoras, Mayotte, Congo, República Democrática del Congo, Islas Cook, Costa Rica, Croacia, Cuba, Chipre, República Checa, Benin, Dinamarca, Dominica, República Dominicana, Ecuador, El Salvador, Guinea Ecuatorial, Etiopía, Eritrea, Estonia, Islas Feroe, Islas Malvinas (Falkland), Georgia del Sur y las Islas Sandwich del Sur, Fiji, Finlandia, Islas Åland, Francia, Guayana Francesa, Polinesia Francesa, Territorio de las Tierras Australes Francesas, Djibouti, Gabón, Georgia, Gambia, Estado de Palestina, Alemania, Ghana, Gibraltar, Kiribati, Grecia, Groenlandia, Granada, Guadalupe, Guam, Guatemala, Guinea, Guyana, Haití, Santa Sede, Honduras, China, región administrativa especial de Hong Kong, Hungría, Islandia, India, Indonesia, Irán (República Islámica del), Iraq, Irlanda, Israel, Italia, Costa de Marfil, Jamaica, Japón, Kazajstán, Jordania, Kenya, República Popular Democrática de Corea, República de Corea, Kuwait, Kirguistán, República Democrática Popular Lao, Líbano, Lesotho, Letonia, Liberia, Libia, Liechtenstein, Lituania, Luxemburgo, China, región administrativa especial de Macao, Madagascar, Malawi, Malasia, Maldivas, Malí, Malta, Martinica, Mauritania, Mauricio, México, Mónaco, Mongolia, República de Moldova, Montenegro, Montserrat, Marruecos, Mozambique, Omán, Namibia, Nauru, Nepal, Países Bajos, Curazao, Aruba, San Martín (parte Holandesa), Bonaire, San Eustaquio y Saba, Nueva Caledonia, Vanuatu, Nueva Zelandia, Nicaragua, Níger, Nigeria, Niue, Isla Norfolk, Noruega, Islas Marianas Septentrionales, Micronesia (Estados Federados de), Islas Marshall, Palau, Pakistán, Panamá, Papua Nueva Guinea, Paraguay, Perú, Filipinas, Pitcairn, Polonia, Portugal, Guinea-Bissau, Timor-Leste, Puerto Rico, Qatar, Reunión, Rumania, Federación de Rusia, Rwanda, San Barthélemy, Santa Elena, Saint Kitts y Nevis, Anguila, Santa Lucía, San Martín (parte francesa), San Pedro y Miquelón, San Vicente y las Granadinas, San Marino, Santo Tomé y Príncipe, Arabia Saudita, Senegal, Serbia, Kosovo, Seychelles, Sierra Leona, Singapur, Eslovaquia, Viet Nam, Eslovenia, Somalia, Sudáfrica, Zimbabwe, España, Sudán del Sur, Sudán, Sáhara Occidental, Suriname, Islas Svalbard y Jan Mayen, Eswatini, Suecia, Suiza, República Árabe Siria, Tayikistán, Tailandia, Togo, Tokelau, Tonga, Trinidad y Tobago, Emiratos Árabes Unidos, Túnez, Turquía, Turkmenistán, Islas Turcas y Caicos, Tuvalu, Uganda, Ucrania, Macedonia del Norte, Egipto, Reino Unido de Gran Bretaña e Irlanda del Norte, Guernsey, Jersey, Isla de Man, República Unida de Tanzanía, Estados Unidos de América, Islas Vírgenes de los Estados Unidos, Burkina Faso, Uruguay, Uzbekistán, Venezuela (República Bolivariana de), Islas Wallis y Futuna, Samoa, Yemen, Zambia, Caracteres aleatorios o descripción ilegible, Otro municipio, África, América, Asia, Europa, Oceanía, Otro país extranjero, No corresponde a país, No sabe, Sin Especificar
-```
-
-``` r
-
-# Ver los códigos de una variable categórica
-codebook_valores("p25_sexo")
-#>   codigo etiqueta
-#> 1      1    Mujer
-#> 2      2   Hombre
 ```
 
 ## Primera descarga de microdatos

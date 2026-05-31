@@ -15,13 +15,23 @@ o una conexión DuckDB.
 - [`get_mortalidad()`](https://lab-tecnosocial.github.io/censosbo/reference/get_mortalidad.md)
   : Accede a los microdatos de mortalidad del CPV-2024
 
-## Geografía de Bolivia
+## Datos incluidos en el paquete
 
-Dataset con la división político-administrativa completa (9
-departamentos, 113 provincias, 343 municipios) y funciones de consulta.
+Datasets pequeños disponibles sin descarga, para exploración y
+prototipado.
 
 - [`geo_bolivia`](https://lab-tecnosocial.github.io/censosbo/reference/geo_bolivia.md)
   : Tabla de geografía de Bolivia
+- [`codebook_meta`](https://lab-tecnosocial.github.io/censosbo/reference/codebook_meta.md)
+  : Diccionario de variables del CPV-2024
+- [`sample_personas`](https://lab-tecnosocial.github.io/censosbo/reference/sample_personas.md)
+  : Datos de muestra del CPV-2024 (100 filas por departamento)
+
+## Geografía de Bolivia
+
+Funciones para consultar la división político-administrativa del país (9
+departamentos, 113 provincias, 343 municipios).
+
 - [`departamentos()`](https://lab-tecnosocial.github.io/censosbo/reference/departamentos.md)
   : Lista los departamentos de Bolivia
 - [`provincias()`](https://lab-tecnosocial.github.io/censosbo/reference/provincias.md)
@@ -31,11 +41,9 @@ departamentos, 113 provincias, 343 municipios) y funciones de consulta.
 
 ## Diccionario de variables
 
-Dataset y funciones para explorar las 168 variables del CPV-2024, con
-etiquetas en español y códigos de categorías.
+Funciones para explorar las 168 variables del CPV-2024, con etiquetas en
+español y códigos de categorías.
 
-- [`codebook_meta`](https://lab-tecnosocial.github.io/censosbo/reference/codebook_meta.md)
-  : Diccionario de variables del CPV-2024
 - [`codebook()`](https://lab-tecnosocial.github.io/censosbo/reference/codebook.md)
   : Consulta el diccionario de variables del CPV-2024
 - [`codebook_valores()`](https://lab-tecnosocial.github.io/censosbo/reference/codebook_valores.md)

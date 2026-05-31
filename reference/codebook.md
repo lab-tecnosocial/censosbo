@@ -39,12 +39,40 @@ codebook("p25_sexo")
 #>   variable              etiqueta   tabla       tipo     valores_codigos
 #> 2 p25_sexo 25. Es mujer u hombre persona categorica 1, 2, Mujer, Hombre
 
-# Variables de educación
-codebook(buscar = "educaci")
-#> No se encontraron variables con esos criterios.
-#> [1] variable        etiqueta        tabla           tipo           
-#> [5] valores_codigos
-#> <0 rows> (or 0-length row.names)
+# Variables relacionadas con educación
+codebook(buscar = "educa")
+#>          variable
+#> 40    p39_tipoest
+#> 42     p41a_nivel
+#> 43     p41b_curso
+#> 79 p41a_nivel_act
+#> 81      nivel_edu
+#> 83         asiste
+#> 84       gedadedu
+#>                                                                                                              etiqueta
+#> 40                                                        39. El centro o establecimiento educativo al que asiste es:
+#> 42                                    41.A. Cuál es el último curso o año que aprobó y en que nivel educativo (Nivel)
+#> 43                              41.B. Cuál es el último curso o año que aprobó y en que nivel educativo (Curso o Año)
+#> 79                                                   Nivel educativo alcanzado: sistema actual (5 o más años de edad)
+#> 81 Nivel educativo alcanzado agrupado (19 o más años de edad, residentes en el país y que respondieron a la pregunta)
+#> 83                                      Asistencia educativa (residentes en el país y que respondieron a la pregunta)
+#> 84                  Grupo de edad según asistencia educativa (residentes en el país y que respondieron a la pregunta)
+#>      tabla       tipo
+#> 40 persona categorica
+#> 42 persona categorica
+#> 43 persona categorica
+#> 79 persona categorica
+#> 81 persona categorica
+#> 83 persona categorica
+#> 84 persona categorica
+#>                                                                                                                                                                                                                                        valores_codigos
+#> 40                                                                                                                                                                                            1, 2, 9, Público o de convenio, Privado, Sin especificar
+#> 42 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 99, Ninguno, Curso de alfabetización, Inicial (Pre kínder, kínder), Básico, Intermedio, Medio, Primaria, Secundaria, Técnico Medio, Técnico Superior, Licenciatura, Maestría, Doctorado, Sin especificar
+#> 43                                                                                                                                                                                                                                  9, Sin especificar
+#> 79                                     1, 2, 3, 7, 8, 9, 10, 11, 12, 13, 99, Ninguno, Curso de Alfabetización, Inicial (Pre kínder, kínder), Primaria, Secundaria, Técnico Medio, Técnico Superior, Licenciatura, Maestría, Doctorado, Sin especificar
+#> 81                                                                                                                                                                                                 1, 2, 3, 4, Ninguno, Primaria, Secundaria, Superior
+#> 83                                                                                                                                                                                                                                        1, 2, Sí, No
+#> 84                                                                                                                                                                      1, 2, 3, 4, 5, 6, 7, 0 - 3, 4 - 5, 6 - 11, 12 - 17, 18 - 24, 25 - 59, 60 o más
 
 # Todas las variables de vivienda
 codebook(tabla = "vivienda")

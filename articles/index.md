@@ -4,6 +4,8 @@
 
 - [Introducción a
   censosbo](https://lab-tecnosocial.github.io/censosbo/articles/introduccion.md):
+- [Diccionario de datos del
+  CPV-2024](https://lab-tecnosocial.github.io/censosbo/articles/diccionario.md):
 
 ### Tutoriales
 

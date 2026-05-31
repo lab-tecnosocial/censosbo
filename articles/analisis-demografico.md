@@ -1,13 +1,110 @@
 # Análisis demográfico con censosbo
 
-> **Nota:** Los bloques de código de este artículo requieren descargar
-> datos del CPV-2024. Ejecuta los ejemplos en tu sesión de R después de
-> instalar el paquete.
-
 ## Introducción
 
 Esta vignette muestra cómo usar `censosbo` para análisis demográficos
 con los datos del CPV-2024 de Bolivia.
+
+## Exploración rápida con datos de muestra
+
+El paquete incluye `sample_personas`: 100 filas por cada uno de los 9
+departamentos (900 registros), disponibles sin descargar nada. Úsalos
+para prototipar código antes de trabajar con los millones de registros
+reales.
+
+``` r
+
+library(censosbo)
+library(dplyr)
+#> 
+#> Attaching package: 'dplyr'
+#> The following objects are masked from 'package:stats':
+#> 
+#>     filter, lag
+#> The following objects are masked from 'package:base':
+#> 
+#>     intersect, setdiff, setequal, union
+library(ggplot2)
+
+# Pirámide de edades por grupo y sexo (datos de muestra)
+sample_personas |>
+  mutate(
+    grupo = factor(
+      case_when(g_edad == 1 ~ "0–14", g_edad == 2 ~ "15–64", g_edad == 3 ~ "65+"),
+      levels = c("0–14", "15–64", "65+")
+    ),
+    sexo = ifelse(p25_sexo == 1, "Mujer", "Hombre")
+  ) |>
+  filter(!is.na(grupo), !is.na(sexo)) |>
+  count(grupo, sexo) |>
+  mutate(n_pir = ifelse(sexo == "Hombre", -n, n)) |>
+  ggplot(aes(x = grupo, y = n_pir, fill = sexo)) +
+  geom_col(width = 0.7) +
+  coord_flip() +
+  scale_fill_manual(values = c("Hombre" = "#003087", "Mujer" = "#F4C430")) +
+  scale_y_continuous(labels = abs) +
+  labs(
+    title    = "Distribución por grupo de edad y sexo (muestra CPV-2024)",
+    subtitle = "100 personas por departamento — 9 departamentos",
+    x = "Grupo de edad", y = "Número de personas", fill = "Sexo",
+    caption  = "Fuente: INE Bolivia, CPV-2024 (muestra de prueba)"
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(legend.position = "bottom")
+```
+
+![](analisis-demografico_files/figure-html/muestra-piramide-1.png)
+
+``` r
+
+# Nivel educativo por departamento (datos de muestra)
+sample_personas |>
+  mutate(
+    nivel = factor(
+      case_when(
+        nivel_edu == 1 ~ "Ninguno",
+        nivel_edu == 2 ~ "Primaria",
+        nivel_edu == 3 ~ "Secundaria",
+        nivel_edu == 4 ~ "Superior",
+        TRUE ~ NA_character_
+      ),
+      levels = c("Ninguno", "Primaria", "Secundaria", "Superior")
+    ),
+    dep = case_when(
+      idep == "01" ~ "Chuquisaca", idep == "02" ~ "La Paz",
+      idep == "03" ~ "Cochabamba", idep == "04" ~ "Oruro",
+      idep == "05" ~ "Potosí",    idep == "06" ~ "Tarija",
+      idep == "07" ~ "Santa Cruz",idep == "08" ~ "Beni",
+      idep == "09" ~ "Pando"
+    )
+  ) |>
+  filter(!is.na(nivel)) |>
+  count(dep, nivel) |>
+  group_by(dep) |>
+  mutate(pct = n / sum(n) * 100) |>
+  ggplot(aes(x = dep, y = pct, fill = nivel)) +
+  geom_col() +
+  scale_fill_manual(
+    values = c(Ninguno="#d73027", Primaria="#fc8d59",
+               Secundaria="#91bfdb", Superior="#003087")
+  ) +
+  coord_flip() +
+  labs(
+    title   = "Nivel educativo por departamento (muestra CPV-2024)",
+    x = NULL, y = "Porcentaje (%)", fill = "Nivel",
+    caption = "Fuente: INE Bolivia, CPV-2024 (muestra de prueba)"
+  ) +
+  theme_minimal(base_size = 11) +
+  theme(legend.position = "bottom")
+```
+
+![](analisis-demografico_files/figure-html/muestra-edu-1.png)
+
+------------------------------------------------------------------------
+
+> Los siguientes ejemplos utilizan los datos completos y **requieren
+> descargar archivos Parquet** (~50–160 MB por departamento). Ejecuta el
+> código en tu sesión de R después de instalar el paquete.
 
 ## Estructura de edades y pirámide poblacional
 
