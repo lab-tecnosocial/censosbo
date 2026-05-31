@@ -17,7 +17,72 @@ knitr::opts_chunk$set(
 )
 ```
 
-> **Nota:** Los bloques de código de este artículo requieren descargar datos del CPV-2024. Ejecuta los ejemplos en tu sesión de R después de instalar el paquete.
+## Exploración rápida con datos de muestra
+
+Antes de descargar los datos completos, puedes explorar el perfil demográfico de los hogares con `sample_personas`:
+
+```{r muestra-hogar, eval=TRUE, fig.width=7, fig.height=4}
+library(censosbo)
+library(dplyr)
+library(ggplot2)
+
+# Composición del hogar por relación de parentesco (datos de muestra)
+sample_personas |>
+  mutate(
+    parentes = case_when(
+      p24_parentes == 1 ~ "Jefe/a",
+      p24_parentes == 2 ~ "Cónyuge",
+      p24_parentes == 3 ~ "Hijo/a",
+      p24_parentes %in% c(4,5,6) ~ "Otros parientes directos",
+      p24_parentes %in% c(7:12) ~ "Otros parientes",
+      TRUE ~ "Sin parentesco"
+    )
+  ) |>
+  count(parentes, sort = TRUE) |>
+  ggplot(aes(x = reorder(parentes, n), y = n)) +
+  geom_col(fill = "#003087") +
+  geom_text(aes(label = n), hjust = -0.2, size = 3.5) +
+  coord_flip() +
+  ylim(0, 450) +
+  labs(
+    title   = "Composición del hogar por parentesco (muestra CPV-2024)",
+    x = NULL, y = "Número de personas",
+    caption = "Fuente: INE Bolivia, CPV-2024 (muestra de prueba)"
+  ) +
+  theme_minimal(base_size = 12)
+```
+
+```{r muestra-alfabetismo, eval=TRUE, fig.width=7, fig.height=3.5}
+# Tasa de alfabetismo por grupo de edad (datos de muestra)
+sample_personas |>
+  filter(p26_edad >= 15) |>
+  mutate(
+    lee    = ifelse(p40_lee == 1, "Sí sabe leer", "No sabe leer"),
+    g_edad = case_when(
+      p26_edad < 30 ~ "15–29",
+      p26_edad < 50 ~ "30–49",
+      TRUE          ~ "50 y más"
+    )
+  ) |>
+  filter(!is.na(lee)) |>
+  count(g_edad, lee) |>
+  group_by(g_edad) |>
+  mutate(pct = n / sum(n) * 100) |>
+  ggplot(aes(x = g_edad, y = pct, fill = lee)) +
+  geom_col() +
+  scale_fill_manual(values = c("Sí sabe leer" = "#003087", "No sabe leer" = "#d73027")) +
+  labs(
+    title   = "Alfabetismo (15+ años) por grupo de edad — muestra CPV-2024",
+    x = "Grupo de edad", y = "Porcentaje (%)", fill = NULL,
+    caption = "Fuente: INE Bolivia, CPV-2024 (muestra de prueba)"
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(legend.position = "bottom")
+```
+
+---
+
+> Los siguientes ejemplos requieren **descargar datos de vivienda** (~100 MB). Ejecuta el código en tu sesión de R después de instalar el paquete.
 
 ## Condiciones habitacionales
 

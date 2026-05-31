@@ -17,14 +17,98 @@ knitr::opts_chunk$set(
 )
 ```
 
-> **Nota:** Los bloques de código de este artículo requieren descargar datos del CPV-2024. Ejecuta los ejemplos en tu sesión de R después de instalar el paquete.
-
 ## ¿Por qué usar Arrow o DuckDB?
 
 Con 11 millones de personas, los datos del CPV-2024 pueden ser difíciles de manejar en RAM. `censosbo` resuelve esto con:
 
 - **Arrow**: permite aplicar filtros y agregaciones _antes_ de cargar datos en RAM. Compatible con `dplyr`.
 - **DuckDB**: motor SQL columnar en memoria, extremadamente rápido para datos analíticos. Ideal para queries complejas.
+
+## Demostración con datos de muestra
+
+Los siguientes ejemplos funcionan directamente con `sample_personas` (incluido en el paquete) y muestran cómo se verían los resultados con los datos reales.
+
+```{r demo-dplyr, eval=TRUE}
+library(censosbo)
+library(dplyr)
+
+# Arrow Dataset a partir de los datos de muestra
+# (En producción: ds <- get_personas(departamento = "07"))
+ds <- arrow::as_arrow_table(sample_personas)
+
+# Pipeline dplyr lazy: filtra antes de traer a RAM
+resultado <- ds |>
+  filter(p26_edad >= 15) |>
+  group_by(idep, p25_sexo) |>
+  summarise(
+    personas    = n(),
+    edad_prom   = mean(p26_edad, na.rm = TRUE),
+    anios_edu   = mean(aestudio, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  collect() |>
+  mutate(sexo = ifelse(p25_sexo == 1, "Mujer", "Hombre"))
+
+head(resultado, 10)
+```
+
+```{r demo-duckdb, eval=TRUE}
+# DuckDB: SQL directamente sobre los datos
+library(DBI)
+
+con <- DBI::dbConnect(duckdb::duckdb(), dbdir = ":memory:")
+DBI::dbWriteTable(con, "personas", sample_personas)
+
+# Window function: ranking de departamentos por años de estudio promedio
+DBI::dbGetQuery(con, "
+  SELECT
+    idep,
+    ROUND(AVG(aestudio), 1) AS anios_estudio_prom,
+    COUNT(*) AS personas_15mas,
+    RANK() OVER (ORDER BY AVG(aestudio) DESC) AS ranking
+  FROM personas
+  WHERE p26_edad >= 15 AND aestudio IS NOT NULL
+  GROUP BY idep
+  ORDER BY ranking
+")
+```
+
+```{r demo-duckdb-plot, eval=TRUE, fig.width=7, fig.height=4}
+library(ggplot2)
+
+# Visualizar el resultado anterior
+res <- DBI::dbGetQuery(con, "
+  SELECT idep,
+    AVG(aestudio) AS anios_edu,
+    SUM(CASE WHEN p25_sexo = 1 THEN 1 ELSE 0 END) * 100.0 / COUNT(*) AS pct_mujeres
+  FROM personas WHERE p26_edad >= 15 AND aestudio IS NOT NULL
+  GROUP BY idep
+")
+DBI::dbDisconnect(con)
+
+dep_labels <- c("01"="Chuquisaca","02"="La Paz","03"="Cochabamba",
+                "04"="Oruro","05"="Potosí","06"="Tarija",
+                "07"="Santa Cruz","08"="Beni","09"="Pando")
+
+res |>
+  mutate(departamento = dep_labels[idep]) |>
+  ggplot(aes(x = pct_mujeres, y = anios_edu, label = departamento)) +
+  geom_point(color = "#003087", size = 4) +
+  geom_text(vjust = -0.8, size = 3, color = "#333333") +
+  geom_hline(yintercept = mean(res$anios_edu), linetype = "dashed", color = "gray60") +
+  expand_limits(y = c(min(res$anios_edu) - 1, max(res$anios_edu) + 2)) +
+  labs(
+    title    = "Años de estudio promedio vs % mujeres (15+ años)",
+    subtitle = "Datos de muestra — 100 personas por departamento",
+    x = "% de mujeres en la muestra", y = "Años de estudio promedio",
+    caption = "Fuente: INE Bolivia, CPV-2024 (muestra de prueba)"
+  ) +
+  theme_minimal(base_size = 12)
+```
+
+---
+
+> Los siguientes ejemplos requieren **descargar los datos completos** (~50–500 MB). Ejecuta el código en tu sesión de R después de instalar el paquete.
 
 ## Arrow: análisis lazy con dplyr
 

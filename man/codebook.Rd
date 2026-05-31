@@ -27,8 +27,8 @@ las etiquetas.
 # Ver etiqueta de una variable específica
 codebook("p25_sexo")
 
-# Variables de educación
-codebook(buscar = "educaci")
+# Variables relacionadas con educación
+codebook(buscar = "educa")
 
 # Todas las variables de vivienda
 codebook(tabla = "vivienda")

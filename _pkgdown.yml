@@ -43,6 +43,8 @@ navbar:
       menu:
       - text: "Introducción al paquete"
         href: articles/introduccion.html
+      - text: "Diccionario de datos"
+        href: articles/diccionario.html
       - text: "---"
       - text: "Tutoriales"
       - text: "Análisis demográfico"
@@ -68,21 +70,26 @@ reference:
       - get_viviendas
       - get_emigracion
       - get_mortalidad
-  - title: "Geografía de Bolivia"
+  - title: "Datos incluidos en el paquete"
     desc: >
-      Dataset con la división político-administrativa completa (9 departamentos,
-      113 provincias, 343 municipios) y funciones de consulta.
+      Datasets pequeños disponibles sin descarga, para exploración y prototipado.
     contents:
       - geo_bolivia
+      - codebook_meta
+      - sample_personas
+  - title: "Geografía de Bolivia"
+    desc: >
+      Funciones para consultar la división político-administrativa del país
+      (9 departamentos, 113 provincias, 343 municipios).
+    contents:
       - departamentos
       - provincias
       - municipios
   - title: "Diccionario de variables"
     desc: >
-      Dataset y funciones para explorar las 168 variables del CPV-2024,
+      Funciones para explorar las 168 variables del CPV-2024,
       con etiquetas en español y códigos de categorías.
     contents:
-      - codebook_meta
       - codebook
       - codebook_valores
   - title: "Gestión de caché"
@@ -102,6 +109,7 @@ articles:
     navbar: ~
     contents:
       - introduccion
+      - diccionario
   - title: "Tutoriales"
     navbar: Tutoriales
     contents:

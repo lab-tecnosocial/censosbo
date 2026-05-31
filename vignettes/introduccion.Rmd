@@ -9,11 +9,15 @@ vignette: >
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment  = "#>",
-  eval     = TRUE
+  collapse  = TRUE,
+  comment   = "#>",
+  eval      = TRUE,
+  fig.width = 7,
+  fig.height= 4.5
 )
 library(censosbo)
+library(ggplot2)
+library(dplyr)
 ```
 
 ## ¿Qué es censosbo?
@@ -51,6 +55,24 @@ El paquete incluye la división político-administrativa completa de Bolivia sin
 departamentos()
 ```
 
+```{r municipios-por-dep}
+# Número de municipios por departamento
+geo_bolivia |>
+  count(idep, nombre_dep, name = "municipios") |>
+  ggplot(aes(x = reorder(nombre_dep, municipios), y = municipios)) +
+  geom_col(fill = "#003087") +
+  geom_text(aes(label = municipios), hjust = -0.2, size = 3.5) +
+  coord_flip() +
+  ylim(0, 95) +
+  labs(
+    title   = "Municipios por departamento — Bolivia",
+    x       = NULL,
+    y       = "Número de municipios",
+    caption = "Fuente: INE Bolivia, CPV-2024"
+  ) +
+  theme_minimal(base_size = 12)
+```
+
 ```{r provincias}
 # Provincias de Santa Cruz
 provincias("Santa Cruz")
@@ -65,19 +87,40 @@ municipios(departamento = "03", provincia = "01")
 
 El paquete incluye un diccionario completo de las 168 variables del CPV-2024:
 
-```{r codebook-buscar}
-# Buscar variables relacionadas con educación
-codebook(buscar = "educaci")
+```{r codebook-grafico}
+# Variables disponibles por tabla del CPV-2024
+codebook_meta |>
+  count(tabla, tipo) |>
+  ggplot(aes(x = reorder(tabla, n), y = n, fill = tipo)) +
+  geom_col() +
+  coord_flip() +
+  scale_fill_manual(
+    values = c(categorica = "#003087", numerica = "#F4C430"),
+    labels = c(categorica = "Categórica", numerica = "Numérica")
+  ) +
+  labs(
+    title   = "Variables del CPV-2024 por tabla y tipo",
+    x       = NULL,
+    y       = "Número de variables",
+    fill    = "Tipo",
+    caption = "Fuente: INE Bolivia, CPV-2024"
+  ) +
+  theme_minimal(base_size = 12)
 ```
 
-```{r codebook-tabla}
-# Ver variables de la tabla de emigración
-codebook(tabla = "emigracion")
+```{r codebook-buscar}
+# Buscar variables relacionadas con educación
+codebook(buscar = "educa")
 ```
 
 ```{r codebook-valores}
 # Ver los códigos de una variable categórica
 codebook_valores("p25_sexo")
+```
+
+```{r codebook-tabla}
+# Ver variables de la tabla de emigración
+codebook(tabla = "emigracion")
 ```
 
 ## Primera descarga de microdatos

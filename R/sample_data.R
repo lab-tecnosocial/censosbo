@@ -1,0 +1,32 @@
+#' Datos de muestra del CPV-2024 (100 filas por departamento)
+#'
+#' Subconjunto de los microdatos de personas del Censo de Población y Vivienda
+#' 2024, extraído de los fixtures de prueba: 100 filas de cada uno de los 9
+#' departamentos (900 registros en total). Incluye las variables más utilizadas
+#' para análisis demográficos.
+#'
+#' Este dataset está diseñado para ejemplos y prototipado rápido sin necesidad
+#' de descargar los datos completos.
+#'
+#' @format Un data.frame con 900 filas y 16 columnas:
+#' \describe{
+#'   \item{idep}{Código de departamento (01-09)}
+#'   \item{iprov}{Código de provincia}
+#'   \item{imun}{Código de municipio}
+#'   \item{i00}{Identificador de hogar}
+#'   \item{p24_parentes}{Parentesco con jefa/jefe de hogar (1-16)}
+#'   \item{p25_sexo}{Sexo: 1 = Mujer, 2 = Hombre}
+#'   \item{p26_edad}{Edad en años cumplidos}
+#'   \item{g_edad}{Grupo de edad: 1 = 0-14, 2 = 15-64, 3 = 65+}
+#'   \item{p38_asiste}{Asistencia a establecimiento educativo}
+#'   \item{p40_lee}{Sabe leer y escribir: 1 = Sí, 2 = No}
+#'   \item{nivel_edu}{Nivel educativo: 1 = Ninguno, 2 = Primaria, 3 = Secundaria, 4 = Superior}
+#'   \item{aestudio}{Años de estudio aprobados}
+#'   \item{p32_pueblo_per}{Se auto-identifica con un pueblo indígena: 1 = Sí, 2 = No, 3 = NS/NR}
+#'   \item{p32_pueblos}{Nombre del pueblo indígena (si aplica)}
+#'   \item{p53_ecivil}{Estado civil}
+#'   \item{p28_cn}{Nacimiento inscrito en el registro civil boliviano}
+#' }
+#' @source INE Bolivia, CPV-2024. Microdatos de personas (muestra de prueba).
+#' @seealso [get_personas()] para acceder a los datos completos.
+"sample_personas"

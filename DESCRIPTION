@@ -16,7 +16,7 @@ Encoding: UTF-8
 Language: es
 LazyData: true
 LazyDataCompression: xz
-URL: https://github.com/lab-tecnosocial/censosbo
+URL: https://lab-tecnosocial.github.io/censosbo/, https://github.com/lab-tecnosocial/censosbo
 BugReports: https://github.com/lab-tecnosocial/censosbo/issues
 Depends:
     R (>= 4.1.0)
@@ -33,6 +33,7 @@ Imports:
 Suggests:
     tidyr,
     ggplot2,
+    DT,
     piggyback,
     testthat (>= 3.0.0),
     knitr,
