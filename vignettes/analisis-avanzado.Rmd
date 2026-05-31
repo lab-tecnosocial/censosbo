@@ -15,8 +15,9 @@ knitr::opts_chunk$set(
   fig.width = 7,
   fig.height= 5
 )
-library(censosbo)
 ```
+
+> **Nota:** Los bloques de código de este artículo requieren descargar datos del CPV-2024. Ejecuta los ejemplos en tu sesión de R después de instalar el paquete.
 
 ## ¿Por qué usar Arrow o DuckDB?
 

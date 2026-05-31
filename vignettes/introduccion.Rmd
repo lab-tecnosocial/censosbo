@@ -11,7 +11,7 @@ vignette: >
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment  = "#>",
-  eval     = FALSE
+  eval     = TRUE
 )
 library(censosbo)
 ```
@@ -20,18 +20,18 @@ library(censosbo)
 
 `censosbo` es un paquete de R que facilita el acceso a los microdatos del **Censo de Población y Vivienda 2024 (CPV-2024)** de Bolivia, publicados por el Instituto Nacional de Estadística (INE).
 
-Los datos originales en CSV pesan más de 3 GB, por lo que el paquete los distribuye como archivos **Parquet** comprimidos (mucho más livianos y rápidos), descargados **bajo demanda** y guardados en un caché local.
+Los datos originales en CSV pesan más de 3 GB, por lo que el paquete los distribuye como archivos **Parquet** comprimidos (mucho más livianos y rápidos), que se descargan **bajo demanda** y se guardan en un caché local. No se necesita descargar todo: se puede pedir solo el departamento de interés.
 
 ## Instalación
 
-```{r install}
+```{r install, eval=FALSE}
 # Instalar desde GitHub
 remotes::install_github("lab-tecnosocial/censosbo")
 ```
 
 ## Tablas disponibles
 
-El CPV-2024 incluye cuatro tablas:
+El CPV-2024 incluye cuatro tablas accesibles con `censosbo`:
 
 | Función | Tabla | Filas | Variables | Descripción |
 |---------|-------|------:|----------:|-------------|
@@ -40,143 +40,198 @@ El CPV-2024 incluye cuatro tablas:
 | `get_emigracion()` | Emigración | ~501K | 8 | Emigrantes al exterior (últimos 5 años) |
 | `get_mortalidad()` | Mortalidad | ~383K | 10 | Fallecimientos en el hogar (últimos 12 meses) |
 
-Las tablas se pueden unir usando la clave `idep + iprov + imun + i00` (identificador de hogar).
+Las tablas se pueden unir usando la clave compuesta `idep + iprov + imun + i00` (identificador de hogar).
 
-## Primera descarga
+## Geografía: departamentos, provincias y municipios
 
-Al llamar `get_personas()` por primera vez, el paquete descargará el archivo Parquet correspondiente y lo guardará en caché local. Las siguientes llamadas usarán el caché sin descargar de nuevo.
+El paquete incluye la división político-administrativa completa de Bolivia sin necesidad de descargar nada:
 
-```{r primera-descarga}
-library(censosbo)
-
-# Descargar datos de un departamento (recomendado para empezar)
-# Santa Cruz = código "07"
-personas_sc <- get_personas(departamento = "Santa Cruz")
-personas_sc
-```
-
-El argumento `departamento` acepta el código numérico (`"07"`) o el nombre (`"Santa Cruz"`).
-
-```{r ver-departamentos}
-# Ver todos los departamentos con sus códigos
+```{r departamentos}
+# Los 9 departamentos con sus códigos
 departamentos()
 ```
+
+```{r provincias}
+# Provincias de Santa Cruz
+provincias("Santa Cruz")
+```
+
+```{r municipios}
+# Municipios de la provincia Cercado (Cochabamba)
+municipios(departamento = "03", provincia = "01")
+```
+
+## Diccionario de variables
+
+El paquete incluye un diccionario completo de las 168 variables del CPV-2024:
+
+```{r codebook-buscar}
+# Buscar variables relacionadas con educación
+codebook(buscar = "educaci")
+```
+
+```{r codebook-tabla}
+# Ver variables de la tabla de emigración
+codebook(tabla = "emigracion")
+```
+
+```{r codebook-valores}
+# Ver los códigos de una variable categórica
+codebook_valores("p25_sexo")
+```
+
+## Primera descarga de microdatos
+
+Al llamar `get_personas()` por primera vez, el paquete descarga el archivo Parquet del departamento elegido y lo guarda en caché. Las siguientes llamadas ya no descargan nada.
+
+```{r primera-descarga, eval=FALSE}
+library(censosbo)
+
+# Descargar datos de Santa Cruz (código "07", ~155 MB)
+personas_sc <- get_personas(departamento = "Santa Cruz")
+personas_sc
+#> FileSystemDataset with 2 Parquet files
+#> idep: string
+#> iprov: string
+#> imun: string
+#> i00: string
+#> p01_nacion: int32
+#> ...
+#> 118 columns
+```
+
+El resultado por defecto es un **Arrow Dataset** — los datos quedan en disco, no en RAM. Solo se cargan a memoria cuando los pides explícitamente con `collect()`.
 
 ## Filtros geográficos
 
 Todas las funciones `get_*()` aceptan los mismos argumentos geográficos:
 
-```{r filtros-geo}
-# Por departamento
-get_personas(departamento = "02")          # La Paz
-get_personas(departamento = "La Paz")      # equivalente
+```{r filtros-geo, eval=FALSE}
+# Por nombre de departamento
+get_personas(departamento = "La Paz")
 
-# Por varios departamentos a la vez
-get_personas(departamento = c("02", "03")) # La Paz y Cochabamba
+# Por código de dos dígitos (equivalente al anterior)
+get_personas(departamento = "02")
 
-# Por provincia (código de provincia)
+# Varios departamentos a la vez
+get_personas(departamento = c("La Paz", "Cochabamba", "Santa Cruz"))
+
+# Por provincia (código dentro del departamento)
 get_personas(departamento = "07", provincia = "01")
 
-# Ver provincias de un departamento
-provincias("Santa Cruz")
-
-# Ver municipios
-municipios(departamento = "07")
+# Por municipio
+get_personas(departamento = "07", municipio = "01")
 ```
 
 ## Selección de variables
 
-Por defecto se devuelven todas las variables. Para análisis más rápidos, se pueden seleccionar columnas específicas:
+Por defecto se devuelven todas las variables. Para análisis más rápidos, se pueden pedir solo las columnas necesarias:
 
-```{r seleccion-vars}
+```{r seleccion-vars, eval=FALSE}
 # Solo sexo y edad de Santa Cruz
 get_personas(
   departamento = "07",
   variables    = c("p25_sexo", "p26_edad")
 )
+#> Las columnas idep, iprov, imun, i00 siempre se incluyen
 ```
 
-Las columnas geográficas (`idep`, `iprov`, `imun`, `i00`) siempre se incluyen.
+Usa `codebook()` para ver qué variables existen en cada tabla.
 
 ## Formatos de retorno
 
 El argumento `as` controla el tipo de objeto retornado:
 
-```{r formatos}
-# Arrow Dataset (por defecto): lazy, no carga en RAM
+```{r formatos, eval=FALSE}
+# "arrow" (defecto): lazy, no carga en RAM — para datos grandes
 ds_arrow <- get_personas(departamento = "07", as = "arrow")
 
-# data.frame: trae los datos a memoria RAM
+# "tibble": trae los datos a memoria RAM — para conjuntos pequeños
 df <- get_personas(departamento = "07", as = "tibble")
 
-# Conexión DuckDB: para consultas SQL
+# "duckdb": conexión DBI para SQL — para queries complejas o JOINs
 con <- get_personas(departamento = "07", as = "duckdb")
-DBI::dbGetQuery(con, "SELECT COUNT(*) FROM personas")
+DBI::dbGetQuery(con, "SELECT COUNT(*) AS total FROM personas")
 DBI::dbDisconnect(con)
 ```
 
 ## Uso con dplyr
 
-El formato Arrow es compatible directamente con `dplyr`:
+El formato Arrow es compatible directamente con `dplyr`. Los verbos se traducen a operaciones sobre el archivo Parquet sin cargar todo en RAM:
 
-```{r dplyr}
+```{r dplyr, eval=FALSE}
 library(dplyr)
 
-# Contar personas por sexo en Cochabamba (sin traer todos los datos a RAM)
+# Distribución por sexo en Cochabamba (sin traer todo a RAM)
 get_personas(departamento = "03") |>
   count(p25_sexo) |>
-  collect()  # collect() materializa el resultado
+  collect()
+#> # A tibble: 2 × 2
+#>   p25_sexo       n
+#>   <int>      <int>
+#> 1        1  831062
+#> 2        2  855433
 
-# Edad promedio en Oruro
+# Edad promedio por área urbano/rural en Oruro
 get_personas(
   departamento = "04",
-  variables    = c("p26_edad")
+  variables    = c("p26_edad", "urbrur")
 ) |>
-  summarise(edad_promedio = mean(p26_edad, na.rm = TRUE)) |>
+  group_by(urbrur) |>
+  summarise(edad_prom = mean(p26_edad, na.rm = TRUE)) |>
   collect()
 ```
 
-## Diccionario de variables
+## Consultas SQL con DuckDB
 
-Para explorar qué significa cada variable:
+Para análisis más complejos o JOINs entre tablas:
 
-```{r codebook}
-# Ver descripción de una variable
-codebook("p25_sexo")
+```{r duckdb, eval=FALSE}
+library(DBI)
 
-# Buscar variables relacionadas con educación
-codebook(buscar = "educaci")
+con <- get_personas(departamento = "07", as = "duckdb")
 
-# Ver todas las variables de vivienda
-codebook(tabla = "vivienda")
+DBI::dbGetQuery(con, "
+  SELECT p25_sexo, COUNT(*) AS total, ROUND(AVG(p26_edad), 1) AS edad_prom
+  FROM personas
+  GROUP BY p25_sexo
+  ORDER BY p25_sexo
+")
 
-# Ver los códigos de una variable categórica
-codebook_valores("p25_sexo")
+DBI::dbDisconnect(con)
 ```
 
 ## Gestión del caché
 
-Los datos descargados se guardan localmente para evitar descargas repetidas:
+Los datos descargados se guardan localmente y se reutilizan en sesiones futuras:
 
-```{r cache}
-# Ver dónde está el caché
+```{r cache-dir}
+# Ver la ruta del caché local
 censosbo_cache_dir()
+```
 
-# Ver qué archivos están descargados
+```{r cache-info, eval=FALSE}
+# Ver qué archivos están descargados y cuánto pesan
 censosbo_cache_info()
 
 # Limpiar el caché si necesitas liberar espacio
 censosbo_cache_clear()
 ```
 
+## Siguientes pasos
+
+- **[Análisis demográfico](analisis-demografico.html)**: pirámide de edades, nivel educativo, pueblos indígenas.
+- **[Análisis de vivienda](analisis-vivienda.html)**: agua, energía, hacinamiento, joins personas-viviendas.
+- **[Análisis avanzado](analisis-avanzado.html)**: DuckDB, Arrow, datos más grandes que la RAM.
+
 ## Cómo citar
 
-Si usas `censosbo` en tu trabajo, por favor cita:
-
-```{r citar}
+```{r citar, eval=FALSE}
 citation("censosbo")
 ```
 
-También cita la fuente original de los datos:
+> Ojeda Copa, A. (2024). *censosbo: Acceso y análisis de los datos del Censo de Bolivia 2024*. R package version 0.1.0. <https://github.com/lab-tecnosocial/censosbo>
 
-> Instituto Nacional de Estadística (INE). (2024). *Censo de Población y Vivienda 2024 — Base de datos de microdatos*. Bolivia. https://anda.ine.gob.bo/index.php/catalog/132
+También cita la fuente original:
+
+> Instituto Nacional de Estadística (INE). (2024). *Censo de Población y Vivienda 2024 — Base de datos de microdatos*. Bolivia. <https://anda.ine.gob.bo/index.php/catalog/132>

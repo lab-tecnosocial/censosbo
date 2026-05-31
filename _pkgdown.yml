@@ -1,5 +1,12 @@
 url: https://lab-tecnosocial.github.io/censosbo/
 
+repo:
+  url:
+    home: https://github.com/lab-tecnosocial/censosbo
+    source: https://github.com/lab-tecnosocial/censosbo/blob/main/
+    issue: https://github.com/lab-tecnosocial/censosbo/issues/
+    user: https://github.com/
+
 template:
   bootstrap: 5
   bslib:
@@ -7,6 +14,7 @@ template:
     link-color: "#003087"
     navbar-bg: "#003087"
     footer-bg: "#003087"
+    heading-font: "Source Sans Pro"
 
 home:
   title: "censosbo: Datos del Censo Bolivia 2024"
@@ -14,18 +22,35 @@ home:
     Acceso programático a los microdatos del Censo de Población y Vivienda
     2024 de Bolivia (CPV-2024). Descarga bajo demanda, caché local,
     compatible con dplyr, Arrow y DuckDB.
+  sidebar:
+    structure: [links, license, community, citation, authors, dev]
   links:
   - text: "Fuente de datos: INE Bolivia"
     href: https://anda.ine.gob.bo/index.php/catalog/132
+  - text: "Reportar un problema"
+    href: https://github.com/lab-tecnosocial/censosbo/issues
 
 navbar:
   structure:
     left:  [intro, reference, articles, news]
-    right: [github]
+    right: [search, github]
   components:
     intro:
       text: Empezar
       href: articles/introduccion.html
+    articles:
+      text: Artículos
+      menu:
+      - text: "Introducción al paquete"
+        href: articles/introduccion.html
+      - text: "---"
+      - text: "Tutoriales"
+      - text: "Análisis demográfico"
+        href: articles/analisis-demografico.html
+      - text: "Análisis de condiciones de vivienda"
+        href: articles/analisis-vivienda.html
+      - text: "Análisis avanzado con DuckDB y Arrow"
+        href: articles/analisis-avanzado.html
 
 footer:
   structure:
@@ -33,41 +58,53 @@ footer:
     right: built_with
 
 reference:
-  - title: "Datos del censo"
-    desc: "Funciones para descargar y acceder a los microdatos del CPV-2024."
+  - title: "Acceso a microdatos"
+    desc: >
+      Funciones principales para descargar y consultar los cuatro conjuntos
+      de datos del CPV-2024. Todos devuelven un Arrow Dataset (lazy),
+      un tibble, o una conexión DuckDB.
     contents:
       - get_personas
       - get_viviendas
       - get_emigracion
       - get_mortalidad
   - title: "Geografía de Bolivia"
-    desc: "Tablas y funciones con la división política del país."
+    desc: >
+      Dataset con la división político-administrativa completa (9 departamentos,
+      113 provincias, 343 municipios) y funciones de consulta.
     contents:
       - geo_bolivia
       - departamentos
       - provincias
       - municipios
   - title: "Diccionario de variables"
-    desc: "Funciones para explorar las variables disponibles en cada tabla."
+    desc: >
+      Dataset y funciones para explorar las 168 variables del CPV-2024,
+      con etiquetas en español y códigos de categorías.
     contents:
       - codebook_meta
       - codebook
       - codebook_valores
   - title: "Gestión de caché"
-    desc: "Funciones para administrar los archivos descargados localmente."
+    desc: >
+      Los archivos Parquet se descargan una sola vez y quedan en caché local.
+      Estas funciones permiten inspeccionar y limpiar el caché.
     contents:
       - censosbo_cache_dir
       - censosbo_cache_info
       - censosbo_cache_clear
-  - title: "Paquete"
+  - title: "Información del paquete"
     contents:
       - censosbo-package
 
 articles:
-  - title: "Tutoriales"
+  - title: "Primeros pasos"
     navbar: ~
     contents:
       - introduccion
+  - title: "Tutoriales"
+    navbar: Tutoriales
+    contents:
       - analisis-demografico
       - analisis-vivienda
       - analisis-avanzado
