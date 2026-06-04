@@ -24,15 +24,18 @@ remotes::install_github("lab-tecnosocial/censosbo")
 
 El CPV-2024 incluye cuatro tablas accesibles con `censosbo`:
 
-| Función | Tabla | Filas | Variables | Descripción |
-|----|----|---:|---:|----|
-| [`get_personas()`](https://lab-tecnosocial.github.io/censosbo/reference/get_personas.md) | Persona | ~11.4M | 118 | Datos individuales de cada persona |
-| [`get_viviendas()`](https://lab-tecnosocial.github.io/censosbo/reference/get_viviendas.md) | Vivienda | ~4.5M | 48 | Características de cada vivienda |
-| [`get_emigracion()`](https://lab-tecnosocial.github.io/censosbo/reference/get_emigracion.md) | Emigración | ~501K | 8 | Emigrantes al exterior (últimos 5 años) |
-| [`get_mortalidad()`](https://lab-tecnosocial.github.io/censosbo/reference/get_mortalidad.md) | Mortalidad | ~383K | 10 | Fallecimientos en el hogar (últimos 12 meses) |
+| Función | Filas | Variables | En disco (Parquet) | En memoria (tibble) |
+|----|---:|---:|---:|---:|
+| [`get_personas()`](https://lab-tecnosocial.github.io/censosbo/reference/get_personas.md) | ~11.4M | 118 | 7–155 MB/dep. (560 MB total) | 60 MB–1.2 GB/dep. |
+| [`get_viviendas()`](https://lab-tecnosocial.github.io/censosbo/reference/get_viviendas.md) | ~4.5M | 48 | ~100 MB | ~700 MB |
+| [`get_emigracion()`](https://lab-tecnosocial.github.io/censosbo/reference/get_emigracion.md) | ~501K | 8 | ~5 MB | ~40 MB |
+| [`get_mortalidad()`](https://lab-tecnosocial.github.io/censosbo/reference/get_mortalidad.md) | ~383K | 10 | ~4 MB | ~30 MB |
 
-Las tablas se pueden unir usando la clave compuesta
-`idep + iprov + imun + i00` (identificador de hogar).
+El formato **Arrow** (defecto) mantiene los datos en el disco hasta que
+se llama
+[`collect()`](https://dplyr.tidyverse.org/reference/compute.html). Las
+tablas se unen con la clave compuesta `idep + iprov + imun + i00`
+(identificador de hogar).
 
 ## Geografía: departamentos, provincias y municipios
 
@@ -171,6 +174,7 @@ codebook(buscar = "educa")
 #> 81                                                                                                                                                                                                 1, 2, 3, 4, Ninguno, Primaria, Secundaria, Superior
 #> 83                                                                                                                                                                                                                                        1, 2, Sí, No
 #> 84                                                                                                                                                                      1, 2, 3, 4, 5, 6, 7, 0 - 3, 4 - 5, 6 - 11, 12 - 17, 18 - 24, 25 - 59, 60 o más
+# Nota: buscar = "educaci" devolvería 0 resultados — el diccionario usa "educativo/educativa"
 ```
 
 ``` r
@@ -290,48 +294,69 @@ DBI::dbDisconnect(con)
 ## Uso con dplyr
 
 El formato Arrow es compatible directamente con `dplyr`. Los verbos se
-traducen a operaciones sobre el archivo Parquet sin cargar todo en RAM:
+traducen a operaciones sobre el archivo Parquet sin cargar todo en RAM.
+Usa
+[`etiquetar()`](https://lab-tecnosocial.github.io/censosbo/reference/etiquetar.md)
+después de
+[`collect()`](https://dplyr.tidyverse.org/reference/compute.html) para
+ver etiquetas legibles en lugar de códigos numéricos:
 
 ``` r
 
 library(dplyr)
 
-# Distribución por sexo en Cochabamba (sin traer todo a RAM)
-get_personas(departamento = "03") |>
+# Distribución por sexo en Cochabamba con etiquetas
+get_personas(departamento = "Cochabamba") |>
   count(p25_sexo) |>
-  collect()
+  collect() |>
+  etiquetar()
 #> # A tibble: 2 × 2
 #>   p25_sexo       n
-#>   <int>      <int>
-#> 1        1  831062
-#> 2        2  855433
+#>   <fct>      <int>
+#> 1 Mujer    831062
+#> 2 Hombre   855433
 
 # Edad promedio por área urbano/rural en Oruro
 get_personas(
-  departamento = "04",
+  departamento = "Oruro",
   variables    = c("p26_edad", "urbrur")
 ) |>
   group_by(urbrur) |>
   summarise(edad_prom = mean(p26_edad, na.rm = TRUE)) |>
-  collect()
+  collect() |>
+  etiquetar()
+
+# Grupos quinquenales de edad — IMPORTANTE: usar %/% en lugar de cut()
+# cut() no es compatible con Arrow; hay que usar operaciones aritméticas
+get_personas(departamento = "Santa Cruz") |>
+  filter(!is.na(p26_edad), !is.na(p25_sexo)) |>
+  mutate(grupo_edad = (p26_edad %/% 5L) * 5L) |>
+  count(grupo_edad, p25_sexo) |>
+  collect() |>
+  etiquetar()
 ```
 
 ## Consultas SQL con DuckDB
 
-Para análisis más complejos o JOINs entre tablas:
+Para análisis más complejos o JOINs entre tablas. Los resultados SQL
+también admiten
+[`etiquetar()`](https://lab-tecnosocial.github.io/censosbo/reference/etiquetar.md):
 
 ``` r
 
 library(DBI)
 
-con <- get_personas(departamento = "07", as = "duckdb")
+con <- get_personas(departamento = "Santa Cruz", as = "duckdb")
 
 DBI::dbGetQuery(con, "
   SELECT p25_sexo, COUNT(*) AS total, ROUND(AVG(p26_edad), 1) AS edad_prom
   FROM personas
   GROUP BY p25_sexo
   ORDER BY p25_sexo
-")
+") |> etiquetar()
+#> p25_sexo   total edad_prom
+#>    Mujer 1234567      29.1
+#>   Hombre 1212345      28.8
 
 DBI::dbDisconnect(con)
 ```
@@ -339,11 +364,18 @@ DBI::dbDisconnect(con)
 ## Gestión del caché
 
 Los datos descargados se guardan localmente y se reutilizan en sesiones
-futuras:
+futuras. Por defecto van al directorio estándar del sistema; para
+guardar dentro del proyecto actual añade esto al inicio del script:
 
 ``` r
 
-# Ver la ruta del caché local
+# Caché dentro del proyecto (recomendado para reproducibilidad)
+options(censosbo.cache_dir = "data/censosbo")
+```
+
+``` r
+
+# Ver la ruta actual del caché
 censosbo_cache_dir()
 #> [1] "/home/runner/.cache/R/censosbo"
 ```
@@ -353,7 +385,7 @@ censosbo_cache_dir()
 # Ver qué archivos están descargados y cuánto pesan
 censosbo_cache_info()
 
-# Limpiar el caché si necesitas liberar espacio
+# Limpiar el caché si necesitas liberar espacio en disco
 censosbo_cache_clear()
 ```
 

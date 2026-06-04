@@ -39,15 +39,17 @@ departamentos, 113 provincias, 343 municipios).
 - [`municipios()`](https://lab-tecnosocial.github.io/censosbo/reference/municipios.md)
   : Lista los municipios de Bolivia
 
-## Diccionario de variables
+## Diccionario de variables y etiquetas
 
-Funciones para explorar las 168 variables del CPV-2024, con etiquetas en
-español y códigos de categorías.
+Funciones para explorar las 168 variables del CPV-2024, consultar
+categorías y convertir códigos numéricos a etiquetas legibles.
 
 - [`codebook()`](https://lab-tecnosocial.github.io/censosbo/reference/codebook.md)
   : Consulta el diccionario de variables del CPV-2024
 - [`codebook_valores()`](https://lab-tecnosocial.github.io/censosbo/reference/codebook_valores.md)
   : Muestra los valores codificados de una variable categórica
+- [`etiquetar()`](https://lab-tecnosocial.github.io/censosbo/reference/etiquetar.md)
+  : Aplica etiquetas a las variables categóricas de un data.frame
 
 ## Gestión de caché
 

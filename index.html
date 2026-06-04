@@ -88,44 +88,51 @@
 </h2>
 <table class="table">
 <colgroup>
-<col width="25%">
-<col width="25%">
-<col width="25%">
-<col width="25%">
+<col width="15%">
+<col width="21%">
+<col width="21%">
+<col width="21%">
+<col width="21%">
 </colgroup>
 <thead><tr>
 <th>Función</th>
 <th align="right">Registros</th>
 <th align="right">Variables</th>
-<th>Descripción</th>
+<th align="right">En disco (Parquet)</th>
+<th align="right">En memoria (tibble)</th>
 </tr></thead>
 <tbody>
 <tr>
 <td><code><a href="reference/get_personas.html">get_personas()</a></code></td>
 <td align="right">~11.4M</td>
 <td align="right">118</td>
-<td>Datos de cada persona empadronada</td>
+<td align="right">7–155 MB/dep. (560 MB total)</td>
+<td align="right">60 MB–1.2 GB/dep.</td>
 </tr>
 <tr>
 <td><code><a href="reference/get_viviendas.html">get_viviendas()</a></code></td>
 <td align="right">~4.5M</td>
 <td align="right">48</td>
-<td>Características de viviendas</td>
+<td align="right">~100 MB</td>
+<td align="right">~700 MB</td>
 </tr>
 <tr>
 <td><code><a href="reference/get_emigracion.html">get_emigracion()</a></code></td>
 <td align="right">~501K</td>
 <td align="right">8</td>
-<td>Emigración internacional (últimos 5 años)</td>
+<td align="right">~5 MB</td>
+<td align="right">~40 MB</td>
 </tr>
 <tr>
 <td><code><a href="reference/get_mortalidad.html">get_mortalidad()</a></code></td>
 <td align="right">~383K</td>
 <td align="right">10</td>
-<td>Fallecimientos en el hogar (últimos 12 meses)</td>
+<td align="right">~4 MB</td>
+<td align="right">~30 MB</td>
 </tr>
 </tbody>
 </table>
+<p>El formato <strong>Arrow</strong> (por defecto) nunca carga todo en RAM: los datos permanecen en el archivo Parquet del disco hasta que ejecutas <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect()</a></code>.</p>
 <p>Todas las tablas se pueden unir por la clave <code>idep + iprov + imun + i00</code> (identificador de hogar).</p>
 </div>
 <div class="section level2">
@@ -138,66 +145,80 @@
 <span><span class="co"># Datos de Santa Cruz como Arrow Dataset (lazy, sin cargar todo en RAM)</span></span>
 <span><span class="va">personas_sc</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_personas.html">get_personas</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Santa Cruz"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Pirámide de edad: conteo por grupo quinquenal y sexo</span></span>
+<span><span class="co"># Distribución por sexo con etiquetas legibles</span></span>
 <span><span class="va">personas_sc</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">p26_edad</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
-<span>    grupo_edad <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cut.html" class="external-link">cut</a></span><span class="op">(</span><span class="va">p26_edad</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">100</span>, <span class="fl">5</span><span class="op">)</span>, right <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,</span>
-<span>    sexo       <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">p25_sexo</span> <span class="op">==</span> <span class="fl">1</span>, <span class="st">"Hombre"</span>, <span class="st">"Mujer"</span><span class="op">)</span></span>
-<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">grupo_edad</span>, <span class="va">sexo</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">p25_sexo</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/etiquetar.html">etiquetar</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co"># p25_sexo ahora muestra "Mujer" / "Hombre" en lugar de 1 / 2</span></span></code></pre></div>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Grupos quinquenales de edad</span></span>
+<span><span class="co"># Nota: usar (edad %/% 5) * 5 en lugar de cut() — cut() no es compatible con Arrow</span></span>
+<span><span class="va">personas_sc</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">p26_edad</span><span class="op">)</span>, <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">p25_sexo</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>grupo_edad <span class="op">=</span> <span class="op">(</span><span class="va">p26_edad</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">%/%</a></span> <span class="fl">5L</span><span class="op">)</span> <span class="op">*</span> <span class="fl">5L</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">grupo_edad</span>, <span class="va">p25_sexo</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/etiquetar.html">etiquetar</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Ver departamentos disponibles</span></span>
 <span><span class="fu"><a href="reference/departamentos.html">departamentos</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Provincias de La Paz</span></span>
 <span><span class="fu"><a href="reference/provincias.html">provincias</a></span><span class="op">(</span><span class="st">"La Paz"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Filtrar por municipio</span></span>
-<span><span class="fu"><a href="reference/get_personas.html">get_personas</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"02"</span>, municipio <span class="op">=</span> <span class="st">"050101"</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Consulta SQL con DuckDB</span></span>
-<span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_personas.html">get_personas</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"07"</span>, as <span class="op">=</span> <span class="st">"duckdb"</span><span class="op">)</span></span>
+<span><span class="co"># Municipios de Santa Cruz</span></span>
+<span><span class="fu"><a href="reference/municipios.html">municipios</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Santa Cruz"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Consulta SQL con DuckDB — aplicar etiquetar() al resultado</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dbi.r-dbi.org" class="external-link">DBI</a></span><span class="op">)</span></span>
+<span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_personas.html">get_personas</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Santa Cruz"</span>, as <span class="op">=</span> <span class="st">"duckdb"</span><span class="op">)</span></span>
 <span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbGetQuery.html" class="external-link">dbGetQuery</a></span><span class="op">(</span><span class="va">con</span>, <span class="st">"</span></span>
 <span><span class="st">  SELECT p25_sexo, COUNT(*) AS total, ROUND(AVG(p26_edad), 1) AS edad_prom</span></span>
 <span><span class="st">  FROM personas</span></span>
 <span><span class="st">  GROUP BY p25_sexo</span></span>
-<span><span class="st">"</span><span class="op">)</span></span>
+<span><span class="st">  ORDER BY p25_sexo</span></span>
+<span><span class="st">"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="reference/etiquetar.html">etiquetar</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Join personas + viviendas</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dbi.r-dbi.org" class="external-link">DBI</a></span><span class="op">)</span></span>
-<span></span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Join personas + viviendas (Cochabamba)</span></span>
 <span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html" class="external-link">dbConnect</a></span><span class="op">(</span><span class="fu">duckdb</span><span class="fu">::</span><span class="fu"><a href="https://r.duckdb.org/reference/duckdb.html" class="external-link">duckdb</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu">duckdb</span><span class="fu">::</span><span class="fu"><a href="https://r.duckdb.org/reference/duckdb_register_arrow.html" class="external-link">duckdb_register_arrow</a></span><span class="op">(</span><span class="va">con</span>, <span class="st">"p"</span>, <span class="fu"><a href="reference/get_personas.html">get_personas</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"03"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu">duckdb</span><span class="fu">::</span><span class="fu"><a href="https://r.duckdb.org/reference/duckdb_register_arrow.html" class="external-link">duckdb_register_arrow</a></span><span class="op">(</span><span class="va">con</span>, <span class="st">"v"</span>, <span class="fu"><a href="reference/get_viviendas.html">get_viviendas</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"03"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">duckdb</span><span class="fu">::</span><span class="fu"><a href="https://r.duckdb.org/reference/duckdb_register_arrow.html" class="external-link">duckdb_register_arrow</a></span><span class="op">(</span><span class="va">con</span>, <span class="st">"p"</span>, <span class="fu"><a href="reference/get_personas.html">get_personas</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Cochabamba"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">duckdb</span><span class="fu">::</span><span class="fu"><a href="https://r.duckdb.org/reference/duckdb_register_arrow.html" class="external-link">duckdb_register_arrow</a></span><span class="op">(</span><span class="va">con</span>, <span class="st">"v"</span>, <span class="fu"><a href="reference/get_viviendas.html">get_viviendas</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Cochabamba"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbGetQuery.html" class="external-link">dbGetQuery</a></span><span class="op">(</span><span class="va">con</span>, <span class="st">"</span></span>
 <span><span class="st">  SELECT v.urbrur AS area, COUNT(*) AS personas</span></span>
 <span><span class="st">  FROM p JOIN v ON p.idep=v.idep AND p.iprov=v.iprov</span></span>
 <span><span class="st">                AND p.imun=v.imun AND p.i00=v.i00</span></span>
-<span><span class="st">  WHERE v.v07_aguapro != 1</span></span>
 <span><span class="st">  GROUP BY area</span></span>
-<span><span class="st">"</span><span class="op">)</span></span>
+<span><span class="st">  ORDER BY personas DESC</span></span>
+<span><span class="st">"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="reference/etiquetar.html">etiquetar</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="diccionario-de-variables">Diccionario de variables<a class="anchor" aria-label="anchor" href="#diccionario-de-variables"></a>
+<h2 id="diccionario-de-variables-y-etiquetas">Diccionario de variables y etiquetas<a class="anchor" aria-label="anchor" href="#diccionario-de-variables-y-etiquetas"></a>
 </h2>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Buscar variables</span></span>
-<span><span class="fu"><a href="reference/codebook.html">codebook</a></span><span class="op">(</span>buscar <span class="op">=</span> <span class="st">"educaci"</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Buscar variables relacionadas con educación</span></span>
+<span><span class="fu"><a href="reference/codebook.html">codebook</a></span><span class="op">(</span>buscar <span class="op">=</span> <span class="st">"educa"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Ver códigos de una variable categórica</span></span>
-<span><span class="fu"><a href="reference/codebook_valores.html">codebook_valores</a></span><span class="op">(</span><span class="st">"p25_sexo"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co"># Ver los códigos y etiquetas de una variable categórica</span></span>
+<span><span class="fu"><a href="reference/codebook_valores.html">codebook_valores</a></span><span class="op">(</span><span class="st">"p25_sexo"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Aplicar etiquetas a un resultado</span></span>
+<span><span class="va">sample_personas</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">p25_sexo</span>, <span class="va">nivel_edu</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/etiquetar.html">etiquetar</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="gestión-del-caché">Gestión del caché<a class="anchor" aria-label="anchor" href="#gesti%C3%B3n-del-cach%C3%A9"></a>
 </h2>
-<p>Los datos se descargan una sola vez y se guardan localmente:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/censosbo_cache_dir.html">censosbo_cache_dir</a></span><span class="op">(</span><span class="op">)</span>    <span class="co"># dónde está el caché</span></span>
+<p>Los datos se descargan una sola vez y se guardan localmente. Por defecto van al directorio del sistema; para guardar dentro del proyecto actual añade esto al inicio del script:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Guardar caché dentro del proyecto (añadir a .Rprofile o al inicio del script)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>censosbo.cache_dir <span class="op">=</span> <span class="st">"data/censosbo"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="reference/censosbo_cache_dir.html">censosbo_cache_dir</a></span><span class="op">(</span><span class="op">)</span>    <span class="co"># dónde está el caché</span></span>
 <span><span class="fu"><a href="reference/censosbo_cache_info.html">censosbo_cache_info</a></span><span class="op">(</span><span class="op">)</span>   <span class="co"># qué archivos están descargados</span></span>
 <span><span class="fu"><a href="reference/censosbo_cache_clear.html">censosbo_cache_clear</a></span><span class="op">(</span><span class="op">)</span>  <span class="co"># liberar espacio</span></span></code></pre></div>
 </div>
@@ -209,7 +230,7 @@
 <div class="section level2">
 <h2 id="citar">Citar<a class="anchor" aria-label="anchor" href="#citar"></a>
 </h2>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"censosbo"</span><span class="op">)</span></span></code></pre></div>
 <blockquote>
 <p>Ojeda Copa, A. (2024). <em>censosbo: Acceso y análisis de los datos del Censo de Bolivia 2024</em>. R package version 0.1.0. <a href="https://github.com/lab-tecnosocial/censosbo" class="external-link uri">https://github.com/lab-tecnosocial/censosbo</a></p>

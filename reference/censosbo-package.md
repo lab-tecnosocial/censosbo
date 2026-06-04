@@ -12,6 +12,8 @@ con etiquetas en español.
 
 Useful links:
 
+- <https://lab-tecnosocial.github.io/censosbo/>
+
 - <https://github.com/lab-tecnosocial/censosbo>
 
 - Report bugs at <https://github.com/lab-tecnosocial/censosbo/issues>
