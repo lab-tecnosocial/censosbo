@@ -83,13 +83,14 @@ reference:
       - departamentos
       - provincias
       - municipios
-  - title: "Diccionario de variables"
+  - title: "Diccionario de variables y etiquetas"
     desc: >
       Funciones para explorar las 168 variables del CPV-2024,
-      con etiquetas en español y códigos de categorías.
+      consultar categorías y convertir códigos numéricos a etiquetas legibles.
     contents:
       - codebook
       - codebook_valores
+      - etiquetar
   - title: "Gestión de caché"
     desc: >
       Los archivos Parquet se descargan una sola vez y quedan en caché local.

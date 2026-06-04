@@ -13,6 +13,7 @@ Proporciona acceso programático a los microdatos del Censo de Población y Vivi
 \seealso{
 Useful links:
 \itemize{
+  \item \url{https://lab-tecnosocial.github.io/censosbo/}
   \item \url{https://github.com/lab-tecnosocial/censosbo}
   \item Report bugs at \url{https://github.com/lab-tecnosocial/censosbo/issues}
 }

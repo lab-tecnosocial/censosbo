@@ -10,3 +10,5 @@ censosbo_*.tar.gz
 /Meta/
 docs
 inst/doc
+
+dev-docs/
