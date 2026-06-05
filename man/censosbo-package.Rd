@@ -4,11 +4,11 @@
 \name{censosbo-package}
 \alias{censosbo}
 \alias{censosbo-package}
-\title{censosbo: Acceso y Análisis de los Datos del Censo de Bolivia 2024}
+\title{censosbo: Acceso y Análisis de los Datos de los Censos de Bolivia}
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-Proporciona acceso programático a los microdatos del Censo de Población y Vivienda 2024 de Bolivia (CPV-2024) del INE. Descarga archivos Parquet preprocesados desde GitHub Releases bajo demanda, los almacena en caché local y ofrece una interfaz R para filtrar por departamento, provincia o municipio. Soporta flujos de trabajo estilo dplyr vía Apache Arrow y consultas SQL vía DuckDB. Incluye un diccionario de variables integrado con etiquetas en español.
+Proporciona acceso programático a los microdatos de los censos de Bolivia: CPV-2024, 2012, 2001, 1992 y 1976. Descarga archivos Parquet desde GitHub Releases, los almacena en caché local y permite filtrar por departamento, provincia o municipio. Soporta flujos de trabajo estilo dplyr vía Apache Arrow y consultas SQL vía DuckDB. Incluye diccionarios de variables para todos los años, funciones de armonización longitudinal y análisis comparativos entre censos.
 }
 \seealso{
 Useful links:

@@ -33,7 +33,7 @@ El dataset Arrow no carga los datos en RAM. `dplyr` traduce los verbos a operaci
 
 ```{r arrow-lazy}
 # Dataset Arrow de Pando (el departamento más pequeño, ~7 MB)
-ds <- get_personas(
+ds <- get_personas_2024(
   departamento = "Pando",
   as = "arrow"
 )
@@ -83,7 +83,7 @@ ds |>
 ```{r duckdb-basico}
 library(DBI)
 
-con <- get_personas(departamento = "Pando", as = "duckdb")
+con <- get_personas_2024(departamento = "Pando", as = "duckdb")
 
 # SQL estándar con agregaciones
 DBI::dbGetQuery(con, "
@@ -153,12 +153,12 @@ con <- DBI::dbConnect(duckdb::duckdb(), dbdir = ":memory:")
 
 duckdb::duckdb_register_arrow(
   con, "personas",
-  get_personas(departamento = "Pando",
+  get_personas_2024(departamento = "Pando",
                variables = c("idep","iprov","imun","i00","p25_sexo","p26_edad","nivel_edu"))
 )
 duckdb::duckdb_register_arrow(
   con, "viviendas",
-  get_viviendas(departamento = "Pando",
+  get_viviendas_2024(departamento = "Pando",
                 variables = c("idep","iprov","imun","i00","urbrur","v07_aguapro","v09_energia"))
 )
 
@@ -189,7 +189,7 @@ Cuando necesitas estadísticas del país entero, Arrow agrega en el Parquet y so
 
 ```{r nacional, eval=FALSE}
 # Descargar todos los departamentos (~560 MB) y agregar sin cargar todo en RAM
-personas_full <- get_personas(as = "arrow")
+personas_full <- get_personas_2024(as = "arrow")
 
 resumen_nacional <- personas_full |>
   filter(!is.na(p26_edad)) |>

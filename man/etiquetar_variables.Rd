@@ -35,7 +35,7 @@ codebook_meta[1:5, c("variable", "etiqueta", "tabla")] |>
 
 # Con datos reales: valores y nombres etiquetados
 \dontrun{
-get_personas(departamento = "Pando") |>
+get_personas_2024(departamento = "Pando") |>
   dplyr::count(p25_sexo, nivel_edu) |>
   dplyr::collect() |>
   etiquetar_valores() |>

@@ -50,7 +50,7 @@ censosbo_cache_info <- function() {
   }
   files <- fs::dir_info(cache_dir, recurse = TRUE, type = "file")
   if (nrow(files) == 0) {
-    cli::cli_inform("El caché está vacío. Usa {.code get_personas()} para descargar datos.")
+    cli::cli_inform("El caché está vacío. Usa {.code get_personas_2024()} o {.code get_censo()} para descargar datos.")
     return(invisible(NULL))
   }
   result <- data.frame(
@@ -102,10 +102,14 @@ censosbo_cache_clear <- function(ask = TRUE) {
   invisible(NULL)
 }
 
-.cache_path <- function(filename) {
-  fs::path(censosbo_cache_dir(), filename)
+.cache_path <- function(filename, subdir = NULL) {
+  if (is.null(subdir)) {
+    fs::path(censosbo_cache_dir(), filename)
+  } else {
+    fs::path(censosbo_cache_dir(), subdir, filename)
+  }
 }
 
-.is_cached <- function(filename) {
-  fs::file_exists(.cache_path(filename))
+.is_cached <- function(filename, subdir = NULL) {
+  fs::file_exists(.cache_path(filename, subdir = subdir))
 }

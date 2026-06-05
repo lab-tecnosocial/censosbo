@@ -33,31 +33,37 @@
 #' El caché se almacena en `censosbo_cache_dir()`. Usa `censosbo_cache_info()`
 #' para ver los archivos descargados.
 #'
+#' Para censos históricos usa [get_censo()] o los atajos [get_personas_1992()],
+#' [get_personas_2001()], [get_personas_2012()].
+#'
 #' @export
 #' @examples
 #' \dontrun{
 #' # Datos de Santa Cruz como Arrow Dataset (lazy)
-#' personas_sc <- get_personas(departamento = "Santa Cruz")
+#' personas_sc <- get_personas_2024(departamento = "Santa Cruz")
 #'
 #' # Filtrar y agregar sin traer a RAM
 #' library(dplyr)
-#' get_personas(departamento = "07") |>
+#' get_personas_2024(departamento = "07") |>
 #'   filter(p26_edad >= 18) |>
 #'   count(p25_sexo) |>
 #'   collect()
 #'
 #' # Seleccionar pocas variables
-#' get_personas(
+#' get_personas_2024(
 #'   departamento = c("02", "03"),
 #'   variables = c("p25_sexo", "p26_edad", "nivel_edu")
 #' )
 #'
 #' # Consulta SQL con DuckDB
-#' con <- get_personas(departamento = "07", as = "duckdb")
+#' con <- get_personas_2024(departamento = "07", as = "duckdb")
 #' DBI::dbGetQuery(con, "SELECT p25_sexo, AVG(p26_edad) FROM personas GROUP BY 1")
 #' DBI::dbDisconnect(con)
+#'
+#' # Equivalente genérico
+#' get_censo(2024, "persona", departamento = "07")
 #' }
-get_personas <- function(
+get_personas_2024 <- function(
     departamento = NULL,
     provincia    = NULL,
     municipio    = NULL,
@@ -88,10 +94,8 @@ get_personas <- function(
   }, character(1))
 
   ds <- arrow::open_dataset(local_paths, format = "parquet")
-  # Los archivos ya están filtrados por departamento (uno por depto),
-  # pero filtramos provincia y municipio si se especificaron
   ds <- .apply_geo_filters(ds, NULL, provincia, municipio)
-
   ds <- .apply_variable_selection(ds, variables)
   .return_as(ds, as, table_name = "personas", verbose = verbose)
 }
+

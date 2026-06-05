@@ -4,10 +4,13 @@
 \alias{codebook_valores}
 \title{Muestra los valores codificados de una variable categórica}
 \usage{
-codebook_valores(variable)
+codebook_valores(variable, anio = 2024)
 }
 \arguments{
-\item{variable}{Caracteres. Nombre de la variable (e.g., `"p25_sexo"`).}
+\item{variable}{Caracteres. Nombre de la variable (e.g., `"p25_sexo"`, `"P23"`).}
+
+\item{anio}{Entero. Año del censo: `2024` (defecto), `1976`, `1992`, `2001`
+o `2012`.}
 }
 \value{
 Un data.frame con columnas `codigo` y `etiqueta`, o un mensaje
@@ -19,6 +22,6 @@ Muestra los valores codificados de una variable categórica
 \examples{
 \dontrun{
 codebook_valores("p25_sexo")
-codebook_valores("nivel_edu")
+codebook_valores("P23", anio = 2012)
 }
 }

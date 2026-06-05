@@ -2,7 +2,7 @@
 % Please edit documentation in R/download.R
 \name{.download_parquet}
 \alias{.download_parquet}
-\title{Descarga un archivo Parquet desde GitHub Releases}
+\title{Descarga un archivo Parquet del CPV-2024 desde GitHub Releases}
 \usage{
 .download_parquet(filename, overwrite = FALSE, verbose = TRUE)
 }
@@ -17,6 +17,6 @@
 Ruta local al archivo (invisible).
 }
 \description{
-Descarga un archivo Parquet desde GitHub Releases
+Descarga un archivo Parquet del CPV-2024 desde GitHub Releases
 }
 \keyword{internal}

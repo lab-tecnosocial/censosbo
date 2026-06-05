@@ -32,14 +32,14 @@
 #' @examples
 #' # Etiquetar todas las columnas categóricas de un data.frame
 #' \dontrun{
-#' get_personas(departamento = "Pando", as = "tibble") |>
+#' get_personas_2024(departamento = "Pando", as = "tibble") |>
 #'   etiquetar_valores() |>
 #'   head(3)
 #' }
 #'
 #' # Flujo típico: Arrow → collect → etiquetar_valores
 #' \dontrun{
-#' get_personas(departamento = "Santa Cruz") |>
+#' get_personas_2024(departamento = "Santa Cruz") |>
 #'   dplyr::filter(p26_edad >= 18) |>
 #'   dplyr::count(p25_sexo) |>
 #'   dplyr::collect() |>
@@ -94,7 +94,7 @@ etiquetar_valores <- function(df, columnas = NULL) {
 #'
 #' # Con datos reales: valores y nombres etiquetados
 #' \dontrun{
-#' get_personas(departamento = "Pando") |>
+#' get_personas_2024(departamento = "Pando") |>
 #'   dplyr::count(p25_sexo, nivel_edu) |>
 #'   dplyr::collect() |>
 #'   etiquetar_valores() |>

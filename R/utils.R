@@ -5,6 +5,13 @@
   "/releases/download/", .CENSOSBO_RELEASE_TAG, "/"
 )
 
+.CENSO_RELEASE_TAGS <- c(
+  "1976" = "data-1976-v1.0.0",
+  "1992" = "data-1992-v1.0.0",
+  "2001" = "data-2001-v1.0.0",
+  "2012" = "data-2012-v1.0.0"
+)
+
 .DEP_CODES <- c(
   "01" = "Chuquisaca", "02" = "La Paz",    "03" = "Cochabamba",
   "04" = "Oruro",      "05" = "Potosí",    "06" = "Tarija",

@@ -1,8 +1,8 @@
 ---
-title: "Diccionario de datos del CPV-2024"
+title: "Diccionario de datos — Censos de Bolivia (1976–2024)"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Diccionario de datos del CPV-2024}
+  %\VignetteIndexEntry{Diccionario de datos — Censos de Bolivia (1976–2024)}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -11,18 +11,6 @@ vignette: >
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>", echo = FALSE)
 library(censosbo)
 library(DT)
-
-# Preparar tabla plana con códigos inline
-prep_tabla <- function(tabla_nombre) {
-  meta <- codebook_meta[codebook_meta$tabla == tabla_nombre, ]
-  meta$categorias <- sapply(meta$valores_codigos, function(vc) {
-    if (is.null(vc) || nrow(vc) == 0) return("")
-    paste(paste0(vc$codigo, " = ", vc$etiqueta), collapse = " | ")
-  })
-  df <- meta[, c("variable", "etiqueta", "tipo", "categorias")]
-  names(df) <- c("Variable", "Etiqueta", "Tipo", "Categorías")
-  df
-}
 
 opciones_dt <- list(
   pageLength  = 20,
@@ -42,123 +30,264 @@ opciones_dt <- list(
     list(className = "dt-wrap", targets = 3)
   )
 )
+
+# Convierte una lista de data.frames de codebook en tabla DT
+prep_tabla_hist <- function(meta_anio, tabla_nombre) {
+  meta <- meta_anio[meta_anio$tabla == tabla_nombre, ]
+  meta$categorias <- sapply(meta$valores_codigos, function(vc) {
+    if (is.null(vc) || nrow(vc) == 0) return("")
+    paste(paste0(vc$codigo, " = ", vc$etiqueta), collapse = " | ")
+  })
+  df <- meta[, c("variable", "etiqueta", "tipo", "categorias")]
+  names(df) <- c("Variable", "Etiqueta", "Tipo", "Categorías")
+  df
+}
+
+# Para el CPV-2024 (usa codebook_meta global)
+prep_tabla_2024 <- function(tabla_nombre) {
+  meta <- codebook_meta[codebook_meta$tabla == tabla_nombre, ]
+  meta$categorias <- sapply(meta$valores_codigos, function(vc) {
+    if (is.null(vc) || nrow(vc) == 0) return("")
+    paste(paste0(vc$codigo, " = ", vc$etiqueta), collapse = " | ")
+  })
+  df <- meta[, c("variable", "etiqueta", "tipo", "categorias")]
+  names(df) <- c("Variable", "Etiqueta", "Tipo", "Categorías")
+  df
+}
+
+hacer_datatable <- function(df) {
+  DT::datatable(
+    df,
+    rownames  = FALSE,
+    filter    = "top",
+    escape    = FALSE,
+    options   = opciones_dt,
+    class     = "cell-border stripe compact"
+  )
+}
 ```
 
-El **Censo de Población y Vivienda 2024 (CPV-2024)** de Bolivia incluye **168 variables** organizadas en cuatro tablas. Este artículo documenta cada variable con su nombre técnico, descripción en español, tipo de dato y, para las variables categóricas, todos los códigos y sus etiquetas.
+Este artículo documenta todas las variables de los cinco censos de Bolivia disponibles en `censosbo`: **1976, 1992, 2001, 2012 y CPV-2024**. Las tablas son interactivas — puedes buscar por nombre de variable, descripción o categoría.
 
-Las tablas son interactivas: puedes **buscar** por nombre de variable, descripción o categoría, y **ordenar** por cualquier columna.
+Para explorar el diccionario desde R:
+
+```{r codebook-r, echo=TRUE, eval=FALSE}
+# Buscar una variable en cualquier censo
+codebook(buscar = "educacion", anio = 2012)
+codebook_2024(buscar = "sexo")
+
+# Ver los códigos de una variable
+codebook_valores("p25_sexo")           # CPV-2024
+codebook_valores("P24", anio = 2012)   # Censo 2012
+
+# Ver todas las variables de un censo y tabla
+codebook_1992(tabla = "persona")
+```
 
 ---
 
-**Descargar el diccionario completo:**
+# CPV-2024
 
-```{r descarga, echo=TRUE, eval=FALSE}
-# Ruta al CSV incluido en el paquete (tabla larga: una fila por código)
-ruta <- system.file("extdata/diccionario_cpv2024.csv", package = "censosbo")
-diccionario <- read.csv(ruta, encoding = "UTF-8")
-head(diccionario)
-```
-
-También puedes consultar el diccionario directamente en R con `codebook()` y `codebook_valores()`.
-
----
-
-## Persona (`get_personas`)
+## Persona (`get_personas_2024`)
 
 Datos de cada persona empadronada: **`r nrow(codebook_meta[codebook_meta$tabla=="persona",])`** variables.
 
-```{r tabla-persona}
-DT::datatable(
-  prep_tabla("persona"),
-  rownames  = FALSE,
-  filter    = "top",
-  escape    = FALSE,
-  options   = opciones_dt,
-  class     = "cell-border stripe compact"
-)
+```{r tabla-2024-persona}
+hacer_datatable(prep_tabla_2024("persona"))
 ```
 
 ---
 
-## Vivienda (`get_viviendas`)
+## Vivienda (`get_viviendas_2024`)
 
-Características de cada vivienda particular: **`r nrow(codebook_meta[codebook_meta$tabla=="vivienda",])`** variables.
+Características de cada vivienda: **`r nrow(codebook_meta[codebook_meta$tabla=="vivienda",])`** variables.
 
-```{r tabla-vivienda}
-DT::datatable(
-  prep_tabla("vivienda"),
-  rownames  = FALSE,
-  filter    = "top",
-  escape    = FALSE,
-  options   = opciones_dt,
-  class     = "cell-border stripe compact"
-)
+```{r tabla-2024-vivienda}
+hacer_datatable(prep_tabla_2024("vivienda"))
 ```
 
 ---
 
-## Emigración (`get_emigracion`)
+## Emigración (`get_emigracion_2024`)
 
 Personas que emigraron al exterior en los últimos 5 años: **`r nrow(codebook_meta[codebook_meta$tabla=="emigracion",])`** variables.
 
-```{r tabla-emigracion}
-DT::datatable(
-  prep_tabla("emigracion"),
-  rownames  = FALSE,
-  filter    = "top",
-  escape    = FALSE,
-  options   = opciones_dt,
-  class     = "cell-border stripe compact"
-)
+```{r tabla-2024-emigracion}
+hacer_datatable(prep_tabla_2024("emigracion"))
 ```
 
 ---
 
-## Mortalidad (`get_mortalidad`)
+## Mortalidad (`get_mortalidad_2024`)
 
 Fallecimientos en el hogar durante los últimos 12 meses: **`r nrow(codebook_meta[codebook_meta$tabla=="mortalidad",])`** variables.
 
-```{r tabla-mortalidad}
-DT::datatable(
-  prep_tabla("mortalidad"),
-  rownames  = FALSE,
-  filter    = "top",
-  escape    = FALSE,
-  options   = opciones_dt,
-  class     = "cell-border stripe compact"
-)
+```{r tabla-2024-mortalidad}
+hacer_datatable(prep_tabla_2024("mortalidad"))
 ```
 
 ---
 
-## Clave geográfica
+## Clave geográfica (CPV-2024)
 
-Todas las tablas comparten la **clave de hogar** que permite unirlas entre sí:
+Todas las tablas del CPV-2024 comparten la **clave de hogar**:
 
 | Variable | Descripción |
 |----------|-------------|
 | `idep`   | Código de departamento (01–09) |
-| `iprov`  | Código de provincia dentro del departamento |
-| `imun`   | Código de municipio dentro de la provincia |
+| `iprov`  | Código de provincia |
+| `imun`   | Código de municipio |
 | `i00`    | Identificador de vivienda/hogar |
 
 ```{r clave-geo, echo=TRUE, eval=FALSE}
-# Join personas + viviendas usando la clave completa
 library(DBI)
 con <- DBI::dbConnect(duckdb::duckdb())
-duckdb::duckdb_register_arrow(con, "personas",  get_personas(departamento  = "07"))
-duckdb::duckdb_register_arrow(con, "viviendas", get_viviendas(departamento = "07"))
-
+duckdb::duckdb_register_arrow(con, "personas",  get_personas_2024(departamento = "07"))
+duckdb::duckdb_register_arrow(con, "viviendas", get_viviendas_2024(departamento = "07"))
 DBI::dbGetQuery(con, "
-  SELECT COUNT(*) AS personas_en_join
-  FROM personas p
-  JOIN viviendas v
-    ON p.idep = v.idep AND p.iprov = v.iprov
-   AND p.imun = v.imun AND p.i00  = v.i00
+  SELECT COUNT(*) AS personas_en_join FROM personas p
+  JOIN viviendas v ON p.idep=v.idep AND p.iprov=v.iprov
+                  AND p.imun=v.imun AND p.i00=v.i00
 ")
 DBI::dbDisconnect(con)
 ```
 
-## Fuente
+---
 
-> Instituto Nacional de Estadística (INE). (2024). *Censo de Población y Vivienda 2024 — Diccionario de Variables*. Bolivia. <https://anda.ine.gob.bo/index.php/catalog/132>
+# Censo 2012
+
+```{r n-2012, include=FALSE}
+m12 <- codebook_historico_meta[["2012"]]
+```
+
+## Persona (`get_personas_2012`)
+
+**`r nrow(m12[m12$tabla=="persona",])`** variables.
+
+```{r tabla-2012-persona}
+hacer_datatable(prep_tabla_hist(m12, "persona"))
+```
+
+---
+
+## Vivienda (`get_viviendas_2012`)
+
+**`r nrow(m12[m12$tabla=="vivienda",])`** variables.
+
+```{r tabla-2012-vivienda}
+hacer_datatable(prep_tabla_hist(m12, "vivienda"))
+```
+
+---
+
+## Emigración (`get_emigracion_2012`)
+
+**`r nrow(m12[m12$tabla=="emigracion",])`** variables.
+
+```{r tabla-2012-emigracion}
+hacer_datatable(prep_tabla_hist(m12, "emigracion"))
+```
+
+---
+
+## Discapacidad (`get_discapacidad_2012`)
+
+**`r nrow(m12[m12$tabla=="discapacidad",])`** variables.
+
+```{r tabla-2012-discapacidad}
+hacer_datatable(prep_tabla_hist(m12, "discapacidad"))
+```
+
+---
+
+# Censo 2001
+
+```{r n-2001, include=FALSE}
+m01 <- codebook_historico_meta[["2001"]]
+```
+
+## Persona (`get_personas_2001`)
+
+**`r nrow(m01[m01$tabla=="persona",])`** variables.
+
+```{r tabla-2001-persona}
+hacer_datatable(prep_tabla_hist(m01, "persona"))
+```
+
+---
+
+## Vivienda (`get_viviendas_2001`)
+
+**`r nrow(m01[m01$tabla=="vivienda",])`** variables.
+
+```{r tabla-2001-vivienda}
+hacer_datatable(prep_tabla_hist(m01, "vivienda"))
+```
+
+---
+
+# Censo 1992
+
+```{r n-1992, include=FALSE}
+m92 <- codebook_historico_meta[["1992"]]
+```
+
+## Persona (`get_personas_1992`)
+
+**`r nrow(m92[m92$tabla=="persona",])`** variables.
+
+```{r tabla-1992-persona}
+hacer_datatable(prep_tabla_hist(m92, "persona"))
+```
+
+---
+
+## Vivienda (`get_viviendas_1992`)
+
+**`r nrow(m92[m92$tabla=="vivienda",])`** variables.
+
+```{r tabla-1992-vivienda}
+hacer_datatable(prep_tabla_hist(m92, "vivienda"))
+```
+
+---
+
+## Mortalidad (`get_mortalidad_1992`)
+
+**`r nrow(m92[m92$tabla=="mortalidad",])`** variables.
+
+```{r tabla-1992-mortalidad}
+hacer_datatable(prep_tabla_hist(m92, "mortalidad"))
+```
+
+---
+
+# Censo 1976
+
+```{r n-1976, include=FALSE}
+m76 <- codebook_historico_meta[["1976"]]
+```
+
+## Población (`get_poblacion_1976`)
+
+**`r nrow(m76[m76$tabla=="poblacion",])`** variables.
+
+```{r tabla-1976-poblacion}
+hacer_datatable(prep_tabla_hist(m76, "poblacion"))
+```
+
+---
+
+## Vivienda (`get_viviendas_1976`)
+
+**`r nrow(m76[m76$tabla=="vivienda",])`** variables.
+
+```{r tabla-1976-vivienda}
+hacer_datatable(prep_tabla_hist(m76, "vivienda"))
+```
+
+---
+
+## Fuentes
+
+> Instituto Nacional de Estadística (INE). Bolivia. Censos Nacionales de Población y Vivienda, 1976, 1992, 2001, 2012 y 2024. <https://anda.ine.gob.bo>

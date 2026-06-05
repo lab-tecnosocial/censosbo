@@ -16,41 +16,73 @@
 #' @source INE Bolivia, CPV-2024. Diccionario de Variables CPV 2024.xlsx.
 "codebook_meta"
 
-#' Consulta el diccionario de variables del CPV-2024
+#' Diccionarios de variables de los censos históricos de Bolivia
+#'
+#' Lista nombrada con los metadatos de variables de los censos 1976, 1992,
+#' 2001 y 2012. Cada elemento es un data.frame con la misma estructura que
+#' [codebook_meta].
+#'
+#' @format Una lista con elementos `"1976"`, `"1992"`, `"2001"` y `"2012"`,
+#'   cada uno un data.frame con columnas:
+#' \describe{
+#'   \item{variable}{Nombre original de la variable en el censo}
+#'   \item{etiqueta}{Descripción de la variable}
+#'   \item{tabla}{Tabla/entidad REDATAM de origen}
+#'   \item{tipo}{`"categorica"` o `"numerica"`}
+#'   \item{valores_codigos}{Lista de data.frames con códigos y etiquetas}
+#' }
+#' @source INE Bolivia. Diccionarios Parquet generados por open-redatam.
+"codebook_historico_meta"
+
+#' Consulta el diccionario de variables de un censo de Bolivia
 #'
 #' Permite buscar variables del censo por nombre, tabla o texto libre en
 #' las etiquetas.
 #'
 #' @param variable Vector de caracteres. Nombre(s) de variable a consultar.
 #'   Si `NULL`, devuelve todas.
-#' @param tabla Caracteres. Filtra por tabla: `"persona"`, `"vivienda"`,
-#'   `"emigracion"` o `"mortalidad"`. Si `NULL`, devuelve todas las tablas.
+#' @param tabla Caracteres. Filtra por tabla (e.g., `"persona"`, `"vivienda"`).
+#'   Si `NULL`, devuelve todas las tablas.
 #' @param buscar Caracteres. Texto libre para buscar en las etiquetas y nombres
 #'   de variables (no distingue mayúsculas/minúsculas).
+#' @param anio Entero. Año del censo: `2024` (defecto), `1976`, `1992`, `2001`
+#'   o `2012`.
 #'
 #' @return Un data.frame con las variables que coinciden con los filtros.
 #'
 #' @export
 #' @examples
-#' # Ver etiqueta de una variable específica
+#' # Ver etiqueta de una variable específica del CPV-2024
 #' codebook("p25_sexo")
 #'
-#' # Variables relacionadas con educación
-#' codebook(buscar = "educa")
+#' # Variables de sexo en el censo 2012
+#' codebook(buscar = "sexo", anio = 2012)
 #'
-#' # Todas las variables de vivienda
-#' codebook(tabla = "vivienda")
-#'
-#' # Búsqueda combinada
-#' codebook(tabla = "persona", buscar = "idioma")
-codebook <- function(variable = NULL, tabla = NULL, buscar = NULL) {
-  meta <- codebook_meta
+#' # Todas las variables de vivienda del censo 1992
+#' codebook(tabla = "vivienda", anio = 1992)
+codebook <- function(variable = NULL, tabla = NULL, buscar = NULL, anio = 2024) {
+  anio <- as.integer(anio)
+  meta <- if (anio == 2024L) {
+    codebook_meta
+  } else {
+    if (!exists("codebook_historico_meta")) {
+      cli::cli_abort(c(
+        "Los diccionarios históricos no están cargados.",
+        "i" = "Asegúrate de tener instalada la versión más reciente del paquete."
+      ))
+    }
+    key <- as.character(anio)
+    if (is.null(codebook_historico_meta[[key]])) {
+      cli::cli_abort("No hay diccionario disponible para el censo {anio}.")
+    }
+    codebook_historico_meta[[key]]
+  }
 
   if (!is.null(tabla)) {
-    meta <- meta[meta$tabla %in% tolower(tabla), ]
+    meta <- meta[tolower(meta$tabla) %in% tolower(tabla), ]
   }
   if (!is.null(variable)) {
-    meta <- meta[meta$variable %in% tolower(variable), ]
+    meta <- meta[tolower(meta$variable) %in% tolower(variable), ]
   }
   if (!is.null(buscar)) {
     mask <- grepl(buscar, meta$etiqueta, ignore.case = TRUE) |
@@ -59,26 +91,28 @@ codebook <- function(variable = NULL, tabla = NULL, buscar = NULL) {
   }
 
   if (nrow(meta) == 0) {
-    cli::cli_inform("No se encontraron variables con esos criterios.")
+    cli::cli_inform("No se encontraron variables con esos criterios en el censo {anio}.")
   }
   meta
 }
 
 #' Muestra los valores codificados de una variable categórica
 #'
-#' @param variable Caracteres. Nombre de la variable (e.g., `"p25_sexo"`).
+#' @param variable Caracteres. Nombre de la variable (e.g., `"p25_sexo"`, `"P23"`).
+#' @param anio Entero. Año del censo: `2024` (defecto), `1976`, `1992`, `2001`
+#'   o `2012`.
 #' @return Un data.frame con columnas `codigo` y `etiqueta`, o un mensaje
 #'   si la variable no tiene categorías.
 #' @export
 #' @examples
 #' \dontrun{
 #' codebook_valores("p25_sexo")
-#' codebook_valores("nivel_edu")
+#' codebook_valores("P23", anio = 2012)
 #' }
-codebook_valores <- function(variable) {
-  meta <- codebook(variable = variable)
+codebook_valores <- function(variable, anio = 2024) {
+  meta <- codebook(variable = variable, anio = anio)
   if (nrow(meta) == 0) {
-    cli::cli_abort("Variable {.var {variable}} no encontrada en el diccionario.")
+    cli::cli_abort("Variable {.var {variable}} no encontrada en el diccionario del censo {anio}.")
   }
   vals <- meta$valores_codigos[[1]]
   if (is.null(vals) || nrow(vals) == 0) {

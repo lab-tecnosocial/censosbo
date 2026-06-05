@@ -3,27 +3,30 @@
 #' Descarga y/o carga desde caché los datos de mortalidad del Censo de Población
 #' y Vivienda 2024 de Bolivia.
 #'
-#' @inheritParams get_personas
+#' @inheritParams get_personas_2024
 #' @param as Formato de retorno: `"arrow"` (por defecto), `"tibble"` o
 #'   `"duckdb"` (tabla `"mortalidad"`).
 #'
-#' @return Ver [get_personas()].
+#' @return Ver [get_personas_2024()].
 #'
 #' @details
 #' Registra los fallecimientos ocurridos en el hogar durante los últimos
 #' 12 meses. Variables principales: mes y año de fallecimiento, edad,
 #' causa COVID-19 (`m214_cov`), sexo y si fue parto (`m216_parto`).
 #'
+#' Para mortalidad del censo 1992 usa [get_mortalidad_1992()] o
+#' `get_censo(1992, "mortalidad")`.
+#'
 #' @export
 #' @examples
 #' \dontrun{
 #' # Fallecimientos por departamento
 #' library(dplyr)
-#' get_mortalidad() |>
+#' get_mortalidad_2024() |>
 #'   count(idep) |>
 #'   collect()
 #' }
-get_mortalidad <- function(
+get_mortalidad_2024 <- function(
     departamento = NULL,
     provincia    = NULL,
     municipio    = NULL,
@@ -39,3 +42,4 @@ get_mortalidad <- function(
   ds <- .apply_variable_selection(ds, variables)
   .return_as(ds, as, table_name = "mortalidad", verbose = verbose)
 }
+
