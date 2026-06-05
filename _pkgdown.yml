@@ -15,16 +15,17 @@ template:
     heading-font: "Source Sans Pro"
 
 home:
-  title: "censosbo: Datos del Censo Bolivia 2024"
+  title: "censosbo: Censos de Bolivia (1976–2024)"
   description: >
-    Acceso programático a los microdatos del Censo de Población y Vivienda
-    2024 de Bolivia (CPV-2024). Descarga bajo demanda, caché local,
-    compatible con dplyr, Arrow y DuckDB.
+    Acceso programático a los microdatos de todos los censos de Bolivia:
+    1976, 1992, 2001, 2012 y CPV-2024. Descarga bajo demanda, caché local,
+    compatible con dplyr, Arrow y DuckDB. Incluye funciones de análisis
+    longitudinal y diccionarios de variables para todos los años.
   sidebar:
     structure: [links, license, community, citation, authors, dev]
   links:
   - text: "Fuente de datos: INE Bolivia"
-    href: https://anda.ine.gob.bo/index.php/catalog/132
+    href: https://anda.ine.gob.bo
   - text: "Reportar un problema"
     href: https://github.com/lab-tecnosocial/censosbo/issues
 
@@ -47,10 +48,16 @@ navbar:
       menu:
       - text: "Introducción al paquete"
         href: articles/introduccion.html
-      - text: "Diccionario de datos"
+      - text: "Diccionario de datos (1976–2024)"
         href: articles/diccionario.html
       - text: "---"
-      - text: "Tutoriales"
+      - text: "Censos históricos"
+      - text: "Acceso a censos históricos (1976–2012)"
+        href: articles/censos-historicos.html
+      - text: "Análisis longitudinal entre censos"
+        href: articles/analisis-longitudinal.html
+      - text: "---"
+      - text: "Tutoriales CPV-2024"
       - text: "Análisis demográfico"
         href: articles/analisis-demografico.html
       - text: "Análisis de condiciones de vivienda"
@@ -63,47 +70,82 @@ footer:
   right: "Sitio construido con [pkgdown](https://pkgdown.r-lib.org/)."
 
 reference:
-  - title: "Acceso a microdatos"
+  - title: "CPV-2024: microdatos"
     desc: >
-      Funciones principales para descargar y consultar los cuatro conjuntos
-      de datos del CPV-2024. Todos devuelven un Arrow Dataset (lazy),
+      Funciones para descargar y consultar los microdatos del Censo de
+      Población y Vivienda 2024. Todos devuelven un Arrow Dataset (lazy),
       un tibble, o una conexión DuckDB.
     contents:
-      - get_personas
-      - get_viviendas
-      - get_emigracion
-      - get_mortalidad
-  - title: "Datos incluidos en el paquete"
+      - get_personas_2024
+      - get_viviendas_2024
+      - get_emigracion_2024
+      - get_mortalidad_2024
+
+  - title: "Censos históricos: API general"
     desc: >
-      Datasets disponibles sin descarga, incluidos directamente en el paquete.
+      Función principal para acceder a cualquier censo histórico (1976,
+      1992, 2001, 2012) y funciones de análisis longitudinal entre censos.
     contents:
-      - geo_bolivia
-      - codebook_meta
+      - get_censo
+      - get_longitudinal
+      - variables_armonizadas
+
+  - title: "Censos históricos: atajos por año"
+    desc: >
+      Funciones cortas equivalentes a `get_censo(anio, tabla, ...)`.
+    contents:
+      - get_poblacion_1976
+      - get_viviendas_1976
+      - get_personas_1992
+      - get_viviendas_1992
+      - get_mortalidad_1992
+      - get_personas_2001
+      - get_viviendas_2001
+      - get_personas_2012
+      - get_viviendas_2012
+      - get_emigracion_2012
+      - get_discapacidad_2012
+
+  - title: "Diccionario de variables"
+    desc: >
+      Funciones para explorar variables y etiquetas de todos los censos,
+      y para convertir códigos numéricos a texto legible.
+    contents:
+      - codebook
+      - codebook_valores
+      - codebook_1976
+      - codebook_1992
+      - codebook_2001
+      - codebook_2012
+      - codebook_2024
+      - etiquetar_valores
+      - etiquetar_variables
+
   - title: "Geografía de Bolivia"
     desc: >
-      Funciones para consultar la división político-administrativa del país
-      (9 departamentos, 113 provincias, 343 municipios).
+      Funciones para consultar la división político-administrativa del país.
     contents:
       - departamentos
       - provincias
       - municipios
-  - title: "Diccionario de variables y etiquetas"
-    desc: >
-      Funciones para explorar las 168 variables del CPV-2024,
-      consultar categorías y convertir códigos numéricos a etiquetas legibles.
-    contents:
-      - codebook
-      - codebook_valores
-      - etiquetar_valores
-      - etiquetar_variables
+
   - title: "Gestión de caché"
     desc: >
       Los archivos Parquet se descargan una sola vez y quedan en caché local.
-      Estas funciones permiten inspeccionar y limpiar el caché.
     contents:
       - censosbo_cache_dir
       - censosbo_cache_info
       - censosbo_cache_clear
+
+  - title: "Datos incluidos en el paquete"
+    desc: >
+      Datasets disponibles sin descarga, incluidos directamente en el paquete.
+    contents:
+      - codebook_meta
+      - codebook_historico_meta
+      - variable_longitudinal_map
+      - geo_bolivia
+
   - title: "Información del paquete"
     contents:
       - censosbo-package
@@ -114,7 +156,12 @@ articles:
     contents:
       - introduccion
       - diccionario
-  - title: "Tutoriales"
+  - title: "Censos históricos"
+    navbar: Censos históricos
+    contents:
+      - censos-historicos
+      - analisis-longitudinal
+  - title: "Tutoriales CPV-2024"
     navbar: Tutoriales
     contents:
       - analisis-demografico
