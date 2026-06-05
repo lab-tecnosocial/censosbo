@@ -9,20 +9,17 @@ publicados por el Instituto Nacional de Estadística (INE).
 Los datos originales en CSV pesan más de 3 GB, por lo que el paquete los
 distribuye como archivos **Parquet** comprimidos (mucho más livianos y
 rápidos), que se descargan **bajo demanda** y se guardan en un caché
-local. No se necesita descargar todo: se puede pedir solo el
+local. No es necesario descargar todo: se puede pedir solo el
 departamento de interés.
 
 ## Instalación
 
 ``` r
 
-# Instalar desde GitHub
 remotes::install_github("lab-tecnosocial/censosbo")
 ```
 
 ## Tablas disponibles
-
-El CPV-2024 incluye cuatro tablas accesibles con `censosbo`:
 
 | Función | Filas | Variables | En disco (Parquet) | En memoria (tibble) |
 |----|---:|---:|---:|---:|
@@ -37,86 +34,15 @@ se llama
 tablas se unen con la clave compuesta `idep + iprov + imun + i00`
 (identificador de hogar).
 
-## Geografía: departamentos, provincias y municipios
-
-El paquete incluye la división político-administrativa completa de
-Bolivia sin necesidad de descargar nada:
-
-``` r
-
-# Los 9 departamentos con sus códigos
-departamentos()
-#>     idep nombre_dep
-#> 1     01 Chuquisaca
-#> 30    02     La Paz
-#> 117   03 Cochabamba
-#> 165   04      Oruro
-#> 200   05     Potosí
-#> 242   06     Tarija
-#> 253   07 Santa Cruz
-#> 309   08       Beni
-#> 329   09      Pando
-```
-
-``` r
-
-# Número de municipios por departamento
-geo_bolivia |>
-  count(idep, nombre_dep, name = "municipios") |>
-  ggplot(aes(x = reorder(nombre_dep, municipios), y = municipios)) +
-  geom_col(fill = "#003087") +
-  geom_text(aes(label = municipios), hjust = -0.2, size = 3.5) +
-  coord_flip() +
-  ylim(0, 95) +
-  labs(
-    title   = "Municipios por departamento — Bolivia",
-    x       = NULL,
-    y       = "Número de municipios",
-    caption = "Fuente: INE Bolivia, CPV-2024"
-  ) +
-  theme_minimal(base_size = 12)
-```
-
-![](introduccion_files/figure-html/municipios-por-dep-1.png)
-
-``` r
-
-# Provincias de Santa Cruz
-provincias("Santa Cruz")
-#>     idep nombre_dep iprov            nombre_prov
-#> 253   07 Santa Cruz    01          Andrés Ibáñez
-#> 258   07 Santa Cruz    02                 Warnes
-#> 260   07 Santa Cruz    03                Velasco
-#> 263   07 Santa Cruz    04                 Ichilo
-#> 267   07 Santa Cruz    05              Chiquitos
-#> 270   07 Santa Cruz    06                   Sara
-#> 273   07 Santa Cruz    07             Cordillera
-#> 280   07 Santa Cruz    08           Valle Grande
-#> 285   07 Santa Cruz    09                Florida
-#> 289   07 Santa Cruz    10     Obispo Santisteban
-#> 294   07 Santa Cruz    11        Ñuflo de Chávez
-#> 300   07 Santa Cruz    12         Ángel Sandoval
-#> 301   07 Santa Cruz    13 Manuel María Caballero
-#> 303   07 Santa Cruz    14           Germán Busch
-#> 306   07 Santa Cruz    15               Guarayos
-```
-
-``` r
-
-# Municipios de la provincia Cercado (Cochabamba)
-municipios(departamento = "03", provincia = "01")
-#>     idep nombre_dep iprov nombre_prov imun nombre_mun
-#> 117   03 Cochabamba    01     Cercado   01 Cochabamba
-```
-
 ## Diccionario de variables
 
 El paquete incluye un diccionario completo de las 168 variables del
-CPV-2024:
+CPV-2024 con etiquetas en español, disponible sin necesidad de descargar
+nada:
 
 ``` r
 
-# Variables disponibles por tabla del CPV-2024
+# Distribución de variables por tabla y tipo
 codebook_meta |>
   count(tabla, tipo) |>
   ggplot(aes(x = reorder(tabla, n), y = n, fill = tipo)) +
@@ -128,9 +54,7 @@ codebook_meta |>
   ) +
   labs(
     title   = "Variables del CPV-2024 por tabla y tipo",
-    x       = NULL,
-    y       = "Número de variables",
-    fill    = "Tipo",
+    x       = NULL, y = "Número de variables", fill = "Tipo",
     caption = "Fuente: INE Bolivia, CPV-2024"
   ) +
   theme_minimal(base_size = 12)
@@ -174,7 +98,6 @@ codebook(buscar = "educa")
 #> 81                                                                                                                                                                                                 1, 2, 3, 4, Ninguno, Primaria, Secundaria, Superior
 #> 83                                                                                                                                                                                                                                        1, 2, Sí, No
 #> 84                                                                                                                                                                      1, 2, 3, 4, 5, 6, 7, 0 - 3, 4 - 5, 6 - 11, 12 - 17, 18 - 24, 25 - 59, 60 o más
-# Nota: buscar = "educaci" devolvería 0 resultados — el diccionario usa "educativo/educativa"
 ```
 
 ``` r
@@ -186,9 +109,103 @@ codebook_valores("p25_sexo")
 #> 2      2   Hombre
 ```
 
+## Etiquetas en los resultados
+
+Los datos del censo usan códigos numéricos. El paquete ofrece dos
+funciones para hacerlos legibles:
+
+- [`etiquetar_valores()`](https://lab-tecnosocial.github.io/censosbo/reference/etiquetar_valores.md)
+  — convierte los **códigos** a etiquetas en español (1 → “Mujer”)
+- [`etiquetar_variables()`](https://lab-tecnosocial.github.io/censosbo/reference/etiquetar_variables.md)
+  — renombra las **columnas** con sus descripciones del INE
+
 ``` r
 
-# Ver variables de la tabla de emigración
+# Ejemplo con los datos de geografía incluidos en el paquete
+codebook_meta |>
+  filter(tabla == "persona", tipo == "categorica") |>
+  head(5) |>
+  select(variable, etiqueta, tipo)
+#>       variable
+#> 1 p24_parentes
+#> 2     p25_sexo
+#> 3       p28_cn
+#> 4       p29_ci
+#> 5  p30a_public
+#>                                                                                etiqueta
+#> 1                                 24. Que parentesco tiene con la jefa o jefe del hogar
+#> 2                                                                 25. Es mujer u hombre
+#> 3                        28. Su nacimiento está inscrito en el registro civil boliviano
+#> 4                                        29. Tiene o tuvo cédula de identidad boliviana
+#> 5 30.A. Cuando tiene problemas de salud acude a Puesto/centro/hospital de salud público
+#>         tipo
+#> 1 categorica
+#> 2 categorica
+#> 3 categorica
+#> 4 categorica
+#> 5 categorica
+```
+
+En los siguientes ejemplos se aplican después de
+[`collect()`](https://dplyr.tidyverse.org/reference/compute.html):
+
+``` r
+
+get_personas(departamento = "La Paz") |>
+  count(p25_sexo, nivel_edu) |>
+  collect() |>
+  etiquetar_valores()    # 1 → "Mujer", 2 → "Hombre"; 1 → "Ninguno", etc.
+
+# Para reportes: también renombrar columnas
+get_personas(departamento = "La Paz") |>
+  count(p25_sexo) |>
+  collect() |>
+  etiquetar_valores() |>
+  etiquetar_variables()  # "p25_sexo" → "25. Es mujer u hombre"
+```
+
+## Geografía: departamentos, provincias y municipios
+
+El paquete incluye la división político-administrativa completa de
+Bolivia sin necesidad de descargar nada:
+
+``` r
+
+departamentos()
+#>     idep nombre_dep
+#> 1     01 Chuquisaca
+#> 30    02     La Paz
+#> 117   03 Cochabamba
+#> 165   04      Oruro
+#> 200   05     Potosí
+#> 242   06     Tarija
+#> 253   07 Santa Cruz
+#> 309   08       Beni
+#> 329   09      Pando
+```
+
+``` r
+
+geo_bolivia |>
+  count(idep, nombre_dep, name = "municipios") |>
+  ggplot(aes(x = reorder(nombre_dep, municipios), y = municipios)) +
+  geom_col(fill = "#003087") +
+  geom_text(aes(label = municipios), hjust = -0.2, size = 3.5) +
+  coord_flip() +
+  ylim(0, 95) +
+  labs(
+    title   = "Municipios por departamento — Bolivia",
+    x       = NULL, y = "Número de municipios",
+    caption = "Fuente: INE Bolivia, CPV-2024"
+  ) +
+  theme_minimal(base_size = 12)
+```
+
+![](introduccion_files/figure-html/municipios-por-dep-1.png)
+
+``` r
+
+# Variables de la tabla de emigración
 codebook(tabla = "emigracion")
 #>             variable                           etiqueta      tabla       tipo
 #> 159        e203_sexo               20.3. La persona es: emigracion categorica
@@ -204,143 +221,84 @@ codebook(tabla = "emigracion")
 
 ## Primera descarga de microdatos
 
-Al llamar
-[`get_personas()`](https://lab-tecnosocial.github.io/censosbo/reference/get_personas.md)
-por primera vez, el paquete descarga el archivo Parquet del departamento
-elegido y lo guarda en caché. Las siguientes llamadas ya no descargan
-nada.
-
 ``` r
 
-library(censosbo)
-
-# Descargar datos de Santa Cruz (código "07", ~155 MB)
+# Descargar datos de Santa Cruz (~155 MB, se guarda en caché)
 personas_sc <- get_personas(departamento = "Santa Cruz")
 personas_sc
-#> FileSystemDataset with 2 Parquet files
-#> idep: string
-#> iprov: string
-#> imun: string
-#> i00: string
-#> p01_nacion: int32
-#> ...
+#> FileSystemDataset with 1 Parquet file
 #> 118 columns
 ```
 
 El resultado por defecto es un **Arrow Dataset** — los datos quedan en
-disco, no en RAM. Solo se cargan a memoria cuando los pides
-explícitamente con
-[`collect()`](https://dplyr.tidyverse.org/reference/compute.html).
+disco, no en RAM.
 
 ## Filtros geográficos
 
-Todas las funciones `get_*()` aceptan los mismos argumentos geográficos:
-
 ``` r
 
-# Por nombre de departamento
 get_personas(departamento = "La Paz")
-
-# Por código de dos dígitos (equivalente al anterior)
-get_personas(departamento = "02")
-
-# Varios departamentos a la vez
 get_personas(departamento = c("La Paz", "Cochabamba", "Santa Cruz"))
-
-# Por provincia (código dentro del departamento)
-get_personas(departamento = "07", provincia = "01")
-
-# Por municipio
-get_personas(departamento = "07", municipio = "01")
+get_personas(departamento = "Santa Cruz", provincia = "01")
+get_personas(departamento = "Santa Cruz", municipio = "01")
 ```
 
 ## Selección de variables
 
-Por defecto se devuelven todas las variables. Para análisis más rápidos,
-se pueden pedir solo las columnas necesarias:
-
 ``` r
 
-# Solo sexo y edad de Santa Cruz
 get_personas(
-  departamento = "07",
-  variables    = c("p25_sexo", "p26_edad")
+  departamento = "Santa Cruz",
+  variables    = c("p25_sexo", "p26_edad", "nivel_edu")
 )
-#> Las columnas idep, iprov, imun, i00 siempre se incluyen
+# Las columnas idep, iprov, imun, i00 siempre se incluyen
 ```
-
-Usa
-[`codebook()`](https://lab-tecnosocial.github.io/censosbo/reference/codebook.md)
-para ver qué variables existen en cada tabla.
 
 ## Formatos de retorno
 
-El argumento `as` controla el tipo de objeto retornado:
-
 ``` r
 
-# "arrow" (defecto): lazy, no carga en RAM — para datos grandes
-ds_arrow <- get_personas(departamento = "07", as = "arrow")
+# Arrow (defecto): lazy, no carga en RAM
+ds <- get_personas(departamento = "Santa Cruz", as = "arrow")
 
-# "tibble": trae los datos a memoria RAM — para conjuntos pequeños
-df <- get_personas(departamento = "07", as = "tibble")
+# tibble: trae a RAM (cuidado con departamentos grandes)
+df <- get_personas(departamento = "Pando", as = "tibble")
 
-# "duckdb": conexión DBI para SQL — para queries complejas o JOINs
-con <- get_personas(departamento = "07", as = "duckdb")
-DBI::dbGetQuery(con, "SELECT COUNT(*) AS total FROM personas")
+# DuckDB: conexión SQL
+con <- get_personas(departamento = "Santa Cruz", as = "duckdb")
+DBI::dbGetQuery(con, "SELECT COUNT(*) FROM personas")
 DBI::dbDisconnect(con)
 ```
 
 ## Uso con dplyr
 
-El formato Arrow es compatible directamente con `dplyr`. Los verbos se
-traducen a operaciones sobre el archivo Parquet sin cargar todo en RAM.
-Usa
-[`etiquetar()`](https://lab-tecnosocial.github.io/censosbo/reference/etiquetar.md)
+Arrow es compatible con `dplyr`. Usa
+[`etiquetar_valores()`](https://lab-tecnosocial.github.io/censosbo/reference/etiquetar_valores.md)
 después de
-[`collect()`](https://dplyr.tidyverse.org/reference/compute.html) para
-ver etiquetas legibles en lugar de códigos numéricos:
+[`collect()`](https://dplyr.tidyverse.org/reference/compute.html):
 
 ``` r
 
-library(dplyr)
-
-# Distribución por sexo en Cochabamba con etiquetas
+# Distribución por sexo con etiquetas
 get_personas(departamento = "Cochabamba") |>
   count(p25_sexo) |>
   collect() |>
-  etiquetar()
-#> # A tibble: 2 × 2
+  etiquetar_valores()
 #>   p25_sexo       n
 #>   <fct>      <int>
 #> 1 Mujer    831062
 #> 2 Hombre   855433
 
-# Edad promedio por área urbano/rural en Oruro
-get_personas(
-  departamento = "Oruro",
-  variables    = c("p26_edad", "urbrur")
-) |>
-  group_by(urbrur) |>
-  summarise(edad_prom = mean(p26_edad, na.rm = TRUE)) |>
-  collect() |>
-  etiquetar()
-
-# Grupos quinquenales de edad — IMPORTANTE: usar %/% en lugar de cut()
-# cut() no es compatible con Arrow; hay que usar operaciones aritméticas
+# Grupos quinquenales de edad (usar %/% — cut() no es compatible con Arrow)
 get_personas(departamento = "Santa Cruz") |>
   filter(!is.na(p26_edad), !is.na(p25_sexo)) |>
   mutate(grupo_edad = (p26_edad %/% 5L) * 5L) |>
   count(grupo_edad, p25_sexo) |>
   collect() |>
-  etiquetar()
+  etiquetar_valores()
 ```
 
 ## Consultas SQL con DuckDB
-
-Para análisis más complejos o JOINs entre tablas. Los resultados SQL
-también admiten
-[`etiquetar()`](https://lab-tecnosocial.github.io/censosbo/reference/etiquetar.md):
 
 ``` r
 
@@ -353,7 +311,7 @@ DBI::dbGetQuery(con, "
   FROM personas
   GROUP BY p25_sexo
   ORDER BY p25_sexo
-") |> etiquetar()
+") |> etiquetar_valores()
 #> p25_sexo   total edad_prom
 #>    Mujer 1234567      29.1
 #>   Hombre 1212345      28.8
@@ -363,29 +321,21 @@ DBI::dbDisconnect(con)
 
 ## Gestión del caché
 
-Los datos descargados se guardan localmente y se reutilizan en sesiones
-futuras. Por defecto van al directorio estándar del sistema; para
-guardar dentro del proyecto actual añade esto al inicio del script:
-
 ``` r
 
-# Caché dentro del proyecto (recomendado para reproducibilidad)
+# Guardar caché dentro del proyecto (recomendado)
 options(censosbo.cache_dir = "data/censosbo")
 ```
 
 ``` r
 
-# Ver la ruta actual del caché
 censosbo_cache_dir()
 #> [1] "/home/runner/.cache/R/censosbo"
 ```
 
 ``` r
 
-# Ver qué archivos están descargados y cuánto pesan
 censosbo_cache_info()
-
-# Limpiar el caché si necesitas liberar espacio en disco
 censosbo_cache_clear()
 ```
 
@@ -393,7 +343,7 @@ censosbo_cache_clear()
 
 - **[Análisis
   demográfico](https://lab-tecnosocial.github.io/censosbo/articles/analisis-demografico.md)**:
-  pirámide de edades, nivel educativo, pueblos indígenas.
+  pirámide de edades, nivel educativo, alfabetismo.
 - **[Análisis de
   vivienda](https://lab-tecnosocial.github.io/censosbo/articles/analisis-vivienda.md)**:
   agua, energía, hacinamiento, joins personas-viviendas.
@@ -411,9 +361,3 @@ citation("censosbo")
 > Ojeda Copa, A. (2024). *censosbo: Acceso y análisis de los datos del
 > Censo de Bolivia 2024*. R package version 0.1.0.
 > <https://github.com/lab-tecnosocial/censosbo>
-
-También cita la fuente original:
-
-> Instituto Nacional de Estadística (INE). (2024). *Censo de Población y
-> Vivienda 2024 — Base de datos de microdatos*. Bolivia.
-> <https://anda.ine.gob.bo/index.php/catalog/132>

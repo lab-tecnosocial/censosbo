@@ -1,252 +1,199 @@
 # Análisis de condiciones de vivienda
 
-## Exploración rápida con datos de muestra
+## Introducción
 
-Antes de descargar los datos completos, puedes explorar el perfil
-demográfico de los hogares con `sample_personas`:
-
-``` r
-
-library(censosbo)
-library(dplyr)
-#> 
-#> Attaching package: 'dplyr'
-#> The following objects are masked from 'package:stats':
-#> 
-#>     filter, lag
-#> The following objects are masked from 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
-library(ggplot2)
-
-# Composición del hogar por relación de parentesco (datos de muestra)
-sample_personas |>
-  mutate(
-    parentes = case_when(
-      p24_parentes == 1 ~ "Jefe/a",
-      p24_parentes == 2 ~ "Cónyuge",
-      p24_parentes == 3 ~ "Hijo/a",
-      p24_parentes %in% c(4,5,6) ~ "Otros parientes directos",
-      p24_parentes %in% c(7:12) ~ "Otros parientes",
-      TRUE ~ "Sin parentesco"
-    )
-  ) |>
-  count(parentes, sort = TRUE) |>
-  ggplot(aes(x = reorder(parentes, n), y = n)) +
-  geom_col(fill = "#003087") +
-  geom_text(aes(label = n), hjust = -0.2, size = 3.5) +
-  coord_flip() +
-  ylim(0, 450) +
-  labs(
-    title   = "Composición del hogar por parentesco (muestra CPV-2024)",
-    x = NULL, y = "Número de personas",
-    caption = "Fuente: INE Bolivia, CPV-2024 (muestra de prueba)"
-  ) +
-  theme_minimal(base_size = 12)
-```
-
-![](analisis-vivienda_files/figure-html/muestra-hogar-1.png)
+Esta vignette analiza las condiciones habitacionales usando los datos de
+viviendas del CPV-2024. La tabla de viviendas se descarga como un único
+archivo (~100 MB) que incluye todos los departamentos.
 
 ``` r
 
-# Tasa de alfabetismo por grupo de edad (datos de muestra)
-sample_personas |>
-  filter(p26_edad >= 15) |>
-  mutate(
-    lee    = ifelse(p40_lee == 1, "Sí sabe leer", "No sabe leer"),
-    g_edad = case_when(
-      p26_edad < 30 ~ "15–29",
-      p26_edad < 50 ~ "30–49",
-      TRUE          ~ "50 y más"
-    )
-  ) |>
-  filter(!is.na(lee)) |>
-  count(g_edad, lee) |>
-  group_by(g_edad) |>
-  mutate(pct = n / sum(n) * 100) |>
-  ggplot(aes(x = g_edad, y = pct, fill = lee)) +
-  geom_col() +
-  scale_fill_manual(values = c("Sí sabe leer" = "#003087", "No sabe leer" = "#d73027")) +
-  labs(
-    title   = "Alfabetismo (15+ años) por grupo de edad — muestra CPV-2024",
-    x = "Grupo de edad", y = "Porcentaje (%)", fill = NULL,
-    caption = "Fuente: INE Bolivia, CPV-2024 (muestra de prueba)"
-  ) +
-  theme_minimal(base_size = 12) +
-  theme(legend.position = "bottom")
-```
-
-![](analisis-vivienda_files/figure-html/muestra-alfabetismo-1.png)
-
-------------------------------------------------------------------------
-
-> Los siguientes ejemplos requieren **descargar datos de vivienda**
-> (~100 MB). Ejecuta el código en tu sesión de R después de instalar el
-> paquete.
-
-## Condiciones habitacionales
-
-``` r
-
-library(dplyr)
-library(ggplot2)
-
-# Descargar datos de vivienda de Cochabamba
-viviendas_cbba <- get_viviendas(
-  departamento = "03",
+# Descargar viviendas con variables de habitabilidad
+# (se filtra por Oruro después de descargar el archivo completo)
+viviendas <- get_viviendas(
+  departamento = "Oruro",
   variables    = c("urbrur", "v03_pared", "v05_techo", "v06_piso",
-                   "v07_aguapro", "v08_aguadist", "v09_energia",
-                   "v10_combus", "v11_basura", "v15_servsan")
+                   "v07_aguapro", "v09_energia", "v11_basura",
+                   "v13_habitac", "v14_dormit", "tot_pers")
 ) |>
-  collect()
+  collect() |>
+  etiquetar_valores()
+#> ✔ Usando caché: vivienda.parquet
+
+nrow(viviendas)
+#> [1] 271078
 ```
+
+## Fuente de agua potable
 
 ``` r
 
-# Acceso al agua potable por área urbano/rural
-agua <- viviendas_cbba |>
+agua <- viviendas |>
   filter(!is.na(v07_aguapro), !is.na(urbrur)) |>
-  mutate(
-    area  = ifelse(urbrur == 1, "Urbano", "Rural"),
-    agua  = case_when(
-      v07_aguapro == 1 ~ "Red pública",
-      v07_aguapro == 2 ~ "Pozo",
-      v07_aguapro == 3 ~ "Río/vertiente",
-      v07_aguapro == 4 ~ "Lluvia/otro",
-      TRUE             ~ "Otro"
-    )
-  ) |>
-  count(area, agua) |>
-  group_by(area) |>
+  count(urbrur, v07_aguapro) |>
+  group_by(urbrur) |>
   mutate(pct = n / sum(n) * 100)
 
-ggplot(agua, aes(x = area, y = pct, fill = agua)) +
+ggplot(agua, aes(x = urbrur, y = pct, fill = v07_aguapro)) +
   geom_col() +
   scale_fill_brewer(palette = "Blues", direction = -1) +
   labs(
-    title   = "Fuente de agua potable por área - Cochabamba, CPV-2024",
+    title   = "Fuente de agua potable por área — Oruro, CPV-2024",
     x       = "Área",
     y       = "Porcentaje de viviendas (%)",
     fill    = "Fuente de agua",
     caption = "Fuente: INE Bolivia, CPV-2024"
   ) +
-  theme_minimal()
+  theme_minimal(base_size = 12) +
+  theme(legend.position = "bottom",
+        legend.text = element_text(size = 8))
 ```
+
+![](analisis-vivienda_files/figure-html/agua-1.png)
+
+## Energía eléctrica
 
 ``` r
 
-# Tipo de energía por área
-energia <- viviendas_cbba |>
-  filter(!is.na(v09_energia)) |>
-  mutate(
-    area    = ifelse(urbrur == 1, "Urbano", "Rural"),
-    energia = case_when(
-      v09_energia == 1 ~ "Red eléctrica",
-      v09_energia == 2 ~ "Panel solar",
-      v09_energia == 3 ~ "Generador",
-      v09_energia == 4 ~ "Gas/leña/vela",
-      TRUE             ~ "Sin energía/otro"
-    )
-  ) |>
-  count(area, energia) |>
-  group_by(area) |>
+energia <- viviendas |>
+  filter(!is.na(v09_energia), !is.na(urbrur)) |>
+  count(urbrur, v09_energia) |>
+  group_by(urbrur) |>
   mutate(pct = n / sum(n) * 100)
 
-ggplot(energia, aes(x = area, y = pct, fill = energia)) +
+ggplot(energia, aes(x = urbrur, y = pct, fill = v09_energia)) +
   geom_col() +
-  scale_fill_manual(values = c(
-    "Red eléctrica"   = "#003087",
-    "Panel solar"     = "#F4C430",
-    "Generador"       = "#6baed6",
-    "Gas/leña/vela"   = "#fd8d3c",
-    "Sin energía/otro"= "#d9d9d9"
-  )) +
+  scale_fill_brewer(palette = "Oranges", direction = -1) +
   labs(
-    title   = "Fuente de energía eléctrica - Cochabamba, CPV-2024",
+    title   = "Fuente de energía eléctrica — Oruro, CPV-2024",
     x       = "Área",
     y       = "Porcentaje de viviendas (%)",
     fill    = "Tipo de energía",
     caption = "Fuente: INE Bolivia, CPV-2024"
   ) +
-  theme_minimal()
+  theme_minimal(base_size = 12) +
+  theme(legend.position = "bottom",
+        legend.text = element_text(size = 8))
 ```
 
-## Join personas-viviendas con DuckDB
-
-``` r
-
-library(DBI)
-
-# Conectar ambas tablas en DuckDB para análisis conjunto
-con <- DBI::dbConnect(duckdb::duckdb(), dbdir = ":memory:")
-
-duckdb::duckdb_register_arrow(
-  con, "personas",
-  get_personas(departamento = "03", variables = c("idep","iprov","imun","i00","p25_sexo","p26_edad"))
-)
-duckdb::duckdb_register_arrow(
-  con, "viviendas",
-  get_viviendas(departamento = "03", variables = c("idep","iprov","imun","i00","v07_aguapro","urbrur"))
-)
-
-# Personas en viviendas sin acceso a red de agua pública
-sin_agua <- DBI::dbGetQuery(con, "
-  SELECT
-    p.idep,
-    v.urbrur,
-    COUNT(*) AS personas,
-    AVG(p.p26_edad) AS edad_promedio
-  FROM personas p
-  JOIN viviendas v
-    ON p.idep = v.idep AND p.iprov = v.iprov
-   AND p.imun = v.imun AND p.i00  = v.i00
-  WHERE v.v07_aguapro != 1  -- sin red pública
-  GROUP BY p.idep, v.urbrur
-  ORDER BY personas DESC
-")
-
-DBI::dbDisconnect(con)
-print(sin_agua)
-```
+![](analisis-vivienda_files/figure-html/energia-1.png)
 
 ## Índice de hacinamiento
 
 ``` r
 
-viviendas_hab <- get_viviendas(
-  departamento = "03",
-  variables    = c("urbrur", "v13_habitac", "v14_dormit", "tot_pers")
-) |>
-  collect()
-
-hacinamiento <- viviendas_hab |>
-  filter(!is.na(tot_pers), !is.na(v14_dormit), v14_dormit > 0, tot_pers > 0) |>
+hacinamiento <- viviendas |>
+  filter(!is.na(tot_pers), !is.na(v14_dormit), v14_dormit > 0, tot_pers > 0,
+         !is.na(urbrur)) |>
   mutate(
-    personas_por_dormitorio = tot_pers / v14_dormit,
-    hacinamiento = case_when(
-      personas_por_dormitorio <= 2 ~ "Sin hacinamiento (<=2)",
-      personas_por_dormitorio <= 3 ~ "Hacinamiento medio (2-3)",
-      TRUE                         ~ "Hacinamiento severo (>3)"
-    ),
-    area = ifelse(urbrur == 1, "Urbano", "Rural")
+    ppp = tot_pers / v14_dormit,
+    nivel = case_when(
+      ppp <= 2 ~ "Sin hacinamiento (≤2 p/dormitorio)",
+      ppp <= 3 ~ "Hacinamiento medio (2–3)",
+      TRUE     ~ "Hacinamiento severo (>3)"
+    )
   ) |>
-  count(area, hacinamiento) |>
-  group_by(area) |>
+  count(urbrur, nivel) |>
+  group_by(urbrur) |>
   mutate(pct = n / sum(n) * 100)
+#> Warning: There was 1 warning in `filter()`.
+#> ℹ In argument: `v14_dormit > 0`.
+#> Caused by warning in `Ops.factor()`:
+#> ! '>' not meaningful for factors
+#> Warning: There was 1 warning in `mutate()`.
+#> ℹ In argument: `ppp = tot_pers/v14_dormit`.
+#> Caused by warning in `Ops.factor()`:
+#> ! '/' not meaningful for factors
 
-ggplot(hacinamiento, aes(x = area, y = pct, fill = hacinamiento)) +
+ggplot(hacinamiento, aes(x = urbrur, y = pct, fill = nivel)) +
   geom_col() +
   scale_fill_manual(values = c(
-    "Sin hacinamiento (<=2)"    = "#003087",
-    "Hacinamiento medio (2-3)"  = "#F4C430",
-    "Hacinamiento severo (>3)"  = "#d7191c"
+    "Sin hacinamiento (≤2 p/dormitorio)" = "#003087",
+    "Hacinamiento medio (2–3)"           = "#F4C430",
+    "Hacinamiento severo (>3)"           = "#d7191c"
   )) +
   labs(
-    title   = "Hacinamiento habitacional - Cochabamba, CPV-2024",
+    title   = "Hacinamiento habitacional — Oruro, CPV-2024",
     x       = "Área",
     y       = "Porcentaje de viviendas (%)",
-    fill    = "Categoría",
+    fill    = NULL,
     caption = "Fuente: INE Bolivia, CPV-2024"
   ) +
-  theme_minimal()
+  theme_minimal(base_size = 12) +
+  theme(legend.position = "bottom")
+#> Warning: No shared levels found between `names(values)` of the manual scale and the
+#> data's fill values.
+```
+
+![](analisis-vivienda_files/figure-html/hacinamiento-1.png)
+
+## Material de paredes
+
+``` r
+
+paredes <- viviendas |>
+  filter(!is.na(v03_pared)) |>
+  count(v03_pared, sort = TRUE) |>
+  mutate(pct = n / sum(n) * 100)
+
+ggplot(paredes, aes(x = reorder(v03_pared, pct), y = pct)) +
+  geom_col(fill = "#003087") +
+  geom_text(aes(label = paste0(round(pct, 1), "%")), hjust = -0.1, size = 3.2) +
+  coord_flip() +
+  ylim(0, max(paredes$pct) * 1.2) +
+  labs(
+    title   = "Material predominante de paredes — Oruro, CPV-2024",
+    x       = NULL,
+    y       = "Porcentaje de viviendas (%)",
+    caption = "Fuente: INE Bolivia, CPV-2024"
+  ) +
+  theme_minimal(base_size = 12)
+```
+
+![](analisis-vivienda_files/figure-html/paredes-1.png)
+
+## Join personas–viviendas con DuckDB
+
+``` r
+
+library(DBI)
+
+con <- DBI::dbConnect(duckdb::duckdb(), dbdir = ":memory:")
+
+duckdb::duckdb_register_arrow(
+  con, "personas",
+  get_personas(departamento = "Oruro",
+               variables = c("idep","iprov","imun","i00","p25_sexo","p26_edad","nivel_edu"))
+)
+#> ℹ Descargando persona_dep04.parquet (~28 MB)...
+#> ✔ Descargado persona_dep04.parquet [271ms]
+#> 
+duckdb::duckdb_register_arrow(
+  con, "viviendas",
+  get_viviendas(departamento = "Oruro",
+                variables = c("idep","iprov","imun","i00","v07_aguapro","urbrur","tot_pers"))
+)
+#> ✔ Usando caché: vivienda.parquet
+
+# Personas en viviendas sin acceso a red pública de agua, por área
+resultado <- DBI::dbGetQuery(con, "
+  SELECT
+    v.urbrur,
+    COUNT(*)            AS personas,
+    ROUND(AVG(p.p26_edad), 1) AS edad_promedio
+  FROM personas p
+  JOIN viviendas v
+    ON p.idep = v.idep AND p.iprov = v.iprov
+   AND p.imun = v.imun AND p.i00  = v.i00
+  WHERE v.v07_aguapro != 1
+  GROUP BY v.urbrur
+  ORDER BY personas DESC
+")
+
+DBI::dbDisconnect(con)
+
+resultado |> etiquetar_valores()
+#>   urbrur personas edad_promedio
+#> 1  Rural   129099          33.6
+#> 2 Urbana    30466          26.8
 ```

@@ -17,15 +17,12 @@ o una conexión DuckDB.
 
 ## Datos incluidos en el paquete
 
-Datasets pequeños disponibles sin descarga, para exploración y
-prototipado.
+Datasets disponibles sin descarga, incluidos directamente en el paquete.
 
 - [`geo_bolivia`](https://lab-tecnosocial.github.io/censosbo/reference/geo_bolivia.md)
   : Tabla de geografía de Bolivia
 - [`codebook_meta`](https://lab-tecnosocial.github.io/censosbo/reference/codebook_meta.md)
   : Diccionario de variables del CPV-2024
-- [`sample_personas`](https://lab-tecnosocial.github.io/censosbo/reference/sample_personas.md)
-  : Datos de muestra del CPV-2024 (100 filas por departamento)
 
 ## Geografía de Bolivia
 
@@ -48,8 +45,10 @@ categorías y convertir códigos numéricos a etiquetas legibles.
   : Consulta el diccionario de variables del CPV-2024
 - [`codebook_valores()`](https://lab-tecnosocial.github.io/censosbo/reference/codebook_valores.md)
   : Muestra los valores codificados de una variable categórica
-- [`etiquetar()`](https://lab-tecnosocial.github.io/censosbo/reference/etiquetar.md)
-  : Aplica etiquetas a las variables categóricas de un data.frame
+- [`etiquetar_valores()`](https://lab-tecnosocial.github.io/censosbo/reference/etiquetar_valores.md)
+  : Etiqueta los valores de las variables categóricas
+- [`etiquetar_variables()`](https://lab-tecnosocial.github.io/censosbo/reference/etiquetar_variables.md)
+  : Etiqueta los nombres de las variables (columnas)
 
 ## Gestión de caché
 
