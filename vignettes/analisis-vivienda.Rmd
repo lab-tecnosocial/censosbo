@@ -31,10 +31,11 @@ viviendas <- get_viviendas(
   departamento = "Oruro",
   variables    = c("urbrur", "v03_pared", "v05_techo", "v06_piso",
                    "v07_aguapro", "v09_energia", "v11_basura",
-                   "v13_habitac", "v14_dormit", "tot_pers")
+                   "v14_dormit", "tot_pers")
 ) |>
   collect() |>
-  etiquetar_valores()
+  etiquetar_valores(columnas = c("urbrur", "v03_pared", "v05_techo", "v06_piso",
+                                  "v07_aguapro", "v09_energia", "v11_basura"))
 
 nrow(viviendas)
 ```
