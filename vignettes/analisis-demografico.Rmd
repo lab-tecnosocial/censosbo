@@ -28,8 +28,8 @@ Esta vignette muestra cómo usar `censosbo` para análisis demográficos con los
 # Descargar datos de Beni con las variables de interés
 personas <- get_personas(
   departamento = "Beni",
-  variables    = c("p25_sexo", "p26_edad", "g_edad", "nivel_edu",
-                   "p40_lee", "p32_pueblo_per", "urbrur")
+  variables    = c("p25_sexo", "p26_edad", "nivel_edu",
+                   "p40_lee", "p32_pueblo_per")
 ) |>
   collect() |>
   etiquetar_valores()
@@ -52,10 +52,9 @@ piramide <- personas |>
                  "55-59","60-64","65-69","70-74","75+"),
       right = TRUE
     ),
-    n_pir = ifelse(as.integer(p25_sexo) == 1, -1L, 1L)
+    n_pir = ifelse(p25_sexo == "Mujer", -1L, 1L)
   ) |>
-  count(grupo_edad, p25_sexo, wt = n_pir) |>
-  rename(n = n)
+  count(grupo_edad, p25_sexo, wt = n_pir)
 
 ggplot(piramide, aes(x = grupo_edad, y = n, fill = p25_sexo)) +
   geom_col(width = 0.8) +
@@ -95,22 +94,22 @@ ggplot(edu_sexo, aes(x = nivel_edu, y = pct, fill = p25_sexo)) +
   theme(legend.position = "bottom", axis.text.x = element_text(angle = 15, hjust = 1))
 ```
 
-## Alfabetismo por área urbano/rural
+## Alfabetismo por sexo
 
 ```{r alfabetismo}
 alfa <- personas |>
-  filter(!is.na(p40_lee), !is.na(urbrur), p26_edad >= 15) |>
-  count(urbrur, p40_lee) |>
-  group_by(urbrur) |>
+  filter(!is.na(p40_lee), !is.na(p25_sexo), p26_edad >= 15) |>
+  count(p25_sexo, p40_lee) |>
+  group_by(p25_sexo) |>
   mutate(pct = n / sum(n) * 100)
 
-ggplot(alfa, aes(x = urbrur, y = pct, fill = p40_lee)) +
+ggplot(alfa, aes(x = p25_sexo, y = pct, fill = p40_lee)) +
   geom_col() +
   scale_fill_manual(values = c("Sí" = "#003087", "No" = "#d73027"),
                     na.value = "grey80") +
   labs(
-    title   = "Alfabetismo (15+ años) por área — Beni, CPV-2024",
-    x       = "Área",
+    title   = "Alfabetismo (15+ años) por sexo — Beni, CPV-2024",
+    x       = "Sexo",
     y       = "Porcentaje (%)",
     fill    = "Sabe leer y escribir",
     caption = "Fuente: INE Bolivia, CPV-2024"

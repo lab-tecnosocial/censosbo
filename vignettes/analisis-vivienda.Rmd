@@ -166,7 +166,7 @@ duckdb::duckdb_register_arrow(
 # Personas en viviendas sin acceso a red pública de agua, por área
 resultado <- DBI::dbGetQuery(con, "
   SELECT
-    v.urbrur AS area,
+    v.urbrur,
     COUNT(*)            AS personas,
     ROUND(AVG(p.p26_edad), 1) AS edad_promedio
   FROM personas p

@@ -164,7 +164,7 @@ duckdb::duckdb_register_arrow(
 # Indicador: personas con educación superior en viviendas con servicios básicos
 DBI::dbGetQuery(con, "
   SELECT
-    v.urbrur AS area,
+    v.urbrur,
     COUNT(*)                    AS personas_edu_sup,
     ROUND(AVG(p.p26_edad), 1)   AS edad_prom
   FROM personas p
@@ -176,7 +176,7 @@ DBI::dbGetQuery(con, "
     AND v.v09_energia = 1       -- red eléctrica
     AND p.p26_edad >= 25
   GROUP BY v.urbrur
-  ORDER BY area
+  ORDER BY v.urbrur
 ") |> etiquetar_valores()
 
 DBI::dbDisconnect(con)
