@@ -50,10 +50,10 @@
   dep
 }
 
-# Tamaños estimados en MB para mensajes de progreso
+# Tamaños en MB para mensajes de progreso (medidos de data-v1.0.0)
 .PARQUET_SIZE_MB <- list(
-  persona_dep01 = 30,  persona_dep02 = 150, persona_dep03 = 100,
-  persona_dep04 = 28,  persona_dep05 = 43,  persona_dep06 = 26,
-  persona_dep07 = 155, persona_dep08 = 24,  persona_dep09 = 7,
-  vivienda = 100, emigracion = 5, mortalidad = 4
+  persona_dep01 = 15,  persona_dep02 = 75,  persona_dep03 = 51,
+  persona_dep04 = 14,  persona_dep05 = 22,  persona_dep06 = 13,
+  persona_dep07 = 77,  persona_dep08 = 12,  persona_dep09 = 4,
+  vivienda = 55, emigracion = 2, mortalidad = 2
 )
