@@ -25,7 +25,7 @@ ds <- get_personas(
   as = "arrow"
 )
 #> ℹ Descargando persona_dep09.parquet (~7 MB)...
-#> ✔ Descargado persona_dep09.parquet [666ms]
+#> ✔ Descargado persona_dep09.parquet [198ms]
 #> 
 class(ds)
 #> [1] "FileSystemDataset" "Dataset"           "ArrowObject"      
@@ -130,7 +130,7 @@ DBI::dbGetQuery(con, "
 # Años de estudio por grupo quinquenal de edad
 anos_edad <- DBI::dbGetQuery(con, "
   SELECT
-    (p26_edad / 5) * 5 AS grupo_edad,
+    FLOOR(p26_edad / 5) * 5 AS grupo_edad,
     p25_sexo,
     ROUND(AVG(aestudio), 1) AS anios_edu
   FROM personas
@@ -155,7 +155,8 @@ ggplot(anos_edad, aes(x = factor(grupo_edad), y = anios_edu,
     caption = "Fuente: INE Bolivia, CPV-2024"
   ) +
   theme_minimal(base_size = 12) +
-  theme(legend.position = "bottom")
+  theme(legend.position = "bottom",
+        axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
 ![](analisis-avanzado_files/figure-html/duckdb-plot-1.png)
@@ -178,7 +179,7 @@ duckdb::duckdb_register_arrow(
                 variables = c("idep","iprov","imun","i00","urbrur","v07_aguapro","v09_energia"))
 )
 #> ℹ Descargando vivienda.parquet (~100 MB)...
-#> ✔ Descargado vivienda.parquet [421ms]
+#> ✔ Descargado vivienda.parquet [649ms]
 
 # Indicador: personas con educación superior en viviendas con servicios básicos
 DBI::dbGetQuery(con, "

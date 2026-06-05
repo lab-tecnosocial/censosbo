@@ -14,10 +14,11 @@ viviendas <- get_viviendas(
   departamento = "Oruro",
   variables    = c("urbrur", "v03_pared", "v05_techo", "v06_piso",
                    "v07_aguapro", "v09_energia", "v11_basura",
-                   "v13_habitac", "v14_dormit", "tot_pers")
+                   "v14_dormit", "tot_pers")
 ) |>
   collect() |>
-  etiquetar_valores()
+  etiquetar_valores(columnas = c("urbrur", "v03_pared", "v05_techo", "v06_piso",
+                                  "v07_aguapro", "v09_energia", "v11_basura"))
 #> ✔ Usando caché: vivienda.parquet
 
 nrow(viviendas)
@@ -96,14 +97,6 @@ hacinamiento <- viviendas |>
   count(urbrur, nivel) |>
   group_by(urbrur) |>
   mutate(pct = n / sum(n) * 100)
-#> Warning: There was 1 warning in `filter()`.
-#> ℹ In argument: `v14_dormit > 0`.
-#> Caused by warning in `Ops.factor()`:
-#> ! '>' not meaningful for factors
-#> Warning: There was 1 warning in `mutate()`.
-#> ℹ In argument: `ppp = tot_pers/v14_dormit`.
-#> Caused by warning in `Ops.factor()`:
-#> ! '/' not meaningful for factors
 
 ggplot(hacinamiento, aes(x = urbrur, y = pct, fill = nivel)) +
   geom_col() +
@@ -121,8 +114,6 @@ ggplot(hacinamiento, aes(x = urbrur, y = pct, fill = nivel)) +
   ) +
   theme_minimal(base_size = 12) +
   theme(legend.position = "bottom")
-#> Warning: No shared levels found between `names(values)` of the manual scale and the
-#> data's fill values.
 ```
 
 ![](analisis-vivienda_files/figure-html/hacinamiento-1.png)
@@ -166,7 +157,7 @@ duckdb::duckdb_register_arrow(
                variables = c("idep","iprov","imun","i00","p25_sexo","p26_edad","nivel_edu"))
 )
 #> ℹ Descargando persona_dep04.parquet (~28 MB)...
-#> ✔ Descargado persona_dep04.parquet [271ms]
+#> ✔ Descargado persona_dep04.parquet [273ms]
 #> 
 duckdb::duckdb_register_arrow(
   con, "viviendas",
