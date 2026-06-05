@@ -20,12 +20,12 @@ materializa el resultado.
 ``` r
 
 # Dataset Arrow de Pando (el departamento más pequeño, ~7 MB)
-ds <- get_personas(
+ds <- get_personas_2024(
   departamento = "Pando",
   as = "arrow"
 )
 #> ℹ Descargando persona_dep09.parquet (~7 MB)...
-#> ✔ Descargado persona_dep09.parquet [198ms]
+#> ✔ Descargado persona_dep09.parquet [218ms]
 #> 
 class(ds)
 #> [1] "FileSystemDataset" "Dataset"           "ArrowObject"      
@@ -85,7 +85,7 @@ ds |>
 
 library(DBI)
 
-con <- get_personas(departamento = "Pando", as = "duckdb")
+con <- get_personas_2024(departamento = "Pando", as = "duckdb")
 #> ✔ Usando caché: persona_dep09.parquet
 
 # SQL estándar con agregaciones
@@ -169,17 +169,17 @@ con <- DBI::dbConnect(duckdb::duckdb(), dbdir = ":memory:")
 
 duckdb::duckdb_register_arrow(
   con, "personas",
-  get_personas(departamento = "Pando",
+  get_personas_2024(departamento = "Pando",
                variables = c("idep","iprov","imun","i00","p25_sexo","p26_edad","nivel_edu"))
 )
 #> ✔ Usando caché: persona_dep09.parquet
 duckdb::duckdb_register_arrow(
   con, "viviendas",
-  get_viviendas(departamento = "Pando",
+  get_viviendas_2024(departamento = "Pando",
                 variables = c("idep","iprov","imun","i00","urbrur","v07_aguapro","v09_energia"))
 )
 #> ℹ Descargando vivienda.parquet (~100 MB)...
-#> ✔ Descargado vivienda.parquet [649ms]
+#> ✔ Descargado vivienda.parquet [394ms]
 
 # Indicador: personas con educación superior en viviendas con servicios básicos
 DBI::dbGetQuery(con, "
@@ -213,7 +213,7 @@ Parquet y solo trae el resumen a memoria.
 ``` r
 
 # Descargar todos los departamentos (~560 MB) y agregar sin cargar todo en RAM
-personas_full <- get_personas(as = "arrow")
+personas_full <- get_personas_2024(as = "arrow")
 
 resumen_nacional <- personas_full |>
   filter(!is.na(p26_edad)) |>

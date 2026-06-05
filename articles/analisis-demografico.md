@@ -10,7 +10,7 @@ primera descarga.
 ``` r
 
 # Descargar datos de Beni con las variables de interés
-personas <- get_personas(
+personas <- get_personas_2024(
   departamento = "Beni",
   variables    = c("p25_sexo", "p26_edad", "nivel_edu",
                    "p40_lee", "p32_pueblo_per")
@@ -18,7 +18,7 @@ personas <- get_personas(
   collect() |>
   etiquetar_valores()
 #> ℹ Descargando persona_dep08.parquet (~24 MB)...
-#> ✔ Descargado persona_dep08.parquet [448ms]
+#> ✔ Descargado persona_dep08.parquet [227ms]
 #> 
 
 nrow(personas)
@@ -150,7 +150,7 @@ total). Ejecuta en tu sesión de R cuando necesites datos nacionales.
 ``` r
 
 # Edad promedio por departamento (todos los datos del país)
-edad_dep <- get_personas(variables = c("idep", "p26_edad")) |>
+edad_dep <- get_personas_2024(variables = c("idep", "p26_edad")) |>
   filter(!is.na(p26_edad)) |>
   group_by(idep) |>
   summarise(edad_promedio = mean(p26_edad, na.rm = TRUE), .groups = "drop") |>

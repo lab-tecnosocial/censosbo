@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,9 +41,13 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-art-culos" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Artículos</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-art-culos">
 <li><a class="dropdown-item" href="../articles/introduccion.html">Introducción al paquete</a></li>
-    <li><a class="dropdown-item" href="../articles/diccionario.html">Diccionario de datos</a></li>
+    <li><a class="dropdown-item" href="../articles/diccionario.html">Diccionario de datos (1976–2024)</a></li>
     <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Tutoriales</h6></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Censos históricos</h6></li>
+    <li><a class="dropdown-item" href="../articles/censos-historicos.html">Acceso a censos históricos (1976–2012)</a></li>
+    <li><a class="dropdown-item" href="../articles/analisis-longitudinal.html">Análisis longitudinal entre censos</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Tutoriales CPV-2024</h6></li>
     <li><a class="dropdown-item" href="../articles/analisis-demografico.html">Análisis demográfico</a></li>
     <li><a class="dropdown-item" href="../articles/analisis-vivienda.html">Análisis de condiciones de vivienda</a></li>
     <li><a class="dropdown-item" href="../articles/analisis-avanzado.html">Análisis avanzado con DuckDB y Arrow</a></li>
@@ -81,14 +85,13 @@
 <h2 id="qué-es-censosbo">¿Qué es censosbo?<a class="anchor" aria-label="anchor" href="#qu%C3%A9-es-censosbo"></a>
 </h2>
 <p><code>censosbo</code> es un paquete de R que facilita el acceso a los
-microdatos del <strong>Censo de Población y Vivienda 2024
-(CPV-2024)</strong> de Bolivia, publicados por el Instituto Nacional de
-Estadística (INE).</p>
-<p>Los datos originales en CSV pesan más de 3 GB, por lo que el paquete
-los distribuye como archivos <strong>Parquet</strong> comprimidos (mucho
-más livianos y rápidos), que se descargan <strong>bajo demanda</strong>
-y se guardan en un caché local. No es necesario descargar todo: se puede
-pedir solo el departamento de interés.</p>
+microdatos de los <strong>censos de Bolivia</strong> (1976, 1992, 2001,
+2012 y CPV-2024), publicados por el Instituto Nacional de Estadística
+(INE).</p>
+<p>Los datos se distribuyen como archivos <strong>Parquet</strong>
+comprimidos, que se descargan <strong>bajo demanda</strong> y se guardan
+en un caché local. No es necesario descargar todo: se puede pedir solo
+el departamento de interés.</p>
 </div>
 <div class="section level2">
 <h2 id="instalación">Instalación<a class="anchor" aria-label="anchor" href="#instalaci%C3%B3n"></a>
@@ -97,58 +100,94 @@ pedir solo el departamento de interés.</p>
 <code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"lab-tecnosocial/censosbo"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="tablas-disponibles">Tablas disponibles<a class="anchor" aria-label="anchor" href="#tablas-disponibles"></a>
+<h2 id="censos-disponibles">Censos disponibles<a class="anchor" aria-label="anchor" href="#censos-disponibles"></a>
 </h2>
+<div class="section level3">
+<h3 id="cpv-2024">CPV-2024<a class="anchor" aria-label="anchor" href="#cpv-2024"></a>
+</h3>
 <table class="table">
-<colgroup>
-<col width="13%">
-<col width="10%">
-<col width="16%">
-<col width="29%">
-<col width="30%">
-</colgroup>
 <thead><tr class="header">
 <th>Función</th>
 <th align="right">Filas</th>
 <th align="right">Variables</th>
 <th align="right">En disco (Parquet)</th>
-<th align="right">En memoria (tibble)</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td><code><a href="../reference/get_personas.html">get_personas()</a></code></td>
+<td><code><a href="../reference/get_personas_2024.html">get_personas_2024()</a></code></td>
 <td align="right">~11.4M</td>
 <td align="right">118</td>
 <td align="right">7–155 MB/dep. (560 MB total)</td>
-<td align="right">60 MB–1.2 GB/dep.</td>
 </tr>
 <tr class="even">
-<td><code><a href="../reference/get_viviendas.html">get_viviendas()</a></code></td>
+<td><code><a href="../reference/get_viviendas_2024.html">get_viviendas_2024()</a></code></td>
 <td align="right">~4.5M</td>
 <td align="right">48</td>
 <td align="right">~100 MB</td>
-<td align="right">~700 MB</td>
 </tr>
 <tr class="odd">
-<td><code><a href="../reference/get_emigracion.html">get_emigracion()</a></code></td>
+<td><code><a href="../reference/get_emigracion_2024.html">get_emigracion_2024()</a></code></td>
 <td align="right">~501K</td>
 <td align="right">8</td>
 <td align="right">~5 MB</td>
-<td align="right">~40 MB</td>
 </tr>
 <tr class="even">
-<td><code><a href="../reference/get_mortalidad.html">get_mortalidad()</a></code></td>
+<td><code><a href="../reference/get_mortalidad_2024.html">get_mortalidad_2024()</a></code></td>
 <td align="right">~383K</td>
 <td align="right">10</td>
 <td align="right">~4 MB</td>
-<td align="right">~30 MB</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section level3">
+<h3 id="censos-históricos-vía-get_censo">Censos históricos (vía <code>get_censo()</code>)<a class="anchor" aria-label="anchor" href="#censos-hist%C3%B3ricos-v%C3%ADa-get_censo"></a>
+</h3>
+<table class="table">
+<thead><tr class="header">
+<th>Año</th>
+<th>Tablas disponibles</th>
+<th align="right">Personas</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>1976</td>
+<td>
+<code>poblacion</code>, <code>vivienda</code>
+</td>
+<td align="right">~4.6M</td>
+</tr>
+<tr class="even">
+<td>1992</td>
+<td>
+<code>persona</code>, <code>vivienda</code>,
+<code>mortalidad</code>
+</td>
+<td align="right">~6.4M</td>
+</tr>
+<tr class="odd">
+<td>2001</td>
+<td>
+<code>persona</code>, <code>vivienda</code>,
+<code>comunidades_*</code>
+</td>
+<td align="right">~8.3M</td>
+</tr>
+<tr class="even">
+<td>2012</td>
+<td>
+<code>persona</code>, <code>vivienda</code>,
+<code>emigracion</code>, <code>discapacidad</code>
+</td>
+<td align="right">~10M</td>
 </tr>
 </tbody>
 </table>
 <p>El formato <strong>Arrow</strong> (defecto) mantiene los datos en el
-disco hasta que se llama <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect()</a></code>. Las tablas se unen con
-la clave compuesta <code>idep + iprov + imun + i00</code> (identificador
-de hogar).</p>
+disco hasta que se llama <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect()</a></code>. Las tablas del CPV-2024
+se unen con la clave compuesta <code>idep + iprov + imun + i00</code>
+(identificador de hogar).</p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="diccionario-de-variables">Diccionario de variables<a class="anchor" aria-label="anchor" href="#diccionario-de-variables"></a>
@@ -256,13 +295,13 @@ funciones para hacerlos legibles:</p>
 <p>En los siguientes ejemplos se aplican después de
 <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect()</a></code>:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/get_personas.html">get_personas</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"La Paz"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"La Paz"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">p25_sexo</span>, <span class="va">nivel_edu</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/etiquetar_valores.html">etiquetar_valores</a></span><span class="op">(</span><span class="op">)</span>    <span class="co"># 1 → "Mujer", 2 → "Hombre"; 1 → "Ninguno", etc.</span></span>
 <span></span>
 <span><span class="co"># Para reportes: también renombrar columnas</span></span>
-<span><span class="fu"><a href="../reference/get_personas.html">get_personas</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"La Paz"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span><span class="fu"><a href="../reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"La Paz"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">p25_sexo</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/etiquetar_valores.html">etiquetar_valores</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -315,11 +354,11 @@ Bolivia sin necesidad de descargar nada:</p>
 <span><span class="co">#&gt; 162 4, 8, 12, 16, 20, 24, 28, 31, 32, 36, 40, 44, 48, 50, 51, 52, 56, 60, 64, 68, 70, 72, 76, 84, 90, 92, 96, 100, 104, 108, 112, 116, 120, 124, 132, 136, 140, 144, 148, 152, 156, 158, 162, 166, 170, 174, 175, 178, 180, 184, 188, 191, 192, 196, 203, 204, 208, 212, 214, 218, 222, 226, 231, 232, 233, 234, 238, 239, 242, 246, 248, 250, 254, 258, 260, 262, 266, 268, 270, 275, 276, 288, 292, 296, 300, 304, 308, 312, 316, 320, 324, 328, 332, 336, 340, 344, 348, 352, 356, 360, 364, 368, 372, 376, 380, 384, 388, 392, 398, 400, 404, 408, 410, 414, 417, 418, 422, 426, 428, 430, 434, 438, 440, 442, 446, 450, 454, 458, 462, 466, 470, 474, 478, 480, 484, 492, 496, 498, 499, 500, 504, 508, 512, 516, 520, 524, 528, 531, 533, 534, 535, 540, 548, 554, 558, 562, 566, 570, 574, 578, 580, 583, 584, 585, 586, 591, 598, 600, 604, 608, 612, 616, 620, 624, 626, 630, 634, 638, 642, 643, 646, 652, 654, 659, 660, 662, 663, 666, 670, 674, 678, 682, 686, 688, 689, 690, 694, 702, 703, 704, 705, 706, 710, 716, 724, 728, 729, 732, 740, 744, 748, 752, 756, 760, 762, 764, 768, 772, 776, 780, 784, 788, 792, 795, 796, 798, 800, 804, 807, 818, 826, 831, 832, 833, 834, 840, 850, 854, 858, 860, 862, 876, 882, 887, 894, 987, 988, 991, 992, 993, 994, 995, 996, 997, 998, 999, Afganistán, Albania, Argelia, Samoa Americana, Andorra, Angola, Antigua y Barbuda, Azerbaiyán, Argentina, Australia, Austria, Bahamas, Bahrein, Bangladesh, Armenia, Barbados, Bélgica, Bermuda, Bhután, Bolivia (Estado Plurinacional de, Bosnia y Herzegovina, Botswana, Brasil, Belice, Islas Salomón, Islas Vírgenes Británicas, Brunei Darussalam, Bulgaria, Myanmar, Burundi, Belarús, Camboya, Camerún, Canadá, Cabo Verde, Islas Caimán, República Centroafricana, Sri Lanka, Chad, Chile, China, Taiwán (Provincia de China), Isla Christmas, Islas Cocos (Keeling), Colombia, Comoras, Mayotte, Congo, República Democrática del Congo, Islas Cook, Costa Rica, Croacia, Cuba, Chipre, República Checa, Benin, Dinamarca, Dominica, República Dominicana, Ecuador, El Salvador, Guinea Ecuatorial, Etiopía, Eritrea, Estonia, Islas Feroe, Islas Malvinas (Falkland), Georgia del Sur y las Islas Sandwich del Sur, Fiji, Finlandia, Islas Åland, Francia, Guayana Francesa, Polinesia Francesa, Territorio de las Tierras Australes Francesas, Djibouti, Gabón, Georgia, Gambia, Estado de Palestina, Alemania, Ghana, Gibraltar, Kiribati, Grecia, Groenlandia, Granada, Guadalupe, Guam, Guatemala, Guinea, Guyana, Haití, Santa Sede, Honduras, China, región administrativa especial de Hong Kong, Hungría, Islandia, India, Indonesia, Irán (República Islámica del), Iraq, Irlanda, Israel, Italia, Costa de Marfil, Jamaica, Japón, Kazajstán, Jordania, Kenya, República Popular Democrática de Corea, República de Corea, Kuwait, Kirguistán, República Democrática Popular Lao, Líbano, Lesotho, Letonia, Liberia, Libia, Liechtenstein, Lituania, Luxemburgo, China, región administrativa especial de Macao, Madagascar, Malawi, Malasia, Maldivas, Malí, Malta, Martinica, Mauritania, Mauricio, México, Mónaco, Mongolia, República de Moldova, Montenegro, Montserrat, Marruecos, Mozambique, Omán, Namibia, Nauru, Nepal, Países Bajos, Curazao, Aruba, San Martín (parte Holandesa), Bonaire, San Eustaquio y Saba, Nueva Caledonia, Vanuatu, Nueva Zelandia, Nicaragua, Níger, Nigeria, Niue, Isla Norfolk, Noruega, Islas Marianas Septentrionales, Micronesia (Estados Federados de), Islas Marshall, Palau, Pakistán, Panamá, Papua Nueva Guinea, Paraguay, Perú, Filipinas, Pitcairn, Polonia, Portugal, Guinea-Bissau, Timor-Leste, Puerto Rico, Qatar, Reunión, Rumania, Federación de Rusia, Rwanda, San Barthélemy, Santa Elena, Saint Kitts y Nevis, Anguila, Santa Lucía, San Martín (parte francesa), San Pedro y Miquelón, San Vicente y las Granadinas, San Marino, Santo Tomé y Príncipe, Arabia Saudita, Senegal, Serbia, Kosovo, Seychelles, Sierra Leona, Singapur, Eslovaquia, Viet Nam, Eslovenia, Somalia, Sudáfrica, Zimbabwe, España, Sudán del Sur, Sudán, Sáhara Occidental, Suriname, Islas Svalbard y Jan Mayen, Eswatini, Suecia, Suiza, República Árabe Siria, Tayikistán, Tailandia, Togo, Tokelau, Tonga, Trinidad y Tobago, Emiratos Árabes Unidos, Túnez, Turquía, Turkmenistán, Islas Turcas y Caicos, Tuvalu, Uganda, Ucrania, Macedonia del Norte, Egipto, Reino Unido de Gran Bretaña e Irlanda del Norte, Guernsey, Jersey, Isla de Man, República Unida de Tanzanía, Estados Unidos de América, Islas Vírgenes de los Estados Unidos, Burkina Faso, Uruguay, Uzbekistán, Venezuela (República Bolivariana de), Islas Wallis y Futuna, Samoa, Yemen, Zambia, Caracteres aleatorios o descripción ilegible, Otro municipio, África, América, Asia, Europa, Oceanía, Otro país extranjero, No corresponde a país, No sabe, Sin Especificar</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="primera-descarga-de-microdatos">Primera descarga de microdatos<a class="anchor" aria-label="anchor" href="#primera-descarga-de-microdatos"></a>
+<h2 id="primera-descarga-de-microdatos-cpv-2024">Primera descarga de microdatos (CPV-2024)<a class="anchor" aria-label="anchor" href="#primera-descarga-de-microdatos-cpv-2024"></a>
 </h2>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Descargar datos de Santa Cruz (~155 MB, se guarda en caché)</span></span>
-<span><span class="va">personas_sc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_personas.html">get_personas</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Santa Cruz"</span><span class="op">)</span></span>
+<span><span class="va">personas_sc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Santa Cruz"</span><span class="op">)</span></span>
 <span><span class="va">personas_sc</span></span>
 <span><span class="co">#&gt; FileSystemDataset with 1 Parquet file</span></span>
 <span><span class="co">#&gt; 118 columns</span></span></code></pre></div>
@@ -330,16 +369,21 @@ datos quedan en disco, no en RAM.</p>
 <h2 id="filtros-geográficos">Filtros geográficos<a class="anchor" aria-label="anchor" href="#filtros-geogr%C3%A1ficos"></a>
 </h2>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/get_personas.html">get_personas</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"La Paz"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/get_personas.html">get_personas</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"La Paz"</span>, <span class="st">"Cochabamba"</span>, <span class="st">"Santa Cruz"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/get_personas.html">get_personas</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Santa Cruz"</span>, provincia <span class="op">=</span> <span class="st">"01"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/get_personas.html">get_personas</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Santa Cruz"</span>, municipio <span class="op">=</span> <span class="st">"01"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># CPV-2024</span></span>
+<span><span class="fu"><a href="../reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"La Paz"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"La Paz"</span>, <span class="st">"Cochabamba"</span>, <span class="st">"Santa Cruz"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Santa Cruz"</span>, provincia <span class="op">=</span> <span class="st">"01"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Santa Cruz"</span>, municipio <span class="op">=</span> <span class="st">"01"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Censos históricos — mismos argumentos</span></span>
+<span><span class="fu"><a href="../reference/get_censo.html">get_personas_2012</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"La Paz"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/get_censo.html">get_censo</a></span><span class="op">(</span><span class="fl">2001</span>, <span class="st">"persona"</span>, departamento <span class="op">=</span> <span class="st">"Santa Cruz"</span>, municipio <span class="op">=</span> <span class="st">"01"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="selección-de-variables">Selección de variables<a class="anchor" aria-label="anchor" href="#selecci%C3%B3n-de-variables"></a>
 </h2>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/get_personas.html">get_personas</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span></span>
 <span>  departamento <span class="op">=</span> <span class="st">"Santa Cruz"</span>,</span>
 <span>  variables    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"p25_sexo"</span>, <span class="st">"p26_edad"</span>, <span class="st">"nivel_edu"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
@@ -350,13 +394,13 @@ datos quedan en disco, no en RAM.</p>
 </h2>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Arrow (defecto): lazy, no carga en RAM</span></span>
-<span><span class="va">ds</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_personas.html">get_personas</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Santa Cruz"</span>, as <span class="op">=</span> <span class="st">"arrow"</span><span class="op">)</span></span>
+<span><span class="va">ds</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Santa Cruz"</span>, as <span class="op">=</span> <span class="st">"arrow"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># tibble: trae a RAM (cuidado con departamentos grandes)</span></span>
-<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_personas.html">get_personas</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Pando"</span>, as <span class="op">=</span> <span class="st">"tibble"</span><span class="op">)</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Pando"</span>, as <span class="op">=</span> <span class="st">"tibble"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># DuckDB: conexión SQL</span></span>
-<span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_personas.html">get_personas</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Santa Cruz"</span>, as <span class="op">=</span> <span class="st">"duckdb"</span><span class="op">)</span></span>
+<span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Santa Cruz"</span>, as <span class="op">=</span> <span class="st">"duckdb"</span><span class="op">)</span></span>
 <span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbGetQuery.html" class="external-link">dbGetQuery</a></span><span class="op">(</span><span class="va">con</span>, <span class="st">"SELECT COUNT(*) FROM personas"</span><span class="op">)</span></span>
 <span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -367,7 +411,7 @@ datos quedan en disco, no en RAM.</p>
 <code><a href="../reference/etiquetar_valores.html">etiquetar_valores()</a></code> después de <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect()</a></code>:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Distribución por sexo con etiquetas</span></span>
-<span><span class="fu"><a href="../reference/get_personas.html">get_personas</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Cochabamba"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span><span class="fu"><a href="../reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Cochabamba"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">p25_sexo</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/etiquetar_valores.html">etiquetar_valores</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -377,7 +421,7 @@ datos quedan en disco, no en RAM.</p>
 <span><span class="co">#&gt; 2 Hombre   855433</span></span>
 <span></span>
 <span><span class="co"># Grupos quinquenales de edad (usar %/% — cut() no es compatible con Arrow)</span></span>
-<span><span class="fu"><a href="../reference/get_personas.html">get_personas</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Santa Cruz"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span><span class="fu"><a href="../reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Santa Cruz"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">p26_edad</span><span class="op">)</span>, <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">p25_sexo</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>grupo_edad <span class="op">=</span> <span class="op">(</span><span class="va">p26_edad</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">%/%</a></span> <span class="fl">5L</span><span class="op">)</span> <span class="op">*</span> <span class="fl">5L</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">grupo_edad</span>, <span class="va">p25_sexo</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -390,7 +434,7 @@ datos quedan en disco, no en RAM.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dbi.r-dbi.org" class="external-link">DBI</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_personas.html">get_personas</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Santa Cruz"</span>, as <span class="op">=</span> <span class="st">"duckdb"</span><span class="op">)</span></span>
+<span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Santa Cruz"</span>, as <span class="op">=</span> <span class="st">"duckdb"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbGetQuery.html" class="external-link">dbGetQuery</a></span><span class="op">(</span><span class="va">con</span>, <span class="st">"</span></span>
 <span><span class="st">  SELECT p25_sexo, COUNT(*) AS total, ROUND(AVG(p26_edad), 1) AS edad_prom</span></span>
@@ -405,15 +449,35 @@ datos quedan en disco, no en RAM.</p>
 <span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
+<h2 id="censos-históricos">Censos históricos<a class="anchor" aria-label="anchor" href="#censos-hist%C3%B3ricos"></a>
+</h2>
+<p>Para acceder a censos anteriores al 2024, usa
+<code><a href="../reference/get_censo.html">get_censo()</a></code> o las funciones cortas por año:</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># API genérica</span></span>
+<span><span class="fu"><a href="../reference/get_censo.html">get_censo</a></span><span class="op">(</span><span class="fl">2012</span>, <span class="st">"persona"</span>, departamento <span class="op">=</span> <span class="st">"07"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/get_censo.html">get_censo</a></span><span class="op">(</span><span class="fl">1992</span>, <span class="st">"vivienda"</span>, departamento <span class="op">=</span> <span class="st">"La Paz"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Funciones cortas equivalentes</span></span>
+<span><span class="fu"><a href="../reference/get_censo.html">get_personas_2012</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"07"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/get_censo.html">get_viviendas_1992</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"La Paz"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Codebook para censos históricos</span></span>
+<span><span class="fu"><a href="../reference/codebook.html">codebook_2012</a></span><span class="op">(</span>buscar <span class="op">=</span> <span class="st">"educacion"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/codebook.html">codebook_1976</a></span><span class="op">(</span><span class="op">)</span>  <span class="co"># ver todas las variables del censo 1976</span></span></code></pre></div>
+<p>Ver la viñeta <strong><a href="censos-historicos.html">Censos
+históricos</a></strong> para ejemplos completos.</p>
+</div>
+<div class="section level2">
 <h2 id="gestión-del-caché">Gestión del caché<a class="anchor" aria-label="anchor" href="#gesti%C3%B3n-del-cach%C3%A9"></a>
 </h2>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Guardar caché dentro del proyecto (recomendado)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>censosbo.cache_dir <span class="op">=</span> <span class="st">"data/censosbo"</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/censosbo_cache_dir.html">censosbo_cache_dir</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "/home/runner/.cache/R/censosbo"</span></span></code></pre></div>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/censosbo_cache_info.html">censosbo_cache_info</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/censosbo_cache_clear.html">censosbo_cache_clear</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -432,12 +496,19 @@ personas-viviendas.</li>
 <li>
 <strong><a href="analisis-avanzado.html">Análisis
 avanzado</a></strong>: DuckDB, Arrow, datos más grandes que la RAM.</li>
+<li>
+<strong><a href="censos-historicos.html">Censos
+históricos</a></strong>: acceso a datos de 1976, 1992, 2001 y 2012.</li>
+<li>
+<strong><a href="analisis-longitudinal.html">Análisis
+longitudinal</a></strong>: comparar variables entre censos
+históricos.</li>
 </ul>
 </div>
 <div class="section level2">
 <h2 id="cómo-citar">Cómo citar<a class="anchor" aria-label="anchor" href="#c%C3%B3mo-citar"></a>
 </h2>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"censosbo"</span><span class="op">)</span></span></code></pre></div>
 <blockquote>
 <p>Ojeda Copa, A. (2024). <em>censosbo: Acceso y análisis de los datos

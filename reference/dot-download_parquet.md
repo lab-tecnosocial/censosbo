@@ -1,6 +1,6 @@
-# Descarga un archivo Parquet desde GitHub Releases
+# Descarga un archivo Parquet del CPV-2024 desde GitHub Releases
 
-Descarga un archivo Parquet desde GitHub Releases
+Descarga un archivo Parquet del CPV-2024 desde GitHub Releases
 
 ## Usage
 

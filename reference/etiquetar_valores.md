@@ -51,14 +51,14 @@ Para etiquetar también los nombres de columna, encadena con
 ``` r
 # Etiquetar todas las columnas categóricas de un data.frame
 if (FALSE) { # \dontrun{
-get_personas(departamento = "Pando", as = "tibble") |>
+get_personas_2024(departamento = "Pando", as = "tibble") |>
   etiquetar_valores() |>
   head(3)
 } # }
 
 # Flujo típico: Arrow → collect → etiquetar_valores
 if (FALSE) { # \dontrun{
-get_personas(departamento = "Santa Cruz") |>
+get_personas_2024(departamento = "Santa Cruz") |>
   dplyr::filter(p26_edad >= 18) |>
   dplyr::count(p25_sexo) |>
   dplyr::collect() |>

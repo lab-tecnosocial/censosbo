@@ -2,15 +2,14 @@
 
 ## ¿Qué es censosbo?
 
-`censosbo` es un paquete de R que facilita el acceso a los microdatos
-del **Censo de Población y Vivienda 2024 (CPV-2024)** de Bolivia,
+`censosbo` es un paquete de R que facilita el acceso a los microdatos de
+los **censos de Bolivia** (1976, 1992, 2001, 2012 y CPV-2024),
 publicados por el Instituto Nacional de Estadística (INE).
 
-Los datos originales en CSV pesan más de 3 GB, por lo que el paquete los
-distribuye como archivos **Parquet** comprimidos (mucho más livianos y
-rápidos), que se descargan **bajo demanda** y se guardan en un caché
-local. No es necesario descargar todo: se puede pedir solo el
-departamento de interés.
+Los datos se distribuyen como archivos **Parquet** comprimidos, que se
+descargan **bajo demanda** y se guardan en un caché local. No es
+necesario descargar todo: se puede pedir solo el departamento de
+interés.
 
 ## Instalación
 
@@ -19,20 +18,31 @@ departamento de interés.
 remotes::install_github("lab-tecnosocial/censosbo")
 ```
 
-## Tablas disponibles
+## Censos disponibles
 
-| Función | Filas | Variables | En disco (Parquet) | En memoria (tibble) |
-|----|---:|---:|---:|---:|
-| [`get_personas()`](https://lab-tecnosocial.github.io/censosbo/reference/get_personas.md) | ~11.4M | 118 | 7–155 MB/dep. (560 MB total) | 60 MB–1.2 GB/dep. |
-| [`get_viviendas()`](https://lab-tecnosocial.github.io/censosbo/reference/get_viviendas.md) | ~4.5M | 48 | ~100 MB | ~700 MB |
-| [`get_emigracion()`](https://lab-tecnosocial.github.io/censosbo/reference/get_emigracion.md) | ~501K | 8 | ~5 MB | ~40 MB |
-| [`get_mortalidad()`](https://lab-tecnosocial.github.io/censosbo/reference/get_mortalidad.md) | ~383K | 10 | ~4 MB | ~30 MB |
+### CPV-2024
+
+| Función | Filas | Variables | En disco (Parquet) |
+|----|---:|---:|---:|
+| [`get_personas_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_personas_2024.md) | ~11.4M | 118 | 7–155 MB/dep. (560 MB total) |
+| [`get_viviendas_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_viviendas_2024.md) | ~4.5M | 48 | ~100 MB |
+| [`get_emigracion_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_emigracion_2024.md) | ~501K | 8 | ~5 MB |
+| [`get_mortalidad_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_mortalidad_2024.md) | ~383K | 10 | ~4 MB |
+
+### Censos históricos (vía `get_censo()`)
+
+| Año  | Tablas disponibles                                  | Personas |
+|------|-----------------------------------------------------|---------:|
+| 1976 | `poblacion`, `vivienda`                             |    ~4.6M |
+| 1992 | `persona`, `vivienda`, `mortalidad`                 |    ~6.4M |
+| 2001 | `persona`, `vivienda`, `comunidades_*`              |    ~8.3M |
+| 2012 | `persona`, `vivienda`, `emigracion`, `discapacidad` |     ~10M |
 
 El formato **Arrow** (defecto) mantiene los datos en el disco hasta que
 se llama
 [`collect()`](https://dplyr.tidyverse.org/reference/compute.html). Las
-tablas se unen con la clave compuesta `idep + iprov + imun + i00`
-(identificador de hogar).
+tablas del CPV-2024 se unen con la clave compuesta
+`idep + iprov + imun + i00` (identificador de hogar).
 
 ## Diccionario de variables
 
@@ -151,13 +161,13 @@ En los siguientes ejemplos se aplican después de
 
 ``` r
 
-get_personas(departamento = "La Paz") |>
+get_personas_2024(departamento = "La Paz") |>
   count(p25_sexo, nivel_edu) |>
   collect() |>
   etiquetar_valores()    # 1 → "Mujer", 2 → "Hombre"; 1 → "Ninguno", etc.
 
 # Para reportes: también renombrar columnas
-get_personas(departamento = "La Paz") |>
+get_personas_2024(departamento = "La Paz") |>
   count(p25_sexo) |>
   collect() |>
   etiquetar_valores() |>
@@ -219,12 +229,12 @@ codebook(tabla = "emigracion")
 #> 162 4, 8, 12, 16, 20, 24, 28, 31, 32, 36, 40, 44, 48, 50, 51, 52, 56, 60, 64, 68, 70, 72, 76, 84, 90, 92, 96, 100, 104, 108, 112, 116, 120, 124, 132, 136, 140, 144, 148, 152, 156, 158, 162, 166, 170, 174, 175, 178, 180, 184, 188, 191, 192, 196, 203, 204, 208, 212, 214, 218, 222, 226, 231, 232, 233, 234, 238, 239, 242, 246, 248, 250, 254, 258, 260, 262, 266, 268, 270, 275, 276, 288, 292, 296, 300, 304, 308, 312, 316, 320, 324, 328, 332, 336, 340, 344, 348, 352, 356, 360, 364, 368, 372, 376, 380, 384, 388, 392, 398, 400, 404, 408, 410, 414, 417, 418, 422, 426, 428, 430, 434, 438, 440, 442, 446, 450, 454, 458, 462, 466, 470, 474, 478, 480, 484, 492, 496, 498, 499, 500, 504, 508, 512, 516, 520, 524, 528, 531, 533, 534, 535, 540, 548, 554, 558, 562, 566, 570, 574, 578, 580, 583, 584, 585, 586, 591, 598, 600, 604, 608, 612, 616, 620, 624, 626, 630, 634, 638, 642, 643, 646, 652, 654, 659, 660, 662, 663, 666, 670, 674, 678, 682, 686, 688, 689, 690, 694, 702, 703, 704, 705, 706, 710, 716, 724, 728, 729, 732, 740, 744, 748, 752, 756, 760, 762, 764, 768, 772, 776, 780, 784, 788, 792, 795, 796, 798, 800, 804, 807, 818, 826, 831, 832, 833, 834, 840, 850, 854, 858, 860, 862, 876, 882, 887, 894, 987, 988, 991, 992, 993, 994, 995, 996, 997, 998, 999, Afganistán, Albania, Argelia, Samoa Americana, Andorra, Angola, Antigua y Barbuda, Azerbaiyán, Argentina, Australia, Austria, Bahamas, Bahrein, Bangladesh, Armenia, Barbados, Bélgica, Bermuda, Bhután, Bolivia (Estado Plurinacional de, Bosnia y Herzegovina, Botswana, Brasil, Belice, Islas Salomón, Islas Vírgenes Británicas, Brunei Darussalam, Bulgaria, Myanmar, Burundi, Belarús, Camboya, Camerún, Canadá, Cabo Verde, Islas Caimán, República Centroafricana, Sri Lanka, Chad, Chile, China, Taiwán (Provincia de China), Isla Christmas, Islas Cocos (Keeling), Colombia, Comoras, Mayotte, Congo, República Democrática del Congo, Islas Cook, Costa Rica, Croacia, Cuba, Chipre, República Checa, Benin, Dinamarca, Dominica, República Dominicana, Ecuador, El Salvador, Guinea Ecuatorial, Etiopía, Eritrea, Estonia, Islas Feroe, Islas Malvinas (Falkland), Georgia del Sur y las Islas Sandwich del Sur, Fiji, Finlandia, Islas Åland, Francia, Guayana Francesa, Polinesia Francesa, Territorio de las Tierras Australes Francesas, Djibouti, Gabón, Georgia, Gambia, Estado de Palestina, Alemania, Ghana, Gibraltar, Kiribati, Grecia, Groenlandia, Granada, Guadalupe, Guam, Guatemala, Guinea, Guyana, Haití, Santa Sede, Honduras, China, región administrativa especial de Hong Kong, Hungría, Islandia, India, Indonesia, Irán (República Islámica del), Iraq, Irlanda, Israel, Italia, Costa de Marfil, Jamaica, Japón, Kazajstán, Jordania, Kenya, República Popular Democrática de Corea, República de Corea, Kuwait, Kirguistán, República Democrática Popular Lao, Líbano, Lesotho, Letonia, Liberia, Libia, Liechtenstein, Lituania, Luxemburgo, China, región administrativa especial de Macao, Madagascar, Malawi, Malasia, Maldivas, Malí, Malta, Martinica, Mauritania, Mauricio, México, Mónaco, Mongolia, República de Moldova, Montenegro, Montserrat, Marruecos, Mozambique, Omán, Namibia, Nauru, Nepal, Países Bajos, Curazao, Aruba, San Martín (parte Holandesa), Bonaire, San Eustaquio y Saba, Nueva Caledonia, Vanuatu, Nueva Zelandia, Nicaragua, Níger, Nigeria, Niue, Isla Norfolk, Noruega, Islas Marianas Septentrionales, Micronesia (Estados Federados de), Islas Marshall, Palau, Pakistán, Panamá, Papua Nueva Guinea, Paraguay, Perú, Filipinas, Pitcairn, Polonia, Portugal, Guinea-Bissau, Timor-Leste, Puerto Rico, Qatar, Reunión, Rumania, Federación de Rusia, Rwanda, San Barthélemy, Santa Elena, Saint Kitts y Nevis, Anguila, Santa Lucía, San Martín (parte francesa), San Pedro y Miquelón, San Vicente y las Granadinas, San Marino, Santo Tomé y Príncipe, Arabia Saudita, Senegal, Serbia, Kosovo, Seychelles, Sierra Leona, Singapur, Eslovaquia, Viet Nam, Eslovenia, Somalia, Sudáfrica, Zimbabwe, España, Sudán del Sur, Sudán, Sáhara Occidental, Suriname, Islas Svalbard y Jan Mayen, Eswatini, Suecia, Suiza, República Árabe Siria, Tayikistán, Tailandia, Togo, Tokelau, Tonga, Trinidad y Tobago, Emiratos Árabes Unidos, Túnez, Turquía, Turkmenistán, Islas Turcas y Caicos, Tuvalu, Uganda, Ucrania, Macedonia del Norte, Egipto, Reino Unido de Gran Bretaña e Irlanda del Norte, Guernsey, Jersey, Isla de Man, República Unida de Tanzanía, Estados Unidos de América, Islas Vírgenes de los Estados Unidos, Burkina Faso, Uruguay, Uzbekistán, Venezuela (República Bolivariana de), Islas Wallis y Futuna, Samoa, Yemen, Zambia, Caracteres aleatorios o descripción ilegible, Otro municipio, África, América, Asia, Europa, Oceanía, Otro país extranjero, No corresponde a país, No sabe, Sin Especificar
 ```
 
-## Primera descarga de microdatos
+## Primera descarga de microdatos (CPV-2024)
 
 ``` r
 
 # Descargar datos de Santa Cruz (~155 MB, se guarda en caché)
-personas_sc <- get_personas(departamento = "Santa Cruz")
+personas_sc <- get_personas_2024(departamento = "Santa Cruz")
 personas_sc
 #> FileSystemDataset with 1 Parquet file
 #> 118 columns
@@ -237,17 +247,22 @@ disco, no en RAM.
 
 ``` r
 
-get_personas(departamento = "La Paz")
-get_personas(departamento = c("La Paz", "Cochabamba", "Santa Cruz"))
-get_personas(departamento = "Santa Cruz", provincia = "01")
-get_personas(departamento = "Santa Cruz", municipio = "01")
+# CPV-2024
+get_personas_2024(departamento = "La Paz")
+get_personas_2024(departamento = c("La Paz", "Cochabamba", "Santa Cruz"))
+get_personas_2024(departamento = "Santa Cruz", provincia = "01")
+get_personas_2024(departamento = "Santa Cruz", municipio = "01")
+
+# Censos históricos — mismos argumentos
+get_personas_2012(departamento = "La Paz")
+get_censo(2001, "persona", departamento = "Santa Cruz", municipio = "01")
 ```
 
 ## Selección de variables
 
 ``` r
 
-get_personas(
+get_personas_2024(
   departamento = "Santa Cruz",
   variables    = c("p25_sexo", "p26_edad", "nivel_edu")
 )
@@ -259,13 +274,13 @@ get_personas(
 ``` r
 
 # Arrow (defecto): lazy, no carga en RAM
-ds <- get_personas(departamento = "Santa Cruz", as = "arrow")
+ds <- get_personas_2024(departamento = "Santa Cruz", as = "arrow")
 
 # tibble: trae a RAM (cuidado con departamentos grandes)
-df <- get_personas(departamento = "Pando", as = "tibble")
+df <- get_personas_2024(departamento = "Pando", as = "tibble")
 
 # DuckDB: conexión SQL
-con <- get_personas(departamento = "Santa Cruz", as = "duckdb")
+con <- get_personas_2024(departamento = "Santa Cruz", as = "duckdb")
 DBI::dbGetQuery(con, "SELECT COUNT(*) FROM personas")
 DBI::dbDisconnect(con)
 ```
@@ -280,7 +295,7 @@ después de
 ``` r
 
 # Distribución por sexo con etiquetas
-get_personas(departamento = "Cochabamba") |>
+get_personas_2024(departamento = "Cochabamba") |>
   count(p25_sexo) |>
   collect() |>
   etiquetar_valores()
@@ -290,7 +305,7 @@ get_personas(departamento = "Cochabamba") |>
 #> 2 Hombre   855433
 
 # Grupos quinquenales de edad (usar %/% — cut() no es compatible con Arrow)
-get_personas(departamento = "Santa Cruz") |>
+get_personas_2024(departamento = "Santa Cruz") |>
   filter(!is.na(p26_edad), !is.na(p25_sexo)) |>
   mutate(grupo_edad = (p26_edad %/% 5L) * 5L) |>
   count(grupo_edad, p25_sexo) |>
@@ -304,7 +319,7 @@ get_personas(departamento = "Santa Cruz") |>
 
 library(DBI)
 
-con <- get_personas(departamento = "Santa Cruz", as = "duckdb")
+con <- get_personas_2024(departamento = "Santa Cruz", as = "duckdb")
 
 DBI::dbGetQuery(con, "
   SELECT p25_sexo, COUNT(*) AS total, ROUND(AVG(p26_edad), 1) AS edad_prom
@@ -318,6 +333,31 @@ DBI::dbGetQuery(con, "
 
 DBI::dbDisconnect(con)
 ```
+
+## Censos históricos
+
+Para acceder a censos anteriores al 2024, usa
+[`get_censo()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md)
+o las funciones cortas por año:
+
+``` r
+
+# API genérica
+get_censo(2012, "persona", departamento = "07")
+get_censo(1992, "vivienda", departamento = "La Paz")
+
+# Funciones cortas equivalentes
+get_personas_2012(departamento = "07")
+get_viviendas_1992(departamento = "La Paz")
+
+# Codebook para censos históricos
+codebook_2012(buscar = "educacion")
+codebook_1976()  # ver todas las variables del censo 1976
+```
+
+Ver la viñeta **[Censos
+históricos](https://lab-tecnosocial.github.io/censosbo/articles/censos-historicos.md)**
+para ejemplos completos.
 
 ## Gestión del caché
 
@@ -350,6 +390,12 @@ censosbo_cache_clear()
 - **[Análisis
   avanzado](https://lab-tecnosocial.github.io/censosbo/articles/analisis-avanzado.md)**:
   DuckDB, Arrow, datos más grandes que la RAM.
+- **[Censos
+  históricos](https://lab-tecnosocial.github.io/censosbo/articles/censos-historicos.md)**:
+  acceso a datos de 1976, 1992, 2001 y 2012.
+- **[Análisis
+  longitudinal](https://lab-tecnosocial.github.io/censosbo/articles/analisis-longitudinal.md)**:
+  comparar variables entre censos históricos.
 
 ## Cómo citar
 

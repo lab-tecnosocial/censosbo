@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -20,9 +20,13 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-art-culos" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Artículos</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-art-culos"><li><a class="dropdown-item" href="../articles/introduccion.html">Introducción al paquete</a></li>
-    <li><a class="dropdown-item" href="../articles/diccionario.html">Diccionario de datos</a></li>
+    <li><a class="dropdown-item" href="../articles/diccionario.html">Diccionario de datos (1976–2024)</a></li>
     <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Tutoriales</h6></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Censos históricos</h6></li>
+    <li><a class="dropdown-item" href="../articles/censos-historicos.html">Acceso a censos históricos (1976–2012)</a></li>
+    <li><a class="dropdown-item" href="../articles/analisis-longitudinal.html">Análisis longitudinal entre censos</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Tutoriales CPV-2024</h6></li>
     <li><a class="dropdown-item" href="../articles/analisis-demografico.html">Análisis demográfico</a></li>
     <li><a class="dropdown-item" href="../articles/analisis-vivienda.html">Análisis de condiciones de vivienda</a></li>
     <li><a class="dropdown-item" href="../articles/analisis-avanzado.html">Análisis avanzado con DuckDB y Arrow</a></li>
@@ -42,9 +46,9 @@
     </div>
 
     <div class="section level2">
-      <h2 id="acceso-a-microdatos">Acceso a microdatos<a class="anchor" aria-label="anchor" href="#acceso-a-microdatos"></a></h2>
+      <h2 id="cpv-microdatos">CPV-2024: microdatos<a class="anchor" aria-label="anchor" href="#cpv-microdatos"></a></h2>
 
-      <div class="section-desc"><p>Funciones principales para descargar y consultar los cuatro conjuntos de datos del CPV-2024. Todos devuelven un Arrow Dataset (lazy), un tibble, o una conexión DuckDB.</p></div>
+      <div class="section-desc"><p>Funciones para descargar y consultar los microdatos del Censo de Población y Vivienda 2024. Todos devuelven un Arrow Dataset (lazy), un tibble, o una conexión DuckDB.</p></div>
 
       <dl></dl></div><div class="section level2">
 
@@ -53,35 +57,35 @@
 
       <dl><dt>
 
-          <code><a href="get_personas.html">get_personas()</a></code>
+          <code><a href="get_personas_2024.html">get_personas_2024()</a></code>
 
         </dt>
         <dd>Accede a los microdatos de personas del CPV-2024</dd>
 
         <dt>
 
-          <code><a href="get_viviendas.html">get_viviendas()</a></code>
+          <code><a href="get_viviendas_2024.html">get_viviendas_2024()</a></code>
 
         </dt>
         <dd>Accede a los microdatos de viviendas del CPV-2024</dd>
 
         <dt>
 
-          <code><a href="get_emigracion.html">get_emigracion()</a></code>
+          <code><a href="get_emigracion_2024.html">get_emigracion_2024()</a></code>
 
         </dt>
         <dd>Accede a los microdatos de emigración internacional del CPV-2024</dd>
 
         <dt>
 
-          <code><a href="get_mortalidad.html">get_mortalidad()</a></code>
+          <code><a href="get_mortalidad_2024.html">get_mortalidad_2024()</a></code>
 
         </dt>
         <dd>Accede a los microdatos de mortalidad del CPV-2024</dd>
       </dl></div><div class="section level2">
-      <h2 id="datos-incluidos-en-el-paquete">Datos incluidos en el paquete<a class="anchor" aria-label="anchor" href="#datos-incluidos-en-el-paquete"></a></h2>
+      <h2 id="censos-hist-ricos-api-general">Censos históricos: API general<a class="anchor" aria-label="anchor" href="#censos-hist-ricos-api-general"></a></h2>
 
-      <div class="section-desc"><p>Datasets disponibles sin descarga, incluidos directamente en el paquete.</p></div>
+      <div class="section-desc"><p>Función principal para acceder a cualquier censo histórico (1976, 1992, 2001, 2012) y funciones de análisis longitudinal entre censos.</p></div>
 
       <dl></dl></div><div class="section level2">
 
@@ -90,21 +94,81 @@
 
       <dl><dt>
 
-          <code><a href="geo_bolivia.html">geo_bolivia</a></code>
+          <code><a href="get_censo.html">get_poblacion_1976()</a></code> <code><a href="get_censo.html">get_viviendas_1976()</a></code> <code><a href="get_censo.html">get_personas_1992()</a></code> <code><a href="get_censo.html">get_viviendas_1992()</a></code> <code><a href="get_censo.html">get_mortalidad_1992()</a></code> <code><a href="get_censo.html">get_personas_2001()</a></code> <code><a href="get_censo.html">get_viviendas_2001()</a></code> <code><a href="get_censo.html">get_personas_2012()</a></code> <code><a href="get_censo.html">get_viviendas_2012()</a></code> <code><a href="get_censo.html">get_emigracion_2012()</a></code> <code><a href="get_censo.html">get_discapacidad_2012()</a></code> <code><a href="get_censo.html">get_censo()</a></code>
 
         </dt>
-        <dd>Tabla de geografía de Bolivia</dd>
+        <dd>Accede a los microdatos de los censos históricos de Bolivia</dd>
 
         <dt>
 
-          <code><a href="codebook_meta.html">codebook_meta</a></code>
+          <code><a href="get_longitudinal.html">get_longitudinal()</a></code>
 
         </dt>
-        <dd>Diccionario de variables del CPV-2024</dd>
+        <dd>Obtiene datos longitudinales comparables entre censos de Bolivia</dd>
+
+        <dt>
+
+          <code><a href="variables_armonizadas.html">variables_armonizadas()</a></code>
+
+        </dt>
+        <dd>Muestra el mapeo de variables comparables entre censos de Bolivia</dd>
+      </dl></div><div class="section level2">
+      <h2 id="censos-hist-ricos-atajos-por-a-o">Censos históricos: atajos por año<a class="anchor" aria-label="anchor" href="#censos-hist-ricos-atajos-por-a-o"></a></h2>
+
+      <div class="section-desc"><p>Funciones cortas equivalentes a <code>get_censo(anio, tabla, ...)</code>.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="get_censo.html">get_poblacion_1976()</a></code> <code><a href="get_censo.html">get_viviendas_1976()</a></code> <code><a href="get_censo.html">get_personas_1992()</a></code> <code><a href="get_censo.html">get_viviendas_1992()</a></code> <code><a href="get_censo.html">get_mortalidad_1992()</a></code> <code><a href="get_censo.html">get_personas_2001()</a></code> <code><a href="get_censo.html">get_viviendas_2001()</a></code> <code><a href="get_censo.html">get_personas_2012()</a></code> <code><a href="get_censo.html">get_viviendas_2012()</a></code> <code><a href="get_censo.html">get_emigracion_2012()</a></code> <code><a href="get_censo.html">get_discapacidad_2012()</a></code> <code><a href="get_censo.html">get_censo()</a></code>
+
+        </dt>
+        <dd>Accede a los microdatos de los censos históricos de Bolivia</dd>
+      </dl></div><div class="section level2">
+      <h2 id="diccionario-de-variables">Diccionario de variables<a class="anchor" aria-label="anchor" href="#diccionario-de-variables"></a></h2>
+
+      <div class="section-desc"><p>Funciones para explorar variables y etiquetas de todos los censos, y para convertir códigos numéricos a texto legible.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="codebook.html">codebook_1976()</a></code> <code><a href="codebook.html">codebook_1992()</a></code> <code><a href="codebook.html">codebook_2001()</a></code> <code><a href="codebook.html">codebook_2012()</a></code> <code><a href="codebook.html">codebook_2024()</a></code> <code><a href="codebook.html">codebook()</a></code>
+
+        </dt>
+        <dd>Consulta el diccionario de variables de un censo de Bolivia</dd>
+
+        <dt>
+
+          <code><a href="codebook_valores.html">codebook_valores()</a></code>
+
+        </dt>
+        <dd>Muestra los valores codificados de una variable categórica</dd>
+
+        <dt>
+
+          <code><a href="etiquetar_valores.html">etiquetar_valores()</a></code>
+
+        </dt>
+        <dd>Etiqueta los valores de las variables categóricas</dd>
+
+        <dt>
+
+          <code><a href="etiquetar_variables.html">etiquetar_variables()</a></code>
+
+        </dt>
+        <dd>Etiqueta los nombres de las variables (columnas)</dd>
       </dl></div><div class="section level2">
       <h2 id="geograf-a-de-bolivia">Geografía de Bolivia<a class="anchor" aria-label="anchor" href="#geograf-a-de-bolivia"></a></h2>
 
-      <div class="section-desc"><p>Funciones para consultar la división político-administrativa del país (9 departamentos, 113 provincias, 343 municipios).</p></div>
+      <div class="section-desc"><p>Funciones para consultar la división político-administrativa del país.</p></div>
 
       <dl></dl></div><div class="section level2">
 
@@ -132,46 +196,9 @@
         </dt>
         <dd>Lista los municipios de Bolivia</dd>
       </dl></div><div class="section level2">
-      <h2 id="diccionario-de-variables-y-etiquetas">Diccionario de variables y etiquetas<a class="anchor" aria-label="anchor" href="#diccionario-de-variables-y-etiquetas"></a></h2>
-
-      <div class="section-desc"><p>Funciones para explorar las 168 variables del CPV-2024, consultar categorías y convertir códigos numéricos a etiquetas legibles.</p></div>
-
-      <dl></dl></div><div class="section level2">
-
-
-
-
-      <dl><dt>
-
-          <code><a href="codebook.html">codebook()</a></code>
-
-        </dt>
-        <dd>Consulta el diccionario de variables del CPV-2024</dd>
-
-        <dt>
-
-          <code><a href="codebook_valores.html">codebook_valores()</a></code>
-
-        </dt>
-        <dd>Muestra los valores codificados de una variable categórica</dd>
-
-        <dt>
-
-          <code><a href="etiquetar_valores.html">etiquetar_valores()</a></code>
-
-        </dt>
-        <dd>Etiqueta los valores de las variables categóricas</dd>
-
-        <dt>
-
-          <code><a href="etiquetar_variables.html">etiquetar_variables()</a></code>
-
-        </dt>
-        <dd>Etiqueta los nombres de las variables (columnas)</dd>
-      </dl></div><div class="section level2">
       <h2 id="gesti-n-de-cach-">Gestión de caché<a class="anchor" aria-label="anchor" href="#gesti-n-de-cach-"></a></h2>
 
-      <div class="section-desc"><p>Los archivos Parquet se descargan una sola vez y quedan en caché local. Estas funciones permiten inspeccionar y limpiar el caché.</p></div>
+      <div class="section-desc"><p>Los archivos Parquet se descargan una sola vez y quedan en caché local.</p></div>
 
       <dl></dl></div><div class="section level2">
 
@@ -199,6 +226,43 @@
         </dt>
         <dd>Limpia el caché local de datos</dd>
       </dl></div><div class="section level2">
+      <h2 id="datos-incluidos-en-el-paquete">Datos incluidos en el paquete<a class="anchor" aria-label="anchor" href="#datos-incluidos-en-el-paquete"></a></h2>
+
+      <div class="section-desc"><p>Datasets disponibles sin descarga, incluidos directamente en el paquete.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="codebook_meta.html">codebook_meta</a></code>
+
+        </dt>
+        <dd>Diccionario de variables del CPV-2024</dd>
+
+        <dt>
+
+          <code><a href="codebook_historico_meta.html">codebook_historico_meta</a></code>
+
+        </dt>
+        <dd>Diccionarios de variables de los censos históricos de Bolivia</dd>
+
+        <dt>
+
+          <code><a href="variable_longitudinal_map.html">variable_longitudinal_map</a></code>
+
+        </dt>
+        <dd>Variables armonizadas para análisis longitudinal</dd>
+
+        <dt>
+
+          <code><a href="geo_bolivia.html">geo_bolivia</a></code>
+
+        </dt>
+        <dd>Tabla de geografía de Bolivia</dd>
+      </dl></div><div class="section level2">
       <h2 id="informaci-n-del-paquete">Información del paquete<a class="anchor" aria-label="anchor" href="#informaci-n-del-paquete"></a></h2>
 
 
@@ -213,7 +277,7 @@
           <code><a href="censosbo-package.html">censosbo</a></code> <code><a href="censosbo-package.html">censosbo-package</a></code>
 
         </dt>
-        <dd>censosbo: Acceso y Análisis de los Datos del Censo de Bolivia 2024</dd>
+        <dd>censosbo: Acceso y Análisis de los Datos de los Censos de Bolivia</dd>
       </dl></div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>

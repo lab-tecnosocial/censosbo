@@ -1,9 +1,10 @@
 # censosbo
 
-**censosbo** proporciona acceso programático a los microdatos del
-**Censo de Población y Vivienda 2024 (CPV-2024) de Bolivia**. Los datos
-se descargan bajo demanda desde GitHub Releases, se guardan en caché
-local y se pueden consultar con `dplyr`, Apache Arrow o DuckDB.
+**censosbo** proporciona acceso programático a los microdatos de todos
+los **censos de población de Bolivia**: 1976, 1992, 2001, 2012 y el
+CPV-2024. Los datos se descargan bajo demanda desde GitHub Releases, se
+guardan en caché local y se pueden consultar con `dplyr`, Apache Arrow o
+DuckDB.
 
 ## Instalación
 
@@ -13,89 +14,42 @@ local y se pueden consultar con `dplyr`, Apache Arrow o DuckDB.
 remotes::install_github("lab-tecnosocial/censosbo")
 ```
 
-## Tablas disponibles
+## Censos disponibles
 
-| Función | Registros | Variables | En disco (Parquet) | En memoria (tibble) |
-|----|---:|---:|---:|---:|
-| [`get_personas()`](https://lab-tecnosocial.github.io/censosbo/reference/get_personas.md) | ~11.4M | 118 | 7–155 MB/dep. (560 MB total) | 60 MB–1.2 GB/dep. |
-| [`get_viviendas()`](https://lab-tecnosocial.github.io/censosbo/reference/get_viviendas.md) | ~4.5M | 48 | ~100 MB | ~700 MB |
-| [`get_emigracion()`](https://lab-tecnosocial.github.io/censosbo/reference/get_emigracion.md) | ~501K | 8 | ~5 MB | ~40 MB |
-| [`get_mortalidad()`](https://lab-tecnosocial.github.io/censosbo/reference/get_mortalidad.md) | ~383K | 10 | ~4 MB | ~30 MB |
+### CPV-2024
+
+| Función | Registros | Variables | En disco (Parquet) |
+|----|---:|---:|---:|
+| [`get_personas_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_personas_2024.md) | ~11.4M | 118 | 7–155 MB/dep. (560 MB total) |
+| [`get_viviendas_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_viviendas_2024.md) | ~4.5M | 48 | ~100 MB |
+| [`get_emigracion_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_emigracion_2024.md) | ~501K | 8 | ~5 MB |
+| [`get_mortalidad_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_mortalidad_2024.md) | ~383K | 10 | ~4 MB |
+
+### Censos históricos (vía `get_censo()`)
+
+| Año | Funciones disponibles | Personas |
+|----|----|---:|
+| 1976 | [`get_poblacion_1976()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md), [`get_viviendas_1976()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md) | ~4.6M |
+| 1992 | [`get_personas_1992()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md), [`get_viviendas_1992()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md), [`get_mortalidad_1992()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md) | ~6.4M |
+| 2001 | [`get_personas_2001()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md), [`get_viviendas_2001()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md) | ~8.3M |
+| 2012 | [`get_personas_2012()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md), [`get_viviendas_2012()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md), [`get_emigracion_2012()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md), [`get_discapacidad_2012()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md) | ~10M |
 
 El formato **Arrow** (por defecto) mantiene los datos en el disco hasta
 que ejecutas
 [`collect()`](https://dplyr.tidyverse.org/reference/compute.html). Las
-tablas se pueden unir por la clave `idep + iprov + imun + i00`
-(identificador de hogar).
+tablas del CPV-2024 se pueden unir por la clave
+`idep + iprov + imun + i00` (identificador de hogar).
 
-## Diccionario de variables
-
-El paquete incluye un diccionario con las 168 variables del CPV-2024 y
-sus etiquetas en español:
+## Uso rápido — CPV-2024
 
 ``` r
 
 library(censosbo)
-
-# Buscar variables relacionadas con educación
-codebook(buscar = "educa")
-#> # A tibble: 6 × 4
-#>   variable  etiqueta                             tabla   tipo
-#>   <chr>     <chr>                                <chr>   <chr>
-#> 1 nivel_edu Nivel educativo alcanzado agrupado…  persona categorica
-#> 2 p39_grado Grado o curso más alto aprobado      persona numerica
-#> ...
-```
-
-``` r
-
-# Ver los códigos de una variable categórica
-codebook_valores("p25_sexo")
-#>   codigo etiqueta
-#> 1      1    Mujer
-#> 2      2   Hombre
-```
-
-## Etiquetas en los resultados
-
-Los resultados muestran códigos numéricos por defecto. Usa
-[`etiquetar_valores()`](https://lab-tecnosocial.github.io/censosbo/reference/etiquetar_valores.md)
-para convertirlos a texto y
-[`etiquetar_variables()`](https://lab-tecnosocial.github.io/censosbo/reference/etiquetar_variables.md)
-para renombrar las columnas con sus descripciones:
-
-``` r
-
 library(dplyr)
 
-# Contar por sexo con etiquetas de valores
-get_personas(departamento = "Santa Cruz") |>
-  count(p25_sexo) |>
-  collect() |>
-  etiquetar_valores()
-#> # A tibble: 2 × 2
-#>   p25_sexo       n
-#>   <fct>      <int>
-#> 1 Mujer    1234567
-#> 2 Hombre   1212345
-
-# También renombrar las columnas con sus descripciones del INE
-get_personas(departamento = "Santa Cruz") |>
-  count(p25_sexo, nivel_edu) |>
-  collect() |>
-  etiquetar_valores() |>
-  etiquetar_variables()
-#> # A tibble: 8 × 3
-#>   `25. Es mujer u hombre` `Nivel educativo alcanzado...`      n
-```
-
-## Uso rápido
-
-``` r
-
-# Grupos quinquenales de edad por sexo
+# Grupos quinquenales de edad por sexo, Santa Cruz
 # Nota: usar %/% en lugar de cut() — cut() no es compatible con Arrow
-get_personas(departamento = "Santa Cruz") |>
+get_personas_2024(departamento = "Santa Cruz") |>
   filter(!is.na(p26_edad), !is.na(p25_sexo)) |>
   mutate(grupo_edad = (p26_edad %/% 5L) * 5L) |>
   count(grupo_edad, p25_sexo) |>
@@ -105,21 +59,9 @@ get_personas(departamento = "Santa Cruz") |>
 
 ``` r
 
-# Ver departamentos disponibles
-departamentos()
-
-# Provincias de La Paz
-provincias("La Paz")
-
-# Municipios de Santa Cruz
-municipios(departamento = "Santa Cruz") |> head(5)
-```
-
-``` r
-
 # Consulta SQL con DuckDB
 library(DBI)
-con <- get_personas(departamento = "Santa Cruz", as = "duckdb")
+con <- get_personas_2024(departamento = "Santa Cruz", as = "duckdb")
 DBI::dbGetQuery(con, "
   SELECT p25_sexo, COUNT(*) AS total, ROUND(AVG(p26_edad), 1) AS edad_prom
   FROM personas
@@ -129,32 +71,78 @@ DBI::dbGetQuery(con, "
 DBI::dbDisconnect(con)
 ```
 
+## Censos históricos
+
 ``` r
 
-# Join personas + viviendas (Cochabamba)
-con <- DBI::dbConnect(duckdb::duckdb())
-duckdb::duckdb_register_arrow(con, "p", get_personas(departamento = "Cochabamba"))
-duckdb::duckdb_register_arrow(con, "v", get_viviendas(departamento = "Cochabamba"))
+# Personas de Santa Cruz en el censo 2012
+get_personas_2012(departamento = "Santa Cruz")
 
-DBI::dbGetQuery(con, "
-  SELECT v.urbrur AS area, COUNT(*) AS personas
-  FROM p JOIN v ON p.idep=v.idep AND p.iprov=v.iprov
-                AND p.imun=v.imun AND p.i00=v.i00
-  GROUP BY area
-  ORDER BY personas DESC
-") |> etiquetar_valores()
-DBI::dbDisconnect(con)
+# API genérica — equivalente
+get_censo(2012, "persona", departamento = "07")
+
+# Censo 1976 (estructura directa, sin REDATAM)
+get_poblacion_1976(departamento = "03")  # Cochabamba
+```
+
+## Análisis longitudinal
+
+``` r
+
+# Variables comparables entre censos
+variables_armonizadas()
+
+# Nivel educativo en todo el país, 1976–2024
+edu <- get_longitudinal(
+  variables = c("sexo", "nivel_edu"),
+  anios     = c(1976, 1992, 2001, 2012, 2024)
+)
+edu |> count(anio, nivel_edu)
+```
+
+## Diccionario de variables
+
+``` r
+
+# Buscar variables del CPV-2024
+codebook(buscar = "educa")
+
+# Codebook para censos históricos
+codebook_2012(buscar = "instruccion")
+codebook_1992(buscar = "sexo")
+
+# Ver códigos de una variable
+codebook_valores("p25_sexo")          # CPV-2024
+codebook_valores("P24", anio = 2012)  # Censo 2012
+```
+
+## Etiquetas en los resultados
+
+``` r
+
+library(dplyr)
+
+get_personas_2024(departamento = "Santa Cruz") |>
+  count(p25_sexo, nivel_edu) |>
+  collect() |>
+  etiquetar_valores() |>    # 1 → "Mujer", 2 → "Hombre"
+  etiquetar_variables()     # "p25_sexo" → "25. Es mujer u hombre"
+```
+
+## Geografía
+
+``` r
+
+departamentos()
+provincias("La Paz")
+municipios(departamento = "Santa Cruz") |> head(5)
 ```
 
 ## Gestión del caché
 
-Los datos se descargan una sola vez y se guardan localmente. Para
-guardar el caché dentro del proyecto en lugar del directorio del
-sistema:
-
 ``` r
 
-# Añadir a .Rprofile o al inicio del script
+# Guardar caché dentro del proyecto (recomendado)
 options(censosbo.cache_dir = "data/censosbo")
 
 censosbo_cache_dir()    # dónde está el caché
@@ -165,8 +153,10 @@ censosbo_cache_clear()  # liberar espacio en disco
 ## Fuente de datos
 
 Los microdatos son publicados por el **Instituto Nacional de Estadística
-(INE) de Bolivia** y están disponibles en:
-<https://anda.ine.gob.bo/index.php/catalog/132>
+(INE) de Bolivia**:
+
+- CPV-2024: <https://anda.ine.gob.bo/index.php/catalog/132>
+- Censos históricos 1976–2012: <https://anda.ine.gob.bo>
 
 ## Citar
 
@@ -175,6 +165,6 @@ Los microdatos son publicados por el **Instituto Nacional de Estadística
 citation("censosbo")
 ```
 
-> Ojeda Copa, A. (2024). *censosbo: Acceso y análisis de los datos del
-> Censo de Bolivia 2024*. R package version 0.1.0.
+> Ojeda Copa, A. (2025). *censosbo: Acceso y análisis de los censos de
+> Bolivia (1976–2024)*. R package version 0.2.0.
 > <https://github.com/lab-tecnosocial/censosbo>

@@ -6,14 +6,10 @@ Versión inicial del paquete.
 
 ### Nuevas funciones
 
-- [`get_personas()`](https://lab-tecnosocial.github.io/censosbo/reference/get_personas.md):
-  acceso a microdatos de personas del CPV-2024.
-- [`get_viviendas()`](https://lab-tecnosocial.github.io/censosbo/reference/get_viviendas.md):
-  acceso a microdatos de viviendas del CPV-2024.
-- [`get_emigracion()`](https://lab-tecnosocial.github.io/censosbo/reference/get_emigracion.md):
-  acceso a datos de emigración internacional.
-- [`get_mortalidad()`](https://lab-tecnosocial.github.io/censosbo/reference/get_mortalidad.md):
-  acceso a datos de mortalidad en el hogar.
+- `get_personas()`: acceso a microdatos de personas del CPV-2024.
+- `get_viviendas()`: acceso a microdatos de viviendas del CPV-2024.
+- `get_emigracion()`: acceso a datos de emigración internacional.
+- `get_mortalidad()`: acceso a datos de mortalidad en el hogar.
 - [`codebook()`](https://lab-tecnosocial.github.io/censosbo/reference/codebook.md):
   búsqueda en el diccionario de variables.
 - [`codebook_valores()`](https://lab-tecnosocial.github.io/censosbo/reference/codebook_valores.md):

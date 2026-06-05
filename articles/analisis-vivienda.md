@@ -10,7 +10,7 @@ archivo (~100 MB) que incluye todos los departamentos.
 
 # Descargar viviendas con variables de habitabilidad
 # (se filtra por Oruro después de descargar el archivo completo)
-viviendas <- get_viviendas(
+viviendas <- get_viviendas_2024(
   departamento = "Oruro",
   variables    = c("urbrur", "v03_pared", "v05_techo", "v06_piso",
                    "v07_aguapro", "v09_energia", "v11_basura",
@@ -153,15 +153,15 @@ con <- DBI::dbConnect(duckdb::duckdb(), dbdir = ":memory:")
 
 duckdb::duckdb_register_arrow(
   con, "personas",
-  get_personas(departamento = "Oruro",
+  get_personas_2024(departamento = "Oruro",
                variables = c("idep","iprov","imun","i00","p25_sexo","p26_edad","nivel_edu"))
 )
 #> ℹ Descargando persona_dep04.parquet (~28 MB)...
-#> ✔ Descargado persona_dep04.parquet [273ms]
+#> ✔ Descargado persona_dep04.parquet [227ms]
 #> 
 duckdb::duckdb_register_arrow(
   con, "viviendas",
-  get_viviendas(departamento = "Oruro",
+  get_viviendas_2024(departamento = "Oruro",
                 variables = c("idep","iprov","imun","i00","v07_aguapro","urbrur","tot_pers"))
 )
 #> ✔ Usando caché: vivienda.parquet

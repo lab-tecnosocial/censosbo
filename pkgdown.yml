@@ -4,10 +4,12 @@ pkgdown_sha: ~
 articles:
   analisis-avanzado: analisis-avanzado.html
   analisis-demografico: analisis-demografico.html
+  analisis-longitudinal: analisis-longitudinal.html
   analisis-vivienda: analisis-vivienda.html
+  censos-historicos: censos-historicos.html
   diccionario: diccionario.html
   introduccion: introduccion.html
-last_built: 2026-06-05T02:11Z
+last_built: 2026-06-05T13:35Z
 urls:
   reference: https://lab-tecnosocial.github.io/censosbo/reference
   article: https://lab-tecnosocial.github.io/censosbo/articles

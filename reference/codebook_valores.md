@@ -5,14 +5,19 @@ Muestra los valores codificados de una variable categórica
 ## Usage
 
 ``` r
-codebook_valores(variable)
+codebook_valores(variable, anio = 2024)
 ```
 
 ## Arguments
 
 - variable:
 
-  Caracteres. Nombre de la variable (e.g., \`"p25_sexo"\`).
+  Caracteres. Nombre de la variable (e.g., \`"p25_sexo"\`, \`"P23"\`).
+
+- anio:
+
+  Entero. Año del censo: \`2024\` (defecto), \`1976\`, \`1992\`,
+  \`2001\` o \`2012\`.
 
 ## Value
 
@@ -24,6 +29,6 @@ variable no tiene categorías.
 ``` r
 if (FALSE) { # \dontrun{
 codebook_valores("p25_sexo")
-codebook_valores("nivel_edu")
+codebook_valores("P23", anio = 2012)
 } # }
 ```

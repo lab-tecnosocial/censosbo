@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>censosbo: Datos del Censo Bolivia 2024 • censosbo</title>
+<title>censosbo: Censos de Bolivia (1976–2024) • censosbo</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
 <link rel="icon" type="”image/svg+xml”" href="favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
@@ -16,10 +16,10 @@
 <script src="deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><link href="extra.css" rel="stylesheet">
-<meta property="og:title" content="censosbo: Datos del Censo Bolivia 2024">
-<meta name="description" content="Acceso programático a los microdatos del Censo de Población y Vivienda 2024 de Bolivia (CPV-2024). Descarga bajo demanda, caché local, compatible con dplyr, Arrow y DuckDB.
+<meta property="og:title" content="censosbo: Censos de Bolivia (1976–2024)">
+<meta name="description" content="Acceso programático a los microdatos de todos los censos de Bolivia: 1976, 1992, 2001, 2012 y CPV-2024. Descarga bajo demanda, caché local, compatible con dplyr, Arrow y DuckDB. Incluye funciones de análisis longitudinal y diccionarios de variables para todos los años.
 ">
-<meta property="og:description" content="Acceso programático a los microdatos del Censo de Población y Vivienda 2024 de Bolivia (CPV-2024). Descarga bajo demanda, caché local, compatible con dplyr, Arrow y DuckDB.
+<meta property="og:description" content="Acceso programático a los microdatos de todos los censos de Bolivia: 1976, 1992, 2001, 2012 y CPV-2024. Descarga bajo demanda, caché local, compatible con dplyr, Arrow y DuckDB. Incluye funciones de análisis longitudinal y diccionarios de variables para todos los años.
 ">
 <meta property="og:image" content="https://lab-tecnosocial.github.io/censosbo/logo.png">
 </head>
@@ -31,7 +31,7 @@
 
     <a class="navbar-brand me-2" href="index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,9 +46,13 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-art-culos" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Artículos</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-art-culos">
 <li><a class="dropdown-item" href="articles/introduccion.html">Introducción al paquete</a></li>
-    <li><a class="dropdown-item" href="articles/diccionario.html">Diccionario de datos</a></li>
+    <li><a class="dropdown-item" href="articles/diccionario.html">Diccionario de datos (1976–2024)</a></li>
     <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Tutoriales</h6></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Censos históricos</h6></li>
+    <li><a class="dropdown-item" href="articles/censos-historicos.html">Acceso a censos históricos (1976–2012)</a></li>
+    <li><a class="dropdown-item" href="articles/analisis-longitudinal.html">Análisis longitudinal entre censos</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Tutoriales CPV-2024</h6></li>
     <li><a class="dropdown-item" href="articles/analisis-demografico.html">Análisis demográfico</a></li>
     <li><a class="dropdown-item" href="articles/analisis-vivienda.html">Análisis de condiciones de vivienda</a></li>
     <li><a class="dropdown-item" href="articles/analisis-avanzado.html">Análisis avanzado con DuckDB y Arrow</a></li>
@@ -75,7 +79,7 @@
 </div>
 <!-- badges: start -->
 
-<p><strong>censosbo</strong> proporciona acceso programático a los microdatos del <strong>Censo de Población y Vivienda 2024 (CPV-2024) de Bolivia</strong>. Los datos se descargan bajo demanda desde GitHub Releases, se guardan en caché local y se pueden consultar con <code>dplyr</code>, Apache Arrow o DuckDB.</p>
+<p><strong>censosbo</strong> proporciona acceso programático a los microdatos de todos los <strong>censos de población de Bolivia</strong>: 1976, 1992, 2001, 2012 y el CPV-2024. Los datos se descargan bajo demanda desde GitHub Releases, se guardan en caché local y se pueden consultar con <code>dplyr</code>, Apache Arrow o DuckDB.</p>
 <div class="section level2">
 <h2 id="instalación">Instalación<a class="anchor" aria-label="anchor" href="#instalaci%C3%B3n"></a>
 </h2>
@@ -84,130 +88,113 @@
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"lab-tecnosocial/censosbo"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="tablas-disponibles">Tablas disponibles<a class="anchor" aria-label="anchor" href="#tablas-disponibles"></a>
+<h2 id="censos-disponibles">Censos disponibles<a class="anchor" aria-label="anchor" href="#censos-disponibles"></a>
 </h2>
+<div class="section level3">
+<h3 id="cpv-2024">CPV-2024<a class="anchor" aria-label="anchor" href="#cpv-2024"></a>
+</h3>
 <table class="table">
-<colgroup>
-<col width="15%">
-<col width="21%">
-<col width="21%">
-<col width="21%">
-<col width="21%">
-</colgroup>
 <thead><tr>
 <th>Función</th>
 <th align="right">Registros</th>
 <th align="right">Variables</th>
 <th align="right">En disco (Parquet)</th>
-<th align="right">En memoria (tibble)</th>
 </tr></thead>
 <tbody>
 <tr>
-<td><code><a href="reference/get_personas.html">get_personas()</a></code></td>
+<td><code><a href="reference/get_personas_2024.html">get_personas_2024()</a></code></td>
 <td align="right">~11.4M</td>
 <td align="right">118</td>
 <td align="right">7–155 MB/dep. (560 MB total)</td>
-<td align="right">60 MB–1.2 GB/dep.</td>
 </tr>
 <tr>
-<td><code><a href="reference/get_viviendas.html">get_viviendas()</a></code></td>
+<td><code><a href="reference/get_viviendas_2024.html">get_viviendas_2024()</a></code></td>
 <td align="right">~4.5M</td>
 <td align="right">48</td>
 <td align="right">~100 MB</td>
-<td align="right">~700 MB</td>
 </tr>
 <tr>
-<td><code><a href="reference/get_emigracion.html">get_emigracion()</a></code></td>
+<td><code><a href="reference/get_emigracion_2024.html">get_emigracion_2024()</a></code></td>
 <td align="right">~501K</td>
 <td align="right">8</td>
 <td align="right">~5 MB</td>
-<td align="right">~40 MB</td>
 </tr>
 <tr>
-<td><code><a href="reference/get_mortalidad.html">get_mortalidad()</a></code></td>
+<td><code><a href="reference/get_mortalidad_2024.html">get_mortalidad_2024()</a></code></td>
 <td align="right">~383K</td>
 <td align="right">10</td>
 <td align="right">~4 MB</td>
-<td align="right">~30 MB</td>
 </tr>
 </tbody>
 </table>
-<p>El formato <strong>Arrow</strong> (por defecto) mantiene los datos en el disco hasta que ejecutas <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect()</a></code>. Las tablas se pueden unir por la clave <code>idep + iprov + imun + i00</code> (identificador de hogar).</p>
+</div>
+<div class="section level3">
+<h3 id="censos-históricos-vía-get_censo">Censos históricos (vía <code>get_censo()</code>)<a class="anchor" aria-label="anchor" href="#censos-hist%C3%B3ricos-v%C3%ADa-get_censo"></a>
+</h3>
+<table class="table">
+<colgroup>
+<col width="13%">
+<col width="61%">
+<col width="25%">
+</colgroup>
+<thead><tr>
+<th>Año</th>
+<th>Funciones disponibles</th>
+<th align="right">Personas</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>1976</td>
+<td>
+<code><a href="reference/get_censo.html">get_poblacion_1976()</a></code>, <code><a href="reference/get_censo.html">get_viviendas_1976()</a></code>
+</td>
+<td align="right">~4.6M</td>
+</tr>
+<tr>
+<td>1992</td>
+<td>
+<code><a href="reference/get_censo.html">get_personas_1992()</a></code>, <code><a href="reference/get_censo.html">get_viviendas_1992()</a></code>, <code><a href="reference/get_censo.html">get_mortalidad_1992()</a></code>
+</td>
+<td align="right">~6.4M</td>
+</tr>
+<tr>
+<td>2001</td>
+<td>
+<code><a href="reference/get_censo.html">get_personas_2001()</a></code>, <code><a href="reference/get_censo.html">get_viviendas_2001()</a></code>
+</td>
+<td align="right">~8.3M</td>
+</tr>
+<tr>
+<td>2012</td>
+<td>
+<code><a href="reference/get_censo.html">get_personas_2012()</a></code>, <code><a href="reference/get_censo.html">get_viviendas_2012()</a></code>, <code><a href="reference/get_censo.html">get_emigracion_2012()</a></code>, <code><a href="reference/get_censo.html">get_discapacidad_2012()</a></code>
+</td>
+<td align="right">~10M</td>
+</tr>
+</tbody>
+</table>
+<p>El formato <strong>Arrow</strong> (por defecto) mantiene los datos en el disco hasta que ejecutas <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect()</a></code>. Las tablas del CPV-2024 se pueden unir por la clave <code>idep + iprov + imun + i00</code> (identificador de hogar).</p>
+</div>
 </div>
 <div class="section level2">
-<h2 id="diccionario-de-variables">Diccionario de variables<a class="anchor" aria-label="anchor" href="#diccionario-de-variables"></a>
+<h2 id="uso-rápido--cpv-2024">Uso rápido — CPV-2024<a class="anchor" aria-label="anchor" href="#uso-r%C3%A1pido--cpv-2024"></a>
 </h2>
-<p>El paquete incluye un diccionario con las 168 variables del CPV-2024 y sus etiquetas en español:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lab-tecnosocial.github.io/censosbo/">censosbo</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Buscar variables relacionadas con educación</span></span>
-<span><span class="fu"><a href="reference/codebook.html">codebook</a></span><span class="op">(</span>buscar <span class="op">=</span> <span class="st">"educa"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 6 × 4</span></span>
-<span><span class="co">#&gt;   variable  etiqueta                             tabla   tipo</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt;                                &lt;chr&gt;   &lt;chr&gt;</span></span>
-<span><span class="co">#&gt; 1 nivel_edu Nivel educativo alcanzado agrupado…  persona categorica</span></span>
-<span><span class="co">#&gt; 2 p39_grado Grado o curso más alto aprobado      persona numerica</span></span>
-<span><span class="co">#&gt; ...</span></span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Ver los códigos de una variable categórica</span></span>
-<span><span class="fu"><a href="reference/codebook_valores.html">codebook_valores</a></span><span class="op">(</span><span class="st">"p25_sexo"</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   codigo etiqueta</span></span>
-<span><span class="co">#&gt; 1      1    Mujer</span></span>
-<span><span class="co">#&gt; 2      2   Hombre</span></span></code></pre></div>
-</div>
-<div class="section level2">
-<h2 id="etiquetas-en-los-resultados">Etiquetas en los resultados<a class="anchor" aria-label="anchor" href="#etiquetas-en-los-resultados"></a>
-</h2>
-<p>Los resultados muestran códigos numéricos por defecto. Usa <code><a href="reference/etiquetar_valores.html">etiquetar_valores()</a></code> para convertirlos a texto y <code><a href="reference/etiquetar_variables.html">etiquetar_variables()</a></code> para renombrar las columnas con sus descripciones:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Contar por sexo con etiquetas de valores</span></span>
-<span><span class="fu"><a href="reference/get_personas.html">get_personas</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Santa Cruz"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">p25_sexo</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="reference/etiquetar_valores.html">etiquetar_valores</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 2 × 2</span></span>
-<span><span class="co">#&gt;   p25_sexo       n</span></span>
-<span><span class="co">#&gt;   &lt;fct&gt;      &lt;int&gt;</span></span>
-<span><span class="co">#&gt; 1 Mujer    1234567</span></span>
-<span><span class="co">#&gt; 2 Hombre   1212345</span></span>
-<span></span>
-<span><span class="co"># También renombrar las columnas con sus descripciones del INE</span></span>
-<span><span class="fu"><a href="reference/get_personas.html">get_personas</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Santa Cruz"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">p25_sexo</span>, <span class="va">nivel_edu</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="reference/etiquetar_valores.html">etiquetar_valores</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="reference/etiquetar_variables.html">etiquetar_variables</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 8 × 3</span></span>
-<span><span class="co">#&gt;   `25. Es mujer u hombre` `Nivel educativo alcanzado...`      n</span></span></code></pre></div>
-</div>
-<div class="section level2">
-<h2 id="uso-rápido">Uso rápido<a class="anchor" aria-label="anchor" href="#uso-r%C3%A1pido"></a>
-</h2>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Grupos quinquenales de edad por sexo</span></span>
+<span><span class="co"># Grupos quinquenales de edad por sexo, Santa Cruz</span></span>
 <span><span class="co"># Nota: usar %/% en lugar de cut() — cut() no es compatible con Arrow</span></span>
-<span><span class="fu"><a href="reference/get_personas.html">get_personas</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Santa Cruz"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span><span class="fu"><a href="reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Santa Cruz"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">p26_edad</span><span class="op">)</span>, <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">p25_sexo</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>grupo_edad <span class="op">=</span> <span class="op">(</span><span class="va">p26_edad</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">%/%</a></span> <span class="fl">5L</span><span class="op">)</span> <span class="op">*</span> <span class="fl">5L</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">grupo_edad</span>, <span class="va">p25_sexo</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/etiquetar_valores.html">etiquetar_valores</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Ver departamentos disponibles</span></span>
-<span><span class="fu"><a href="reference/departamentos.html">departamentos</a></span><span class="op">(</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Provincias de La Paz</span></span>
-<span><span class="fu"><a href="reference/provincias.html">provincias</a></span><span class="op">(</span><span class="st">"La Paz"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Municipios de Santa Cruz</span></span>
-<span><span class="fu"><a href="reference/municipios.html">municipios</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Santa Cruz"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Consulta SQL con DuckDB</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dbi.r-dbi.org" class="external-link">DBI</a></span><span class="op">)</span></span>
-<span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_personas.html">get_personas</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Santa Cruz"</span>, as <span class="op">=</span> <span class="st">"duckdb"</span><span class="op">)</span></span>
+<span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Santa Cruz"</span>, as <span class="op">=</span> <span class="st">"duckdb"</span><span class="op">)</span></span>
 <span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbGetQuery.html" class="external-link">dbGetQuery</a></span><span class="op">(</span><span class="va">con</span>, <span class="st">"</span></span>
 <span><span class="st">  SELECT p25_sexo, COUNT(*) AS total, ROUND(AVG(p26_edad), 1) AS edad_prom</span></span>
 <span><span class="st">  FROM personas</span></span>
@@ -215,27 +202,74 @@
 <span><span class="st">  ORDER BY p25_sexo</span></span>
 <span><span class="st">"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="reference/etiquetar_valores.html">etiquetar_valores</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Join personas + viviendas (Cochabamba)</span></span>
-<span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html" class="external-link">dbConnect</a></span><span class="op">(</span><span class="fu">duckdb</span><span class="fu">::</span><span class="fu"><a href="https://r.duckdb.org/reference/duckdb.html" class="external-link">duckdb</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu">duckdb</span><span class="fu">::</span><span class="fu"><a href="https://r.duckdb.org/reference/duckdb_register_arrow.html" class="external-link">duckdb_register_arrow</a></span><span class="op">(</span><span class="va">con</span>, <span class="st">"p"</span>, <span class="fu"><a href="reference/get_personas.html">get_personas</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Cochabamba"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu">duckdb</span><span class="fu">::</span><span class="fu"><a href="https://r.duckdb.org/reference/duckdb_register_arrow.html" class="external-link">duckdb_register_arrow</a></span><span class="op">(</span><span class="va">con</span>, <span class="st">"v"</span>, <span class="fu"><a href="reference/get_viviendas.html">get_viviendas</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Cochabamba"</span><span class="op">)</span><span class="op">)</span></span>
+</div>
+<div class="section level2">
+<h2 id="censos-históricos">Censos históricos<a class="anchor" aria-label="anchor" href="#censos-hist%C3%B3ricos"></a>
+</h2>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Personas de Santa Cruz en el censo 2012</span></span>
+<span><span class="fu"><a href="reference/get_censo.html">get_personas_2012</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Santa Cruz"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbGetQuery.html" class="external-link">dbGetQuery</a></span><span class="op">(</span><span class="va">con</span>, <span class="st">"</span></span>
-<span><span class="st">  SELECT v.urbrur AS area, COUNT(*) AS personas</span></span>
-<span><span class="st">  FROM p JOIN v ON p.idep=v.idep AND p.iprov=v.iprov</span></span>
-<span><span class="st">                AND p.imun=v.imun AND p.i00=v.i00</span></span>
-<span><span class="st">  GROUP BY area</span></span>
-<span><span class="st">  ORDER BY personas DESC</span></span>
-<span><span class="st">"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="reference/etiquetar_valores.html">etiquetar_valores</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co"># API genérica — equivalente</span></span>
+<span><span class="fu"><a href="reference/get_censo.html">get_censo</a></span><span class="op">(</span><span class="fl">2012</span>, <span class="st">"persona"</span>, departamento <span class="op">=</span> <span class="st">"07"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Censo 1976 (estructura directa, sin REDATAM)</span></span>
+<span><span class="fu"><a href="reference/get_censo.html">get_poblacion_1976</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"03"</span><span class="op">)</span>  <span class="co"># Cochabamba</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="análisis-longitudinal">Análisis longitudinal<a class="anchor" aria-label="anchor" href="#an%C3%A1lisis-longitudinal"></a>
+</h2>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Variables comparables entre censos</span></span>
+<span><span class="fu"><a href="reference/variables_armonizadas.html">variables_armonizadas</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Nivel educativo en todo el país, 1976–2024</span></span>
+<span><span class="va">edu</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_longitudinal.html">get_longitudinal</a></span><span class="op">(</span></span>
+<span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sexo"</span>, <span class="st">"nivel_edu"</span><span class="op">)</span>,</span>
+<span>  anios     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1976</span>, <span class="fl">1992</span>, <span class="fl">2001</span>, <span class="fl">2012</span>, <span class="fl">2024</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">edu</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">anio</span>, <span class="va">nivel_edu</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="diccionario-de-variables">Diccionario de variables<a class="anchor" aria-label="anchor" href="#diccionario-de-variables"></a>
+</h2>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Buscar variables del CPV-2024</span></span>
+<span><span class="fu"><a href="reference/codebook.html">codebook</a></span><span class="op">(</span>buscar <span class="op">=</span> <span class="st">"educa"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Codebook para censos históricos</span></span>
+<span><span class="fu"><a href="reference/codebook.html">codebook_2012</a></span><span class="op">(</span>buscar <span class="op">=</span> <span class="st">"instruccion"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/codebook.html">codebook_1992</a></span><span class="op">(</span>buscar <span class="op">=</span> <span class="st">"sexo"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Ver códigos de una variable</span></span>
+<span><span class="fu"><a href="reference/codebook_valores.html">codebook_valores</a></span><span class="op">(</span><span class="st">"p25_sexo"</span><span class="op">)</span>          <span class="co"># CPV-2024</span></span>
+<span><span class="fu"><a href="reference/codebook_valores.html">codebook_valores</a></span><span class="op">(</span><span class="st">"P24"</span>, anio <span class="op">=</span> <span class="fl">2012</span><span class="op">)</span>  <span class="co"># Censo 2012</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="etiquetas-en-los-resultados">Etiquetas en los resultados<a class="anchor" aria-label="anchor" href="#etiquetas-en-los-resultados"></a>
+</h2>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Santa Cruz"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">p25_sexo</span>, <span class="va">nivel_edu</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/etiquetar_valores.html">etiquetar_valores</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span>    <span class="co"># 1 → "Mujer", 2 → "Hombre"</span></span>
+<span>  <span class="fu"><a href="reference/etiquetar_variables.html">etiquetar_variables</a></span><span class="op">(</span><span class="op">)</span>     <span class="co"># "p25_sexo" → "25. Es mujer u hombre"</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="geografía">Geografía<a class="anchor" aria-label="anchor" href="#geograf%C3%ADa"></a>
+</h2>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/departamentos.html">departamentos</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/provincias.html">provincias</a></span><span class="op">(</span><span class="st">"La Paz"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/municipios.html">municipios</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Santa Cruz"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="gestión-del-caché">Gestión del caché<a class="anchor" aria-label="anchor" href="#gesti%C3%B3n-del-cach%C3%A9"></a>
 </h2>
-<p>Los datos se descargan una sola vez y se guardan localmente. Para guardar el caché dentro del proyecto en lugar del directorio del sistema:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Añadir a .Rprofile o al inicio del script</span></span>
+<code class="sourceCode R"><span><span class="co"># Guardar caché dentro del proyecto (recomendado)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>censosbo.cache_dir <span class="op">=</span> <span class="st">"data/censosbo"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="reference/censosbo_cache_dir.html">censosbo_cache_dir</a></span><span class="op">(</span><span class="op">)</span>    <span class="co"># dónde está el caché</span></span>
@@ -245,7 +279,13 @@
 <div class="section level2">
 <h2 id="fuente-de-datos">Fuente de datos<a class="anchor" aria-label="anchor" href="#fuente-de-datos"></a>
 </h2>
-<p>Los microdatos son publicados por el <strong>Instituto Nacional de Estadística (INE) de Bolivia</strong> y están disponibles en: <a href="https://anda.ine.gob.bo/index.php/catalog/132" class="external-link uri">https://anda.ine.gob.bo/index.php/catalog/132</a></p>
+<p>Los microdatos son publicados por el <strong>Instituto Nacional de Estadística (INE) de Bolivia</strong>:</p>
+<ul>
+<li>CPV-2024: <a href="https://anda.ine.gob.bo/index.php/catalog/132" class="external-link uri">https://anda.ine.gob.bo/index.php/catalog/132</a>
+</li>
+<li>Censos históricos 1976–2012: <a href="https://anda.ine.gob.bo" class="external-link uri">https://anda.ine.gob.bo</a>
+</li>
+</ul>
 </div>
 <div class="section level2">
 <h2 id="citar">Citar<a class="anchor" aria-label="anchor" href="#citar"></a>
@@ -253,7 +293,7 @@
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"censosbo"</span><span class="op">)</span></span></code></pre></div>
 <blockquote>
-<p>Ojeda Copa, A. (2024). <em>censosbo: Acceso y análisis de los datos del Censo de Bolivia 2024</em>. R package version 0.1.0. <a href="https://github.com/lab-tecnosocial/censosbo" class="external-link uri">https://github.com/lab-tecnosocial/censosbo</a></p>
+<p>Ojeda Copa, A. (2025). <em>censosbo: Acceso y análisis de los censos de Bolivia (1976–2024)</em>. R package version 0.2.0. <a href="https://github.com/lab-tecnosocial/censosbo" class="external-link uri">https://github.com/lab-tecnosocial/censosbo</a></p>
 </blockquote>
 </div>
 </div>
@@ -262,7 +302,7 @@
 <ul class="list-unstyled">
 <li><a href="https://github.com/lab-tecnosocial/censosbo" class="external-link">Browse source code</a></li>
 <li><a href="https://github.com/lab-tecnosocial/censosbo/issues" class="external-link">Report a bug</a></li>
-<li><a href="https://anda.ine.gob.bo/index.php/catalog/132" class="external-link">Fuente de datos: INE Bolivia</a></li>
+<li><a href="https://anda.ine.gob.bo" class="external-link">Fuente de datos: INE Bolivia</a></li>
 <li><a href="https://github.com/lab-tecnosocial/censosbo/issues" class="external-link">Reportar un problema</a></li>
 </ul>
 </div>
