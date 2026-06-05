@@ -16,14 +16,14 @@
 
 # Tamaños estimados en MB para mensajes de progreso
 .CENSO_SIZE_MB <- list(
-  "1976" = list(poblacion = 63, vivienda = 7),
-  "1992" = list(persona = 135, vivienda = 29, mortalidad = 17,
-                depto = 0, provin = 0, munic = 0),
-  "2001" = list(persona = 136, vivienda = 20,
-                comunidades_poblacion = 1, comunidades_vivienda = 1,
-                depto = 0, provin = 0, munic = 0),
-  "2012" = list(persona = 146, vivienda = 38, emigracion = 5, discapacidad = 4,
-                depto = 0, provin = 0, munic = 0)
+  "1976" = list(poblacion = 64, vivienda = 8),
+  "1992" = list(persona = 135, vivienda = 30, mortalidad = 17,
+                depto = 1, provin = 1, munic = 1),
+  "2001" = list(persona = 137, vivienda = 20,
+                comunidades_poblacion = 2, comunidades_vivienda = 1,
+                depto = 1, provin = 1, munic = 1),
+  "2012" = list(persona = 147, vivienda = 39, emigracion = 6, discapacidad = 4,
+                depto = 1, provin = 1, munic = 1)
 )
 
 .validate_censo_args <- function(anio, tabla) {
