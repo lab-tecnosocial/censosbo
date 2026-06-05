@@ -25,7 +25,7 @@ ds <- get_personas_2024(
   as = "arrow"
 )
 #> ℹ Descargando persona_dep09.parquet (~7 MB)...
-#> ✔ Descargado persona_dep09.parquet [352ms]
+#> ✔ Descargado persona_dep09.parquet [507ms]
 #> 
 class(ds)
 #> [1] "FileSystemDataset" "Dataset"           "ArrowObject"      
@@ -179,7 +179,7 @@ duckdb::duckdb_register_arrow(
                 variables = c("idep","iprov","imun","i00","urbrur","v07_aguapro","v09_energia"))
 )
 #> ℹ Descargando vivienda.parquet (~100 MB)...
-#> ✔ Descargado vivienda.parquet [363ms]
+#> ✔ Descargado vivienda.parquet [368ms]
 
 # Indicador: personas con educación superior en viviendas con servicios básicos
 DBI::dbGetQuery(con, "
