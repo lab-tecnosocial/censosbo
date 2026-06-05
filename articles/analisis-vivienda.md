@@ -156,8 +156,8 @@ duckdb::duckdb_register_arrow(
   get_personas_2024(departamento = "Oruro",
                variables = c("idep","iprov","imun","i00","p25_sexo","p26_edad","nivel_edu"))
 )
-#> ℹ Descargando persona_dep04.parquet (~28 MB)...
-#> ✔ Descargado persona_dep04.parquet [463ms]
+#> ℹ Descargando persona_dep04.parquet (~14 MB)...
+#> ✔ Descargado persona_dep04.parquet [363ms]
 #> 
 duckdb::duckdb_register_arrow(
   con, "viviendas",

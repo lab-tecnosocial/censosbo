@@ -20,28 +20,36 @@ remotes::install_github("lab-tecnosocial/censosbo")
 
 ## Censos disponibles
 
-### CPV-2024
+| Año | Función | Registros | Variables | Disco (Parquet) | RAM (aprox.)¹ |
+|:--:|----|---:|---:|---:|---:|
+| **1976** | [`get_poblacion_1976()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md) | 4,613,419 | 46 | 63 MB | 83 MB |
+| **1976** | [`get_viviendas_1976()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md) | 1,158,482 | 28 | 7 MB | 9 MB |
+| **1992** | [`get_personas_1992()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md) | 6,420,792 | 54 | 135 MB | 238 MB |
+| **1992** | [`get_viviendas_1992()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md) | 1,706,107 | 44 | 29 MB | 43 MB |
+| **1992** | [`get_mortalidad_1992()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md) | 1,706,107 | 14 | 17 MB | 36 MB |
+| **2001** | [`get_personas_2001()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md) | 8,274,325 | 66 | 136 MB | 316 MB |
+| **2001** | [`get_viviendas_2001()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md) | 2,290,414 | 39 | 20 MB | 37 MB |
+| **2001** | `get_censo(2001, "comunidades_poblacion")` | 14,620 | 103 | 1 MB | 2 MB |
+| **2001** | `get_censo(2001, "comunidades_vivienda")` | 14,611 | 94 | \<1 MB | 1 MB |
+| **2012** | [`get_personas_2012()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md) | 10,059,856 | 33 | 146 MB | 279 MB |
+| **2012** | [`get_viviendas_2012()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md) | 3,172,321 | 32 | 38 MB | 58 MB |
+| **2012** | [`get_emigracion_2012()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md) | 489,559 | 6 | 5 MB | 11 MB |
+| **2012** | [`get_discapacidad_2012()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md) | 342,929 | 8 | 4 MB | 8 MB |
+| **2024**² | [`get_personas_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_personas_2024.md) | 11,365,333 | 118 | 283 MB | ~490 MB |
+| **2024**² | [`get_viviendas_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_viviendas_2024.md) | 4,490,488 | 48 | 55 MB | ~111 MB |
+| **2024**² | [`get_emigracion_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_emigracion_2024.md) | 500,914 | 8 | 2 MB | ~7 MB |
+| **2024**² | [`get_mortalidad_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_mortalidad_2024.md) | 382,731 | 10 | 2 MB | ~5 MB |
 
-| Función | Filas | Variables | En disco (Parquet) |
-|----|---:|---:|---:|
-| [`get_personas_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_personas_2024.md) | ~11.4M | 118 | 7–155 MB/dep. (560 MB total) |
-| [`get_viviendas_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_viviendas_2024.md) | ~4.5M | 48 | ~100 MB |
-| [`get_emigracion_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_emigracion_2024.md) | ~501K | 8 | ~5 MB |
-| [`get_mortalidad_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_mortalidad_2024.md) | ~383K | 10 | ~4 MB |
+¹ Tamaño al cargar la tabla completa con
+[`collect()`](https://dplyr.tidyverse.org/reference/compute.html) sin
+filtros, medido desde metadatos Parquet. ² Persona 2024 está
+particionada en 9 archivos por departamento (4–77 MB cada uno). Disco y
+RAM muestran el total; en la práctica se descarga solo el/los
+departamentos necesarios.
 
-### Censos históricos (vía `get_censo()`)
-
-| Año  | Tablas disponibles                                  | Personas |
-|------|-----------------------------------------------------|---------:|
-| 1976 | `poblacion`, `vivienda`                             |    ~4.6M |
-| 1992 | `persona`, `vivienda`, `mortalidad`                 |    ~6.4M |
-| 2001 | `persona`, `vivienda`, `comunidades_*`              |    ~8.3M |
-| 2012 | `persona`, `vivienda`, `emigracion`, `discapacidad` |     ~10M |
-
-El formato **Arrow** (defecto) mantiene los datos en el disco hasta que
-se llama
-[`collect()`](https://dplyr.tidyverse.org/reference/compute.html). Las
-tablas del CPV-2024 se unen con la clave compuesta
+El formato **Arrow** (defecto) mantiene los datos en disco hasta que se
+llama [`collect()`](https://dplyr.tidyverse.org/reference/compute.html).
+Las tablas del CPV-2024 se unen con la clave compuesta
 `idep + iprov + imun + i00` (identificador de hogar).
 
 ## Diccionario de variables
@@ -397,6 +405,33 @@ censosbo_cache_clear()
   longitudinal](https://lab-tecnosocial.github.io/censosbo/articles/analisis-longitudinal.md)**:
   comparar variables entre censos históricos.
 
+## Fuente de datos y nota metodológica
+
+Los microdatos originales son publicados por el **Instituto Nacional de
+Estadística (INE) de Bolivia**:
+
+- **CPV-2024**:
+  <https://cpv2024.ine.gob.bo/index.php/principal/descargas/>
+- **Censos históricos 1976–2012**:
+  <https://www.ine.gob.bo/index.php/censos-y-banco-de-datos/censos/>
+
+Los archivos originales se distribuyeron en formatos heterogéneos y
+fueron transformados a **Parquet** (compresión zstd nivel 6) para su
+distribución en este paquete:
+
+| Censo | Formato original | Conversión |
+|----|----|----|
+| 1976 | SPSS (`.sav`) | `pyreadstat` + `pyarrow` |
+| 1992 | REDATAM (`.dic` binario + `.rbf`) | `open-redatam` CLI → CSV → Parquet |
+| 2001 | REDATAM (`.wxp` → `.dicX`) | script `.wxp`→`.dicX` + `open-redatam` → CSV → Parquet |
+| 2012 | REDATAM (`.dic` binario + `.ptr`) | `open-redatam` CLI → CSV → Parquet |
+| 2024 | CSV delimitado por `;` (~3.6 GB total) | `pandas` + `pyarrow`; persona particionada por departamento |
+
+El formato Parquet conserva todos los registros y variables originales
+sin modificación de valores. Los scripts de conversión están en
+`data-raw/` del
+[repositorio](https://github.com/lab-tecnosocial/censosbo).
+
 ## Cómo citar
 
 ``` r
@@ -404,6 +439,6 @@ censosbo_cache_clear()
 citation("censosbo")
 ```
 
-> Ojeda Copa, A. (2024). *censosbo: Acceso y análisis de los datos del
-> Censo de Bolivia 2024*. R package version 0.1.0.
+> Ojeda Copa, A. (2025). *censosbo: Acceso y análisis de los censos de
+> Bolivia (1976–2024)*. R package version 0.2.0.
 > <https://github.com/lab-tecnosocial/censosbo>

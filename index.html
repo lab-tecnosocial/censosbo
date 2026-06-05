@@ -90,91 +90,152 @@
 <div class="section level2">
 <h2 id="censos-disponibles">Censos disponibles<a class="anchor" aria-label="anchor" href="#censos-disponibles"></a>
 </h2>
-<div class="section level3">
-<h3 id="cpv-2024">CPV-2024<a class="anchor" aria-label="anchor" href="#cpv-2024"></a>
-</h3>
 <table class="table">
+<colgroup>
+<col width="7%">
+<col width="13%">
+<col width="16%">
+<col width="16%">
+<col width="25%">
+<col width="22%">
+</colgroup>
 <thead><tr>
+<th align="center">Año</th>
 <th>Función</th>
 <th align="right">Registros</th>
 <th align="right">Variables</th>
-<th align="right">En disco (Parquet)</th>
+<th align="right">Disco (Parquet)</th>
+<th align="right">RAM (aprox.)¹</th>
 </tr></thead>
 <tbody>
 <tr>
-<td><code><a href="reference/get_personas_2024.html">get_personas_2024()</a></code></td>
-<td align="right">~11.4M</td>
-<td align="right">118</td>
-<td align="right">7–155 MB/dep. (560 MB total)</td>
+<td align="center"><strong>1976</strong></td>
+<td><code><a href="reference/get_censo.html">get_poblacion_1976()</a></code></td>
+<td align="right">4,613,419</td>
+<td align="right">46</td>
+<td align="right">63 MB</td>
+<td align="right">83 MB</td>
 </tr>
 <tr>
-<td><code><a href="reference/get_viviendas_2024.html">get_viviendas_2024()</a></code></td>
-<td align="right">~4.5M</td>
-<td align="right">48</td>
-<td align="right">~100 MB</td>
+<td align="center"><strong>1976</strong></td>
+<td><code><a href="reference/get_censo.html">get_viviendas_1976()</a></code></td>
+<td align="right">1,158,482</td>
+<td align="right">28</td>
+<td align="right">7 MB</td>
+<td align="right">9 MB</td>
 </tr>
 <tr>
-<td><code><a href="reference/get_emigracion_2024.html">get_emigracion_2024()</a></code></td>
-<td align="right">~501K</td>
+<td align="center"><strong>1992</strong></td>
+<td><code><a href="reference/get_censo.html">get_personas_1992()</a></code></td>
+<td align="right">6,420,792</td>
+<td align="right">54</td>
+<td align="right">135 MB</td>
+<td align="right">238 MB</td>
+</tr>
+<tr>
+<td align="center"><strong>1992</strong></td>
+<td><code><a href="reference/get_censo.html">get_viviendas_1992()</a></code></td>
+<td align="right">1,706,107</td>
+<td align="right">44</td>
+<td align="right">29 MB</td>
+<td align="right">43 MB</td>
+</tr>
+<tr>
+<td align="center"><strong>1992</strong></td>
+<td><code><a href="reference/get_censo.html">get_mortalidad_1992()</a></code></td>
+<td align="right">1,706,107</td>
+<td align="right">14</td>
+<td align="right">17 MB</td>
+<td align="right">36 MB</td>
+</tr>
+<tr>
+<td align="center"><strong>2001</strong></td>
+<td><code><a href="reference/get_censo.html">get_personas_2001()</a></code></td>
+<td align="right">8,274,325</td>
+<td align="right">66</td>
+<td align="right">136 MB</td>
+<td align="right">316 MB</td>
+</tr>
+<tr>
+<td align="center"><strong>2001</strong></td>
+<td><code><a href="reference/get_censo.html">get_viviendas_2001()</a></code></td>
+<td align="right">2,290,414</td>
+<td align="right">39</td>
+<td align="right">20 MB</td>
+<td align="right">37 MB</td>
+</tr>
+<tr>
+<td align="center"><strong>2012</strong></td>
+<td><code><a href="reference/get_censo.html">get_personas_2012()</a></code></td>
+<td align="right">10,059,856</td>
+<td align="right">33</td>
+<td align="right">146 MB</td>
+<td align="right">279 MB</td>
+</tr>
+<tr>
+<td align="center"><strong>2012</strong></td>
+<td><code><a href="reference/get_censo.html">get_viviendas_2012()</a></code></td>
+<td align="right">3,172,321</td>
+<td align="right">32</td>
+<td align="right">38 MB</td>
+<td align="right">58 MB</td>
+</tr>
+<tr>
+<td align="center"><strong>2012</strong></td>
+<td><code><a href="reference/get_censo.html">get_emigracion_2012()</a></code></td>
+<td align="right">489,559</td>
+<td align="right">6</td>
+<td align="right">5 MB</td>
+<td align="right">11 MB</td>
+</tr>
+<tr>
+<td align="center"><strong>2012</strong></td>
+<td><code><a href="reference/get_censo.html">get_discapacidad_2012()</a></code></td>
+<td align="right">342,929</td>
 <td align="right">8</td>
+<td align="right">4 MB</td>
+<td align="right">8 MB</td>
+</tr>
+<tr>
+<td align="center">
+<strong>2024</strong>²</td>
+<td><code><a href="reference/get_personas_2024.html">get_personas_2024()</a></code></td>
+<td align="right">11,365,333</td>
+<td align="right">118</td>
+<td align="right">283 MB</td>
+<td align="right">~490 MB</td>
+</tr>
+<tr>
+<td align="center">
+<strong>2024</strong>²</td>
+<td><code><a href="reference/get_viviendas_2024.html">get_viviendas_2024()</a></code></td>
+<td align="right">4,490,488</td>
+<td align="right">48</td>
+<td align="right">55 MB</td>
+<td align="right">~111 MB</td>
+</tr>
+<tr>
+<td align="center">
+<strong>2024</strong>²</td>
+<td><code><a href="reference/get_emigracion_2024.html">get_emigracion_2024()</a></code></td>
+<td align="right">500,914</td>
+<td align="right">8</td>
+<td align="right">2 MB</td>
+<td align="right">~7 MB</td>
+</tr>
+<tr>
+<td align="center">
+<strong>2024</strong>²</td>
+<td><code><a href="reference/get_mortalidad_2024.html">get_mortalidad_2024()</a></code></td>
+<td align="right">382,731</td>
+<td align="right">10</td>
+<td align="right">2 MB</td>
 <td align="right">~5 MB</td>
 </tr>
-<tr>
-<td><code><a href="reference/get_mortalidad_2024.html">get_mortalidad_2024()</a></code></td>
-<td align="right">~383K</td>
-<td align="right">10</td>
-<td align="right">~4 MB</td>
-</tr>
 </tbody>
 </table>
-</div>
-<div class="section level3">
-<h3 id="censos-históricos-vía-get_censo">Censos históricos (vía <code>get_censo()</code>)<a class="anchor" aria-label="anchor" href="#censos-hist%C3%B3ricos-v%C3%ADa-get_censo"></a>
-</h3>
-<table class="table">
-<colgroup>
-<col width="13%">
-<col width="61%">
-<col width="25%">
-</colgroup>
-<thead><tr>
-<th>Año</th>
-<th>Funciones disponibles</th>
-<th align="right">Personas</th>
-</tr></thead>
-<tbody>
-<tr>
-<td>1976</td>
-<td>
-<code><a href="reference/get_censo.html">get_poblacion_1976()</a></code>, <code><a href="reference/get_censo.html">get_viviendas_1976()</a></code>
-</td>
-<td align="right">~4.6M</td>
-</tr>
-<tr>
-<td>1992</td>
-<td>
-<code><a href="reference/get_censo.html">get_personas_1992()</a></code>, <code><a href="reference/get_censo.html">get_viviendas_1992()</a></code>, <code><a href="reference/get_censo.html">get_mortalidad_1992()</a></code>
-</td>
-<td align="right">~6.4M</td>
-</tr>
-<tr>
-<td>2001</td>
-<td>
-<code><a href="reference/get_censo.html">get_personas_2001()</a></code>, <code><a href="reference/get_censo.html">get_viviendas_2001()</a></code>
-</td>
-<td align="right">~8.3M</td>
-</tr>
-<tr>
-<td>2012</td>
-<td>
-<code><a href="reference/get_censo.html">get_personas_2012()</a></code>, <code><a href="reference/get_censo.html">get_viviendas_2012()</a></code>, <code><a href="reference/get_censo.html">get_emigracion_2012()</a></code>, <code><a href="reference/get_censo.html">get_discapacidad_2012()</a></code>
-</td>
-<td align="right">~10M</td>
-</tr>
-</tbody>
-</table>
+<p>¹ Tamaño al cargar la tabla completa con <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect()</a></code> sin filtros, medido desde metadatos Parquet. ² Persona 2024 está particionada en 9 archivos por departamento (4–77 MB cada uno). Disco y RAM muestran el total; en la práctica se descarga solo el/los departamentos necesarios.</p>
 <p>El formato <strong>Arrow</strong> (por defecto) mantiene los datos en el disco hasta que ejecutas <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect()</a></code>. Las tablas del CPV-2024 se pueden unir por la clave <code>idep + iprov + imun + i00</code> (identificador de hogar).</p>
-</div>
 </div>
 <div class="section level2">
 <h2 id="uso-rápido--cpv-2024">Uso rápido — CPV-2024<a class="anchor" aria-label="anchor" href="#uso-r%C3%A1pido--cpv-2024"></a>
@@ -279,13 +340,65 @@
 <div class="section level2">
 <h2 id="fuente-de-datos">Fuente de datos<a class="anchor" aria-label="anchor" href="#fuente-de-datos"></a>
 </h2>
-<p>Los microdatos son publicados por el <strong>Instituto Nacional de Estadística (INE) de Bolivia</strong>:</p>
+<p>Los microdatos originales son publicados por el <strong>Instituto Nacional de Estadística (INE) de Bolivia</strong>:</p>
 <ul>
-<li>CPV-2024: <a href="https://anda.ine.gob.bo/index.php/catalog/132" class="external-link uri">https://anda.ine.gob.bo/index.php/catalog/132</a>
+<li>
+<strong>CPV-2024</strong>: <a href="https://cpv2024.ine.gob.bo/index.php/principal/descargas/" class="external-link uri">https://cpv2024.ine.gob.bo/index.php/principal/descargas/</a>
 </li>
-<li>Censos históricos 1976–2012: <a href="https://anda.ine.gob.bo" class="external-link uri">https://anda.ine.gob.bo</a>
+<li>
+<strong>Censos históricos 1976–2012</strong>: <a href="https://www.ine.gob.bo/index.php/censos-y-banco-de-datos/censos/" class="external-link uri">https://www.ine.gob.bo/index.php/censos-y-banco-de-datos/censos/</a>
 </li>
 </ul>
+<div class="section level3">
+<h3 id="nota-metodológica">Nota metodológica<a class="anchor" aria-label="anchor" href="#nota-metodol%C3%B3gica"></a>
+</h3>
+<p>Los archivos originales fueron transformados a formato <strong>Parquet</strong> (compresión zstd nivel 6) para distribución eficiente. El proceso de conversión varía por censo:</p>
+<table class="table">
+<colgroup>
+<col width="14%">
+<col width="34%">
+<col width="52%">
+</colgroup>
+<thead><tr>
+<th>Censo</th>
+<th>Formato original</th>
+<th>Herramienta de conversión</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>1976</td>
+<td>SPSS (<code>.sav</code>)</td>
+<td>
+<code>pyreadstat</code> + <code>pyarrow</code>
+</td>
+</tr>
+<tr>
+<td>1992</td>
+<td>REDATAM (<code>.dic</code> binario + <code>.rbf</code>)</td>
+<td>
+<code>open-redatam</code> CLI → CSV → Parquet</td>
+</tr>
+<tr>
+<td>2001</td>
+<td>REDATAM (<code>.wxp</code> → <code>.dicX</code>)</td>
+<td>conversión <code>.wxp</code>→<code>.dicX</code> + <code>open-redatam</code> → CSV → Parquet</td>
+</tr>
+<tr>
+<td>2012</td>
+<td>REDATAM (<code>.dic</code> binario + <code>.ptr</code>)</td>
+<td>
+<code>open-redatam</code> CLI → CSV → Parquet</td>
+</tr>
+<tr>
+<td>2024</td>
+<td>CSV delimitado por <code>;</code> (~3.6 GB total)</td>
+<td>
+<code>pandas</code> + <code>pyarrow</code>; persona particionada por departamento</td>
+</tr>
+</tbody>
+</table>
+<p>El formato Parquet conserva todos los registros y variables originales sin modificación de valores.</p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="citar">Citar<a class="anchor" aria-label="anchor" href="#citar"></a>
