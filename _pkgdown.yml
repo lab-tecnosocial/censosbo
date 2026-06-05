@@ -36,6 +36,12 @@ navbar:
     intro:
       text: Empezar
       href: articles/introduccion.html
+    reference:
+      text: Referencia
+      href: reference/index.html
+    news:
+      text: Noticias
+      href: news/index.html
     articles:
       text: Artículos
       menu:
@@ -53,9 +59,8 @@ navbar:
         href: articles/analisis-avanzado.html
 
 footer:
-  structure:
-    left: developed_by
-    right: built_with
+  left: "Desarrollado por [Alex Ojeda Copa](https://labtecnosocial.org)."
+  right: "Sitio construido con [pkgdown](https://pkgdown.r-lib.org/)."
 
 reference:
   - title: "Acceso a microdatos"
@@ -70,11 +75,10 @@ reference:
       - get_mortalidad
   - title: "Datos incluidos en el paquete"
     desc: >
-      Datasets pequeños disponibles sin descarga, para exploración y prototipado.
+      Datasets disponibles sin descarga, incluidos directamente en el paquete.
     contents:
       - geo_bolivia
       - codebook_meta
-      - sample_personas
   - title: "Geografía de Bolivia"
     desc: >
       Funciones para consultar la división político-administrativa del país
@@ -90,7 +94,8 @@ reference:
     contents:
       - codebook
       - codebook_valores
-      - etiquetar
+      - etiquetar_valores
+      - etiquetar_variables
   - title: "Gestión de caché"
     desc: >
       Los archivos Parquet se descargan una sola vez y quedan en caché local.

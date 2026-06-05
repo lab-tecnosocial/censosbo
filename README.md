@@ -33,39 +33,77 @@ remotes::install_github("lab-tecnosocial/censosbo")
 | `get_emigracion()` | ~501K | 8 | ~5 MB | ~40 MB |
 | `get_mortalidad()` | ~383K | 10 | ~4 MB | ~30 MB |
 
-El formato **Arrow** (por defecto) nunca carga todo en RAM: los datos
-permanecen en el archivo Parquet del disco hasta que ejecutas
-`collect()`. 
-
-Todas las tablas se pueden unir por la clave
+El formato **Arrow** (por defecto) mantiene los datos en el disco hasta
+que ejecutas `collect()`. Las tablas se pueden unir por la clave
 `idep + iprov + imun + i00` (identificador de hogar).
+
+## Diccionario de variables
+
+El paquete incluye un diccionario con las 168 variables del CPV-2024 y
+sus etiquetas en español:
+
+``` r
+library(censosbo)
+
+# Buscar variables relacionadas con educación
+codebook(buscar = "educa")
+#> # A tibble: 6 × 4
+#>   variable  etiqueta                             tabla   tipo
+#>   <chr>     <chr>                                <chr>   <chr>
+#> 1 nivel_edu Nivel educativo alcanzado agrupado…  persona categorica
+#> 2 p39_grado Grado o curso más alto aprobado      persona numerica
+#> ...
+```
+
+``` r
+# Ver los códigos de una variable categórica
+codebook_valores("p25_sexo")
+#>   codigo etiqueta
+#> 1      1    Mujer
+#> 2      2   Hombre
+```
+
+## Etiquetas en los resultados
+
+Los resultados muestran códigos numéricos por defecto. Usa
+`etiquetar_valores()` para convertirlos a texto y
+`etiquetar_variables()` para renombrar las columnas con sus descripciones:
+
+``` r
+library(dplyr)
+
+# Contar por sexo con etiquetas de valores
+get_personas(departamento = "Santa Cruz") |>
+  count(p25_sexo) |>
+  collect() |>
+  etiquetar_valores()
+#> # A tibble: 2 × 2
+#>   p25_sexo       n
+#>   <fct>      <int>
+#> 1 Mujer    1234567
+#> 2 Hombre   1212345
+
+# También renombrar las columnas con sus descripciones del INE
+get_personas(departamento = "Santa Cruz") |>
+  count(p25_sexo, nivel_edu) |>
+  collect() |>
+  etiquetar_valores() |>
+  etiquetar_variables()
+#> # A tibble: 8 × 3
+#>   `25. Es mujer u hombre` `Nivel educativo alcanzado...`      n
+```
 
 ## Uso rápido
 
 ``` r
-library(censosbo)
-library(dplyr)
-
-# Datos de Santa Cruz como Arrow Dataset (lazy, sin cargar todo en RAM)
-personas_sc <- get_personas(departamento = "Santa Cruz")
-
-# Distribución por sexo con etiquetas legibles
-personas_sc |>
-  count(p25_sexo) |>
-  collect() |>
-  etiquetar()
-# p25_sexo ahora muestra "Mujer" / "Hombre" en lugar de 1 / 2
-```
-
-``` r
-# Grupos quinquenales de edad
-# Nota: usar (edad %/% 5) * 5 en lugar de cut() — cut() no es compatible con Arrow
-personas_sc |>
+# Grupos quinquenales de edad por sexo
+# Nota: usar %/% en lugar de cut() — cut() no es compatible con Arrow
+get_personas(departamento = "Santa Cruz") |>
   filter(!is.na(p26_edad), !is.na(p25_sexo)) |>
   mutate(grupo_edad = (p26_edad %/% 5L) * 5L) |>
   count(grupo_edad, p25_sexo) |>
   collect() |>
-  etiquetar()
+  etiquetar_valores()
 ```
 
 ``` r
@@ -80,7 +118,7 @@ municipios(departamento = "Santa Cruz") |> head(5)
 ```
 
 ``` r
-# Consulta SQL con DuckDB — aplicar etiquetar() al resultado
+# Consulta SQL con DuckDB
 library(DBI)
 con <- get_personas(departamento = "Santa Cruz", as = "duckdb")
 DBI::dbGetQuery(con, "
@@ -88,7 +126,7 @@ DBI::dbGetQuery(con, "
   FROM personas
   GROUP BY p25_sexo
   ORDER BY p25_sexo
-") |> etiquetar()
+") |> etiquetar_valores()
 DBI::dbDisconnect(con)
 ```
 
@@ -104,38 +142,22 @@ DBI::dbGetQuery(con, "
                 AND p.imun=v.imun AND p.i00=v.i00
   GROUP BY area
   ORDER BY personas DESC
-") |> etiquetar()
+") |> etiquetar_valores()
 DBI::dbDisconnect(con)
-```
-
-## Diccionario de variables y etiquetas
-
-``` r
-# Buscar variables relacionadas con educación
-codebook(buscar = "educa")
-
-# Ver los códigos y etiquetas de una variable categórica
-codebook_valores("p25_sexo")
-
-# Aplicar etiquetas a un resultado
-sample_personas |>
-  count(p25_sexo, nivel_edu) |>
-  etiquetar()
 ```
 
 ## Gestión del caché
 
-Los datos se descargan una sola vez y se guardan localmente. Por defecto
-van al directorio del sistema; para guardar dentro del proyecto actual
-añade esto al inicio del script:
+Los datos se descargan una sola vez y se guardan localmente. Para
+guardar el caché dentro del proyecto en lugar del directorio del sistema:
 
 ``` r
-# Guardar caché dentro del proyecto (añadir a .Rprofile o al inicio del script)
+# Añadir a .Rprofile o al inicio del script
 options(censosbo.cache_dir = "data/censosbo")
 
 censosbo_cache_dir()    # dónde está el caché
 censosbo_cache_info()   # qué archivos están descargados
-censosbo_cache_clear()  # liberar espacio
+censosbo_cache_clear()  # liberar espacio en disco
 ```
 
 ## Fuente de datos
