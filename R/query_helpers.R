@@ -13,21 +13,21 @@
   ds
 }
 
-# Selecciona variables preservando siempre las columnas geográficas
+# Selecciona variables preservando siempre las columnas geográficas cuando existen
 .apply_variable_selection <- function(ds, variables) {
   if (is.null(variables)) return(ds)
   geo_always <- c("idep", "iprov", "imun", "i00")
   cols <- unique(c(geo_always, variables))
   available <- names(ds)
-  missing_cols <- setdiff(cols, available)
-  if (length(missing_cols) > 0) {
+  # Solo advertir sobre columnas explícitamente solicitadas por el usuario (no geo_always)
+  missing_user <- setdiff(variables, available)
+  if (length(missing_user) > 0) {
     cli::cli_warn(c(
-      "Columnas no encontradas: {.val {missing_cols}}",
+      "Columnas no encontradas: {.val {missing_user}}",
       "i" = "Usa {.code codebook()} para ver las variables disponibles."
     ))
-    cols <- intersect(cols, available)
   }
-  dplyr::select(ds, dplyr::all_of(cols))
+  dplyr::select(ds, dplyr::all_of(intersect(cols, available)))
 }
 
 # Retorna el dataset en el formato solicitado

@@ -3,7 +3,7 @@
 
 library(xml2)
 
-dicx_path <- "temporal-data/Base de datos Redatam 7/base/CEN24.dicX"
+dicx_path <- "original-data/cpv-2024/raw/CEN24.dicX"
 stopifnot(file.exists(dicx_path))
 
 doc <- xml2::read_xml(dicx_path)

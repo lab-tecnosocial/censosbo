@@ -133,15 +133,17 @@ get_censo <- function(
   main_path <- .download_censo(anio, filename, overwrite, verbose)
 
   needs_geo <- !is.null(dep_codes) || !is.null(prov_codes) || !is.null(mun_codes)
+  # Forzar join si se piden columnas geo (idep/iprov/imun) que solo existen via REDCODEN
+  needs_join <- needs_geo || (!is.null(variables) && any(c("idep", "iprov", "imun") %in% variables))
 
-  # Sin filtro geográfico y no se pide duckdb: retorna Arrow Dataset directamente
-  if (!needs_geo && as != "duckdb") {
+  # Sin necesidad de join y no se pide duckdb: retorna Arrow Dataset directamente
+  if (!needs_join && as != "duckdb") {
     ds <- arrow::open_dataset(main_path)
     ds <- .apply_variable_selection(ds, variables)
     return(.return_as(ds, as, table_name = tabla, verbose = verbose))
   }
 
-  # Descargar tablas geográficas auxiliares (son pequeñas: ~5-15 KB cada una)
+  # Descargar tablas geográficas auxiliares para el join REDATAM
   geo_files <- c("depto.parquet", "provin.parquet", "munic.parquet")
   geo_paths <- stats::setNames(
     vapply(geo_files, function(f) {

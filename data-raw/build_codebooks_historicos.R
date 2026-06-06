@@ -4,7 +4,7 @@
 
 library(arrow)
 
-base_dir <- "temporal-data/otros-censos"
+base_dir <- "original-data/censos-historicos"
 
 # Columnas de nombre de tabla según el censo
 # 1976: columna "tabla"; 1992/2001/2012: columna "entidad"

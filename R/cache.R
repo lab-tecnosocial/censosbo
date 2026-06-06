@@ -54,9 +54,9 @@ censosbo_cache_info <- function() {
     return(invisible(NULL))
   }
   result <- data.frame(
-    archivo     = fs::path_file(files$path),
-    tamanio     = format(files$size, units = "auto"),
-    modificado  = format(files$modification_time, "%Y-%m-%d %H:%M"),
+    archivo    = as.character(fs::path_rel(files$path, start = cache_dir)),
+    tamanio    = format(files$size, units = "auto"),
+    modificado = format(files$modification_time, "%Y-%m-%d %H:%M"),
     stringsAsFactors = FALSE
   )
   result

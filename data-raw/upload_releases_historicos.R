@@ -11,7 +11,7 @@
 library(piggyback)
 
 REPO <- "lab-tecnosocial/censosbo"
-BASE <- "temporal-data/otros-censos"
+BASE <- "original-data/censos-historicos"
 
 # Mapa: anio → tag del release + archivos a subir
 # local_name  = nombre del archivo en disco

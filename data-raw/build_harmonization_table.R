@@ -32,19 +32,19 @@ add_var <- function(variable, etiqueta, descripcion,
 
 # --- Demografía básica ---
 add_var("sexo", "Sexo",
-        "Sexo del individuo",
+        "Sexo del individuo. Harmonizado a 1=Mujer, 2=Hombre para todos los censos",
         v1976 = "p03", v1992 = "P03", v2001 = "P28", v2012 = "P24", v2024 = "p25_sexo",
-        notas = "Valores no uniformes: verificar codebook por año (en 2012: 1=Mujer, 2=Hombre; en 2024: 1=Mujer, 2=Hombre)")
+        notas = "1976/1992/2001: codificación original 1=Hombre, 2=Mujer (invertida). 2012/2024: 1=Mujer, 2=Hombre. get_longitudinal() harmoniza todo a 1=Mujer, 2=Hombre.")
 
 add_var("edad", "Edad en años",
         "Edad del individuo en años cumplidos",
-        v1976 = "p04", v1992 = "P04", v2001 = "P29", v2012 = NA, v2024 = "p26_edad",
-        notas = "NO disponible en la tabla de persona del censo 2012 (dataset procesado sin esa variable)")
+        v1976 = "p04", v1992 = "P04", v2001 = "P29", v2012 = "P25", v2024 = "p26_edad",
+        notas = "2001: P29 re-exportado con .dicx corregido (bug fieldsize exportaba 3 bits en vez de 7). 2012: P25 re-exportado desde .dicx (el .dic binario no la exportaba).")
 
 add_var("grupo_edad", "Grupos de edad quinquenales",
         "Grupo de edad en intervalos de 5 años (0-4, 5-9, ..., 80+)",
-        v1976 = "edad5", v1992 = "GEDAD", v2001 = NA, v2012 = NA, v2024 = NA,
-        notas = "Para 2001 calcular desde P29: floor(P29/5)*5. No disponible en 2012. Para 2024 calcular desde p26_edad")
+        v1976 = "edad5", v1992 = "GEDAD", v2001 = "P29", v2012 = "P25", v2024 = NA,
+        notas = "Para 2001, 2012 y 2024 se calcula automáticamente desde la edad individual.")
 
 add_var("parentesco", "Relación con el/la jefe/a del hogar",
         "Parentesco o relación del individuo con el jefe o jefa del hogar",
@@ -58,14 +58,14 @@ add_var("estado_civil", "Estado conyugal o civil",
 
 # --- Educación ---
 add_var("sabe_leer", "Sabe leer y escribir",
-        "Indica si el individuo sabe leer y escribir",
+        "Indica si el individuo sabe leer y escribir. Harmonizado a 1=Sí, 2=No",
         v1976 = "p10", v1992 = "P10", v2001 = "P36", v2012 = "P35", v2024 = "p40_lee",
-        notas = "Variable dicotómica en todos los censos (1=Sí, 2=No en la mayoría)")
+        notas = "1992 (P10): códigos 7=Sí, 8=No (distinto al resto). get_longitudinal() harmoniza a 1=Sí, 2=No.")
 
 add_var("nivel_edu", "Nivel de instrucción",
         "Nivel educativo más alto alcanzado. Para comparación longitudinal se harmoniza a 4 categorías: 0=Sin instrucción, 1=Primaria, 2=Secundaria, 3=Superior",
-        v1976 = "p14", v1992 = "P12", v2001 = "P39NIV", v2012 = "P37A_NIVELNUE", v2024 = "nivel_edu",
-        notas = "La Ley Avelino Siñani (2010) cambió la nomenclatura en 2012. harmonizar en .harmonize_nivel_edu() aplica 4 categorías comparables")
+        v1976 = "nivela", v1992 = "P12", v2001 = "P39NIV", v2012 = "P37A_NIVELNUE", v2024 = "nivel_edu",
+        notas = "1976: 'nivela' es var. derivada (1=Ninguno..5=Técnico). 1992: P12 solo cubre quienes asistieron; Ninguno se obtiene combinando con P11 en get_longitudinal(). 2001: P39NIV con códigos reales 11=Ninguno,12=Preescolar,13=Básico,14=Intermedio,15=Medio,16=Primaria,17=Secundaria,18=Licenciatura,19=Técnico,20=Normal,21-23=Otros. 2012: P37A_NIVELNUE usa códigos no secuenciales (1,2,3,9,10,11-18,99). La Ley Avelino Siñani (2010) cambió la nomenclatura en 2012.")
 
 # --- Actividad económica ---
 add_var("pea", "Población Económicamente Activa",
@@ -80,14 +80,14 @@ add_var("pet", "Población en Edad de Trabajar",
 
 # --- Geografía y área ---
 add_var("area", "Área urbana o rural",
-        "Área de residencia: 1=Urbano, 2=Rural",
-        v1976 = "area", v1992 = "URBRUR", v2001 = NA, v2012 = "URBRUR", v2024 = NA,
-        notas = "Para 1992 y 2012 está en la tabla VIVIENDA, no en PERSONA. NO disponible en 2001 ni 2024 (en 2024 está en vivienda). get_longitudinal() la incluye como NA con advertencia")
+        "Área de residencia: 1=Urbana, 2=Rural",
+        v1976 = "area", v1992 = NA, v2001 = NA, v2012 = NA, v2024 = NA,
+        notas = "1976: columna 'area' en tabla poblacion (1=Urbana, 2=Rural). 1992/2001/2012: join automático con vivienda; URBRUR/TURUR usan 1=Urbana, 2=Rural. 2024: en tabla vivienda, no disponible via get_longitudinal().")
 
 add_var("departamento", "Departamento",
         "Código de departamento (01-09)",
         v1976 = "dep", v1992 = "idep", v2001 = "idep", v2012 = "idep", v2024 = "idep",
-        notas = "En 1976: columna 'dep' (numérica 1-9). En censos REDATAM: 'idep' disponible solo con filtro geográfico aplicado en get_censo()")
+        notas = "En 1976: columna 'dep' (numérica 1-9). En censos REDATAM: 'idep' se calcula desde REDCODEN via join con munic.parquet; get_longitudinal() lo fuerza automáticamente.")
 
 usethis::use_data(variable_longitudinal_map, overwrite = TRUE)
 message("variable_longitudinal_map guardado en data/variable_longitudinal_map.rda")

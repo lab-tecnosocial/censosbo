@@ -119,9 +119,14 @@ get_longitudinal <- function(
     vars_disponibles <- submapa$variable[!is.na(cols_originales)]
     vars_ausentes    <- submapa$variable[is.na(cols_originales)]
 
-    if (length(vars_ausentes) > 0) {
+    # area 1992/2001/2012: no tiene columna propia en persona pero se
+    # obtiene via join con vivienda → no emitir warning de "no disponible"
+    area_needs_viv <- "area" %in% variables && a %in% c(1992L, 2001L, 2012L)
+    vars_realmente_ausentes <- if (area_needs_viv) setdiff(vars_ausentes, "area") else vars_ausentes
+
+    if (length(vars_realmente_ausentes) > 0) {
       cli::cli_warn(c(
-        "!" = "Variables no disponibles en el censo {a}: {.val {vars_ausentes}}",
+        "!" = "Variables no disponibles en el censo {a}: {.val {vars_realmente_ausentes}}",
         "i" = "Se incluirán como {.code NA}."
       ))
     }
@@ -130,9 +135,19 @@ get_longitudinal <- function(
 
     tryCatch({
       cols_a_pedir <- cols_originales[!is.na(cols_originales)]
+      # 1992: P12 solo cubre quienes asistieron; P11 permite recuperar Ninguno
+      if (a == 1992L && "nivel_edu" %in% variables) {
+        cols_a_pedir <- unique(c(cols_a_pedir, "P11"))
+      }
+      if (area_needs_viv) {
+        cols_a_pedir <- unique(c(cols_a_pedir, "VIVIENDA_REF_ID"))
+      }
       df_raw <- if (a == 2024L) {
         get_personas_2024(departamento = departamento, variables = cols_a_pedir,
                           as = "tibble", verbose = FALSE)
+      } else if (a == 1976L) {
+        get_censo(a, "poblacion", departamento = departamento, variables = cols_a_pedir,
+                  as = "tibble", verbose = FALSE)
       } else {
         get_censo(a, "persona", departamento = departamento, variables = cols_a_pedir,
                   as = "tibble", verbose = FALSE)
@@ -158,6 +173,29 @@ get_longitudinal <- function(
         }
       }
 
+      # 1992: sobreescribir nivel_edu con 0 (Ninguno) para quienes nunca asistieron (P11=3)
+      if (a == 1992L && "nivel_edu" %in% variables &&
+          "P11" %in% names(df_raw) && "nivel_edu" %in% names(df_armonizado)) {
+        p11 <- suppressWarnings(as.integer(df_raw[["P11"]]))
+        df_armonizado[["nivel_edu"]] <- ifelse(p11 == 3L, 0L, df_armonizado[["nivel_edu"]])
+      }
+
+      # area 1992/2001/2012: join con vivienda para obtener columna de urbano/rural
+      if (area_needs_viv && "VIVIENDA_REF_ID" %in% names(df_raw)) {
+        viv_col  <- if (a == 2001L) "TURUR" else "URBRUR"
+        viv_path <- .download_censo(a, "vivienda.parquet", overwrite = FALSE, verbose = FALSE)
+        viv_area <- arrow::read_parquet(viv_path,
+                                        col_select = c("VIVIENDA_REF_ID", viv_col))
+        viv_area <- dplyr::as_tibble(viv_area)
+        ref_col  <- df_raw[, "VIVIENDA_REF_ID", drop = FALSE]
+        merged   <- merge(ref_col, viv_area, by = "VIVIENDA_REF_ID", all.x = TRUE)
+        urb_num  <- suppressWarnings(as.integer(merged[[viv_col]]))
+        # TURUR (2001) y URBRUR (1992/2012): 1=Urbana, 2=Rural
+        df_armonizado[["area"]] <- dplyr::case_when(
+          urb_num %in% c(1L, 2L) ~ urb_num, TRUE ~ NA_integer_
+        )
+      }
+
       rownames(df_armonizado) <- NULL
       partes[[as.character(a)]] <- df_armonizado
 
@@ -178,8 +216,11 @@ get_longitudinal <- function(
 
 # Aplica transformaciones de armonización según la variable y el año
 .harmonize_col <- function(x, variable, anio) {
-  if (variable == "nivel_edu") {
-    return(.harmonize_nivel_edu(x, anio))
+  if (variable == "sexo")      return(.harmonize_sexo(x, anio))
+  if (variable == "sabe_leer") return(.harmonize_sabe_leer(x, anio))
+  if (variable == "nivel_edu") return(.harmonize_nivel_edu(x, anio))
+  if (variable == "edad") {
+    return(suppressWarnings(as.integer(x)))
   }
   if (variable == "grupo_edad" && anio != 1976L) {
     edad_num <- suppressWarnings(as.integer(x))
@@ -188,54 +229,86 @@ get_longitudinal <- function(
   x
 }
 
+# Harmoniza sexo → 1=Mujer, 2=Hombre en todos los censos
+.harmonize_sexo <- function(x, anio) {
+  x_num <- suppressWarnings(as.integer(x))
+  if (anio %in% c(1976L, 1992L, 2001L)) {
+    # Original: 1=Hombre, 2=Mujer → invertir a 1=Mujer, 2=Hombre
+    dplyr::case_when(x_num == 1L ~ 2L, x_num == 2L ~ 1L, TRUE ~ NA_integer_)
+  } else {
+    # 2012, 2024: ya tienen 1=Mujer, 2=Hombre
+    dplyr::case_when(x_num %in% c(1L, 2L) ~ x_num, TRUE ~ NA_integer_)
+  }
+}
+
+# Harmoniza sabe_leer → 1=Sí, 2=No en todos los censos
+.harmonize_sabe_leer <- function(x, anio) {
+  x_num <- suppressWarnings(as.integer(x))
+  if (anio == 1992L) {
+    # P10: 7=Sí, 8=No, 0=NOTAPPLICABLE, 9=MISSING
+    dplyr::case_when(x_num == 7L ~ 1L, x_num == 8L ~ 2L, TRUE ~ NA_integer_)
+  } else {
+    # 1976 p10: 1=Sí, 2=No, 8/9/15=otro
+    # 2001 P36, 2012 P35, 2024 p40_lee: 1=Sí, 2=No, 0/9/10=otro
+    dplyr::case_when(x_num == 1L ~ 1L, x_num == 2L ~ 2L, TRUE ~ NA_integer_)
+  }
+}
+
 # Armoniza nivel educativo a 4 categorías comparables entre censos
 # 0 = Sin instrucción, 1 = Primaria, 2 = Secundaria, 3 = Superior
 .harmonize_nivel_edu <- function(x, anio) {
   x_num <- suppressWarnings(as.integer(x))
   if (anio == 1976L) {
-    # p11: 0=ninguno, 1=primaria, 2=secundaria, 3=superior, 4=normal, 5=técnico, 9=NR
+    # nivela (variable derivada): 1=Ninguno, 2=Primaria, 3=Secundaria,
+    # 4=Superior, 5=Técnico/Normal, 9=S/dato
     dplyr::case_when(
-      x_num == 0 ~ 0L,
-      x_num == 1 ~ 1L,
-      x_num == 2 ~ 2L,
-      x_num %in% c(3, 4, 5) ~ 3L,
+      x_num == 1L ~ 0L,
+      x_num == 2L ~ 1L,
+      x_num == 3L ~ 2L,
+      x_num %in% c(4L, 5L) ~ 3L,
       TRUE ~ NA_integer_
     )
   } else if (anio == 1992L) {
-    # P11: similar a 1976
+    # P12 (ciclo más alto asistido, sistema antiguo):
+    # 2=Básico(→Primaria), 3=Intermedio(→Primaria), 4=Medio(→Secundaria),
+    # 5=Técnica, 6=Normal, 7=Universidad(→Superior), 9=Missing
+    # Nota: Ninguno (P11=3, nunca asistió) se aplica en get_longitudinal() como sobreescritura
     dplyr::case_when(
-      x_num == 0 ~ 0L,
-      x_num == 1 ~ 1L,
-      x_num == 2 ~ 2L,
-      x_num %in% c(3, 4, 5, 6) ~ 3L,
+      x_num %in% c(2L, 3L) ~ 1L,
+      x_num == 4L ~ 2L,
+      x_num %in% c(5L, 6L, 7L) ~ 3L,
       TRUE ~ NA_integer_
     )
   } else if (anio == 2001L) {
-    # P37: 0=ninguno, 1=primaria, 2=secundaria, 3=técnico/normal, 4=universitario
+    # P39NIV con códigos reales del censo 2001:
+    # 11=Ninguno, 12=Preescolar, 13=Básico, 14=Intermedio, 15=Medio,
+    # 16=Primaria actual, 17=Secundaria actual, 18=Licenciatura,
+    # 19=Técnico, 20=Normal, 21=Militar/Policial, 22=Técnico instituto, 23=Otro
     dplyr::case_when(
-      x_num == 0 ~ 0L,
-      x_num == 1 ~ 1L,
-      x_num == 2 ~ 2L,
-      x_num %in% c(3, 4, 5) ~ 3L,
+      x_num %in% c(11L, 12L) ~ 0L,
+      x_num %in% c(13L, 14L, 16L) ~ 1L,
+      x_num %in% c(15L, 17L) ~ 2L,
+      x_num %in% c(18L, 19L, 20L, 21L, 22L) ~ 3L,
       TRUE ~ NA_integer_
     )
   } else if (anio == 2012L) {
-    # P37A_NIVELNUE: 0=ninguno, 1=inicial, 2=primaria, 3=secundaria,
-    # 4=técnico, 5=licenciatura, 6=postgrado
+    # P37A_NIVELNUE (códigos no secuenciales):
+    # 0=NOTAPPLICABLE(→NA), 1=Ninguno, 2=Alfabetización, 3=Inicial(→Sin instrucción),
+    # 9=Primaria(1-6), 10=Secundaria(1-6), 11-18=Superior, 99=S/dato(→NA)
     dplyr::case_when(
-      x_num == 0 ~ 0L,
-      x_num %in% c(1, 2) ~ 1L,
-      x_num == 3 ~ 2L,
-      x_num %in% c(4, 5, 6) ~ 3L,
+      x_num %in% c(1L, 2L, 3L) ~ 0L,
+      x_num == 9L ~ 1L,
+      x_num == 10L ~ 2L,
+      x_num %in% c(11L, 12L, 13L, 14L, 15L, 16L, 17L, 18L) ~ 3L,
       TRUE ~ NA_integer_
     )
   } else if (anio == 2024L) {
-    # nivel_edu: variable ya procesada, valores similares a 2012
+    # nivel_edu: 1=Ninguno, 2=Primaria, 3=Secundaria, 4=Superior
     dplyr::case_when(
-      x_num == 0 ~ 0L,
-      x_num %in% 1:2 ~ 1L,
-      x_num == 3 ~ 2L,
-      x_num >= 4 ~ 3L,
+      x_num == 1L ~ 0L,
+      x_num == 2L ~ 1L,
+      x_num == 3L ~ 2L,
+      x_num == 4L ~ 3L,
       TRUE ~ NA_integer_
     )
   } else {
