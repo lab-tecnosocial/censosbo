@@ -50,8 +50,8 @@ variables_armonizadas <- function() {
 #'
 #' @details
 #' **Variables con limitaciones conocidas:**
-#' - `area` (urbano/rural): no disponible en el censo 2001 ni en 2024 (está en
-#'   la tabla de vivienda, no de persona). Se incluye como `NA` con advertencia.
+#' - `area` (urbano/rural): columna directa `"area"` en todas las tablas de
+#'   persona (1=Urbana, 2=Rural). No requiere join adicional.
 #' - `nivel_edu`: la Ley Avelino Siñani (2010) cambió la nomenclatura en 2012.
 #'   Se armoniza automáticamente a 4 categorías comparables.
 #' - `grupo_edad`: solo disponible directamente en 1976; se calcula para el resto.
@@ -119,10 +119,7 @@ get_longitudinal <- function(
     vars_disponibles <- submapa$variable[!is.na(cols_originales)]
     vars_ausentes    <- submapa$variable[is.na(cols_originales)]
 
-    # area 1992/2001/2012: no tiene columna propia en persona pero se
-    # obtiene via join con vivienda → no emitir warning de "no disponible"
-    area_needs_viv <- "area" %in% variables && a %in% c(1992L, 2001L, 2012L)
-    vars_realmente_ausentes <- if (area_needs_viv) setdiff(vars_ausentes, "area") else vars_ausentes
+    vars_realmente_ausentes <- vars_ausentes
 
     if (length(vars_realmente_ausentes) > 0) {
       cli::cli_warn(c(
@@ -138,9 +135,6 @@ get_longitudinal <- function(
       # 1992: P12 solo cubre quienes asistieron; P11 permite recuperar Ninguno
       if (a == 1992L && "nivel_edu" %in% variables) {
         cols_a_pedir <- unique(c(cols_a_pedir, "P11"))
-      }
-      if (area_needs_viv) {
-        cols_a_pedir <- unique(c(cols_a_pedir, "VIVIENDA_REF_ID"))
       }
       df_raw <- if (a == 2024L) {
         get_personas_2024(departamento = departamento, variables = cols_a_pedir,
@@ -178,22 +172,6 @@ get_longitudinal <- function(
           "P11" %in% names(df_raw) && "nivel_edu" %in% names(df_armonizado)) {
         p11 <- suppressWarnings(as.integer(df_raw[["P11"]]))
         df_armonizado[["nivel_edu"]] <- ifelse(p11 == 3L, 0L, df_armonizado[["nivel_edu"]])
-      }
-
-      # area 1992/2001/2012: join con vivienda para obtener columna de urbano/rural
-      if (area_needs_viv && "VIVIENDA_REF_ID" %in% names(df_raw)) {
-        viv_col  <- if (a == 2001L) "TURUR" else "URBRUR"
-        viv_path <- .download_censo(a, "vivienda.parquet", overwrite = FALSE, verbose = FALSE)
-        viv_area <- arrow::read_parquet(viv_path,
-                                        col_select = c("VIVIENDA_REF_ID", viv_col))
-        viv_area <- dplyr::as_tibble(viv_area)
-        ref_col  <- df_raw[, "VIVIENDA_REF_ID", drop = FALSE]
-        merged   <- merge(ref_col, viv_area, by = "VIVIENDA_REF_ID", all.x = TRUE)
-        urb_num  <- suppressWarnings(as.integer(merged[[viv_col]]))
-        # TURUR (2001) y URBRUR (1992/2012): 1=Urbana, 2=Rural
-        df_armonizado[["area"]] <- dplyr::case_when(
-          urb_num %in% c(1L, 2L) ~ urb_num, TRUE ~ NA_integer_
-        )
       }
 
       rownames(df_armonizado) <- NULL

@@ -161,7 +161,7 @@ Si `NULL`, devuelve todas las columnas.}
 \item{anio}{Entero. Año del censo: `1976`, `1992`, `2001` o `2012`.}
 
 \item{tabla}{Caracteres. Nombre de la tabla a consultar. Depende del año:
-- **1976**: `"poblacion"`, `"vivienda"`
+- **1976**: `"poblacion"` (o `"persona"` como alias), `"vivienda"`
 - **1992**: `"persona"`, `"vivienda"`, `"mortalidad"`
 - **2001**: `"persona"`, `"vivienda"`, `"comunidades_poblacion"`, `"comunidades_vivienda"`
 - **2012**: `"persona"`, `"vivienda"`, `"emigracion"`, `"discapacidad"`}

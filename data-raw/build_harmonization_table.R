@@ -80,9 +80,9 @@ add_var("pet", "Población en Edad de Trabajar",
 
 # --- Geografía y área ---
 add_var("area", "Área urbana o rural",
-        "Área de residencia: 1=Urbana, 2=Rural",
-        v1976 = "area", v1992 = NA, v2001 = NA, v2012 = NA, v2024 = NA,
-        notas = "1976: columna 'area' en tabla poblacion (1=Urbana, 2=Rural). 1992/2001/2012: join automático con vivienda; URBRUR/TURUR usan 1=Urbana, 2=Rural. 2024: en tabla vivienda, no disponible via get_longitudinal().")
+        "Área de residencia: 1=Urbana, 2=Rural. Columna directa en todas las tablas de persona.",
+        v1976 = "area", v1992 = "area", v2001 = "area", v2012 = "area", v2024 = "area",
+        notas = "Columna 'area' presente en todos los parquets de persona. 1976: fuente SPSS directa. 1992/2012: derivada de URBRUR de vivienda (pre-unida). 2001: derivada de TURUR de vivienda (pre-unida). 2024: derivada de urbrur de vivienda (pre-unida). Siempre 1=Urbana, 2=Rural, sin NAs.")
 
 add_var("departamento", "Departamento",
         "Código de departamento (01-09)",

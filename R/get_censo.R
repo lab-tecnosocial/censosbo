@@ -5,7 +5,7 @@
 #'
 #' @param anio Entero. Año del censo: `1976`, `1992`, `2001` o `2012`.
 #' @param tabla Caracteres. Nombre de la tabla a consultar. Depende del año:
-#'   - **1976**: `"poblacion"`, `"vivienda"`
+#'   - **1976**: `"poblacion"` (o `"persona"` como alias), `"vivienda"`
 #'   - **1992**: `"persona"`, `"vivienda"`, `"mortalidad"`
 #'   - **2001**: `"persona"`, `"vivienda"`, `"comunidades_poblacion"`, `"comunidades_vivienda"`
 #'   - **2012**: `"persona"`, `"vivienda"`, `"emigracion"`, `"discapacidad"`
@@ -78,6 +78,15 @@ get_censo <- function(
 ) {
   as   <- match.arg(as)
   anio <- as.integer(anio)
+
+  # "persona" es alias de "poblacion" en el censo 1976
+  if (anio == 1976L && tabla == "persona") {
+    cli::cli_inform(c(
+      "i" = "El censo 1976 usa {.val poblacion} en lugar de {.val persona}. Redirigiendo."
+    ))
+    tabla <- "poblacion"
+  }
+
   .validate_censo_args(anio, tabla)
 
   dep_codes  <- .resolve_dep_codes(departamento)

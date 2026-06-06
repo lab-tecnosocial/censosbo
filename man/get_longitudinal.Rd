@@ -35,8 +35,8 @@ que identifica el censo de origen.
 }
 \details{
 **Variables con limitaciones conocidas:**
-- `area` (urbano/rural): no disponible en el censo 2001 ni en 2024 (está en
-  la tabla de vivienda, no de persona). Se incluye como `NA` con advertencia.
+- `area` (urbano/rural): columna directa `"area"` en todas las tablas de
+  persona (1=Urbana, 2=Rural). No requiere join adicional.
 - `nivel_edu`: la Ley Avelino Siñani (2010) cambió la nomenclatura en 2012.
   Se armoniza automáticamente a 4 categorías comparables.
 - `grupo_edad`: solo disponible directamente en 1976; se calcula para el resto.

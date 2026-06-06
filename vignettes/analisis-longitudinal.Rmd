@@ -148,7 +148,7 @@ variables_armonizadas() |>
 Las variables con `NA` en algún censo se incluyen igualmente con valor `NA` y un aviso de `cli_warn()`:
 
 - **`edad`**: no disponible directamente en 2012 (la tabla procesada no la incluye)
-- **`area`** (urbano/rural): en la tabla de vivienda, no de persona — `NA` en 2001 y 2024
+- **`area`** (urbano/rural): columna directa en todos los parquets de persona (1=Urbana, 2=Rural, sin `NA`)
 - **`pea`**, **`pet`**: no disponibles directamente en 1992 y 2001
 
 ## Combinar con análisis propio
