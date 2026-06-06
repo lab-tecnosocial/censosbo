@@ -10,6 +10,7 @@ Un data.frame con columnas:
   \item{variable}{Nombre armonizado (e.g., `"sexo"`, `"nivel_edu"`)}
   \item{etiqueta}{Descripción en español}
   \item{descripcion}{Descripción detallada y notas de comparabilidad}
+  \item{tabla}{Tabla de origen: `"persona"` o `"vivienda"`}
   \item{v1976, v1992, v2001, v2012, v2024}{Nombre de la columna en cada censo (`NA` si no disponible)}
   \item{notas}{Advertencias sobre diferencias metodológicas entre censos}
 }
@@ -21,7 +22,7 @@ Elaboración propia a partir de los diccionarios oficiales del INE Bolivia.
 variable_longitudinal_map
 }
 \description{
-Devuelve la tabla de correspondencia entre variables de los censos de Bolivia
+Tabla de correspondencia entre variables de los censos de Bolivia
 (1976, 1992, 2001, 2012 y CPV-2024), con las variables que pueden compararse
 a lo largo del tiempo.
 }

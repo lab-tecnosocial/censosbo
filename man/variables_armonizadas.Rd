@@ -4,7 +4,11 @@
 \alias{variables_armonizadas}
 \title{Muestra el mapeo de variables comparables entre censos de Bolivia}
 \usage{
-variables_armonizadas()
+variables_armonizadas(tabla = NULL)
+}
+\arguments{
+\item{tabla}{Filtrar por tabla de origen: `"persona"`, `"vivienda"` o `NULL`
+para todas. Por defecto `NULL`.}
 }
 \value{
 Un data.frame con las variables armonizadas y sus equivalentes en
@@ -17,4 +21,5 @@ y el CPV-2024.
 }
 \examples{
 variables_armonizadas()
+variables_armonizadas(tabla = "vivienda")
 }

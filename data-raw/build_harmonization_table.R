@@ -6,6 +6,7 @@ variable_longitudinal_map <- data.frame(
   variable       = character(),
   etiqueta       = character(),
   descripcion    = character(),
+  tabla          = character(),
   v1976          = character(),
   v1992          = character(),
   v2001          = character(),
@@ -17,9 +18,10 @@ variable_longitudinal_map <- data.frame(
 
 add_var <- function(variable, etiqueta, descripcion,
                      v1976 = NA, v1992 = NA, v2001 = NA, v2012 = NA, v2024 = NA,
-                     notas = "") {
+                     notas = "", tabla = "persona") {
   variable_longitudinal_map <<- rbind(variable_longitudinal_map, data.frame(
     variable, etiqueta, descripcion,
+    tabla,
     v1976 = as.character(v1976),
     v1992 = as.character(v1992),
     v2001 = as.character(v2001),
@@ -29,6 +31,10 @@ add_var <- function(variable, etiqueta, descripcion,
     stringsAsFactors = FALSE
   ))
 }
+
+# ===========================================================================
+# TABLA PERSONA
+# ===========================================================================
 
 # --- Demografía básica ---
 add_var("sexo", "Sexo",
@@ -67,6 +73,11 @@ add_var("nivel_edu", "Nivel de instrucción",
         v1976 = "nivela", v1992 = "P12", v2001 = "P39NIV", v2012 = "P37A_NIVELNUE", v2024 = "nivel_edu",
         notas = "1976: 'nivela' es var. derivada (1=Ninguno..5=Técnico). 1992: P12 solo cubre quienes asistieron; Ninguno se obtiene combinando con P11 en get_longitudinal(). 2001: P39NIV con códigos reales 11=Ninguno,12=Preescolar,13=Básico,14=Intermedio,15=Medio,16=Primaria,17=Secundaria,18=Licenciatura,19=Técnico,20=Normal,21-23=Otros. 2012: P37A_NIVELNUE usa códigos no secuenciales (1,2,3,9,10,11-18,99). La Ley Avelino Siñani (2010) cambió la nomenclatura en 2012.")
 
+add_var("asistencia_escolar", "Asistencia educativa actual",
+        "Indica si el individuo asiste actualmente a un centro educativo. 1=Sí asiste, 2=No asiste.",
+        v1976 = "p11", v1992 = "P11", v2001 = "P37", v2012 = "P36", v2024 = "p38_asiste",
+        notas = "1992: 1=Asiste, 2=No asiste pero asistió, 3=Nunca asistió → harmonizado a 1=Asiste, 2=No. 2001: CÓDIGOS INVERTIDOS — 1=NO asiste, 2=SÍ (pública), 3=SÍ (privada). 2012: 1/2/3=SÍ (pública/privada/convenio), 4=No asiste.")
+
 # --- Actividad económica ---
 add_var("pea", "Población Económicamente Activa",
         "Indicador: si el individuo pertenece a la PEA",
@@ -74,9 +85,47 @@ add_var("pea", "Población Económicamente Activa",
         notas = "NO disponible directamente en 2001 (requiere cálculo desde variables de actividad). En 2024: fft_19 codifica PEA")
 
 add_var("pet", "Población en Edad de Trabajar",
-        "Indicador: si el individuo está en edad de trabajar",
+        "Indica si el individuo está en edad de trabajar",
         v1976 = "pet", v1992 = "NPET", v2001 = NA, v2012 = "PET", v2024 = "ft_19",
         notas = "NO disponible directamente en 2001. Edad mínima puede variar entre censos")
+
+add_var("categoria_ocupacion", "Categoría en el empleo",
+        "Categoría ocupacional del individuo. 1=Empleado/Obrero, 2=Cuenta propia, 3=Empleador/Patrón, 4=Familiar no remunerado, 5=Otro",
+        v1976 = "p18", v1992 = "P18", v2001 = "P46", v2012 = "P43", v2024 = "p50_semp",
+        notas = "Solo aplica a personas ocupadas (PEA). 1976 p18: 1/2=Obrero/Empleado→1, 4=Cta propia→2, 5=Patrón→3, 3=Familiar→4. 1992 P18: 1/2=Obrero/Empleado→1, 3=Cta propia→2, 4=Patrón→3, 7=Familiar→4, 5/6=Otro→5. 2012 P43: 1/5=Obrero/TrabHogar→1, 2=Cta propia→2, 3=Empleador→3, 4=Familiar→4, 6=Coop→5. 2024 p50_semp: 2/5=Obrero/TrabHogar→1, 1=Cta propia→2, 3=Empleador→3, 4=Familiar→4, 6/7=Otro→5.")
+
+# --- Identidad cultural ---
+add_var("identidad_indigena", "Autoidentificación con pueblo indígena",
+        "Indica si el individuo se autoidentifica con alguna nación o pueblo indígena originario campesino o afroboliviano. 1=Sí, 2=No.",
+        v1976 = NA, v1992 = NA, v2001 = "P491", v2012 = "P29C", v2024 = "p32_pueblo_per",
+        notas = "NO disponible en 1976 ni 1992 (retorna NA). 2001 P491: 1-6=pueblo indígena→1, 7=NINGUNO→2. 2012 P29C: código de pueblo (1-123)→1, 0=NOTAPPLICABLE (no se identifica)→2, otros→NA. 2024 p32_pueblo_per: 1=Sí→1, 2=No→2.")
+
+add_var("idioma_materno", "Idioma materno o principal",
+        "Idioma aprendido en la niñez o idioma principal. 1=Castellano, 2=Quechua, 3=Aymara, 4=Guaraní, 5=Otro nativo boliviano, 6=Otro idioma.",
+        v1976 = "p09", v1992 = NA, v2001 = "P35", v2012 = "P30B", v2024 = "p341_idiomat_cod",
+        notas = "LIMITACIÓN METODOLÓGICA: 1976 p09 captura 'idioma que habla' (no materno), con combinaciones bilingüísticas (ej. código 5=Castellano/Aymara → se clasifica como Aymara). 1992 NO disponible (solo flags binarios de idiomas hablados, no maternal). 2001-2024: primer idioma aprendido en la niñez. 2012/2024: códigos 1-37 para lenguas nativas (6=Castellano, 2=Aymara, 27=Quechua, 12=Guaraní); códigos >=38 son idiomas extranjeros.")
+
+# --- Migración ---
+add_var("migracion_nac_dpto", "Migración: departamento de nacimiento vs residencia",
+        "Compara el departamento de nacimiento con el de residencia actual. 1=Nacido en el mismo dpto, 2=Nacido en otro dpto del país, 3=Nacido en el exterior.",
+        v1976 = "lugnac", v1992 = "P07A", v2001 = "DEP34", v2012 = "P32J", v2024 = "p35j_deptocod",
+        notas = "Variable DERIVADA: compara columna de dpto de nacimiento con dpto de residencia (idep o dep). 1976: lugnac=1-9 (dpto nac), 10=exterior. 1992: P07A=dpto nac (1-9). 2001: DEP34=dpto nac (1-9). 2012: P32J=dpto nac (1-9), 99=ignorado. 2024: p35j_deptocod=dpto nac (1-9). La comparación con idep actual se hace en get_longitudinal().")
+
+add_var("migracion_rec_dpto", "Migración reciente: residencia hace 5 años vs actual",
+        "Compara el departamento de residencia hace 5 años con el actual. 1=Mismo dpto, 2=Otro dpto del país, 3=Estaba en el exterior, 4=No había nacido.",
+        v1976 = "resh5", v1992 = "P08A", v2001 = "DEP41", v2012 = "P34H", v2024 = "p37j_deptocod",
+        notas = "Variable DERIVADA: compara dpto hace 5 años con dpto actual (idep o dep). 1976: resh5=10→exterior, 11→NA. 2024: p37_lugres5=4 (no había nacido) → se usa como indicador alternativo; p37j_deptocod para comparar dpto.")
+
+# --- Fertilidad ---
+add_var("hijos_nacidos_vivos", "Total de hijos e hijas nacidos vivos",
+        "Número total de hijos nacidos vivos que ha tenido la persona (para mujeres de 12+ años).",
+        v1976 = "p20", v1992 = "P20", v2001 = "P50", v2012 = "P46", v2024 = "p54_hvtot",
+        notas = "Solo aplica a mujeres de 12 o más años. Hombres y mujeres menores de edad retornan 0 o NA. 2024: p54_hvtot es el total (existe también p54a/p54b por sexo del hijo).")
+
+add_var("hijos_sobrevivientes", "Total de hijos e hijas que viven actualmente",
+        "Número de hijos nacidos vivos que están vivos al momento del censo.",
+        v1976 = "p21", v1992 = "P21", v2001 = "P51", v2012 = "P47", v2024 = "p55_hstot",
+        notas = "Subconjunto de hijos_nacidos_vivos. Solo aplica a mujeres 12+.")
 
 # --- Geografía y área ---
 add_var("area", "Área urbana o rural",
@@ -89,7 +138,67 @@ add_var("departamento", "Departamento",
         v1976 = "dep", v1992 = "idep", v2001 = "idep", v2012 = "idep", v2024 = "idep",
         notas = "En 1976: columna 'dep' (numérica 1-9). En censos REDATAM: 'idep' se calcula desde REDCODEN via join con munic.parquet; get_longitudinal() lo fuerza automáticamente.")
 
+
+# ===========================================================================
+# TABLA VIVIENDA
+# ===========================================================================
+
+add_var("material_paredes", "Material de construcción de las paredes",
+        "Material predominante de las paredes exteriores. 1=Ladrillo/Bloque/Hormigón, 2=Adobe/Tapial, 3=Madera/Tabique/Caña/Palma, 4=Piedra, 5=Otro.",
+        v1976 = "v03", v1992 = "V03", v2001 = "V06", v2012 = "P03", v2024 = "v03_pared",
+        notas = "1976/1992: 1=Adobe revocado→2, 2=Adobe/tapial→2, 3=Ladrillo/bloque/cemento→1, 4=Piedra→4, 5=Madera→3, 6=Caña/palma→3, 7=Otros→5. 2001/2012/2024: 1=Ladrillo→1, 2=Adobe/tapial→2, 3=Tabique/quinche→3, 4=Piedra→4, 5=Madera→3, 6=Caña/palma→3, 7=Otro→5.",
+        tabla = "vivienda")
+
+add_var("material_techo", "Material de construcción del techo",
+        "Material predominante del techo. 1=Calamina/Plancha/Teja, 2=Losa de hormigón, 3=Paja/Caña/Palma/Barro, 4=Otro.",
+        v1976 = "v04", v1992 = "V04", v2001 = "V08", v2012 = "P05", v2024 = "v05_techo",
+        notas = "Códigos muy consistentes entre censos: 1=Calamina→1, 2=Tejas→1, 3=Losa hormigón→2, 4=Paja/caña/palma→3, 5=Otro→4. Idéntico en los 5 censos.",
+        tabla = "vivienda")
+
+add_var("material_piso", "Material del piso",
+        "Material predominante del piso. 1=Tierra, 2=Cemento/Ladrillo, 3=Mosaico/Parquet/Madera, 4=Otro.",
+        v1976 = "v05", v1992 = "V05", v2001 = "V09", v2012 = "P06", v2024 = "v06_piso",
+        notas = "1976/1992: 1=Madera→3, 2=Mosaico→3, 3=Ladrillo→2, 4=Cemento→2, 5=Tierra→1, 6=Otros→4. 2001/2012/2024: 1=Tierra→1, y demás materiales mapeados a 2-4.",
+        tabla = "vivienda")
+
+add_var("fuente_agua", "Fuente de agua para beber y cocinar",
+        "Fuente principal de agua. 1=Cañería/red pública, 2=Otra fuente protegida (pozo con bomba, carro, pileta), 3=Fuente no protegida (río, acequia, pozo sin bomba).",
+        v1976 = "v07", v1992 = "V07", v2001 = "V10", v2012 = "P07", v2024 = "v07_aguapro",
+        notas = "1976 usa v07 (procedencia), no v06 (distribución). 1976: 1/2=Red→1, 3/4=Pozo/aljibe→2, 5=Río/lago→3, 6=Carro→2, 7=Otra→2. 1992: 1=Red→1, 2=Pozo→2, 3=Río→3, 4=Carro→2, 5=Otra→2. 2001: 1=Cañería→1, 2=Pileta→1, 3=Carro→2, 4=Pozo bomba→2, 5=Pozo sin bomba→3, 6/7=Río/lago→3. 2024: 3=Cosecha lluvia→3, 6=Vertiente protegida→2.",
+        tabla = "vivienda")
+
+add_var("energia_electrica", "Disponibilidad de energía eléctrica",
+        "Si el hogar cuenta con energía eléctrica (cualquier fuente). 1=Sí, 2=No.",
+        v1976 = "v09", v1992 = "V09", v2001 = "V15", v2012 = "P09", v2024 = "v09_energia",
+        notas = "1976/1992: 1=Sí, 2=No. 2001 V15: 5=Sí→1, 6=No→2 (codificación distinta). 2012 P09: 1=Sí privado→1, 2=Sí compartido→1, 3=No→2. 2024: 1-4=cualquier fuente→1, 5=No tiene→2.",
+        tabla = "vivienda")
+
+add_var("servicio_sanitario", "Disponibilidad de servicio sanitario",
+        "Si el hogar tiene baño, water o letrina. 1=Sí tiene, 2=No tiene.",
+        v1976 = "v081", v1992 = "V08", v2001 = "V12", v2012 = NA, v2024 = "v15_servsan",
+        notas = "NO disponible en 2012 (variable no exportada desde REDATAM). 1976: 1/2=Tiene→1, 3=No→2. 1992: 1/2=Tiene (con/sin descarga)→1, 3=No→2. 2001: 1=Tiene→1, 2=No→2. 2024: 1/2=Tiene (solo/compartido)→1, 3=No→2.",
+        tabla = "vivienda")
+
+add_var("tenencia_vivienda", "Tenencia de la vivienda",
+        "Forma en que el hogar ocupa la vivienda. 1=Propia, 2=Alquilada, 3=Cedida/anticrético/servicios, 4=Otra.",
+        v1976 = "v14", v1992 = "V14", v2001 = "V21", v2012 = "P19", v2024 = "v17_tenencia",
+        notas = "Categorías muy consistentes entre censos. 1→1 (Propia), 2→2 (Alquiler), anticrético/cedida/servicios→3, otro→4. 2024: código 1/2=Propia pagada/pagando→1, código 4=Alquilada→2, códigos 3/5/6/7=Cedida/anticr/servicios→3, 8=Otra→4.",
+        tabla = "vivienda")
+
+add_var("habitaciones_total", "Total de habitaciones del hogar",
+        "Número de habitaciones que ocupa el hogar (sin contar baño y cocina).",
+        v1976 = "v10", v1992 = "V10", v2001 = "V18", v2012 = "P12", v2024 = "v13_habitac",
+        notas = "Variable numérica en 1976/1992/2001/2012. 2024 v13_habitac está codificada como categorías: 1=Uno, 2=Dos, ..., 8=Ocho o más (se usa el código directamente como número ordinales). Se recomienda usar como variable ordinal.",
+        tabla = "vivienda")
+
+
+# ===========================================================================
+# Guardar
+# ===========================================================================
+
 usethis::use_data(variable_longitudinal_map, overwrite = TRUE)
 message("variable_longitudinal_map guardado en data/variable_longitudinal_map.rda")
-message("\nVariables armonizadas (", nrow(variable_longitudinal_map), " total):")
-print(variable_longitudinal_map[, c("variable", "etiqueta", "v1976", "v1992", "v2001", "v2012", "v2024")])
+message("\nVariables armonizadas (", nrow(variable_longitudinal_map), " total) por tabla:")
+print(table(variable_longitudinal_map$tabla))
+message("\nDetalle:")
+print(variable_longitudinal_map[, c("variable", "etiqueta", "tabla")])
