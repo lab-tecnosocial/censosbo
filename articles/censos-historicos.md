@@ -165,14 +165,14 @@ con <- get_censo(2012, "persona", departamento = "07", as = "duckdb")
 
 DBI::dbGetQuery(con, "
   SELECT P24 AS sexo, COUNT(*) AS total,
-         ROUND(AVG(P26) * 1.0, 1) AS edad_prom
+         ROUND(AVG(P25) * 1.0, 1) AS edad_prom
   FROM persona
   GROUP BY P24
   ORDER BY P24
 ")
 #>   sexo   total edad_prom
-#> 1    1 1034456      27.1
-#> 2    2 1012345      27.8
+#> 1    1 1311573      26.1
+#> 2    2 1346189      25.9
 
 DBI::dbDisconnect(con)
 ```

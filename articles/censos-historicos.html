@@ -314,14 +314,14 @@ puede no existir en otro.</p>
 <span></span>
 <span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbGetQuery.html" class="external-link">dbGetQuery</a></span><span class="op">(</span><span class="va">con</span>, <span class="st">"</span></span>
 <span><span class="st">  SELECT P24 AS sexo, COUNT(*) AS total,</span></span>
-<span><span class="st">         ROUND(AVG(P26) * 1.0, 1) AS edad_prom</span></span>
+<span><span class="st">         ROUND(AVG(P25) * 1.0, 1) AS edad_prom</span></span>
 <span><span class="st">  FROM persona</span></span>
 <span><span class="st">  GROUP BY P24</span></span>
 <span><span class="st">  ORDER BY P24</span></span>
 <span><span class="st">"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   sexo   total edad_prom</span></span>
-<span><span class="co">#&gt; 1    1 1034456      27.1</span></span>
-<span><span class="co">#&gt; 2    2 1012345      27.8</span></span>
+<span><span class="co">#&gt; 1    1 1311573      26.1</span></span>
+<span><span class="co">#&gt; 2    2 1346189      25.9</span></span>
 <span></span>
 <span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span></span></code></pre></div>
 </div>
