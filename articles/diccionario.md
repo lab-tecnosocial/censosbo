@@ -82,7 +82,7 @@ DBI::dbDisconnect(con)
 
 ### Persona (`get_personas_2012`)
 
-**35** variables.
+**36** variables.
 
 ------------------------------------------------------------------------
 
@@ -108,7 +108,7 @@ DBI::dbDisconnect(con)
 
 ### Persona (`get_personas_2001`)
 
-**64** variables.
+**65** variables.
 
 ------------------------------------------------------------------------
 
@@ -122,7 +122,7 @@ DBI::dbDisconnect(con)
 
 ### Persona (`get_personas_1992`)
 
-**52** variables.
+**53** variables.
 
 ------------------------------------------------------------------------
 

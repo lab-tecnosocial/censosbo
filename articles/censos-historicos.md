@@ -9,7 +9,7 @@ los datos del 2024.
 
 | Año | Tablas | Filas | Estructura geográfica |
 |----|----|---:|----|
-| 1976 | `poblacion`, `vivienda` | ~4.6M | Columnas directas `dep`, `pro`, `can` |
+| 1976 | `poblacion` (alias: `persona`), `vivienda` | ~4.6M | Columnas directas `dep`, `pro`, `can` |
 | 1992 | `persona`, `vivienda`, `mortalidad` | ~6.4M | REDATAM (REF_ID) |
 | 2001 | `persona`, `vivienda`, `comunidades_poblacion`, `comunidades_vivienda` | ~8.3M | REDATAM (REF_ID) |
 | 2012 | `persona`, `vivienda`, `emigracion`, `discapacidad` | ~10M | REDATAM (REF_ID) |

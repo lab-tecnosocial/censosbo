@@ -32,7 +32,7 @@ variables_armonizadas()
 #> 7  Nivel educativo más alto alcanzado. Para comparación longitudinal se harmoniza a 4 categorías: 0=Sin instrucción, 1=Primaria, 2=Secundaria, 3=Superior
 #> 8                                                                                                           Indicador: si el individuo pertenece a la PEA
 #> 9                                                                                                     Indicador: si el individuo está en edad de trabajar
-#> 10                                                                                                                  Área de residencia: 1=Urbana, 2=Rural
+#> 10                                                                 Área de residencia: 1=Urbana, 2=Rural. Columna directa en todas las tablas de persona.
 #> 11                                                                                                                         Código de departamento (01-09)
 #>     v1976 v1992  v2001         v2012        v2024
 #> 1     p03   P03    P28           P24     p25_sexo
@@ -44,7 +44,7 @@ variables_armonizadas()
 #> 7  nivela   P12 P39NIV P37A_NIVELNUE    nivel_edu
 #> 8     pea  NPEA   <NA>           PEA       fft_19
 #> 9     pet  NPET   <NA>           PET        ft_19
-#> 10   area  <NA>   <NA>          <NA>         <NA>
+#> 10   area  area   area          area         area
 #> 11    dep  idep   idep          idep         idep
 #>                                                                                                                                                                                                                                                                                                                                                                                                                                                                      notas
 #> 1                                                                                                                                                                                                                                                                                                                1976/1992/2001: codificación original 1=Hombre, 2=Mujer (invertida). 2012/2024: 1=Mujer, 2=Hombre. get_longitudinal() harmoniza todo a 1=Mujer, 2=Hombre.
@@ -56,7 +56,7 @@ variables_armonizadas()
 #> 7  1976: 'nivela' es var. derivada (1=Ninguno..5=Técnico). 1992: P12 solo cubre quienes asistieron; Ninguno se obtiene combinando con P11 en get_longitudinal(). 2001: P39NIV con códigos reales 11=Ninguno,12=Preescolar,13=Básico,14=Intermedio,15=Medio,16=Primaria,17=Secundaria,18=Licenciatura,19=Técnico,20=Normal,21-23=Otros. 2012: P37A_NIVELNUE usa códigos no secuenciales (1,2,3,9,10,11-18,99). La Ley Avelino Siñani (2010) cambió la nomenclatura en 2012.
 #> 8                                                                                                                                                                                                                                                                                                                                                         NO disponible directamente en 2001 (requiere cálculo desde variables de actividad). En 2024: fft_19 codifica PEA
 #> 9                                                                                                                                                                                                                                                                                                                                                                                                NO disponible directamente en 2001. Edad mínima puede variar entre censos
-#> 10                                                                                                                                                                                                                                                          1976: columna 'area' en tabla poblacion (1=Urbana, 2=Rural). 1992/2001/2012: join automático con vivienda; URBRUR/TURUR usan 1=Urbana, 2=Rural. 2024: en tabla vivienda, no disponible via get_longitudinal().
+#> 10                                                                                                                                                                                      Columna 'area' presente en todos los parquets de persona. 1976: fuente SPSS directa. 1992/2012: derivada de URBRUR de vivienda (pre-unida). 2001: derivada de TURUR de vivienda (pre-unida). 2024: derivada de urbrur de vivienda (pre-unida). Siempre 1=Urbana, 2=Rural, sin NAs.
 #> 11                                                                                                                                                                                                                                                                                                    En 1976: columna 'dep' (numérica 1-9). En censos REDATAM: 'idep' se calcula desde REDCODEN via join con munic.parquet; get_longitudinal() lo fuerza automáticamente.
 ```
 
@@ -205,7 +205,7 @@ variables_armonizadas() |>
 #> 7  1976: 'nivela' es var. derivada (1=Ninguno..5=Técnico). 1992: P12 solo cubre quienes asistieron; Ninguno se obtiene combinando con P11 en get_longitudinal(). 2001: P39NIV con códigos reales 11=Ninguno,12=Preescolar,13=Básico,14=Intermedio,15=Medio,16=Primaria,17=Secundaria,18=Licenciatura,19=Técnico,20=Normal,21-23=Otros. 2012: P37A_NIVELNUE usa códigos no secuenciales (1,2,3,9,10,11-18,99). La Ley Avelino Siñani (2010) cambió la nomenclatura en 2012.
 #> 8                                                                                                                                                                                                                                                                                                                                                         NO disponible directamente en 2001 (requiere cálculo desde variables de actividad). En 2024: fft_19 codifica PEA
 #> 9                                                                                                                                                                                                                                                                                                                                                                                                NO disponible directamente en 2001. Edad mínima puede variar entre censos
-#> 10                                                                                                                                                                                                                                                          1976: columna 'area' en tabla poblacion (1=Urbana, 2=Rural). 1992/2001/2012: join automático con vivienda; URBRUR/TURUR usan 1=Urbana, 2=Rural. 2024: en tabla vivienda, no disponible via get_longitudinal().
+#> 10                                                                                                                                                                                      Columna 'area' presente en todos los parquets de persona. 1976: fuente SPSS directa. 1992/2012: derivada de URBRUR de vivienda (pre-unida). 2001: derivada de TURUR de vivienda (pre-unida). 2024: derivada de urbrur de vivienda (pre-unida). Siempre 1=Urbana, 2=Rural, sin NAs.
 #> 11                                                                                                                                                                                                                                                                                                    En 1976: columna 'dep' (numérica 1-9). En censos REDATAM: 'idep' se calcula desde REDCODEN via join con munic.parquet; get_longitudinal() lo fuerza automáticamente.
 ```
 
@@ -214,8 +214,8 @@ Las variables con `NA` en algún censo se incluyen igualmente con valor
 
 - **`edad`**: no disponible directamente en 2012 (la tabla procesada no
   la incluye)
-- **`area`** (urbano/rural): en la tabla de vivienda, no de persona —
-  `NA` en 2001 y 2024
+- **`area`** (urbano/rural): columna directa en todos los parquets de
+  persona (1=Urbana, 2=Rural, sin `NA`)
 - **`pea`**, **`pet`**: no disponibles directamente en 1992 y 2001
 
 ## Combinar con análisis propio
