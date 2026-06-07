@@ -88,7 +88,9 @@ reference:
     contents:
       - get_censo
       - get_longitudinal
+      - get_longitudinal_vivienda
       - variables_armonizadas
+      - grupos_variables
 
   - title: "Censos históricos: atajos por año"
     desc: >
@@ -121,13 +123,16 @@ reference:
       - etiquetar_valores
       - etiquetar_variables
 
-  - title: "Geografía de Bolivia"
+  - title: "Geografía y visualización en mapas"
     desc: >
-      Funciones para consultar la división político-administrativa del país.
+      Funciones para consultar la división político-administrativa del país
+      y para generar mapas coropléticos con variables censales.
     contents:
       - departamentos
       - provincias
       - municipios
+      - mapa_dep
+      - mapa_mun
 
   - title: "Gestión de caché"
     desc: >
@@ -145,6 +150,8 @@ reference:
       - codebook_historico_meta
       - variable_longitudinal_map
       - geo_bolivia
+      - geo_departamentos
+      - geo_municipios
 
   - title: "Información del paquete"
     contents:

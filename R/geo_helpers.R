@@ -61,3 +61,42 @@ municipios <- function(departamento = NULL, provincia = NULL) {
   }
   geo
 }
+
+#' Geometrías de los departamentos de Bolivia
+#'
+#' Objeto `sf` con los 9 departamentos de Bolivia y sus geometrías poligonales.
+#' Compatible con `ggplot2::geom_sf()` y la función [mapa_dep()].
+#'
+#' @format Un `sf` data.frame con 9 filas y 3 columnas (más geometría):
+#' \describe{
+#'   \item{idep}{Código de departamento (2 dígitos, con cero a la izquierda)}
+#'   \item{nombre_dep}{Nombre del departamento}
+#'   \item{geometry}{Geometría de polígono (CRS: WGS84 / EPSG:4326)}
+#' }
+#' @source INE Bolivia. Límites administrativos de departamentos,
+#'   derivados de cartografía electoral (2025).
+#' @seealso [geo_municipios], [mapa_dep()]
+"geo_departamentos"
+
+#' Geometrías de los municipios de Bolivia
+#'
+#' Objeto `sf` con 336 de los 343 municipios del CPV-2024 y sus geometrías
+#' poligonales. Los 7 municipios sin cobertura en la fuente cartográfica
+#' no están incluidos.
+#'
+#' @format Un `sf` data.frame con 336 filas y 7 columnas (más geometría):
+#' \describe{
+#'   \item{idep}{Código de departamento}
+#'   \item{nombre_dep}{Nombre del departamento}
+#'   \item{iprov}{Código de provincia}
+#'   \item{nombre_prov}{Nombre de la provincia}
+#'   \item{imun}{Código de municipio}
+#'   \item{nombre_mun}{Nombre del municipio}
+#'   \item{geometry}{Geometría de polígono (CRS: WGS84 / EPSG:4326)}
+#' }
+#' @note 7 municipios del CPV-2024 no tienen cobertura cartográfica en la
+#'   fuente y no aparecerán en los mapas generados con [mapa_mun()].
+#' @source INE Bolivia. Límites administrativos de municipios,
+#'   derivados de cartografía electoral (2025).
+#' @seealso [geo_departamentos], [mapa_mun()]
+"geo_municipios"
