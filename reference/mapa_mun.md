@@ -1,0 +1,82 @@
+# Visualiza una variable censal a nivel municipal
+
+Genera un mapa coroplético de Bolivia a nivel de municipio.
+
+## Usage
+
+``` r
+mapa_mun(
+  datos,
+  variable,
+  departamento = NULL,
+  titulo = NULL,
+  etiqueta_fill = NULL,
+  paleta = NULL,
+  na_color = "grey80",
+  mostrar_nombres = FALSE
+)
+```
+
+## Arguments
+
+- datos:
+
+  Data.frame con al menos las columnas \`idep\`, \`iprov\`, \`imun\` y
+  \`variable\`. Típicamente el resultado de una agregación con dplyr.
+
+- variable:
+
+  Nombre (caracter) de la columna a visualizar.
+
+- departamento:
+
+  Código o nombre de departamento para limitar el mapa. Si \`NULL\`
+  (defecto), muestra Bolivia completa.
+
+- titulo:
+
+  Título del mapa. Si \`NULL\`, usa el nombre de la variable.
+
+- etiqueta_fill:
+
+  Etiqueta de la leyenda. Si \`NULL\`, usa \`variable\`.
+
+- paleta:
+
+  Paleta de color. Por defecto \`"Blues"\` (continua) o \`"Set3"\`
+  (categórica).
+
+- na_color:
+
+  Color para municipios sin datos. Por defecto \`"grey80"\`.
+
+- mostrar_nombres:
+
+  Si \`TRUE\`, agrega etiquetas de nombres de municipios. Recomendado
+  solo al filtrar por un departamento.
+
+## Value
+
+Un objeto \`ggplot\` modificable con capas adicionales de ggplot2.
+
+## Details
+
+Los datos se unen con \[geo_municipios\] por la clave \`idep + iprov +
+imun\`. Los 7 municipios del CPV-2024 sin cobertura cartográfica generan
+una advertencia informativa y aparecen en gris (\`na_color\`).
+
+Para el censo 1976 (cantones), usar con precaución: los códigos de
+municipio pueden no corresponder a la división actual.
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+library(dplyr)
+agua <- get_viviendas_2024(departamento = "07", as = "tibble") |>
+  group_by(idep, iprov, imun) |>
+  summarise(pct_agua = mean(v10_agua == 1, na.rm = TRUE) * 100, .groups = "drop")
+mapa_mun(agua, "pct_agua", departamento = "07",
+         titulo = "% viviendas con agua por cañería - Santa Cruz (2024)")
+} # }
+```

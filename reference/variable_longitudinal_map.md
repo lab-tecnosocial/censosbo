@@ -1,8 +1,8 @@
 # Variables armonizadas para análisis longitudinal
 
-Devuelve la tabla de correspondencia entre variables de los censos de
-Bolivia (1976, 1992, 2001, 2012 y CPV-2024), con las variables que
-pueden compararse a lo largo del tiempo.
+Tabla de correspondencia entre variables de los censos de Bolivia (1976,
+1992, 2001, 2012 y CPV-2024), con las variables que pueden compararse a
+lo largo del tiempo.
 
 ## Usage
 
@@ -25,6 +25,10 @@ Un data.frame con columnas:
 - descripcion:
 
   Descripción detallada y notas de comparabilidad
+
+- tabla:
+
+  Tabla de origen: \`"persona"\` o \`"vivienda"\`
 
 - v1976, v1992, v2001, v2012, v2024:
 

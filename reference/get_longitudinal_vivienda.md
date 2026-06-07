@@ -1,0 +1,65 @@
+# Obtiene datos longitudinales comparables de la tabla vivienda entre censos
+
+Descarga y armoniza variables de vivienda de múltiples censos para
+análisis de tendencias en condiciones habitacionales. El resultado tiene
+una fila por vivienda y una columna \`anio\` que identifica el censo de
+origen.
+
+## Usage
+
+``` r
+get_longitudinal_vivienda(
+  variables,
+  anios = c(1976L, 1992L, 2001L, 2012L, 2024L),
+  departamento = NULL,
+  verbose = TRUE
+)
+```
+
+## Arguments
+
+- variables:
+
+  Vector de caracteres. Nombres de variables armonizadas de vivienda.
+  Usa \[variables_armonizadas(tabla = "vivienda")\] para ver las
+  opciones disponibles.
+
+- anios:
+
+  Vector de enteros. Años de censo a incluir. Por defecto todos.
+
+- departamento:
+
+  Vector de caracteres. Código(s) de departamento (\`"01"\`-\`"09"\`).
+  Si \`NULL\`, incluye todo el país.
+
+- verbose:
+
+  Lógico. Mostrar mensajes de progreso. Por defecto \`TRUE\`.
+
+## Value
+
+Un tibble con columnas \`anio\` + variables solicitadas. Una fila por
+vivienda. Las variables no disponibles en un año aparecen como \`NA\`.
+
+## Details
+
+Variables disponibles para comparación longitudinal de vivienda:
+\`material_paredes\`, \`material_techo\`, \`material_piso\`,
+\`fuente_agua\`, \`energia_electrica\`, \`servicio_sanitario\` (no
+disponible en 2012), \`tenencia_vivienda\`, \`habitaciones_total\`.
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+# Evolución del acceso a agua potable
+agua <- get_longitudinal_vivienda(
+  variables = c("fuente_agua", "energia_electrica"),
+  anios = c(1992, 2001, 2012, 2024)
+)
+library(dplyr)
+agua |> count(anio, fuente_agua) |> group_by(anio) |>
+  mutate(pct = n / sum(n))
+} # }
+```

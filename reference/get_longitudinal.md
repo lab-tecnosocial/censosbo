@@ -1,4 +1,4 @@
-# Obtiene datos longitudinales comparables entre censos de Bolivia
+# Obtiene datos longitudinales comparables de la tabla persona entre censos
 
 Descarga y armoniza variables clave de múltiples censos para análisis de
 tendencias y comparaciones históricas. El resultado es un data.frame en
@@ -9,7 +9,8 @@ formato largo ("tidy"), con una fila por individuo y una columna
 
 ``` r
 get_longitudinal(
-  variables,
+  variables = NULL,
+  grupo = NULL,
   anios = c(1976L, 1992L, 2001L, 2012L, 2024L),
   departamento = NULL,
   verbose = TRUE
@@ -21,7 +22,15 @@ get_longitudinal(
 - variables:
 
   Vector de caracteres. Nombres de variables armonizadas a incluir. Usa
-  \[variables_armonizadas()\] para ver las opciones disponibles.
+  \[variables_armonizadas()\] para ver las opciones disponibles. Si se
+  especifica \`grupo\`, este parámetro se ignora.
+
+- grupo:
+
+  Nombre de un grupo temático predefinido (ver \[grupos_variables()\]):
+  \`"demografico"\`, \`"educacion"\`, \`"economia"\`, \`"cultural"\`,
+  \`"migracion"\`, \`"fertilidad"\`. Si se especifica, \`variables\` se
+  ignora.
 
 - anios:
 
@@ -44,34 +53,32 @@ Las columnas ausentes en un censo aparecen como \`NA\` con un aviso.
 
 ## Details
 
-\*\*Variables con limitaciones conocidas:\*\* - \`area\` (urbano/rural):
-columna directa \`"area"\` en todas las tablas de persona (1=Urbana,
-2=Rural). No requiere join adicional. - \`nivel_edu\`: la Ley Avelino
-Siñani (2010) cambió la nomenclatura en 2012. Se armoniza
-automáticamente a 4 categorías comparables. - \`grupo_edad\`: solo
-disponible directamente en 1976; se calcula para el resto. - \`pea\`,
-\`pet\`: no disponibles directamente en 1992 y 2001; se retornan como
-\`NA\`.
+\*\*Variables con limitaciones conocidas:\*\* - \`nivel_edu\`: la Ley
+Avelino Siñani (2010) cambió la nomenclatura en 2012. -
+\`identidad_indigena\`, \`idioma_materno\`: NO disponibles en 1976 o
+1992. - \`pea\`, \`pet\`: no disponibles en 2001. -
+\`migracion_nac_dpto\`, \`migracion_rec_dpto\`: variables derivadas de
+comparación de departamento de nacimiento/residencia con el actual.
+Pueden contener NAs cuando la información de origen no fue registrada en
+el censo. - \`idioma_materno\` en 1976: captura "idioma que habla", no
+el materno.
 
-\*\*Sobre municipios:\*\* El filtro geográfico en \`get_longitudinal()\`
-opera a nivel de departamento para garantizar comparabilidad. El número
-de municipios cambió entre censos (1992: 339, 2001: 343, 2012: 339,
-2024: 344).
+Para variables de vivienda usa \[get_longitudinal_vivienda()\].
 
 ## Examples
 
 ``` r
 if (FALSE) { # \dontrun{
-# Serie temporal de sexo y edad para Santa Cruz
-datos <- get_longitudinal(
-  variables = c("sexo", "edad"),
-  anios = c(1992, 2001, 2012, 2024),
-  departamento = "07"
-)
+# Usando grupo temático
+datos <- get_longitudinal(grupo = "educacion", anios = c(1992, 2001, 2012, 2024))
 library(dplyr)
-datos |> count(anio, sexo)
+datos |> count(anio, asistencia_escolar)
 
 # Evolución del nivel educativo en todo el país
-get_longitudinal(c("nivel_edu"), anios = c(1976, 1992, 2001, 2012, 2024))
+get_longitudinal(variables = c("nivel_edu", "sexo"),
+                 anios = c(1976, 1992, 2001, 2012, 2024))
+
+# Identidad cultural (solo 2001-2024)
+get_longitudinal(grupo = "cultural", anios = c(2001, 2012, 2024))
 } # }
 ```

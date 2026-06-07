@@ -231,9 +231,15 @@ Función principal para acceder a cualquier censo histórico (1976, 1992,
   [`get_censo()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md)
   : Accede a los microdatos de los censos históricos de Bolivia
 - [`get_longitudinal()`](https://lab-tecnosocial.github.io/censosbo/reference/get_longitudinal.md)
-  : Obtiene datos longitudinales comparables entre censos de Bolivia
+  : Obtiene datos longitudinales comparables de la tabla persona entre
+  censos
+- [`get_longitudinal_vivienda()`](https://lab-tecnosocial.github.io/censosbo/reference/get_longitudinal_vivienda.md)
+  : Obtiene datos longitudinales comparables de la tabla vivienda entre
+  censos
 - [`variables_armonizadas()`](https://lab-tecnosocial.github.io/censosbo/reference/variables_armonizadas.md)
   : Muestra el mapeo de variables comparables entre censos de Bolivia
+- [`grupos_variables()`](https://lab-tecnosocial.github.io/censosbo/reference/grupos_variables.md)
+  : Grupos temáticos predefinidos de variables armonizadas
 
 ## Censos históricos: atajos por año
 
@@ -272,9 +278,10 @@ para convertir códigos numéricos a texto legible.
 - [`etiquetar_variables()`](https://lab-tecnosocial.github.io/censosbo/reference/etiquetar_variables.md)
   : Etiqueta los nombres de las variables (columnas)
 
-## Geografía de Bolivia
+## Geografía y visualización en mapas
 
-Funciones para consultar la división político-administrativa del país.
+Funciones para consultar la división político-administrativa del país y
+para generar mapas coropléticos con variables censales.
 
 - [`departamentos()`](https://lab-tecnosocial.github.io/censosbo/reference/departamentos.md)
   : Lista los departamentos de Bolivia
@@ -282,6 +289,10 @@ Funciones para consultar la división político-administrativa del país.
   : Lista las provincias de un departamento
 - [`municipios()`](https://lab-tecnosocial.github.io/censosbo/reference/municipios.md)
   : Lista los municipios de Bolivia
+- [`mapa_dep()`](https://lab-tecnosocial.github.io/censosbo/reference/mapa_dep.md)
+  : Visualiza una variable censal a nivel departamental
+- [`mapa_mun()`](https://lab-tecnosocial.github.io/censosbo/reference/mapa_mun.md)
+  : Visualiza una variable censal a nivel municipal
 
 ## Gestión de caché
 
@@ -306,6 +317,10 @@ Datasets disponibles sin descarga, incluidos directamente en el paquete.
   : Variables armonizadas para análisis longitudinal
 - [`geo_bolivia`](https://lab-tecnosocial.github.io/censosbo/reference/geo_bolivia.md)
   : Tabla de geografía de Bolivia
+- [`geo_departamentos`](https://lab-tecnosocial.github.io/censosbo/reference/geo_departamentos.md)
+  : Geometrías de los departamentos de Bolivia
+- [`geo_municipios`](https://lab-tecnosocial.github.io/censosbo/reference/geo_municipios.md)
+  : Geometrías de los municipios de Bolivia
 
 ## Información del paquete
 
