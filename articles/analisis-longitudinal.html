@@ -151,7 +151,7 @@ armonización automáticamente y devuelve un data.frame en formato largo
 <span><span class="co">#&gt;       tabla  v1976 v1992  v2001         v2012            v2024</span></span>
 <span><span class="co">#&gt; 1   persona    p03   P03    P28           P24         p25_sexo</span></span>
 <span><span class="co">#&gt; 2   persona    p04   P04    P29           P25         p26_edad</span></span>
-<span><span class="co">#&gt; 3   persona  edad5 GEDAD    P29           P25             &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 3   persona  edad5 GEDAD    P29           P25         p26_edad</span></span>
 <span><span class="co">#&gt; 4   persona    p02   P02    P31           P23     p24_parentes</span></span>
 <span><span class="co">#&gt; 5   persona    p05   P05    P48           P45       p53_ecivil</span></span>
 <span><span class="co">#&gt; 6   persona    p10   P10    P36           P35          p40_lee</span></span>
@@ -164,22 +164,22 @@ armonización automáticamente y devuelve un data.frame en formato largo
 <span><span class="co">#&gt; 13  persona    p09  &lt;NA&gt;    P35          P30B p341_idiomat_cod</span></span>
 <span><span class="co">#&gt; 14  persona lugnac  P07A  DEP34          P32J    p35j_deptocod</span></span>
 <span><span class="co">#&gt; 15  persona  resh5  P08A  DEP41          P34H    p37j_deptocod</span></span>
-<span><span class="co">#&gt; 16  persona    p20   P20    P50           P46        p54_hvtot</span></span>
-<span><span class="co">#&gt; 17  persona    p21   P21    P51           P47        p55_hstot</span></span>
+<span><span class="co">#&gt; 16  persona    p20   P21    P50           P46        p54_hvtot</span></span>
+<span><span class="co">#&gt; 17  persona    p21   P20    P51           P47        p55_hstot</span></span>
 <span><span class="co">#&gt; 18  persona   area  area   area          area             area</span></span>
 <span><span class="co">#&gt; 19  persona    dep  idep   idep          idep             idep</span></span>
 <span><span class="co">#&gt; 20 vivienda    v03   V03    V06           P03        v03_pared</span></span>
 <span><span class="co">#&gt; 21 vivienda    v04   V04    V08           P05        v05_techo</span></span>
 <span><span class="co">#&gt; 22 vivienda    v05   V05    V09           P06         v06_piso</span></span>
 <span><span class="co">#&gt; 23 vivienda    v07   V07    V10           P07      v07_aguapro</span></span>
-<span><span class="co">#&gt; 24 vivienda    v09   V09    V15           P09      v09_energia</span></span>
-<span><span class="co">#&gt; 25 vivienda   v081   V08    V12          &lt;NA&gt;      v15_servsan</span></span>
+<span><span class="co">#&gt; 24 vivienda    v09   V09    V15           P11      v09_energia</span></span>
+<span><span class="co">#&gt; 25 vivienda   v081   V08    V12           P09      v15_servsan</span></span>
 <span><span class="co">#&gt; 26 vivienda    v14   V14    V21           P19     v17_tenencia</span></span>
-<span><span class="co">#&gt; 27 vivienda    v10   V10    V18           P12      v13_habitac</span></span>
+<span><span class="co">#&gt; 27 vivienda    v10   V10    V18           P14      v13_habitac</span></span>
 <span><span class="co">#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                      notas</span></span>
 <span><span class="co">#&gt; 1                                                                                                                                                                                                                                                                                                                1976/1992/2001: codificación original 1=Hombre, 2=Mujer (invertida). 2012/2024: 1=Mujer, 2=Hombre. get_longitudinal() harmoniza todo a 1=Mujer, 2=Hombre.</span></span>
 <span><span class="co">#&gt; 2                                                                                                                                                                                                                                                                                                           2001: P29 re-exportado con .dicx corregido (bug fieldsize exportaba 3 bits en vez de 7). 2012: P25 re-exportado desde .dicx (el .dic binario no la exportaba).</span></span>
-<span><span class="co">#&gt; 3                                                                                                                                                                                                                                                                                                                                                                                              Para 2001, 2012 y 2024 se calcula automáticamente desde la edad individual.</span></span>
+<span><span class="co">#&gt; 3                                                                                                                                                                                                                                                                                                                                  1976/1992: variable ya agrupada en la fuente. 2001/2012/2024: se calcula automáticamente desde la edad individual con (edad %/% 5) * 5.</span></span>
 <span><span class="co">#&gt; 4                                                                                                                                                                                                                                                                                                                                                                                                           Códigos varían entre censos: consultar codebook_ANIO() por año</span></span>
 <span><span class="co">#&gt; 5                                                                                                                                                                                                                                                                                                                                                                                         Categorías similares entre censos; verificar codebook para equivalencias exactas</span></span>
 <span><span class="co">#&gt; 6                                                                                                                                                                                                                                                                                                                                                                           1992 (P10): códigos 7=Sí, 8=No (distinto al resto). get_longitudinal() harmoniza a 1=Sí, 2=No.</span></span>
@@ -192,18 +192,18 @@ armonización automáticamente y devuelve un data.frame en formato largo
 <span><span class="co">#&gt; 13                                LIMITACIÓN METODOLÓGICA: 1976 p09 captura 'idioma que habla' (no materno), con combinaciones bilingüísticas (ej. código 5=Castellano/Aymara → se clasifica como Aymara). 1992 NO disponible (solo flags binarios de idiomas hablados, no maternal). 2001-2024: primer idioma aprendido en la niñez. 2012/2024: códigos 1-37 para lenguas nativas (6=Castellano, 2=Aymara, 27=Quechua, 12=Guaraní); códigos &gt;=38 son idiomas extranjeros.</span></span>
 <span><span class="co">#&gt; 14                                                                                                                                Variable DERIVADA: compara columna de dpto de nacimiento con dpto de residencia (idep o dep). 1976: lugnac=1-9 (dpto nac), 10=exterior. 1992: P07A=dpto nac (1-9). 2001: DEP34=dpto nac (1-9). 2012: P32J=dpto nac (1-9), 99=ignorado. 2024: p35j_deptocod=dpto nac (1-9). La comparación con idep actual se hace en get_longitudinal().</span></span>
 <span><span class="co">#&gt; 15                                                                                                                                                                                                                                                  Variable DERIVADA: compara dpto hace 5 años con dpto actual (idep o dep). 1976: resh5=10→exterior, 11→NA. 2024: p37_lugres5=4 (no había nacido) → se usa como indicador alternativo; p37j_deptocod para comparar dpto.</span></span>
-<span><span class="co">#&gt; 16                                                                                                                                                                                                                                                                                                    Solo aplica a mujeres de 12 o más años. Hombres y mujeres menores de edad retornan 0 o NA. 2024: p54_hvtot es el total (existe también p54a/p54b por sexo del hijo).</span></span>
-<span><span class="co">#&gt; 17                                                                                                                                                                                                                                                                                                                                                                                                          Subconjunto de hijos_nacidos_vivos. Solo aplica a mujeres 12+.</span></span>
+<span><span class="co">#&gt; 16                                                                                                                                                                                                              Solo aplica a mujeres de 12 o más años. Hombres y mujeres menores de edad retornan 0 o NA. 1992: P21 (en el diccionario REDATAM de 1992, P21=nacidos vivos, P20=sobrevivientes). 2024: p54_hvtot es el total (existe también p54a/p54b por sexo del hijo).</span></span>
+<span><span class="co">#&gt; 17                                                                                                                                                                                                                                                                                                                                                             Subconjunto de hijos_nacidos_vivos. Solo aplica a mujeres 12+. 1992: P20 (ver nota en hijos_nacidos_vivos).</span></span>
 <span><span class="co">#&gt; 18                                                                                                                                                                                      Columna 'area' presente en todos los parquets de persona. 1976: fuente SPSS directa. 1992/2012: derivada de URBRUR de vivienda (pre-unida). 2001: derivada de TURUR de vivienda (pre-unida). 2024: derivada de urbrur de vivienda (pre-unida). Siempre 1=Urbana, 2=Rural, sin NAs.</span></span>
 <span><span class="co">#&gt; 19                                                                                                                                                                                                                                                                                                    En 1976: columna 'dep' (numérica 1-9). En censos REDATAM: 'idep' se calcula desde REDCODEN via join con munic.parquet; get_longitudinal() lo fuerza automáticamente.</span></span>
 <span><span class="co">#&gt; 20                                                                                                                                                                                                                 1976/1992: 1=Adobe revocado→2, 2=Adobe/tapial→2, 3=Ladrillo/bloque/cemento→1, 4=Piedra→4, 5=Madera→3, 6=Caña/palma→3, 7=Otros→5. 2001/2012/2024: 1=Ladrillo→1, 2=Adobe/tapial→2, 3=Tabique/quinche→3, 4=Piedra→4, 5=Madera→3, 6=Caña/palma→3, 7=Otro→5.</span></span>
 <span><span class="co">#&gt; 21                                                                                                                                                                                                                                                                                                                             Códigos muy consistentes entre censos: 1=Calamina→1, 2=Tejas→1, 3=Losa hormigón→2, 4=Paja/caña/palma→3, 5=Otro→4. Idéntico en los 5 censos.</span></span>
 <span><span class="co">#&gt; 22                                                                                                                                                                                                                                                                                                                    1976/1992: 1=Madera→3, 2=Mosaico→3, 3=Ladrillo→2, 4=Cemento→2, 5=Tierra→1, 6=Otros→4. 2001/2012/2024: 1=Tierra→1, y demás materiales mapeados a 2-4.</span></span>
 <span><span class="co">#&gt; 23                                                                                                                                       1976 usa v07 (procedencia), no v06 (distribución). 1976: 1/2=Red→1, 3/4=Pozo/aljibe→2, 5=Río/lago→3, 6=Carro→2, 7=Otra→2. 1992: 1=Red→1, 2=Pozo→2, 3=Río→3, 4=Carro→2, 5=Otra→2. 2001: 1=Cañería→1, 2=Pileta→1, 3=Carro→2, 4=Pozo bomba→2, 5=Pozo sin bomba→3, 6/7=Río/lago→3. 2024: 3=Cosecha lluvia→3, 6=Vertiente protegida→2.</span></span>
-<span><span class="co">#&gt; 24                                                                                                                                                                                                                                                                                               1976/1992: 1=Sí, 2=No. 2001 V15: 5=Sí→1, 6=No→2 (codificación distinta). 2012 P09: 1=Sí privado→1, 2=Sí compartido→1, 3=No→2. 2024: 1-4=cualquier fuente→1, 5=No tiene→2.</span></span>
-<span><span class="co">#&gt; 25                                                                                                                                                                                                                                                             NO disponible en 2012 (variable no exportada desde REDATAM). 1976: 1/2=Tiene→1, 3=No→2. 1992: 1/2=Tiene (con/sin descarga)→1, 3=No→2. 2001: 1=Tiene→1, 2=No→2. 2024: 1/2=Tiene (solo/compartido)→1, 3=No→2.</span></span>
+<span><span class="co">#&gt; 24                                                                                                                                                                                                                                                                             1976/1992: 1=Sí, 2=No. 2001 V15: 5=Sí→1, 6=No→2 (codificación distinta). 2012 P11: 1-4=cualquier fuente (red/motor/solar/otra)→1, 5=No tiene→2. 2024: 1-4=cualquier fuente→1, 5=No tiene→2.</span></span>
+<span><span class="co">#&gt; 25                                                                                                                                                                                                                                                                      1976: 1/2=Tiene→1, 3=No→2. 1992: 1/2=Tiene (con/sin descarga)→1, 3=No→2. 2001: 1=Tiene→1, 2=No→2. 2012 P09: 1/2=Tiene (privado/compartido)→1, 3=No→2. 2024: 1/2=Tiene (solo/compartido)→1, 3=No→2.</span></span>
 <span><span class="co">#&gt; 26                                                                                                                                                                                                                                    Categorías muy consistentes entre censos. 1→1 (Propia), 2→2 (Alquiler), anticrético/cedida/servicios→3, otro→4. 2024: código 1/2=Propia pagada/pagando→1, código 4=Alquilada→2, códigos 3/5/6/7=Cedida/anticr/servicios→3, 8=Otra→4.</span></span>
-<span><span class="co">#&gt; 27                                                                                                                                                                                                                                            Variable numérica en 1976/1992/2001/2012. 2024 v13_habitac está codificada como categorías: 1=Uno, 2=Dos, ..., 8=Ocho o más (se usa el código directamente como número ordinales). Se recomienda usar como variable ordinal.</span></span></code></pre></div>
+<span><span class="co">#&gt; 27                                                                                                                                                                                                                                                        Variable numérica en 1976/1992/2001. 2012 P14: valores 1-7 directos, 8='8 y más', 98/99=NA. 2024 v13_habitac codificada como categorías ordinales (1=Una, ..., 8=Ocho o más). Se recomienda tratar como ordinal.</span></span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Grupos temáticos predefinidos</span></span>
 <span><span class="fu"><a href="../reference/grupos_variables.html">grupos_variables</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -564,19 +564,19 @@ función equivalente:</p>
 <span><span class="co">#&gt; 21 vivienda   v04   V04   V08   P05    v05_techo</span></span>
 <span><span class="co">#&gt; 22 vivienda   v05   V05   V09   P06     v06_piso</span></span>
 <span><span class="co">#&gt; 23 vivienda   v07   V07   V10   P07  v07_aguapro</span></span>
-<span><span class="co">#&gt; 24 vivienda   v09   V09   V15   P09  v09_energia</span></span>
-<span><span class="co">#&gt; 25 vivienda  v081   V08   V12  &lt;NA&gt;  v15_servsan</span></span>
+<span><span class="co">#&gt; 24 vivienda   v09   V09   V15   P11  v09_energia</span></span>
+<span><span class="co">#&gt; 25 vivienda  v081   V08   V12   P09  v15_servsan</span></span>
 <span><span class="co">#&gt; 26 vivienda   v14   V14   V21   P19 v17_tenencia</span></span>
-<span><span class="co">#&gt; 27 vivienda   v10   V10   V18   P12  v13_habitac</span></span>
+<span><span class="co">#&gt; 27 vivienda   v10   V10   V18   P14  v13_habitac</span></span>
 <span><span class="co">#&gt;                                                                                                                                                                                                                                                                                                                                notas</span></span>
 <span><span class="co">#&gt; 20                                                                           1976/1992: 1=Adobe revocado→2, 2=Adobe/tapial→2, 3=Ladrillo/bloque/cemento→1, 4=Piedra→4, 5=Madera→3, 6=Caña/palma→3, 7=Otros→5. 2001/2012/2024: 1=Ladrillo→1, 2=Adobe/tapial→2, 3=Tabique/quinche→3, 4=Piedra→4, 5=Madera→3, 6=Caña/palma→3, 7=Otro→5.</span></span>
 <span><span class="co">#&gt; 21                                                                                                                                                                                       Códigos muy consistentes entre censos: 1=Calamina→1, 2=Tejas→1, 3=Losa hormigón→2, 4=Paja/caña/palma→3, 5=Otro→4. Idéntico en los 5 censos.</span></span>
 <span><span class="co">#&gt; 22                                                                                                                                                                              1976/1992: 1=Madera→3, 2=Mosaico→3, 3=Ladrillo→2, 4=Cemento→2, 5=Tierra→1, 6=Otros→4. 2001/2012/2024: 1=Tierra→1, y demás materiales mapeados a 2-4.</span></span>
 <span><span class="co">#&gt; 23 1976 usa v07 (procedencia), no v06 (distribución). 1976: 1/2=Red→1, 3/4=Pozo/aljibe→2, 5=Río/lago→3, 6=Carro→2, 7=Otra→2. 1992: 1=Red→1, 2=Pozo→2, 3=Río→3, 4=Carro→2, 5=Otra→2. 2001: 1=Cañería→1, 2=Pileta→1, 3=Carro→2, 4=Pozo bomba→2, 5=Pozo sin bomba→3, 6/7=Río/lago→3. 2024: 3=Cosecha lluvia→3, 6=Vertiente protegida→2.</span></span>
-<span><span class="co">#&gt; 24                                                                                                                                                         1976/1992: 1=Sí, 2=No. 2001 V15: 5=Sí→1, 6=No→2 (codificación distinta). 2012 P09: 1=Sí privado→1, 2=Sí compartido→1, 3=No→2. 2024: 1-4=cualquier fuente→1, 5=No tiene→2.</span></span>
-<span><span class="co">#&gt; 25                                                                                                                       NO disponible en 2012 (variable no exportada desde REDATAM). 1976: 1/2=Tiene→1, 3=No→2. 1992: 1/2=Tiene (con/sin descarga)→1, 3=No→2. 2001: 1=Tiene→1, 2=No→2. 2024: 1/2=Tiene (solo/compartido)→1, 3=No→2.</span></span>
+<span><span class="co">#&gt; 24                                                                                                                                       1976/1992: 1=Sí, 2=No. 2001 V15: 5=Sí→1, 6=No→2 (codificación distinta). 2012 P11: 1-4=cualquier fuente (red/motor/solar/otra)→1, 5=No tiene→2. 2024: 1-4=cualquier fuente→1, 5=No tiene→2.</span></span>
+<span><span class="co">#&gt; 25                                                                                                                                1976: 1/2=Tiene→1, 3=No→2. 1992: 1/2=Tiene (con/sin descarga)→1, 3=No→2. 2001: 1=Tiene→1, 2=No→2. 2012 P09: 1/2=Tiene (privado/compartido)→1, 3=No→2. 2024: 1/2=Tiene (solo/compartido)→1, 3=No→2.</span></span>
 <span><span class="co">#&gt; 26                                                                                              Categorías muy consistentes entre censos. 1→1 (Propia), 2→2 (Alquiler), anticrético/cedida/servicios→3, otro→4. 2024: código 1/2=Propia pagada/pagando→1, código 4=Alquilada→2, códigos 3/5/6/7=Cedida/anticr/servicios→3, 8=Otra→4.</span></span>
-<span><span class="co">#&gt; 27                                                                                                      Variable numérica en 1976/1992/2001/2012. 2024 v13_habitac está codificada como categorías: 1=Uno, 2=Dos, ..., 8=Ocho o más (se usa el código directamente como número ordinales). Se recomienda usar como variable ordinal.</span></span></code></pre></div>
+<span><span class="co">#&gt; 27                                                                                                                  Variable numérica en 1976/1992/2001. 2012 P14: valores 1-7 directos, 8='8 y más', 98/99=NA. 2024 v13_habitac codificada como categorías ordinales (1=Una, ..., 8=Ocho o más). Se recomienda tratar como ordinal.</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="ejemplo-evolución-del-acceso-a-servicios-básicos">Ejemplo: evolución del acceso a servicios básicos<a class="anchor" aria-label="anchor" href="#ejemplo-evoluci%C3%B3n-del-acceso-a-servicios-b%C3%A1sicos"></a>
@@ -688,8 +688,9 @@ fieldsize exportaba 3 bits en vez de 7). 2012: P25 re-exportado desde
 <tr class="odd">
 <td align="left">grupo_edad</td>
 <td align="left">persona</td>
-<td align="left">Para 2001, 2012 y 2024 se calcula automáticamente desde
-la edad individual.</td>
+<td align="left">1976/1992: variable ya agrupada en la fuente.
+2001/2012/2024: se calcula automáticamente desde la edad individual con
+(edad %/% 5) * 5.</td>
 </tr>
 <tr class="even">
 <td align="left">parentesco</td>
@@ -791,14 +792,15 @@ para comparar dpto.</td>
 <td align="left">hijos_nacidos_vivos</td>
 <td align="left">persona</td>
 <td align="left">Solo aplica a mujeres de 12 o más años. Hombres y
-mujeres menores de edad retornan 0 o NA. 2024: p54_hvtot es el total
-(existe también p54a/p54b por sexo del hijo).</td>
+mujeres menores de edad retornan 0 o NA. 1992: P21 (en el diccionario
+REDATAM de 1992, P21=nacidos vivos, P20=sobrevivientes). 2024: p54_hvtot
+es el total (existe también p54a/p54b por sexo del hijo).</td>
 </tr>
 <tr class="odd">
 <td align="left">hijos_sobrevivientes</td>
 <td align="left">persona</td>
 <td align="left">Subconjunto de hijos_nacidos_vivos. Solo aplica a
-mujeres 12+.</td>
+mujeres 12+. 1992: P20 (ver nota en hijos_nacidos_vivos).</td>
 </tr>
 <tr class="even">
 <td align="left">area</td>
@@ -852,16 +854,17 @@ materiales mapeados a 2-4.</td>
 <td align="left">energia_electrica</td>
 <td align="left">vivienda</td>
 <td align="left">1976/1992: 1=Sí, 2=No. 2001 V15: 5=Sí→1, 6=No→2
-(codificación distinta). 2012 P09: 1=Sí privado→1, 2=Sí compartido→1,
-3=No→2. 2024: 1-4=cualquier fuente→1, 5=No tiene→2.</td>
+(codificación distinta). 2012 P11: 1-4=cualquier fuente
+(red/motor/solar/otra)→1, 5=No tiene→2. 2024: 1-4=cualquier fuente→1,
+5=No tiene→2.</td>
 </tr>
 <tr class="odd">
 <td align="left">servicio_sanitario</td>
 <td align="left">vivienda</td>
-<td align="left">NO disponible en 2012 (variable no exportada desde
-REDATAM). 1976: 1/2=Tiene→1, 3=No→2. 1992: 1/2=Tiene (con/sin
-descarga)→1, 3=No→2. 2001: 1=Tiene→1, 2=No→2. 2024: 1/2=Tiene
-(solo/compartido)→1, 3=No→2.</td>
+<td align="left">1976: 1/2=Tiene→1, 3=No→2. 1992: 1/2=Tiene (con/sin
+descarga)→1, 3=No→2. 2001: 1=Tiene→1, 2=No→2. 2012 P09: 1/2=Tiene
+(privado/compartido)→1, 3=No→2. 2024: 1/2=Tiene (solo/compartido)→1,
+3=No→2.</td>
 </tr>
 <tr class="even">
 <td align="left">tenencia_vivienda</td>
@@ -874,10 +877,10 @@ descarga)→1, 3=No→2. 2001: 1=Tiene→1, 2=No→2. 2024: 1/2=Tiene
 <tr class="odd">
 <td align="left">habitaciones_total</td>
 <td align="left">vivienda</td>
-<td align="left">Variable numérica en 1976/1992/2001/2012. 2024
-v13_habitac está codificada como categorías: 1=Uno, 2=Dos, …, 8=Ocho o
-más (se usa el código directamente como número ordinales). Se recomienda
-usar como variable ordinal.</td>
+<td align="left">Variable numérica en 1976/1992/2001. 2012 P14: valores
+1-7 directos, 8=‘8 y más’, 98/99=NA. 2024 v13_habitac codificada como
+categorías ordinales (1=Una, …, 8=Ocho o más). Se recomienda tratar como
+ordinal.</td>
 </tr>
 </tbody>
 </table>

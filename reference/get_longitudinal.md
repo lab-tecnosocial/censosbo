@@ -50,6 +50,9 @@ get_longitudinal(
 
 Un tibble con columnas \`anio\`, seguida de las variables solicitadas.
 Las columnas ausentes en un censo aparecen como \`NA\` con un aviso.
+\*\*Nota:\*\* \`area\` (1=Urbana, 2=Rural) y \`departamento\` (código
+numérico) se incluyen siempre en el resultado, incluso si no fueron
+solicitados. Son útiles para estratificar o filtrar los datos.
 
 ## Details
 
@@ -60,8 +63,11 @@ Avelino Siñani (2010) cambió la nomenclatura en 2012. -
 \`migracion_nac_dpto\`, \`migracion_rec_dpto\`: variables derivadas de
 comparación de departamento de nacimiento/residencia con el actual.
 Pueden contener NAs cuando la información de origen no fue registrada en
-el censo. - \`idioma_materno\` en 1976: captura "idioma que habla", no
-el materno.
+el censo. \*\*Atención:\*\* \`migracion_rec_dpto\` solo tiene los
+códigos 1 (mismo dpto) y 2 (otro dpto) en 1992 y 2001. Los códigos 3
+(exterior) y 4 (no había nacido) solo existen en 1976, 2012 y 2024.
+Comparar distribuciones entre todos los años puede ser engañoso. -
+\`idioma_materno\` en 1976: captura "idioma que habla", no el materno.
 
 Para variables de vivienda usa \[get_longitudinal_vivienda()\].
 
