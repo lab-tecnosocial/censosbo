@@ -35,8 +35,12 @@ vivienda y una columna `anio` que identifica el censo de origen.
 \details{
 Variables disponibles para comparación longitudinal de vivienda:
 `material_paredes`, `material_techo`, `material_piso`, `fuente_agua`,
-`energia_electrica`, `servicio_sanitario` (no disponible en 2012),
-`tenencia_vivienda`, `habitaciones_total`.
+`energia_electrica`, `servicio_sanitario`, `tenencia_vivienda`,
+`habitaciones_total`.
+
+**Limitaciones conocidas:**
+- `habitaciones_total` en 2024: variable codificada como categorías ordinales
+  (1=Una, ..., 8=Ocho o más), no como número absoluto.
 }
 \examples{
 \dontrun{

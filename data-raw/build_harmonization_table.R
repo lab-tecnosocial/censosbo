@@ -49,8 +49,8 @@ add_var("edad", "Edad en años",
 
 add_var("grupo_edad", "Grupos de edad quinquenales",
         "Grupo de edad en intervalos de 5 años (0-4, 5-9, ..., 80+)",
-        v1976 = "edad5", v1992 = "GEDAD", v2001 = "P29", v2012 = "P25", v2024 = NA,
-        notas = "Para 2001, 2012 y 2024 se calcula automáticamente desde la edad individual.")
+        v1976 = "edad5", v1992 = "GEDAD", v2001 = "P29", v2012 = "P25", v2024 = "p26_edad",
+        notas = "1976/1992: variable ya agrupada en la fuente. 2001/2012/2024: se calcula automáticamente desde la edad individual con (edad %/% 5) * 5.")
 
 add_var("parentesco", "Relación con el/la jefe/a del hogar",
         "Parentesco o relación del individuo con el jefe o jefa del hogar",
@@ -119,13 +119,13 @@ add_var("migracion_rec_dpto", "Migración reciente: residencia hace 5 años vs a
 # --- Fertilidad ---
 add_var("hijos_nacidos_vivos", "Total de hijos e hijas nacidos vivos",
         "Número total de hijos nacidos vivos que ha tenido la persona (para mujeres de 12+ años).",
-        v1976 = "p20", v1992 = "P20", v2001 = "P50", v2012 = "P46", v2024 = "p54_hvtot",
-        notas = "Solo aplica a mujeres de 12 o más años. Hombres y mujeres menores de edad retornan 0 o NA. 2024: p54_hvtot es el total (existe también p54a/p54b por sexo del hijo).")
+        v1976 = "p20", v1992 = "P21", v2001 = "P50", v2012 = "P46", v2024 = "p54_hvtot",
+        notas = "Solo aplica a mujeres de 12 o más años. Hombres y mujeres menores de edad retornan 0 o NA. 1992: P21 (en el diccionario REDATAM de 1992, P21=nacidos vivos, P20=sobrevivientes). 2024: p54_hvtot es el total (existe también p54a/p54b por sexo del hijo).")
 
 add_var("hijos_sobrevivientes", "Total de hijos e hijas que viven actualmente",
         "Número de hijos nacidos vivos que están vivos al momento del censo.",
-        v1976 = "p21", v1992 = "P21", v2001 = "P51", v2012 = "P47", v2024 = "p55_hstot",
-        notas = "Subconjunto de hijos_nacidos_vivos. Solo aplica a mujeres 12+.")
+        v1976 = "p21", v1992 = "P20", v2001 = "P51", v2012 = "P47", v2024 = "p55_hstot",
+        notas = "Subconjunto de hijos_nacidos_vivos. Solo aplica a mujeres 12+. 1992: P20 (ver nota en hijos_nacidos_vivos).")
 
 # --- Geografía y área ---
 add_var("area", "Área urbana o rural",
@@ -169,14 +169,14 @@ add_var("fuente_agua", "Fuente de agua para beber y cocinar",
 
 add_var("energia_electrica", "Disponibilidad de energía eléctrica",
         "Si el hogar cuenta con energía eléctrica (cualquier fuente). 1=Sí, 2=No.",
-        v1976 = "v09", v1992 = "V09", v2001 = "V15", v2012 = "P09", v2024 = "v09_energia",
-        notas = "1976/1992: 1=Sí, 2=No. 2001 V15: 5=Sí→1, 6=No→2 (codificación distinta). 2012 P09: 1=Sí privado→1, 2=Sí compartido→1, 3=No→2. 2024: 1-4=cualquier fuente→1, 5=No tiene→2.",
+        v1976 = "v09", v1992 = "V09", v2001 = "V15", v2012 = "P11", v2024 = "v09_energia",
+        notas = "1976/1992: 1=Sí, 2=No. 2001 V15: 5=Sí→1, 6=No→2 (codificación distinta). 2012 P11: 1-4=cualquier fuente (red/motor/solar/otra)→1, 5=No tiene→2. 2024: 1-4=cualquier fuente→1, 5=No tiene→2.",
         tabla = "vivienda")
 
 add_var("servicio_sanitario", "Disponibilidad de servicio sanitario",
         "Si el hogar tiene baño, water o letrina. 1=Sí tiene, 2=No tiene.",
-        v1976 = "v081", v1992 = "V08", v2001 = "V12", v2012 = NA, v2024 = "v15_servsan",
-        notas = "NO disponible en 2012 (variable no exportada desde REDATAM). 1976: 1/2=Tiene→1, 3=No→2. 1992: 1/2=Tiene (con/sin descarga)→1, 3=No→2. 2001: 1=Tiene→1, 2=No→2. 2024: 1/2=Tiene (solo/compartido)→1, 3=No→2.",
+        v1976 = "v081", v1992 = "V08", v2001 = "V12", v2012 = "P09", v2024 = "v15_servsan",
+        notas = "1976: 1/2=Tiene→1, 3=No→2. 1992: 1/2=Tiene (con/sin descarga)→1, 3=No→2. 2001: 1=Tiene→1, 2=No→2. 2012 P09: 1/2=Tiene (privado/compartido)→1, 3=No→2. 2024: 1/2=Tiene (solo/compartido)→1, 3=No→2.",
         tabla = "vivienda")
 
 add_var("tenencia_vivienda", "Tenencia de la vivienda",
@@ -187,8 +187,8 @@ add_var("tenencia_vivienda", "Tenencia de la vivienda",
 
 add_var("habitaciones_total", "Total de habitaciones del hogar",
         "Número de habitaciones que ocupa el hogar (sin contar baño y cocina).",
-        v1976 = "v10", v1992 = "V10", v2001 = "V18", v2012 = "P12", v2024 = "v13_habitac",
-        notas = "Variable numérica en 1976/1992/2001/2012. 2024 v13_habitac está codificada como categorías: 1=Uno, 2=Dos, ..., 8=Ocho o más (se usa el código directamente como número ordinales). Se recomienda usar como variable ordinal.",
+        v1976 = "v10", v1992 = "V10", v2001 = "V18", v2012 = "P14", v2024 = "v13_habitac",
+        notas = "Variable numérica en 1976/1992/2001. 2012 P14: valores 1-7 directos, 8='8 y más', 98/99=NA. 2024 v13_habitac codificada como categorías ordinales (1=Una, ..., 8=Ocho o más). Se recomienda tratar como ordinal.",
         tabla = "vivienda")
 
 

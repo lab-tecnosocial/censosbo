@@ -82,6 +82,9 @@ grupos_variables <- function() {
 #'
 #' @return Un tibble con columnas `anio`, seguida de las variables solicitadas.
 #'   Las columnas ausentes en un censo aparecen como `NA` con un aviso.
+#'   **Nota:** `area` (1=Urbana, 2=Rural) y `departamento` (código numérico) se
+#'   incluyen siempre en el resultado, incluso si no fueron solicitados. Son
+#'   útiles para estratificar o filtrar los datos.
 #'
 #' @details
 #' **Variables con limitaciones conocidas:**
@@ -91,6 +94,10 @@ grupos_variables <- function() {
 #' - `migracion_nac_dpto`, `migracion_rec_dpto`: variables derivadas de comparación
 #'    de departamento de nacimiento/residencia con el actual. Pueden contener NAs
 #'    cuando la información de origen no fue registrada en el censo.
+#'    **Atención:** `migracion_rec_dpto` solo tiene los códigos 1 (mismo dpto) y
+#'    2 (otro dpto) en 1992 y 2001. Los códigos 3 (exterior) y 4 (no había nacido)
+#'    solo existen en 1976, 2012 y 2024. Comparar distribuciones entre todos los
+#'    años puede ser engañoso.
 #' - `idioma_materno` en 1976: captura "idioma que habla", no el materno.
 #'
 #' Para variables de vivienda usa [get_longitudinal_vivienda()].
@@ -325,8 +332,12 @@ get_longitudinal <- function(
 #' @details
 #' Variables disponibles para comparación longitudinal de vivienda:
 #' `material_paredes`, `material_techo`, `material_piso`, `fuente_agua`,
-#' `energia_electrica`, `servicio_sanitario` (no disponible en 2012),
-#' `tenencia_vivienda`, `habitaciones_total`.
+#' `energia_electrica`, `servicio_sanitario`, `tenencia_vivienda`,
+#' `habitaciones_total`.
+#'
+#' **Limitaciones conocidas:**
+#' - `habitaciones_total` en 2024: variable codificada como categorías ordinales
+#'   (1=Una, ..., 8=Ocho o más), no como número absoluto.
 #'
 #' @export
 #' @examples
@@ -754,7 +765,10 @@ get_longitudinal_vivienda <- function(
   if (variable == "energia_electrica") return(.harmonize_energia(x, anio))
   if (variable == "servicio_sanitario") return(.harmonize_sanitario(x, anio))
   if (variable == "tenencia_vivienda") return(.harmonize_tenencia(x, anio))
-  if (variable == "habitaciones_total") return(suppressWarnings(as.integer(x)))
+  if (variable == "habitaciones_total") {
+    x_num <- suppressWarnings(as.integer(x))
+    return(ifelse(is.na(x_num) | x_num >= 98L, NA_integer_, x_num))
+  }
   x
 }
 
@@ -884,9 +898,9 @@ get_longitudinal_vivienda <- function(
     # V15: 5=Sí, 6=No (codificación diferente)
     dplyr::case_when(x_num == 5L ~ 1L, x_num == 6L ~ 2L, TRUE ~ NA_integer_)
   } else if (anio == 2012L) {
-    # P09: 1=Sí privado, 2=Sí compartido, 3=No tiene
+    # P11: 1=Red empresa, 2=Motor propio, 3=Panel solar, 4=Otra, 5=No tiene
     dplyr::case_when(
-      x_num %in% c(1L, 2L) ~ 1L, x_num == 3L ~ 2L, TRUE ~ NA_integer_
+      x_num %in% 1L:4L ~ 1L, x_num == 5L ~ 2L, TRUE ~ NA_integer_
     )
   } else if (anio == 2024L) {
     # v09_energia: 1-4=cualquier fuente, 5=No tiene
@@ -915,8 +929,10 @@ get_longitudinal_vivienda <- function(
     # V12: 1=Tiene baño, 2=No tiene baño
     dplyr::case_when(x_num == 1L ~ 1L, x_num == 2L ~ 2L, TRUE ~ NA_integer_)
   } else if (anio == 2012L) {
-    # No disponible en el parquet de 2012
-    rep(NA_integer_, length(x))
+    # P09: 1=Privado, 2=Compartido, 3=No tiene
+    dplyr::case_when(
+      x_num %in% c(1L, 2L) ~ 1L, x_num == 3L ~ 2L, TRUE ~ NA_integer_
+    )
   } else if (anio == 2024L) {
     # v15_servsan: 1=Sí (solo), 2=Sí (compartido), 3=No tiene
     dplyr::case_when(
