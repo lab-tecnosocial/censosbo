@@ -119,13 +119,13 @@ add_var("migracion_rec_dpto", "Migración reciente: residencia hace 5 años vs a
 # --- Fertilidad ---
 add_var("hijos_nacidos_vivos", "Total de hijos e hijas nacidos vivos",
         "Número total de hijos nacidos vivos que ha tenido la persona (para mujeres de 12+ años).",
-        v1976 = "p20", v1992 = "P21", v2001 = "P50", v2012 = "P46", v2024 = "p54_hvtot",
-        notas = "Solo aplica a mujeres de 12 o más años. Hombres y mujeres menores de edad retornan 0 o NA. 1992: P21 (en el diccionario REDATAM de 1992, P21=nacidos vivos, P20=sobrevivientes). 2024: p54_hvtot es el total (existe también p54a/p54b por sexo del hijo).")
+        v1976 = "p20", v1992 = "P20", v2001 = "P50", v2012 = "P46", v2024 = "p54_hvtot",
+        notas = "Solo aplica a mujeres de 12 o más años. Hombres y mujeres menores de edad retornan 0 o NA. 1992: P20 (el diccionario del parquet confirma P20=nacidos vivos, P21=vivos actualmente). 2024: p54_hvtot es el total (existe también p54a/p54b por sexo del hijo).")
 
 add_var("hijos_sobrevivientes", "Total de hijos e hijas que viven actualmente",
         "Número de hijos nacidos vivos que están vivos al momento del censo.",
-        v1976 = "p21", v1992 = "P20", v2001 = "P51", v2012 = "P47", v2024 = "p55_hstot",
-        notas = "Subconjunto de hijos_nacidos_vivos. Solo aplica a mujeres 12+. 1992: P20 (ver nota en hijos_nacidos_vivos).")
+        v1976 = "p21", v1992 = "P21", v2001 = "P51", v2012 = "P47", v2024 = "p55_hstot",
+        notas = "Subconjunto de hijos_nacidos_vivos. Solo aplica a mujeres 12+. 1992: P21 (el diccionario del parquet confirma P21=vivos actualmente).")
 
 # --- Geografía y área ---
 add_var("area", "Área urbana o rural",

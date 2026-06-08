@@ -133,6 +133,7 @@ reference:
       - municipios
       - mapa_dep
       - mapa_mun
+      - mapa_man
 
   - title: "Gestión de caché"
     desc: >
