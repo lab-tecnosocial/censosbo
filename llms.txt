@@ -293,6 +293,8 @@ para generar mapas coropléticos con variables censales.
   : Visualiza una variable censal a nivel departamental
 - [`mapa_mun()`](https://lab-tecnosocial.github.io/censosbo/reference/mapa_mun.md)
   : Visualiza una variable censal a nivel municipal
+- [`mapa_man()`](https://lab-tecnosocial.github.io/censosbo/reference/mapa_man.md)
+  : Visualiza una variable censal a nivel de manzano
 
 ## Gestión de caché
 

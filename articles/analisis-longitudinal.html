@@ -164,8 +164,8 @@ armonización automáticamente y devuelve un data.frame en formato largo
 <span><span class="co">#&gt; 13  persona    p09  &lt;NA&gt;    P35          P30B p341_idiomat_cod</span></span>
 <span><span class="co">#&gt; 14  persona lugnac  P07A  DEP34          P32J    p35j_deptocod</span></span>
 <span><span class="co">#&gt; 15  persona  resh5  P08A  DEP41          P34H    p37j_deptocod</span></span>
-<span><span class="co">#&gt; 16  persona    p20   P21    P50           P46        p54_hvtot</span></span>
-<span><span class="co">#&gt; 17  persona    p21   P20    P51           P47        p55_hstot</span></span>
+<span><span class="co">#&gt; 16  persona    p20   P20    P50           P46        p54_hvtot</span></span>
+<span><span class="co">#&gt; 17  persona    p21   P21    P51           P47        p55_hstot</span></span>
 <span><span class="co">#&gt; 18  persona   area  area   area          area             area</span></span>
 <span><span class="co">#&gt; 19  persona    dep  idep   idep          idep             idep</span></span>
 <span><span class="co">#&gt; 20 vivienda    v03   V03    V06           P03        v03_pared</span></span>
@@ -192,8 +192,8 @@ armonización automáticamente y devuelve un data.frame en formato largo
 <span><span class="co">#&gt; 13                                LIMITACIÓN METODOLÓGICA: 1976 p09 captura 'idioma que habla' (no materno), con combinaciones bilingüísticas (ej. código 5=Castellano/Aymara → se clasifica como Aymara). 1992 NO disponible (solo flags binarios de idiomas hablados, no maternal). 2001-2024: primer idioma aprendido en la niñez. 2012/2024: códigos 1-37 para lenguas nativas (6=Castellano, 2=Aymara, 27=Quechua, 12=Guaraní); códigos &gt;=38 son idiomas extranjeros.</span></span>
 <span><span class="co">#&gt; 14                                                                                                                                Variable DERIVADA: compara columna de dpto de nacimiento con dpto de residencia (idep o dep). 1976: lugnac=1-9 (dpto nac), 10=exterior. 1992: P07A=dpto nac (1-9). 2001: DEP34=dpto nac (1-9). 2012: P32J=dpto nac (1-9), 99=ignorado. 2024: p35j_deptocod=dpto nac (1-9). La comparación con idep actual se hace en get_longitudinal().</span></span>
 <span><span class="co">#&gt; 15                                                                                                                                                                                                                                                  Variable DERIVADA: compara dpto hace 5 años con dpto actual (idep o dep). 1976: resh5=10→exterior, 11→NA. 2024: p37_lugres5=4 (no había nacido) → se usa como indicador alternativo; p37j_deptocod para comparar dpto.</span></span>
-<span><span class="co">#&gt; 16                                                                                                                                                                                                              Solo aplica a mujeres de 12 o más años. Hombres y mujeres menores de edad retornan 0 o NA. 1992: P21 (en el diccionario REDATAM de 1992, P21=nacidos vivos, P20=sobrevivientes). 2024: p54_hvtot es el total (existe también p54a/p54b por sexo del hijo).</span></span>
-<span><span class="co">#&gt; 17                                                                                                                                                                                                                                                                                                                                                             Subconjunto de hijos_nacidos_vivos. Solo aplica a mujeres 12+. 1992: P20 (ver nota en hijos_nacidos_vivos).</span></span>
+<span><span class="co">#&gt; 16                                                                                                                                                                                                          Solo aplica a mujeres de 12 o más años. Hombres y mujeres menores de edad retornan 0 o NA. 1992: P20 (el diccionario del parquet confirma P20=nacidos vivos, P21=vivos actualmente). 2024: p54_hvtot es el total (existe también p54a/p54b por sexo del hijo).</span></span>
+<span><span class="co">#&gt; 17                                                                                                                                                                                                                                                                                                                                   Subconjunto de hijos_nacidos_vivos. Solo aplica a mujeres 12+. 1992: P21 (el diccionario del parquet confirma P21=vivos actualmente).</span></span>
 <span><span class="co">#&gt; 18                                                                                                                                                                                      Columna 'area' presente en todos los parquets de persona. 1976: fuente SPSS directa. 1992/2012: derivada de URBRUR de vivienda (pre-unida). 2001: derivada de TURUR de vivienda (pre-unida). 2024: derivada de urbrur de vivienda (pre-unida). Siempre 1=Urbana, 2=Rural, sin NAs.</span></span>
 <span><span class="co">#&gt; 19                                                                                                                                                                                                                                                                                                    En 1976: columna 'dep' (numérica 1-9). En censos REDATAM: 'idep' se calcula desde REDCODEN via join con munic.parquet; get_longitudinal() lo fuerza automáticamente.</span></span>
 <span><span class="co">#&gt; 20                                                                                                                                                                                                                 1976/1992: 1=Adobe revocado→2, 2=Adobe/tapial→2, 3=Ladrillo/bloque/cemento→1, 4=Piedra→4, 5=Madera→3, 6=Caña/palma→3, 7=Otros→5. 2001/2012/2024: 1=Ladrillo→1, 2=Adobe/tapial→2, 3=Tabique/quinche→3, 4=Piedra→4, 5=Madera→3, 6=Caña/palma→3, 7=Otro→5.</span></span>
@@ -792,15 +792,16 @@ para comparar dpto.</td>
 <td align="left">hijos_nacidos_vivos</td>
 <td align="left">persona</td>
 <td align="left">Solo aplica a mujeres de 12 o más años. Hombres y
-mujeres menores de edad retornan 0 o NA. 1992: P21 (en el diccionario
-REDATAM de 1992, P21=nacidos vivos, P20=sobrevivientes). 2024: p54_hvtot
-es el total (existe también p54a/p54b por sexo del hijo).</td>
+mujeres menores de edad retornan 0 o NA. 1992: P20 (el diccionario del
+parquet confirma P20=nacidos vivos, P21=vivos actualmente). 2024:
+p54_hvtot es el total (existe también p54a/p54b por sexo del hijo).</td>
 </tr>
 <tr class="odd">
 <td align="left">hijos_sobrevivientes</td>
 <td align="left">persona</td>
 <td align="left">Subconjunto de hijos_nacidos_vivos. Solo aplica a
-mujeres 12+. 1992: P20 (ver nota en hijos_nacidos_vivos).</td>
+mujeres 12+. 1992: P21 (el diccionario del parquet confirma P21=vivos
+actualmente).</td>
 </tr>
 <tr class="even">
 <td align="left">area</td>
