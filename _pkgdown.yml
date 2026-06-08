@@ -46,8 +46,6 @@ navbar:
     articles:
       text: Artículos
       menu:
-      - text: "Introducción al paquete"
-        href: articles/introduccion.html
       - text: "Diccionario de datos (1976–2024)"
         href: articles/diccionario.html
       - text: "---"
@@ -64,6 +62,10 @@ navbar:
         href: articles/analisis-vivienda.html
       - text: "Análisis avanzado con DuckDB y Arrow"
         href: articles/analisis-avanzado.html
+      - text: "---"
+      - text: "Mapas y visualización"
+      - text: "Visualización en mapas"
+        href: articles/visualizacion-mapas.html
 
 footer:
   left: "Desarrollado por [Alex Ojeda Copa](https://labtecnosocial.org)."
@@ -133,7 +135,6 @@ reference:
       - municipios
       - mapa_dep
       - mapa_mun
-      - mapa_man
 
   - title: "Gestión de caché"
     desc: >
@@ -175,3 +176,8 @@ articles:
       - analisis-demografico
       - analisis-vivienda
       - analisis-avanzado
+  - title: "Mapas y visualización"
+    navbar: Mapas
+    contents:
+      - visualizacion-mapas
+

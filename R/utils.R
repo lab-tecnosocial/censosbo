@@ -55,6 +55,5 @@
   persona_dep01 = 15,  persona_dep02 = 75,  persona_dep03 = 51,
   persona_dep04 = 14,  persona_dep05 = 22,  persona_dep06 = 13,
   persona_dep07 = 77,  persona_dep08 = 12,  persona_dep09 = 4,
-  vivienda = 55, emigracion = 2, mortalidad = 2,
-  manzanos_ine = 45
+  vivienda = 55, emigracion = 2, mortalidad = 2
 )

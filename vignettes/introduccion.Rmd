@@ -152,6 +152,25 @@ geo_bolivia |>
 codebook(tabla = "emigracion")
 ```
 
+## Mapas coropléticos
+
+El paquete incluye geometrías sf para los 9 departamentos (`geo_departamentos`)
+y 336 municipios (`geo_municipios`) de Bolivia, disponibles sin descarga. La
+función `mapa_dep()` genera mapas coropléticos a nivel departamental:
+
+```{r mapa-intro}
+# Número de municipios por departamento (solo usa datos incluidos en el paquete)
+mun_x_dep <- geo_bolivia |>
+  count(idep, name = "n_municipios")
+
+mapa_dep(mun_x_dep, "n_municipios",
+         titulo          = "Municipios por departamento — Bolivia",
+         mostrar_nombres = TRUE)
+```
+
+Para mapas a nivel municipal con ejemplos usando datos reales del
+CPV-2024, ver la viñeta **[Visualización en mapas](visualizacion-mapas.html)**.
+
 ## Primera descarga de microdatos (CPV-2024)
 
 ```{r primera-descarga, eval=FALSE}
@@ -285,6 +304,7 @@ censosbo_cache_clear()
 
 ## Siguientes pasos
 
+- **[Visualización en mapas](visualizacion-mapas.html)**: mapas coropléticos por departamento y municipio.
 - **[Análisis demográfico](analisis-demografico.html)**: pirámide de edades, nivel educativo, alfabetismo.
 - **[Análisis de vivienda](analisis-vivienda.html)**: agua, energía, hacinamiento, joins personas-viviendas.
 - **[Análisis avanzado](analisis-avanzado.html)**: DuckDB, Arrow, datos más grandes que la RAM.
@@ -316,4 +336,4 @@ El formato Parquet conserva todos los registros y variables originales sin modif
 citation("censosbo")
 ```
 
-> Ojeda Copa, A. (2025). *censosbo: Acceso y análisis de los censos de Bolivia (1976–2024)*. R package version 0.2.0. <https://github.com/lab-tecnosocial/censosbo>
+> Ojeda Copa, A. (2026). *censosbo: Acceso y análisis de los censos de Bolivia (1976–2024)*. R package version 1.0.0. <https://github.com/lab-tecnosocial/censosbo>

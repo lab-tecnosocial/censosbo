@@ -6,13 +6,17 @@
 <!-- badges: start -->
 
 [![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 [![License:
 MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![R-CMD-check](https://github.com/lab-tecnosocial/censosbo/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/lab-tecnosocial/censosbo/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-**censosbo** proporciona acceso programático a los microdatos de todos los **censos de población de Bolivia**: 1976, 1992, 2001, 2012 y el CPV-2024. Los datos se descargan bajo demanda desde GitHub Releases, se guardan en caché local y se pueden consultar con `dplyr`, Apache Arrow o DuckDB.
+**censosbo** proporciona acceso programático a los microdatos de todos
+los **censos de población de Bolivia**: 1976, 1992, 2001, 2012 y el
+CPV-2024. Los datos se descargan bajo demanda desde GitHub Releases, se
+guardan en caché local y se pueden consultar con `dplyr`, Apache Arrow o
+DuckDB.
 
 ## Instalación
 
@@ -24,7 +28,7 @@ remotes::install_github("lab-tecnosocial/censosbo")
 ## Censos disponibles
 
 | Año | Función | Registros | Variables | Disco (Parquet) | RAM (aprox.)¹ |
-|:---:|---------|----------:|----------:|----------------:|--------------:|
+|:--:|----|---:|---:|---:|---:|
 | **1976** | `get_poblacion_1976()` | 4,613,419 | 46 | 63 MB | 83 MB |
 | **1976** | `get_viviendas_1976()` | 1,158,482 | 28 | 7 MB | 9 MB |
 | **1992** | `get_personas_1992()` | 6,420,792 | 54 | 135 MB | 238 MB |
@@ -41,10 +45,14 @@ remotes::install_github("lab-tecnosocial/censosbo")
 | **2024**² | `get_emigracion_2024()` | 500,914 | 8 | 2 MB | ~7 MB |
 | **2024**² | `get_mortalidad_2024()` | 382,731 | 10 | 2 MB | ~5 MB |
 
-¹ Tamaño al cargar la tabla completa con `collect()` sin filtros, medido desde metadatos Parquet.
-² Persona 2024 está particionada en 9 archivos por departamento (4–77 MB cada uno). Disco y RAM muestran el total; en la práctica se descarga solo el/los departamentos necesarios.
+¹ Tamaño al cargar la tabla completa con `collect()` sin filtros, medido
+desde metadatos Parquet. ² Persona 2024 está particionada en 9 archivos
+por departamento (4–77 MB cada uno). Disco y RAM muestran el total; en
+la práctica se descarga solo el/los departamentos necesarios.
 
-El formato **Arrow** (por defecto) mantiene los datos en el disco hasta que ejecutas `collect()`. Las tablas del CPV-2024 se pueden unir por la clave `idep + iprov + imun + i00` (identificador de hogar).
+El formato **Arrow** (por defecto) mantiene los datos en el disco hasta
+que ejecutas `collect()`. Las tablas del CPV-2024 se pueden unir por la
+clave `idep + iprov + imun + i00` (identificador de hogar).
 
 ## Uso rápido — CPV-2024
 
@@ -137,6 +145,32 @@ provincias("La Paz")
 municipios(departamento = "Santa Cruz") |> head(5)
 ```
 
+## Mapas
+
+El paquete incluye geometrías sf para los 9 departamentos
+(`geo_departamentos`) y 336 municipios (`geo_municipios`) de Bolivia.
+Las funciones `mapa_dep()` y `mapa_mun()` generan mapas coropléticos a
+partir de cualquier agregación de datos del censo. Ver el artículo
+completo: [Visualización en
+mapas](https://lab-tecnosocial.github.io/censosbo/articles/visualizacion-mapas.html).
+
+``` r
+library(dplyr)
+
+# mapa_dep(): nivel departamental — geometrías incluidas en el paquete
+n_mun <- geo_bolivia |>
+  count(idep, name = "n_municipios")
+mapa_dep(n_mun, "n_municipios", titulo = "Municipios por departamento")
+
+# mapa_mun(): nivel municipal — geometrías incluidas en el paquete
+personas_beni <- get_personas_2024(departamento = "Beni", variables = "p26_edad") |>
+  group_by(idep, iprov, imun) |>
+  summarise(edad_prom = mean(p26_edad, na.rm = TRUE), .groups = "drop") |>
+  collect()
+mapa_mun(personas_beni, "edad_prom", departamento = "Beni",
+         titulo = "Edad promedio por municipio — Beni (CPV-2024)")
+```
+
 ## Gestión del caché
 
 ``` r
@@ -150,24 +184,30 @@ censosbo_cache_clear()  # liberar espacio en disco
 
 ## Fuente de datos
 
-Los microdatos originales son publicados por el **Instituto Nacional de Estadística (INE) de Bolivia**:
+Los microdatos originales son publicados por el **Instituto Nacional de
+Estadística (INE) de Bolivia**:
 
-- **CPV-2024**: <https://cpv2024.ine.gob.bo/index.php/principal/descargas/>
-- **Censos históricos 1976–2012**: <https://www.ine.gob.bo/index.php/censos-y-banco-de-datos/censos/>
+- **CPV-2024**:
+  <https://cpv2024.ine.gob.bo/index.php/principal/descargas/>
+- **Censos históricos 1976–2012**:
+  <https://www.ine.gob.bo/index.php/censos-y-banco-de-datos/censos/>
 
 ### Nota metodológica
 
-Los archivos originales fueron transformados a formato **Parquet** (compresión zstd nivel 6) para distribución eficiente. El proceso de conversión varía por censo:
+Los archivos originales fueron transformados a formato **Parquet**
+(compresión zstd nivel 6) para distribución eficiente. El proceso de
+conversión varía por censo:
 
 | Censo | Formato original | Herramienta de conversión |
-|-------|-----------------|--------------------------|
+|----|----|----|
 | 1976 | SPSS (`.sav`) | `pyreadstat` + `pyarrow` |
 | 1992 | REDATAM (`.dic` binario + `.rbf`) | `open-redatam` CLI → CSV → Parquet |
 | 2001 | REDATAM (`.wxp` → `.dicX`) | conversión `.wxp`→`.dicX` + `open-redatam` → CSV → Parquet |
 | 2012 | REDATAM (`.dic` binario + `.ptr`) | `open-redatam` CLI → CSV → Parquet |
 | 2024 | CSV delimitado por `;` (~3.6 GB total) | `pandas` + `pyarrow`; persona particionada por departamento |
 
-El formato Parquet conserva todos los registros y variables originales sin modificación de valores.
+El formato Parquet conserva todos los registros y variables originales
+sin modificación de valores.
 
 ## Citar
 
@@ -175,4 +215,6 @@ El formato Parquet conserva todos los registros y variables originales sin modif
 citation("censosbo")
 ```
 
-> Ojeda Copa, A. (2025). *censosbo: Acceso y análisis de los censos de Bolivia (1976–2024)*. R package version 0.2.0. <https://github.com/lab-tecnosocial/censosbo>
+> Ojeda Copa, A. (2026). *censosbo: Acceso y análisis de los censos de
+> Bolivia (1976–2024)*. R package version 1.0.0.
+> <https://github.com/lab-tecnosocial/censosbo>

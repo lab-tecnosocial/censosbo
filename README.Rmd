@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 # censosbo <img src="man/figures/logo.png" align="right" height="139" alt="" />
 
 <!-- badges: start -->
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![R-CMD-check](https://github.com/lab-tecnosocial/censosbo/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/lab-tecnosocial/censosbo/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
@@ -147,6 +147,27 @@ provincias("La Paz")
 municipios(departamento = "Santa Cruz") |> head(5)
 ```
 
+## Mapas
+
+El paquete incluye geometrías sf para los 9 departamentos (`geo_departamentos`) y 336 municipios (`geo_municipios`) de Bolivia. Las funciones `mapa_dep()` y `mapa_mun()` generan mapas coropléticos a partir de cualquier agregación de datos del censo. Ver el artículo completo: [Visualización en mapas](https://lab-tecnosocial.github.io/censosbo/articles/visualizacion-mapas.html).
+
+```{r mapa-dep}
+library(dplyr)
+
+# mapa_dep(): nivel departamental — geometrías incluidas en el paquete
+n_mun <- geo_bolivia |>
+  count(idep, name = "n_municipios")
+mapa_dep(n_mun, "n_municipios", titulo = "Municipios por departamento")
+
+# mapa_mun(): nivel municipal — geometrías incluidas en el paquete
+personas_beni <- get_personas_2024(departamento = "Beni", variables = "p26_edad") |>
+  group_by(idep, iprov, imun) |>
+  summarise(edad_prom = mean(p26_edad, na.rm = TRUE), .groups = "drop") |>
+  collect()
+mapa_mun(personas_beni, "edad_prom", departamento = "Beni",
+         titulo = "Edad promedio por municipio — Beni (CPV-2024)")
+```
+
 ## Gestión del caché
 
 ```{r cache}
@@ -185,4 +206,4 @@ El formato Parquet conserva todos los registros y variables originales sin modif
 citation("censosbo")
 ```
 
-> Ojeda Copa, A. (2025). *censosbo: Acceso y análisis de los censos de Bolivia (1976–2024)*. R package version 0.2.0. <https://github.com/lab-tecnosocial/censosbo>
+> Ojeda Copa, A. (2026). *censosbo: Acceso y análisis de los censos de Bolivia (1976–2024)*. R package version 1.0.0. <https://github.com/lab-tecnosocial/censosbo>
