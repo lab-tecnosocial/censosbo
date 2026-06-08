@@ -9,7 +9,8 @@ articles:
   censos-historicos: censos-historicos.html
   diccionario: diccionario.html
   introduccion: introduccion.html
-last_built: 2026-06-08T00:58Z
+  visualizacion-mapas: visualizacion-mapas.html
+last_built: 2026-06-08T03:00Z
 urls:
   reference: https://lab-tecnosocial.github.io/censosbo/reference
   article: https://lab-tecnosocial.github.io/censosbo/articles

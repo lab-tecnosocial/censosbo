@@ -22,3 +22,8 @@
   vivienda](https://lab-tecnosocial.github.io/censosbo/articles/analisis-vivienda.md):
 - [Análisis avanzado con DuckDB y
   Arrow](https://lab-tecnosocial.github.io/censosbo/articles/analisis-avanzado.md):
+
+### Mapas y visualización
+
+- [Visualización en mapas con
+  censosbo](https://lab-tecnosocial.github.io/censosbo/articles/visualizacion-mapas.md):

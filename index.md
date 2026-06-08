@@ -145,6 +145,36 @@ provincias("La Paz")
 municipios(departamento = "Santa Cruz") |> head(5)
 ```
 
+## Mapas
+
+El paquete incluye geometrías sf para los 9 departamentos
+(`geo_departamentos`) y 336 municipios (`geo_municipios`) de Bolivia.
+Las funciones
+[`mapa_dep()`](https://lab-tecnosocial.github.io/censosbo/reference/mapa_dep.md)
+y
+[`mapa_mun()`](https://lab-tecnosocial.github.io/censosbo/reference/mapa_mun.md)
+generan mapas coropléticos a partir de cualquier agregación de datos del
+censo. Ver el artículo completo: [Visualización en
+mapas](https://lab-tecnosocial.github.io/censosbo/articles/visualizacion-mapas.html).
+
+``` r
+
+library(dplyr)
+
+# mapa_dep(): nivel departamental — geometrías incluidas en el paquete
+n_mun <- geo_bolivia |>
+  count(idep, name = "n_municipios")
+mapa_dep(n_mun, "n_municipios", titulo = "Municipios por departamento")
+
+# mapa_mun(): nivel municipal — geometrías incluidas en el paquete
+personas_beni <- get_personas_2024(departamento = "Beni", variables = "p26_edad") |>
+  group_by(idep, iprov, imun) |>
+  summarise(edad_prom = mean(p26_edad, na.rm = TRUE), .groups = "drop") |>
+  collect()
+mapa_mun(personas_beni, "edad_prom", departamento = "Beni",
+         titulo = "Edad promedio por municipio — Beni (CPV-2024)")
+```
+
 ## Gestión del caché
 
 ``` r
@@ -191,6 +221,6 @@ sin modificación de valores.
 citation("censosbo")
 ```
 
-> Ojeda Copa, A. (2025). *censosbo: Acceso y análisis de los censos de
-> Bolivia (1976–2024)*. R package version 0.2.0.
+> Ojeda Copa, A. (2026). *censosbo: Acceso y análisis de los censos de
+> Bolivia (1976–2024)*. R package version 1.0.0.
 > <https://github.com/lab-tecnosocial/censosbo>

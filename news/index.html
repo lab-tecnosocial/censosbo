@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,8 +19,7 @@
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Referencia</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-art-culos" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Artículos</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-art-culos"><li><a class="dropdown-item" href="../articles/introduccion.html">Introducción al paquete</a></li>
-    <li><a class="dropdown-item" href="../articles/diccionario.html">Diccionario de datos (1976–2024)</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-art-culos"><li><a class="dropdown-item" href="../articles/diccionario.html">Diccionario de datos (1976–2024)</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Censos históricos</h6></li>
     <li><a class="dropdown-item" href="../articles/censos-historicos.html">Acceso a censos históricos (1976–2012)</a></li>
@@ -30,6 +29,9 @@
     <li><a class="dropdown-item" href="../articles/analisis-demografico.html">Análisis demográfico</a></li>
     <li><a class="dropdown-item" href="../articles/analisis-vivienda.html">Análisis de condiciones de vivienda</a></li>
     <li><a class="dropdown-item" href="../articles/analisis-avanzado.html">Análisis avanzado con DuckDB y Arrow</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Mapas y visualización</h6></li>
+    <li><a class="dropdown-item" href="../articles/visualizacion-mapas.html">Visualización en mapas</a></li>
   </ul></li>
 <li class="active nav-item"><a class="nav-link" href="../news/index.html">Noticias</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
@@ -47,33 +49,54 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.1.0" id="censosbo-010">censosbo 0.1.0<a class="anchor" aria-label="anchor" href="#censosbo-010"></a></h2>
-<p>Versión inicial del paquete.</p>
+<h2 class="pkg-version" data-toc-text="1.0.0" id="censosbo-100">censosbo 1.0.0<a class="anchor" aria-label="anchor" href="#censosbo-100"></a></h2>
+<p>Primera versión de lanzamiento. <code>censosbo</code> proporciona acceso programático a los microdatos de los cinco censos de Bolivia (1976, 1992, 2001, 2012 y CPV-2024) y herramientas integradas para análisis demográfico, longitudinal y visualización geográfica.</p>
 <div class="section level3">
-<h3 id="nuevas-funciones-0-1-0">Nuevas funciones<a class="anchor" aria-label="anchor" href="#nuevas-funciones-0-1-0"></a></h3>
+<h3 id="acceso-a-microdatos-1-0-0">Acceso a microdatos<a class="anchor" aria-label="anchor" href="#acceso-a-microdatos-1-0-0"></a></h3>
 <ul><li>
-<code>get_personas()</code>: acceso a microdatos de personas del CPV-2024.</li>
+<code><a href="../reference/get_personas_2024.html">get_personas_2024()</a></code>, <code><a href="../reference/get_viviendas_2024.html">get_viviendas_2024()</a></code>, <code><a href="../reference/get_emigracion_2024.html">get_emigracion_2024()</a></code>, <code><a href="../reference/get_mortalidad_2024.html">get_mortalidad_2024()</a></code>: acceso al CPV-2024 (11.4 M personas, 4.5 M viviendas). Los datos del CPV-2024 se descargan por departamento en archivos Parquet particionados (~4–77 MB cada uno).</li>
 <li>
-<code>get_viviendas()</code>: acceso a microdatos de viviendas del CPV-2024.</li>
-<li>
-<code>get_emigracion()</code>: acceso a datos de emigración internacional.</li>
-<li>
-<code>get_mortalidad()</code>: acceso a datos de mortalidad en el hogar.</li>
-<li>
-<code><a href="../reference/codebook.html">codebook()</a></code>: búsqueda en el diccionario de variables.</li>
-<li>
-<code><a href="../reference/codebook_valores.html">codebook_valores()</a></code>: valores codificados de variables categóricas.</li>
-<li>
-<code><a href="../reference/departamentos.html">departamentos()</a></code>, <code><a href="../reference/provincias.html">provincias()</a></code>, <code><a href="../reference/municipios.html">municipios()</a></code>: navegación geográfica.</li>
-<li>
-<code><a href="../reference/censosbo_cache_dir.html">censosbo_cache_dir()</a></code>, <code><a href="../reference/censosbo_cache_info.html">censosbo_cache_info()</a></code>, <code><a href="../reference/censosbo_cache_clear.html">censosbo_cache_clear()</a></code>: gestión del caché local.</li>
-<li>Datos integrados: <code>geo_bolivia</code> y <code>codebook_meta</code>.</li>
+<code>get_censo(anio, tabla, ...)</code>: API unificada para censos históricos (1976, 1992, 2001, 2012). Atajos por año: <code><a href="../reference/get_censo.html">get_poblacion_1976()</a></code>, <code><a href="../reference/get_censo.html">get_personas_1992()</a></code>, <code><a href="../reference/get_censo.html">get_personas_2001()</a></code>, <code><a href="../reference/get_censo.html">get_personas_2012()</a></code>, y demás funciones por tabla y año.</li>
+<li>Soporte nativo para <code>dplyr</code>, Apache Arrow (carga diferida) y DuckDB (consultas SQL). El formato de retorno se controla con <code>as = c("arrow", "tibble", "duckdb")</code>.</li>
+<li>Filtros geográficos por departamento, provincia y municipio en todas las funciones de descarga.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="datos-0-1-0">Datos<a class="anchor" aria-label="anchor" href="#datos-0-1-0"></a></h3>
-<ul><li>Primer release de datos (<code>data-v1.0.0</code>) con los microdatos del CPV-2024 en formato Parquet.</li>
-<li>Tabla de personas particionada por departamento (9 archivos).</li>
-<li>Tablas de viviendas, emigración y mortalidad como archivos únicos.</li>
+<h3 id="análisis-longitudinal-1-0-0">Análisis longitudinal<a class="anchor" aria-label="anchor" href="#an%C3%A1lisis-longitudinal-1-0-0"></a></h3>
+<ul><li>
+<code><a href="../reference/get_longitudinal.html">get_longitudinal()</a></code>: datos comparables entre todos los censos (1976–2024) para 11 variables armonizadas: <code>sexo</code>, <code>edad</code>, <code>grupo_edad</code>, <code>parentesco</code>, <code>estado_civil</code>, <code>sabe_leer</code>, <code>nivel_edu</code>, <code>pea</code>, <code>pet</code>, <code>area</code>, <code>departamento</code>.</li>
+<li>
+<code><a href="../reference/get_longitudinal_vivienda.html">get_longitudinal_vivienda()</a></code>: equivalente para la tabla de vivienda.</li>
+<li>
+<code><a href="../reference/variables_armonizadas.html">variables_armonizadas()</a></code> y <code><a href="../reference/grupos_variables.html">grupos_variables()</a></code>: exploración del mapa de armonización y los grupos temáticos predefinidos (<code>demografico</code>, <code>educacion</code>, <code>economia</code>, <code>cultural</code>, <code>migracion</code>, <code>fertilidad</code>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="diccionario-de-variables-1-0-0">Diccionario de variables<a class="anchor" aria-label="anchor" href="#diccionario-de-variables-1-0-0"></a></h3>
+<ul><li>
+<code><a href="../reference/codebook.html">codebook()</a></code>, <code><a href="../reference/codebook_valores.html">codebook_valores()</a></code>: búsqueda en el diccionario de las 168 variables del CPV-2024.</li>
+<li>
+<code><a href="../reference/codebook.html">codebook_1976()</a></code>, <code><a href="../reference/codebook.html">codebook_1992()</a></code>, <code><a href="../reference/codebook.html">codebook_2001()</a></code>, <code><a href="../reference/codebook.html">codebook_2012()</a></code>, <code><a href="../reference/codebook.html">codebook_2024()</a></code>: atajos por año para censos históricos.</li>
+<li>
+<code><a href="../reference/etiquetar_valores.html">etiquetar_valores()</a></code>, <code><a href="../reference/etiquetar_variables.html">etiquetar_variables()</a></code>: convierte códigos numéricos a etiquetas legibles y renombra columnas con las descripciones del INE.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="mapas-coropléticos-1-0-0">Mapas coropléticos<a class="anchor" aria-label="anchor" href="#mapas-coropl%C3%A9ticos-1-0-0"></a></h3>
+<ul><li>
+<code><a href="../reference/mapa_dep.html">mapa_dep()</a></code>: mapa coroplético a nivel departamental. Geometrías de los 9 departamentos incluidas en el paquete (<code>geo_departamentos</code>).</li>
+<li>
+<code><a href="../reference/mapa_mun.html">mapa_mun()</a></code>: mapa coroplético a nivel municipal. Geometrías de 336 de los 343 municipios incluidas en el paquete (<code>geo_municipios</code>).</li>
+<li>Todas las funciones devuelven objetos <code>ggplot</code> modificables con capas y temas adicionales de ggplot2.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="geografía-1-0-0">Geografía<a class="anchor" aria-label="anchor" href="#geograf%C3%ADa-1-0-0"></a></h3>
+<ul><li>
+<code><a href="../reference/departamentos.html">departamentos()</a></code>, <code><a href="../reference/provincias.html">provincias()</a></code>, <code><a href="../reference/municipios.html">municipios()</a></code>: navegación de la división político-administrativa de Bolivia.</li>
+<li>Datos incluidos: <code>geo_bolivia</code> (343 municipios con nombres y códigos), <code>geo_departamentos</code> (9 objetos sf), <code>geo_municipios</code> (336 objetos sf).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="gestión-del-caché-1-0-0">Gestión del caché<a class="anchor" aria-label="anchor" href="#gesti%C3%B3n-del-cach%C3%A9-1-0-0"></a></h3>
+<ul><li>
+<code><a href="../reference/censosbo_cache_dir.html">censosbo_cache_dir()</a></code>, <code><a href="../reference/censosbo_cache_info.html">censosbo_cache_info()</a></code>, <code><a href="../reference/censosbo_cache_clear.html">censosbo_cache_clear()</a></code>: los archivos Parquet se descargan una sola vez y se almacenan en caché local (<code>~/Library/Caches/org.R-project.R/R/censosbo/</code> por defecto).</li>
+<li>Opción <code>censosbo.cache_dir</code> para redirigir el caché al directorio del proyecto.</li>
 </ul></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

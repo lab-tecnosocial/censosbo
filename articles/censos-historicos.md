@@ -247,7 +247,7 @@ citation("censosbo")
 #> To cite package 'censosbo' in publications use:
 #> 
 #>   Ojeda Copa A (2026). _censosbo: Acceso y Análisis de los Datos de los
-#>   Censos de Bolivia_. R package version 0.3.0,
+#>   Censos de Bolivia_. R package version 1.0.0,
 #>   <https://lab-tecnosocial.github.io/censosbo/>.
 #> 
 #> A BibTeX entry for LaTeX users is
@@ -256,7 +256,7 @@ citation("censosbo")
 #>     title = {censosbo: Acceso y Análisis de los Datos de los Censos de Bolivia},
 #>     author = {Alex {Ojeda Copa}},
 #>     year = {2026},
-#>     note = {R package version 0.3.0},
+#>     note = {R package version 1.0.0},
 #>     url = {https://lab-tecnosocial.github.io/censosbo/},
 #>   }
 ```
