@@ -20,6 +20,16 @@ parse_censo_codebook <- function(anio) {
   vars_df <- read_parquet(vars_path)
   etiq_df <- read_parquet(etiq_path)
 
+  # Bug 3: el censo 2001 tiene sus labels en vars_df doblemente codificados
+  # (UTF-8 leído como Latin-1 y re-codificado a UTF-8). Se revierten tomando
+  # los bytes del string UTF-8 actual y reinterpretándolos directamente como UTF-8.
+  if (anio == 2001L) {
+    vars_df$label <- vapply(vars_df$label, function(s) {
+      if (is.na(s) || !grepl("Ã|Â", s)) return(s)
+      rawToChar(iconv(s, from = "UTF-8", to = "latin1", toRaw = TRUE)[[1]])
+    }, character(1), USE.NAMES = FALSE)
+  }
+
   # Normalizar nombres de columnas
   if ("tabla" %in% names(vars_df)) {
     names(vars_df)[names(vars_df) == "tabla"] <- "entidad"
@@ -50,6 +60,10 @@ parse_censo_codebook <- function(anio) {
     # Excluir valores técnicos REDATAM
     excluir <- c("MISSING", "NOTAPPLICABLE")
     subset_etiq <- subset_etiq[!subset_etiq$etiqueta %in% excluir, ]
+    # Bug 2: excluir filas con caracteres no imprimibles en codigo o etiqueta
+    # (artefactos binarios de REDATAM que generan códigos corruptos)
+    subset_etiq <- subset_etiq[grepl("^[[:print:]]+$", subset_etiq$codigo), ]
+    subset_etiq <- subset_etiq[grepl("^[[:print:]]+$", subset_etiq$etiqueta), ]
     if (nrow(subset_etiq) == 0) return(NULL)
     subset_etiq
   })
@@ -63,6 +77,25 @@ parse_censo_codebook <- function(anio) {
     stringsAsFactors = FALSE
   )
   result$valores_codigos <- vars_df$valores_codigos
+
+  # Bug 2: correcciones manuales para variables cuyo label es NA en el Parquet
+  # (el encabezado REDATAM tenía "label" como placeholder en lugar del texto real)
+  label_fixes <- list(
+    "2012" = list(
+      P19   = "Condición de tenencia de la vivienda",
+      P24   = "¿Es mujer u hombre?",
+      P32J  = "Departamento o país de nacimiento",
+      P44   = "Actividad económica del establecimiento donde trabaja",
+      P22F1 = "Dificultad para ver"
+    )
+  )
+  fixes <- label_fixes[[as.character(anio)]]
+  if (!is.null(fixes)) {
+    for (var in names(fixes)) {
+      idx <- which(result$variable == var & is.na(result$etiqueta))
+      if (length(idx) > 0) result$etiqueta[idx] <- fixes[[var]]
+    }
+  }
 
   # Eliminar duplicados (pueden aparecer en tablas geo)
   result <- result[!duplicated(paste(result$tabla, result$variable)), ]

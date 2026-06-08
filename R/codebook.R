@@ -93,6 +93,18 @@ codebook <- function(variable = NULL, tabla = NULL, buscar = NULL, anio = 2024) 
   if (nrow(meta) == 0) {
     cli::cli_inform("No se encontraron variables con esos criterios en el censo {anio}.")
   }
+
+  # Bug 4: ordenar para que "persona" preceda a "vivienda" y otras tablas auxiliares,
+  # evitando que el usuario use por error variables de vivienda en datos de personas
+  tabla_orden <- c(
+    "persona", "vivienda", "emigracion", "mortalidad", "discapacidad",
+    "comunidades_poblacion", "comunidades_vivienda", "depto", "provin", "munic"
+  )
+  rango <- match(meta$tabla, tabla_orden)
+  rango[is.na(rango)] <- length(tabla_orden) + 1L
+  meta <- meta[order(rango), ]
+  rownames(meta) <- NULL
+
   meta
 }
 
