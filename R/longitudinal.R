@@ -180,8 +180,6 @@ get_longitudinal <- function(
       ))
     }
 
-    if (verbose) cli::cli_inform("Obteniendo datos del censo {a}...")
-
     tryCatch({
       cols_a_pedir <- cols_originales[!is.na(cols_originales)]
 
@@ -212,19 +210,21 @@ get_longitudinal <- function(
 
       df_raw <- if (a == 2024L) {
         get_personas_2024(departamento = departamento, variables = cols_a_pedir,
-                          as = "tibble", verbose = FALSE)
+                          as = "tibble", verbose = verbose)
       } else if (a == 1976L) {
         get_censo(a, "poblacion", departamento = departamento, variables = cols_a_pedir,
-                  as = "tibble", verbose = FALSE)
+                  as = "tibble", verbose = verbose)
       } else {
         get_censo(a, "persona", departamento = departamento, variables = cols_a_pedir,
-                  as = "tibble", verbose = FALSE)
+                  as = "tibble", verbose = verbose)
       }
 
       if (is.null(df_raw) || nrow(df_raw) == 0) {
         cli::cli_warn("Sin datos para el censo {a} con los filtros aplicados.")
         next
       }
+
+      if (verbose) cli::cli_inform(c("i" = "Armonizando variables del censo {a}..."))
 
       n <- nrow(df_raw)
       df_armonizado <- data.frame(anio = rep(a, n), stringsAsFactors = FALSE)
@@ -392,23 +392,23 @@ get_longitudinal_vivienda <- function(
       ))
     }
 
-    if (verbose) cli::cli_inform("Obteniendo datos de vivienda del censo {a}...")
-
     tryCatch({
       cols_a_pedir <- cols_originales[!is.na(cols_originales)]
 
       df_raw <- if (a == 2024L) {
         get_viviendas_2024(departamento = departamento, variables = cols_a_pedir,
-                           as = "tibble", verbose = FALSE)
+                           as = "tibble", verbose = verbose)
       } else {
         get_censo(a, "vivienda", departamento = departamento, variables = cols_a_pedir,
-                  as = "tibble", verbose = FALSE)
+                  as = "tibble", verbose = verbose)
       }
 
       if (is.null(df_raw) || nrow(df_raw) == 0) {
         cli::cli_warn("Sin datos de vivienda para el censo {a}.")
         next
       }
+
+      if (verbose) cli::cli_inform(c("i" = "Armonizando variables de vivienda del censo {a}..."))
 
       n <- nrow(df_raw)
       df_armonizado <- data.frame(anio = rep(a, n), stringsAsFactors = FALSE)

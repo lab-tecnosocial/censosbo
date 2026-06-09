@@ -156,7 +156,7 @@ get_censo <- function(
   geo_files <- c("depto.parquet", "provin.parquet", "munic.parquet")
   geo_paths <- stats::setNames(
     vapply(geo_files, function(f) {
-      .download_censo(anio, f, overwrite = FALSE, verbose = FALSE)
+      .download_censo(anio, f, overwrite = FALSE, verbose = verbose)
     }, character(1)),
     c("depto", "provin", "munic")
   )
@@ -165,7 +165,7 @@ get_censo <- function(
   tablas_persona <- .CENSO_TABLAS_PERSONA[[as.character(anio)]]
   is_persona_table <- tabla %in% tablas_persona
   viv_path <- if (is_persona_table || tabla == "vivienda") {
-    .download_censo(anio, "vivienda.parquet", overwrite = FALSE, verbose = FALSE)
+    .download_censo(anio, "vivienda.parquet", overwrite = FALSE, verbose = verbose)
   } else NULL
 
   # Construir conexión DuckDB para el join
@@ -222,7 +222,7 @@ get_censo <- function(
 
   on.exit(DBI::dbDisconnect(con, shutdown = TRUE), add = TRUE)
 
-  if (verbose) cli::cli_inform("Ejecutando consulta...")
+  if (verbose) cli::cli_inform(c("i" = "Aplicando filtros geográficos..."))
   result <- DBI::dbGetQuery(con, sql_view)
 
   .warn_if_empty_geo(nrow(result), anio, dep_codes, prov_codes, mun_codes)
