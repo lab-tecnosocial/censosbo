@@ -274,9 +274,3 @@ get_personas_2024(
   )
 ```
 
-## Siguientes pasos
-
-- **[Introducción al paquete](introduccion.html)**: visión general de `censosbo`.
-- **[Análisis demográfico](analisis-demografico.html)**: pirámides de edad, nivel educativo, alfabetismo.
-- **[Análisis de vivienda](analisis-vivienda.html)**: agua, saneamiento y hacinamiento.
-- **[Análisis longitudinal](analisis-longitudinal.html)**: comparar indicadores entre 1976 y 2024.

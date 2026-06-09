@@ -43,8 +43,6 @@ remotes::install_github("lab-tecnosocial/censosbo")
 | **1992** | `get_mortalidad_1992()` | 1,706,107 | 14 | 17 MB | 36 MB |
 | **2001** | `get_personas_2001()` | 8,274,325 | 66 | 136 MB | 316 MB |
 | **2001** | `get_viviendas_2001()` | 2,290,414 | 39 | 20 MB | 37 MB |
-| **2001** | `get_censo(2001, "comunidades_poblacion")` | 14,620 | 103 | 1 MB | 2 MB |
-| **2001** | `get_censo(2001, "comunidades_vivienda")` | 14,611 | 94 | <1 MB | 1 MB |
 | **2012** | `get_personas_2012()` | 10,059,856 | 33 | 146 MB | 279 MB |
 | **2012** | `get_viviendas_2012()` | 3,172,321 | 32 | 38 MB | 58 MB |
 | **2012** | `get_emigracion_2012()` | 489,559 | 6 | 5 MB | 11 MB |
@@ -302,14 +300,6 @@ censosbo_cache_info()
 censosbo_cache_clear()
 ```
 
-## Siguientes pasos
-
-- **[Visualización en mapas](visualizacion-mapas.html)**: mapas coropléticos por departamento y municipio.
-- **[Análisis demográfico](analisis-demografico.html)**: pirámide de edades, nivel educativo, alfabetismo.
-- **[Análisis de vivienda](analisis-vivienda.html)**: agua, energía, hacinamiento, joins personas-viviendas.
-- **[Análisis avanzado](analisis-avanzado.html)**: DuckDB, Arrow, datos más grandes que la RAM.
-- **[Censos históricos](censos-historicos.html)**: acceso a datos de 1976, 1992, 2001 y 2012.
-- **[Análisis longitudinal](analisis-longitudinal.html)**: comparar variables entre censos históricos.
 
 ## Fuente de datos y nota metodológica
 
@@ -328,7 +318,17 @@ Los archivos originales se distribuyeron en formatos heterogéneos y fueron tran
 | 2012 | REDATAM (`.dic` binario + `.ptr`) | `open-redatam` CLI → CSV → Parquet |
 | 2024 | CSV delimitado por `;` (~3.6 GB total) | `pandas` + `pyarrow`; persona particionada por departamento |
 
-El formato Parquet conserva todos los registros y variables originales sin modificación de valores. Los scripts de conversión están en `data-raw/` del [repositorio](https://github.com/lab-tecnosocial/censosbo).
+El formato Parquet conserva todos los registros y variables originales sin modificación de valores.
+
+## Siguientes pasos
+
+
+- **[Censos históricos](censos-historicos.html)**: acceso a datos de 1976, 1992, 2001 y 2012.
+- **[Análisis longitudinal](analisis-longitudinal.html)**: comparar variables entre censos históricos.
+- **[Análisis demográfico](analisis-demografico.html)**: pirámide de edades, nivel educativo, alfabetismo.
+- **[Análisis de vivienda](analisis-vivienda.html)**: agua, energía, hacinamiento, joins personas-viviendas.
+- **[Análisis avanzado](analisis-avanzado.html)**: DuckDB, Arrow, datos más grandes que la RAM.
+- **[Visualización en mapas](visualizacion-mapas.html)**: mapas coropléticos por departamento y municipio.
 
 ## Cómo citar
 

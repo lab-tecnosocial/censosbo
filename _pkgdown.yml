@@ -5,10 +5,11 @@ repo:
     home: https://github.com/lab-tecnosocial/censosbo
     source: https://github.com/lab-tecnosocial/censosbo/blob/main/
     issue: https://github.com/lab-tecnosocial/censosbo/issues/
-    user: https://github.com/
+    user: https://github.com/alex-roc
 
 template:
   bootstrap: 5
+  lang: es
   bslib:
     primary: "#003087"
     link-color: "#003087"
@@ -17,10 +18,11 @@ template:
 home:
   title: "censosbo: Censos de Bolivia (1976–2024)"
   description: >
-    Acceso programático a los microdatos de todos los censos de Bolivia:
+    Acceso programático a los microdatos de los censos de Bolivia:
     1976, 1992, 2001, 2012 y CPV-2024. Descarga bajo demanda, caché local,
-    compatible con dplyr, Arrow y DuckDB. Incluye funciones de análisis
-    longitudinal y diccionarios de variables para todos los años.
+    compatible con dplyr, Arrow y DuckDB. Incluye diccionarios de variables
+    para todos los años. funciones de análisis
+    longitudinal y generación de mapas
   sidebar:
     structure: [links, license, community, citation, authors, dev]
   links:
@@ -49,13 +51,7 @@ navbar:
       - text: "Diccionario de datos (1976–2024)"
         href: articles/diccionario.html
       - text: "---"
-      - text: "Censos históricos"
-      - text: "Acceso a censos históricos (1976–2012)"
-        href: articles/censos-historicos.html
-      - text: "Análisis longitudinal entre censos"
-        href: articles/analisis-longitudinal.html
-      - text: "---"
-      - text: "Tutoriales CPV-2024"
+      - text: "CPV-2024"
       - text: "Análisis demográfico"
         href: articles/analisis-demografico.html
       - text: "Análisis de condiciones de vivienda"
@@ -63,15 +59,38 @@ navbar:
       - text: "Análisis avanzado con DuckDB y Arrow"
         href: articles/analisis-avanzado.html
       - text: "---"
+      - text: "Censos históricos"
+      - text: "Acceso a censos históricos (1976–2012)"
+        href: articles/censos-historicos.html
+      - text: "Análisis longitudinal entre censos"
+        href: articles/analisis-longitudinal.html
+      - text: "---"
       - text: "Mapas y visualización"
       - text: "Visualización en mapas"
         href: articles/visualizacion-mapas.html
 
+
+
 footer:
-  left: "Desarrollado por [Alex Ojeda Copa](https://labtecnosocial.org)."
+  left: "Desarrollado por [Alex Ojeda Copa](https://github.com/alex-roc)."
   right: "Sitio construido con [pkgdown](https://pkgdown.r-lib.org/)."
 
 reference:
+  - title: "Diccionario de variables"
+    desc: >
+      Funciones para explorar variables y etiquetas de todos los censos,
+      y para convertir códigos numéricos a texto legible.
+    contents:
+      - codebook
+      - codebook_valores
+      - codebook_1976
+      - codebook_1992
+      - codebook_2001
+      - codebook_2012
+      - codebook_2024
+      - etiquetar_valores
+      - etiquetar_variables
+
   - title: "CPV-2024: microdatos"
     desc: >
       Funciones para descargar y consultar los microdatos del Censo de
@@ -110,20 +129,6 @@ reference:
       - get_emigracion_2012
       - get_discapacidad_2012
 
-  - title: "Diccionario de variables"
-    desc: >
-      Funciones para explorar variables y etiquetas de todos los censos,
-      y para convertir códigos numéricos a texto legible.
-    contents:
-      - codebook
-      - codebook_valores
-      - codebook_1976
-      - codebook_1992
-      - codebook_2001
-      - codebook_2012
-      - codebook_2024
-      - etiquetar_valores
-      - etiquetar_variables
 
   - title: "Geografía y visualización en mapas"
     desc: >
@@ -165,19 +170,20 @@ articles:
     contents:
       - introduccion
       - diccionario
-  - title: "Censos históricos"
-    navbar: Censos históricos
-    contents:
-      - censos-historicos
-      - analisis-longitudinal
-  - title: "Tutoriales CPV-2024"
+  - title: "CPV-2024"
     navbar: Tutoriales
     contents:
       - analisis-demografico
       - analisis-vivienda
       - analisis-avanzado
+  - title: "Censos históricos"
+    navbar: Censos históricos
+    contents:
+      - censos-historicos
+      - analisis-longitudinal
   - title: "Mapas y visualización"
     navbar: Mapas
     contents:
       - visualizacion-mapas
+
 

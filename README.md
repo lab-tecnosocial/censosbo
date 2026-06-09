@@ -12,11 +12,10 @@ MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.or
 [![R-CMD-check](https://github.com/lab-tecnosocial/censosbo/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/lab-tecnosocial/censosbo/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-**censosbo** proporciona acceso programático a los microdatos de todos
-los **censos de población de Bolivia**: 1976, 1992, 2001, 2012 y el
-CPV-2024. Los datos se descargan bajo demanda desde GitHub Releases, se
-guardan en caché local y se pueden consultar con `dplyr`, Apache Arrow o
-DuckDB.
+**censosbo** proporciona acceso programático a los microdatos de los
+**censos de población de Bolivia**: 1976, 1992, 2001, 2012 y 2024. Los
+datos se descargan bajo demanda desde GitHub Releases, se guardan en
+caché local y se pueden consultar con `dplyr`, Apache Arrow o DuckDB.
 
 ## Instalación
 
@@ -33,17 +32,14 @@ remotes::install_github("lab-tecnosocial/censosbo")
 | **1976** | `get_viviendas_1976()` | 1,158,482 | 28 | 7 MB | 9 MB |
 | **1992** | `get_personas_1992()` | 6,420,792 | 54 | 135 MB | 238 MB |
 | **1992** | `get_viviendas_1992()` | 1,706,107 | 44 | 29 MB | 43 MB |
-| **1992** | `get_mortalidad_1992()` | 1,706,107 | 14 | 17 MB | 36 MB |
 | **2001** | `get_personas_2001()` | 8,274,325 | 66 | 136 MB | 316 MB |
 | **2001** | `get_viviendas_2001()` | 2,290,414 | 39 | 20 MB | 37 MB |
 | **2012** | `get_personas_2012()` | 10,059,856 | 33 | 146 MB | 279 MB |
 | **2012** | `get_viviendas_2012()` | 3,172,321 | 32 | 38 MB | 58 MB |
 | **2012** | `get_emigracion_2012()` | 489,559 | 6 | 5 MB | 11 MB |
-| **2012** | `get_discapacidad_2012()` | 342,929 | 8 | 4 MB | 8 MB |
 | **2024**² | `get_personas_2024()` | 11,365,333 | 118 | 283 MB | ~490 MB |
 | **2024**² | `get_viviendas_2024()` | 4,490,488 | 48 | 55 MB | ~111 MB |
 | **2024**² | `get_emigracion_2024()` | 500,914 | 8 | 2 MB | ~7 MB |
-| **2024**² | `get_mortalidad_2024()` | 382,731 | 10 | 2 MB | ~5 MB |
 
 ¹ Tamaño al cargar la tabla completa con `collect()` sin filtros, medido
 desde metadatos Parquet. ² Persona 2024 está particionada en 9 archivos
@@ -57,57 +53,16 @@ clave `idep + iprov + imun + i00` (identificador de hogar).
 ## Uso rápido — CPV-2024
 
 ``` r
+library(tidyverse)
 library(censosbo)
-library(dplyr)
 
 # Grupos quinquenales de edad por sexo, Santa Cruz
-# Nota: usar %/% en lugar de cut() — cut() no es compatible con Arrow
 get_personas_2024(departamento = "Santa Cruz") |>
   filter(!is.na(p26_edad), !is.na(p25_sexo)) |>
-  mutate(grupo_edad = (p26_edad %/% 5L) * 5L) |>
+  mutate(grupo_edad = (p26_edad %/% 5) * 5) |>
   count(grupo_edad, p25_sexo) |>
   collect() |>
   etiquetar_valores()
-```
-
-``` r
-# Consulta SQL con DuckDB
-library(DBI)
-con <- get_personas_2024(departamento = "Santa Cruz", as = "duckdb")
-DBI::dbGetQuery(con, "
-  SELECT p25_sexo, COUNT(*) AS total, ROUND(AVG(p26_edad), 1) AS edad_prom
-  FROM personas
-  GROUP BY p25_sexo
-  ORDER BY p25_sexo
-") |> etiquetar_valores()
-DBI::dbDisconnect(con)
-```
-
-## Censos históricos
-
-``` r
-# Personas de Santa Cruz en el censo 2012
-get_personas_2012(departamento = "Santa Cruz")
-
-# API genérica — equivalente
-get_censo(2012, "persona", departamento = "07")
-
-# Censo 1976 (estructura directa, sin REDATAM)
-get_poblacion_1976(departamento = "03")  # Cochabamba
-```
-
-## Análisis longitudinal
-
-``` r
-# Variables comparables entre censos
-variables_armonizadas()
-
-# Nivel educativo en todo el país, 1976–2024
-edu <- get_longitudinal(
-  variables = c("sexo", "nivel_edu"),
-  anios     = c(1976, 1992, 2001, 2012, 2024)
-)
-edu |> count(anio, nivel_edu)
 ```
 
 ## Diccionario de variables
@@ -137,7 +92,34 @@ get_personas_2024(departamento = "Santa Cruz") |>
   etiquetar_variables()     # "p25_sexo" → "25. Es mujer u hombre"
 ```
 
-## Geografía
+## Censos históricos
+
+``` r
+# Personas de Santa Cruz en el censo 2012
+get_personas_2012(departamento = "Santa Cruz")
+
+# API genérica — equivalente
+get_censo(2012, "persona", departamento = "07")
+
+# Censo 1976 
+get_poblacion_1976(departamento = "Cochabamba") 
+```
+
+## Análisis longitudinal
+
+``` r
+# Variables comparables entre censos
+variables_armonizadas()
+
+# Nivel educativo en todo el país, 1976–2024
+edu <- get_longitudinal(
+  variables = c("sexo", "nivel_edu"),
+  anios     = c(1976, 1992, 2001, 2012, 2024)
+)
+edu |> count(anio, nivel_edu)
+```
+
+## Geografía y mapas
 
 ``` r
 departamentos()
@@ -145,14 +127,10 @@ provincias("La Paz")
 municipios(departamento = "Santa Cruz") |> head(5)
 ```
 
-## Mapas
-
 El paquete incluye geometrías sf para los 9 departamentos
 (`geo_departamentos`) y 336 municipios (`geo_municipios`) de Bolivia.
 Las funciones `mapa_dep()` y `mapa_mun()` generan mapas coropléticos a
-partir de cualquier agregación de datos del censo. Ver el artículo
-completo: [Visualización en
-mapas](https://lab-tecnosocial.github.io/censosbo/articles/visualizacion-mapas.html).
+partir de cualquier agregación de datos del censo.
 
 ``` r
 library(dplyr)
@@ -174,18 +152,15 @@ mapa_mun(personas_beni, "edad_prom", departamento = "Beni",
 ## Gestión del caché
 
 ``` r
-# Guardar caché dentro del proyecto (recomendado)
-options(censosbo.cache_dir = "data/censosbo")
-
 censosbo_cache_dir()    # dónde está el caché
 censosbo_cache_info()   # qué archivos están descargados
 censosbo_cache_clear()  # liberar espacio en disco
 ```
 
-## Fuente de datos
+## Fuentes de datos
 
-Los microdatos originales son publicados por el **Instituto Nacional de
-Estadística (INE) de Bolivia**:
+Los microdatos originales fueron publicados por el **Instituto Nacional
+de Estadística (INE) de Bolivia**:
 
 - **CPV-2024**:
   <https://cpv2024.ine.gob.bo/index.php/principal/descargas/>
