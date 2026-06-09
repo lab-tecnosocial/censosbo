@@ -237,37 +237,3 @@ get_mortalidad_1992(departamento = "02")
 get_censo(2001, "comunidades_poblacion")
 get_censo(2001, "comunidades_vivienda")
 ```
-
-## Citar los censos
-
-``` r
-
-# CPV-2024
-citation("censosbo")
-#> To cite package 'censosbo' in publications use:
-#> 
-#>   Ojeda Copa A (2026). _censosbo: Acceso y Análisis de los Datos de los
-#>   Censos de Bolivia_. R package version 1.0.0,
-#>   <https://lab-tecnosocial.github.io/censosbo/>.
-#> 
-#> A BibTeX entry for LaTeX users is
-#> 
-#>   @Manual{,
-#>     title = {censosbo: Acceso y Análisis de los Datos de los Censos de Bolivia},
-#>     author = {Alex {Ojeda Copa}},
-#>     year = {2026},
-#>     note = {R package version 1.0.0},
-#>     url = {https://lab-tecnosocial.github.io/censosbo/},
-#>   }
-```
-
-Para los censos históricos, citar también las fuentes del INE Bolivia:
-
-- INE Bolivia (1977). *Resultados del Censo Nacional de Población y
-  Vivienda 1976*. La Paz: INE.
-- INE Bolivia (1993). *Resultados del Censo Nacional de Población y
-  Vivienda 1992*. La Paz: INE.
-- INE Bolivia (2002). *Resultados del Censo Nacional de Población y
-  Vivienda 2001*. La Paz: INE.
-- INE Bolivia (2013). *Resultados del Censo Nacional de Población y
-  Vivienda 2012*. La Paz: INE.

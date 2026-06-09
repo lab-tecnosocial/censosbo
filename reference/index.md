@@ -1,5 +1,24 @@
 # Package index
 
+## Diccionario de variables
+
+Funciones para explorar variables y etiquetas de todos los censos, y
+para convertir códigos numéricos a texto legible.
+
+- [`codebook_1976()`](https://lab-tecnosocial.github.io/censosbo/reference/codebook.md)
+  [`codebook_1992()`](https://lab-tecnosocial.github.io/censosbo/reference/codebook.md)
+  [`codebook_2001()`](https://lab-tecnosocial.github.io/censosbo/reference/codebook.md)
+  [`codebook_2012()`](https://lab-tecnosocial.github.io/censosbo/reference/codebook.md)
+  [`codebook_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/codebook.md)
+  [`codebook()`](https://lab-tecnosocial.github.io/censosbo/reference/codebook.md)
+  : Consulta el diccionario de variables de un censo de Bolivia
+- [`codebook_valores()`](https://lab-tecnosocial.github.io/censosbo/reference/codebook_valores.md)
+  : Muestra los valores codificados de una variable categórica
+- [`etiquetar_valores()`](https://lab-tecnosocial.github.io/censosbo/reference/etiquetar_valores.md)
+  : Etiqueta los valores de las variables categóricas
+- [`etiquetar_variables()`](https://lab-tecnosocial.github.io/censosbo/reference/etiquetar_variables.md)
+  : Etiqueta los nombres de las variables (columnas)
+
 ## CPV-2024: microdatos
 
 Funciones para descargar y consultar los microdatos del Censo de
@@ -61,25 +80,6 @@ Funciones cortas equivalentes a `get_censo(anio, tabla, ...)`.
   [`get_discapacidad_2012()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md)
   [`get_censo()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md)
   : Accede a los microdatos de los censos históricos de Bolivia
-
-## Diccionario de variables
-
-Funciones para explorar variables y etiquetas de todos los censos, y
-para convertir códigos numéricos a texto legible.
-
-- [`codebook_1976()`](https://lab-tecnosocial.github.io/censosbo/reference/codebook.md)
-  [`codebook_1992()`](https://lab-tecnosocial.github.io/censosbo/reference/codebook.md)
-  [`codebook_2001()`](https://lab-tecnosocial.github.io/censosbo/reference/codebook.md)
-  [`codebook_2012()`](https://lab-tecnosocial.github.io/censosbo/reference/codebook.md)
-  [`codebook_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/codebook.md)
-  [`codebook()`](https://lab-tecnosocial.github.io/censosbo/reference/codebook.md)
-  : Consulta el diccionario de variables de un censo de Bolivia
-- [`codebook_valores()`](https://lab-tecnosocial.github.io/censosbo/reference/codebook_valores.md)
-  : Muestra los valores codificados de una variable categórica
-- [`etiquetar_valores()`](https://lab-tecnosocial.github.io/censosbo/reference/etiquetar_valores.md)
-  : Etiqueta los valores de las variables categóricas
-- [`etiquetar_variables()`](https://lab-tecnosocial.github.io/censosbo/reference/etiquetar_variables.md)
-  : Etiqueta los nombres de las variables (columnas)
 
 ## Geografía y visualización en mapas
 

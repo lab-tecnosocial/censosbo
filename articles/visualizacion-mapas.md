@@ -304,18 +304,3 @@ get_personas_2024(
     titulo       = "% con educación superior — Potosí (CPV-2024)"
   )
 ```
-
-## Siguientes pasos
-
-- **[Introducción al
-  paquete](https://lab-tecnosocial.github.io/censosbo/articles/introduccion.md)**:
-  visión general de `censosbo`.
-- **[Análisis
-  demográfico](https://lab-tecnosocial.github.io/censosbo/articles/analisis-demografico.md)**:
-  pirámides de edad, nivel educativo, alfabetismo.
-- **[Análisis de
-  vivienda](https://lab-tecnosocial.github.io/censosbo/articles/analisis-vivienda.md)**:
-  agua, saneamiento y hacinamiento.
-- **[Análisis
-  longitudinal](https://lab-tecnosocial.github.io/censosbo/articles/analisis-longitudinal.md)**:
-  comparar indicadores entre 1976 y 2024.

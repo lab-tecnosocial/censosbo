@@ -2,9 +2,9 @@
 
 `censosbo` incluye funciones para comparar variables clave entre todos
 los censos bolivianos (1976, 1992, 2001, 2012 y 2024). Las variables
-originales son diferentes en cada censo; la librería aplica la
-armonización automáticamente y devuelve un data.frame en formato largo
-(“tidy”) con una columna `anio` que identifica el censo.
+originales son diferentes en cada censo; la librería aplica una
+armonización y devuelve un data.frame en formato largo (“tidy”) con una
+columna `anio` que identifica el censo.
 
 ## Variables y grupos disponibles
 
@@ -301,7 +301,7 @@ eco |>
 
 ------------------------------------------------------------------------
 
-## Grupo: Cultural
+## Grupo: Cultura
 
 Incluye `sexo`, `edad`, `identidad_indigena`, `idioma_materno`. Solo
 disponible desde 2001.

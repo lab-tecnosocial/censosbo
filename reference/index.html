@@ -21,14 +21,14 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-art-culos" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Artículos</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-art-culos"><li><a class="dropdown-item" href="../articles/diccionario.html">Diccionario de datos (1976–2024)</a></li>
     <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Censos históricos</h6></li>
-    <li><a class="dropdown-item" href="../articles/censos-historicos.html">Acceso a censos históricos (1976–2012)</a></li>
-    <li><a class="dropdown-item" href="../articles/analisis-longitudinal.html">Análisis longitudinal entre censos</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Tutoriales CPV-2024</h6></li>
+    <li><h6 class="dropdown-header" data-toc-skip>CPV-2024</h6></li>
     <li><a class="dropdown-item" href="../articles/analisis-demografico.html">Análisis demográfico</a></li>
     <li><a class="dropdown-item" href="../articles/analisis-vivienda.html">Análisis de condiciones de vivienda</a></li>
     <li><a class="dropdown-item" href="../articles/analisis-avanzado.html">Análisis avanzado con DuckDB y Arrow</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Censos históricos</h6></li>
+    <li><a class="dropdown-item" href="../articles/censos-historicos.html">Acceso a censos históricos (1976–2012)</a></li>
+    <li><a class="dropdown-item" href="../articles/analisis-longitudinal.html">Análisis longitudinal entre censos</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Mapas y visualización</h6></li>
     <li><a class="dropdown-item" href="../articles/visualizacion-mapas.html">Visualización en mapas</a></li>
@@ -48,6 +48,43 @@
     </div>
 
     <div class="section level2">
+      <h2 id="diccionario-de-variables">Diccionario de variables<a class="anchor" aria-label="anchor" href="#diccionario-de-variables"></a></h2>
+
+      <div class="section-desc"><p>Funciones para explorar variables y etiquetas de todos los censos, y para convertir códigos numéricos a texto legible.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="codebook.html">codebook_1976()</a></code> <code><a href="codebook.html">codebook_1992()</a></code> <code><a href="codebook.html">codebook_2001()</a></code> <code><a href="codebook.html">codebook_2012()</a></code> <code><a href="codebook.html">codebook_2024()</a></code> <code><a href="codebook.html">codebook()</a></code>
+
+        </dt>
+        <dd>Consulta el diccionario de variables de un censo de Bolivia</dd>
+
+        <dt>
+
+          <code><a href="codebook_valores.html">codebook_valores()</a></code>
+
+        </dt>
+        <dd>Muestra los valores codificados de una variable categórica</dd>
+
+        <dt>
+
+          <code><a href="etiquetar_valores.html">etiquetar_valores()</a></code>
+
+        </dt>
+        <dd>Etiqueta los valores de las variables categóricas</dd>
+
+        <dt>
+
+          <code><a href="etiquetar_variables.html">etiquetar_variables()</a></code>
+
+        </dt>
+        <dd>Etiqueta los nombres de las variables (columnas)</dd>
+      </dl></div><div class="section level2">
       <h2 id="cpv-microdatos">CPV-2024: microdatos<a class="anchor" aria-label="anchor" href="#cpv-microdatos"></a></h2>
 
       <div class="section-desc"><p>Funciones para descargar y consultar los microdatos del Censo de Población y Vivienda 2024. Todos devuelven un Arrow Dataset (lazy), un tibble, o una conexión DuckDB.</p></div>
@@ -144,43 +181,6 @@
 
         </dt>
         <dd>Accede a los microdatos de los censos históricos de Bolivia</dd>
-      </dl></div><div class="section level2">
-      <h2 id="diccionario-de-variables">Diccionario de variables<a class="anchor" aria-label="anchor" href="#diccionario-de-variables"></a></h2>
-
-      <div class="section-desc"><p>Funciones para explorar variables y etiquetas de todos los censos, y para convertir códigos numéricos a texto legible.</p></div>
-
-      <dl></dl></div><div class="section level2">
-
-
-
-
-      <dl><dt>
-
-          <code><a href="codebook.html">codebook_1976()</a></code> <code><a href="codebook.html">codebook_1992()</a></code> <code><a href="codebook.html">codebook_2001()</a></code> <code><a href="codebook.html">codebook_2012()</a></code> <code><a href="codebook.html">codebook_2024()</a></code> <code><a href="codebook.html">codebook()</a></code>
-
-        </dt>
-        <dd>Consulta el diccionario de variables de un censo de Bolivia</dd>
-
-        <dt>
-
-          <code><a href="codebook_valores.html">codebook_valores()</a></code>
-
-        </dt>
-        <dd>Muestra los valores codificados de una variable categórica</dd>
-
-        <dt>
-
-          <code><a href="etiquetar_valores.html">etiquetar_valores()</a></code>
-
-        </dt>
-        <dd>Etiqueta los valores de las variables categóricas</dd>
-
-        <dt>
-
-          <code><a href="etiquetar_variables.html">etiquetar_variables()</a></code>
-
-        </dt>
-        <dd>Etiqueta los nombres de las variables (columnas)</dd>
       </dl></div><div class="section level2">
       <h2 id="geograf-a-y-visualizaci-n-en-mapas">Geografía y visualización en mapas<a class="anchor" aria-label="anchor" href="#geograf-a-y-visualizaci-n-en-mapas"></a></h2>
 
