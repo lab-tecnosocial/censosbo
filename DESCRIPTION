@@ -33,19 +33,11 @@ Imports:
     dplyr,
     sf
 Suggests:
-    tidyr,
     ggplot2,
     DT,
-    piggyback,
     testthat (>= 3.0.0),
     knitr,
-    rmarkdown,
-    pkgdown,
-    readxl,
-    withr,
-    jsonlite,
-    xml2,
-    hexSticker
+    rmarkdown
 Config/testthat/edition: 3
 Config/censosbo/data-version: 1.0.0
 VignetteBuilder: knitr
