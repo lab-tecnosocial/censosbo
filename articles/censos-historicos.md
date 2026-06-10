@@ -144,7 +144,7 @@ funciones cortas:
 codebook_2012()
 
 # Buscar variables relacionadas con educación en 1992
-codebook_1992(buscar = "instruccion")
+codebook_1992(buscar = "nivel")
 
 # Variable específica en 2001
 codebook(variable = "P39NIV", anio = 2001)
@@ -228,15 +228,26 @@ DBI::dbDisconnect(con)
 ``` r
 
 # Solo las variables que necesitas (más rápido)
+# Cuando se especifica departamento, idep/iprov/imun se agregan automáticamente
 get_personas_2012(
   departamento = "07",
   variables    = c("P24", "P25", "P37A_NIVELNUE")
 )
+#> # idep  iprov  imun  P24  P25  P37A_NIVELNUE
 
 # Censo 2001: solo sexo, edad y nivel educativo
+# Sin departamento no se agregan columnas geográficas
 get_censo(2001, "persona",
   variables = c("P28", "P29", "P39NIV")
 )
+#> # P28  P29  P39NIV   (sin idep/iprov/imun)
+
+# Con departamento sí se incluyen las columnas geográficas
+get_censo(2001, "persona",
+  departamento = "La Paz",
+  variables    = c("P28", "P29", "P39NIV")
+)
+#> # idep  iprov  imun  P28  P29  P39NIV
 ```
 
 ## Comparación entre dos censos (mismo año de referencia)

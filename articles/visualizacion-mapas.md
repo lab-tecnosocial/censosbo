@@ -178,7 +178,7 @@ capitales provinciales.
 agua_sc <- get_viviendas_2024(departamento = "Santa Cruz", as = "tibble") |>
   group_by(idep, iprov, imun) |>
   summarise(
-    pct_agua = mean(v10_combus == 1, na.rm = TRUE) * 100,
+    pct_agua = mean(v07_aguapro == 1, na.rm = TRUE) * 100,
     .groups  = "drop"
   )
 

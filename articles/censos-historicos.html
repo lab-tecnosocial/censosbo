@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -297,7 +297,7 @@ puede no existir en otro.</p>
 <span><span class="fu"><a href="../reference/codebook.html">codebook_2012</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Buscar variables relacionadas con educación en 1992</span></span>
-<span><span class="fu"><a href="../reference/codebook.html">codebook_1992</a></span><span class="op">(</span>buscar <span class="op">=</span> <span class="st">"instruccion"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/codebook.html">codebook_1992</a></span><span class="op">(</span>buscar <span class="op">=</span> <span class="st">"nivel"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Variable específica en 2001</span></span>
 <span><span class="fu"><a href="../reference/codebook.html">codebook</a></span><span class="op">(</span>variable <span class="op">=</span> <span class="st">"P39NIV"</span>, anio <span class="op">=</span> <span class="fl">2001</span><span class="op">)</span></span>
@@ -372,15 +372,26 @@ puedes especificar el año con el argumento <code>anio</code>:</p>
 </h2>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Solo las variables que necesitas (más rápido)</span></span>
+<span><span class="co"># Cuando se especifica departamento, idep/iprov/imun se agregan automáticamente</span></span>
 <span><span class="fu"><a href="../reference/get_censo.html">get_personas_2012</a></span><span class="op">(</span></span>
 <span>  departamento <span class="op">=</span> <span class="st">"07"</span>,</span>
 <span>  variables    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"P24"</span>, <span class="st">"P25"</span>, <span class="st">"P37A_NIVELNUE"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
+<span><span class="co">#&gt; # idep  iprov  imun  P24  P25  P37A_NIVELNUE</span></span>
 <span></span>
 <span><span class="co"># Censo 2001: solo sexo, edad y nivel educativo</span></span>
+<span><span class="co"># Sin departamento no se agregan columnas geográficas</span></span>
 <span><span class="fu"><a href="../reference/get_censo.html">get_censo</a></span><span class="op">(</span><span class="fl">2001</span>, <span class="st">"persona"</span>,</span>
 <span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"P28"</span>, <span class="st">"P29"</span>, <span class="st">"P39NIV"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; # P28  P29  P39NIV   (sin idep/iprov/imun)</span></span>
+<span></span>
+<span><span class="co"># Con departamento sí se incluyen las columnas geográficas</span></span>
+<span><span class="fu"><a href="../reference/get_censo.html">get_censo</a></span><span class="op">(</span><span class="fl">2001</span>, <span class="st">"persona"</span>,</span>
+<span>  departamento <span class="op">=</span> <span class="st">"La Paz"</span>,</span>
+<span>  variables    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"P28"</span>, <span class="st">"P29"</span>, <span class="st">"P39NIV"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; # idep  iprov  imun  P28  P29  P39NIV</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="comparación-entre-dos-censos-mismo-año-de-referencia">Comparación entre dos censos (mismo año de referencia)<a class="anchor" aria-label="anchor" href="#comparaci%C3%B3n-entre-dos-censos-mismo-a%C3%B1o-de-referencia"></a>

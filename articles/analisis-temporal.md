@@ -631,5 +631,5 @@ edu_2012 <- get_personas_2012() |>
 
 # Ver qué variables existen en el censo 1976
 codebook_1976(tabla = "poblacion")
-codebook_2012(buscar = "instruccion")
+codebook_2012(buscar = "nivel")
 ```

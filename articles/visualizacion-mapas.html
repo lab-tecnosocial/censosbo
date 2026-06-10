@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -263,7 +263,7 @@ capitales provinciales.</p>
 <code class="sourceCode R"><span><span class="va">agua_sc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_viviendas_2024.html">get_viviendas_2024</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Santa Cruz"</span>, as <span class="op">=</span> <span class="st">"tibble"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">idep</span>, <span class="va">iprov</span>, <span class="va">imun</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span></span>
-<span>    pct_agua <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">v10_combus</span> <span class="op">==</span> <span class="fl">1</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span>,</span>
+<span>    pct_agua <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">v07_aguapro</span> <span class="op">==</span> <span class="fl">1</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span>,</span>
 <span>    .groups  <span class="op">=</span> <span class="st">"drop"</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>

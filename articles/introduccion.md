@@ -33,7 +33,7 @@ remotes::install_github("lab-tecnosocial/censosbo")
 | **2012** | [`get_viviendas_2012()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md) | 3,172,321 | 32 | 38 MB | 58 MB |
 | **2012** | [`get_emigracion_2012()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md) | 489,559 | 6 | 5 MB | 11 MB |
 | **2012** | [`get_discapacidad_2012()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md) | 342,929 | 8 | 4 MB | 8 MB |
-| **2024**² | [`get_personas_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_personas_2024.md) | 11,365,333 | 118 | 283 MB | ~490 MB |
+| **2024**² | [`get_personas_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_personas_2024.md) | 11,365,333 | 119 | 283 MB | ~490 MB |
 | **2024**² | [`get_viviendas_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_viviendas_2024.md) | 4,490,488 | 48 | 55 MB | ~111 MB |
 | **2024**² | [`get_emigracion_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_emigracion_2024.md) | 500,914 | 8 | 2 MB | ~7 MB |
 | **2024**² | [`get_mortalidad_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_mortalidad_2024.md) | 382,731 | 10 | 2 MB | ~5 MB |
@@ -284,7 +284,7 @@ mapas](https://lab-tecnosocial.github.io/censosbo/articles/visualizacion-mapas.m
 personas_sc <- get_personas_2024(departamento = "Santa Cruz")
 personas_sc
 #> FileSystemDataset with 1 Parquet file
-#> 118 columns
+#> 119 columns
 ```
 
 El resultado por defecto es un **Arrow Dataset** — los datos quedan en
@@ -348,8 +348,8 @@ get_personas_2024(departamento = "Cochabamba") |>
   etiquetar_valores()
 #>   p25_sexo       n
 #>   <fct>      <int>
-#> 1 Mujer    831062
-#> 2 Hombre   855433
+#> 1 Hombre    993286
+#> 2 Mujer    1023071
 
 # Grupos quinquenales de edad (usar %/% — cut() no es compatible con Arrow)
 get_personas_2024(departamento = "Santa Cruz") |>
@@ -374,9 +374,9 @@ DBI::dbGetQuery(con, "
   GROUP BY p25_sexo
   ORDER BY p25_sexo
 ") |> etiquetar_valores()
-#> p25_sexo   total edad_prom
-#>    Mujer 1234567      29.1
-#>   Hombre 1212345      28.8
+#>   p25_sexo   total edad_prom
+#> 1    Mujer 1540279      29.3
+#> 2   Hombre 1582326      29.0
 
 DBI::dbDisconnect(con)
 ```

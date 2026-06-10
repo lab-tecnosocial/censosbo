@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -215,7 +215,7 @@ el departamento de interés.</p>
 <strong>2024</strong>²</td>
 <td><code><a href="../reference/get_personas_2024.html">get_personas_2024()</a></code></td>
 <td align="right">11,365,333</td>
-<td align="right">118</td>
+<td align="right">119</td>
 <td align="right">283 MB</td>
 <td align="right">~490 MB</td>
 </tr>
@@ -465,7 +465,7 @@ CPV-2024, ver la viñeta <strong><a href="visualizacion-mapas.html">Visualizaci�
 <span><span class="va">personas_sc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Santa Cruz"</span><span class="op">)</span></span>
 <span><span class="va">personas_sc</span></span>
 <span><span class="co">#&gt; FileSystemDataset with 1 Parquet file</span></span>
-<span><span class="co">#&gt; 118 columns</span></span></code></pre></div>
+<span><span class="co">#&gt; 119 columns</span></span></code></pre></div>
 <p>El resultado por defecto es un <strong>Arrow Dataset</strong> — los
 datos quedan en disco, no en RAM.</p>
 </div>
@@ -521,8 +521,8 @@ datos quedan en disco, no en RAM.</p>
 <span>  <span class="fu"><a href="../reference/etiquetar_valores.html">etiquetar_valores</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   p25_sexo       n</span></span>
 <span><span class="co">#&gt;   &lt;fct&gt;      &lt;int&gt;</span></span>
-<span><span class="co">#&gt; 1 Mujer    831062</span></span>
-<span><span class="co">#&gt; 2 Hombre   855433</span></span>
+<span><span class="co">#&gt; 1 Hombre    993286</span></span>
+<span><span class="co">#&gt; 2 Mujer    1023071</span></span>
 <span></span>
 <span><span class="co"># Grupos quinquenales de edad (usar %/% — cut() no es compatible con Arrow)</span></span>
 <span><span class="fu"><a href="../reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Santa Cruz"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -546,9 +546,9 @@ datos quedan en disco, no en RAM.</p>
 <span><span class="st">  GROUP BY p25_sexo</span></span>
 <span><span class="st">  ORDER BY p25_sexo</span></span>
 <span><span class="st">"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/etiquetar_valores.html">etiquetar_valores</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; p25_sexo   total edad_prom</span></span>
-<span><span class="co">#&gt;    Mujer 1234567      29.1</span></span>
-<span><span class="co">#&gt;   Hombre 1212345      28.8</span></span>
+<span><span class="co">#&gt;   p25_sexo   total edad_prom</span></span>
+<span><span class="co">#&gt; 1    Mujer 1540279      29.3</span></span>
+<span><span class="co">#&gt; 2   Hombre 1582326      29.0</span></span>
 <span></span>
 <span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span></span></code></pre></div>
 </div>

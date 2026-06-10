@@ -18,7 +18,7 @@ personas <- get_personas_2024(
   collect() |>
   etiquetar_valores()
 #> ℹ Descargando persona_dep08.parquet (~12 MB)...
-#> ✔ Descargado persona_dep08.parquet [449ms]
+#> ✔ Descargado persona_dep08.parquet [265ms]
 #> 
 
 nrow(personas)
@@ -102,8 +102,9 @@ alfa <- personas |>
 
 ggplot(alfa, aes(x = p25_sexo, y = pct, fill = p40_lee)) +
   geom_col() +
-  scale_fill_manual(values = c("Sí" = "#003087", "No" = "#d73027"),
-                    na.value = "grey80") +
+  scale_fill_manual(
+    values   = c("Sí" = "#003087", "No" = "#d73027", "Sin especificar" = "grey80")
+  ) +
   labs(
     title   = "Alfabetismo (15+ años) por sexo — Beni, CPV-2024",
     x       = "Sexo",
