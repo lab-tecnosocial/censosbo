@@ -65,6 +65,11 @@ parse_censo_codebook <- function(anio) {
     subset_etiq <- subset_etiq[grepl("^[[:print:]]+$", subset_etiq$codigo), ]
     subset_etiq <- subset_etiq[grepl("^[[:print:]]+$", subset_etiq$etiqueta), ]
     if (nrow(subset_etiq) == 0) return(NULL)
+    # Normalizar códigos numéricos enteros: "1.0" → "1" (artefacto del parquet 1976)
+    subset_etiq$codigo <- vapply(subset_etiq$codigo, function(x) {
+      n <- suppressWarnings(as.numeric(x))
+      if (!is.na(n) && n == trunc(n)) as.character(as.integer(n)) else x
+    }, character(1), USE.NAMES = FALSE)
     subset_etiq
   })
 
