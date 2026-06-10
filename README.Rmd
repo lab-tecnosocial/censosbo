@@ -22,7 +22,7 @@ knitr::opts_chunk$set(
 [![R-CMD-check](https://github.com/lab-tecnosocial/censosbo/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/lab-tecnosocial/censosbo/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-**censosbo** proporciona acceso programático a los microdatos de los **censos de población de Bolivia**: 1976, 1992, 2001, 2012 y 2024. Los datos se descargan bajo demanda, se guardan en caché local y se pueden consultar con `dplyr`, Apache Arrow o DuckDB. Contiene además diccionarios de datos, funciones para comparación de datos entre censos y generación de mapas.
+**censosbo** proporciona acceso programático a los microdatos de los **censos de población de Bolivia**: 1976, 1992, 2001, 2012 y 2024. Los datos se descargan bajo demanda, se guardan en caché local y se pueden consultar con `dplyr`, Apache Arrow o DuckDB. Contiene además diccionarios de datos, funciones para comparación temporal de datos entre censos y generación de mapas.
 
 ## Instalación
 
@@ -167,7 +167,7 @@ Los microdatos originales fueron publicados por el **Instituto Nacional de Estad
 
 ### Nota metodológica
 
-Los archivos originales fueron transformados a formato **Parquet** (compresión zstd nivel 6) para distribución eficiente. El proceso de conversión varía por censo:
+Los archivos originales fueron transformados a formato **Parquet** para una mejor distribución. El proceso de conversión varía por censo:
 
 | Censo | Formato original | Herramienta de conversión |
 |-------|-----------------|--------------------------|
@@ -187,5 +187,5 @@ citation("censosbo")
 
 > Ojeda Copa A (2026). *censosbo: Paquete de R para el acceso, análisis
 > y visualización de datos censales en Bolivia (1976-2024)*. Lab TecnoSocial,
-> Cochabamba, Bolivia. R package version 1.0.0.
+> Cochabamba, Bolivia. R package version `r packageVersion("censosbo")`.
 > <https://lab-tecnosocial.github.io/censosbo/>
