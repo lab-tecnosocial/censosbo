@@ -1,4 +1,4 @@
-#' Variables armonizadas para análisis longitudinal
+#' Variables armonizadas para análisis temporal
 #'
 #' Tabla de correspondencia entre variables de los censos de Bolivia
 #' (1976, 1992, 2001, 2012 y CPV-2024), con las variables que pueden compararse
@@ -14,12 +14,12 @@
 #'   \item{notas}{Advertencias sobre diferencias metodológicas entre censos}
 #' }
 #' @source Elaboración propia a partir de los diccionarios oficiales del INE Bolivia.
-"variable_longitudinal_map"
+"variable_temporal_map"
 
 #' Muestra el mapeo de variables comparables entre censos de Bolivia
 #'
 #' Retorna la tabla de variables armonizadas que pueden usarse en análisis
-#' longitudinales o comparativos entre los censos de 1976, 1992, 2001, 2012
+#' temporales o comparativos entre los censos de 1976, 1992, 2001, 2012
 #' y el CPV-2024.
 #'
 #' @param tabla Filtrar por tabla de origen: `"persona"`, `"vivienda"` o `NULL`
@@ -32,7 +32,7 @@
 #' variables_armonizadas()
 #' variables_armonizadas(tabla = "vivienda")
 variables_armonizadas <- function(tabla = NULL) {
-  mapa <- variable_longitudinal_map
+  mapa <- variable_temporal_map
   if (!is.null(tabla)) {
     mapa <- mapa[mapa$tabla == tabla, ]
   }
@@ -42,7 +42,7 @@ variables_armonizadas <- function(tabla = NULL) {
 #' Grupos temáticos predefinidos de variables armonizadas
 #'
 #' Devuelve la lista de grupos temáticos disponibles y las variables que contiene
-#' cada uno, para usar con el parámetro `grupo` de [get_longitudinal()].
+#' cada uno, para usar con el parámetro `grupo` de [get_temporal()].
 #'
 #' @return Una lista nombrada donde cada elemento es un vector de nombres de
 #'   variables armonizadas.
@@ -61,7 +61,7 @@ grupos_variables <- function() {
   )
 }
 
-#' Obtiene datos longitudinales comparables de la tabla persona entre censos
+#' Obtiene datos temporales comparables de la tabla persona entre censos
 #'
 #' Descarga y armoniza variables clave de múltiples censos para análisis de
 #' tendencias y comparaciones históricas. El resultado es un data.frame en
@@ -100,25 +100,25 @@ grupos_variables <- function() {
 #'    años puede ser engañoso.
 #' - `idioma_materno` en 1976: captura "idioma que habla", no el materno.
 #'
-#' Para variables de vivienda usa [get_longitudinal_vivienda()].
+#' Para variables de vivienda usa [get_temporal_vivienda()].
 #'
 #' @importFrom dplyr as_tibble case_when
 #' @export
 #' @examples
 #' \dontrun{
 #' # Usando grupo temático
-#' datos <- get_longitudinal(grupo = "educacion", anios = c(1992, 2001, 2012, 2024))
+#' datos <- get_temporal(grupo = "educacion", anios = c(1992, 2001, 2012, 2024))
 #' library(dplyr)
 #' datos |> count(anio, asistencia_escolar)
 #'
 #' # Evolución del nivel educativo en todo el país
-#' get_longitudinal(variables = c("nivel_edu", "sexo"),
-#'                  anios = c(1976, 1992, 2001, 2012, 2024))
+#' get_temporal(variables = c("nivel_edu", "sexo"),
+#'              anios = c(1976, 1992, 2001, 2012, 2024))
 #'
 #' # Identidad cultural (solo 2001-2024)
-#' get_longitudinal(grupo = "cultural", anios = c(2001, 2012, 2024))
+#' get_temporal(grupo = "cultural", anios = c(2001, 2012, 2024))
 #' }
-get_longitudinal <- function(
+get_temporal <- function(
     variables   = NULL,
     grupo       = NULL,
     anios       = c(1976L, 1992L, 2001L, 2012L, 2024L),
@@ -148,14 +148,14 @@ get_longitudinal <- function(
     ))
   }
 
-  mapa <- variable_longitudinal_map[variable_longitudinal_map$tabla == "persona", ]
+  mapa <- variable_temporal_map[variable_temporal_map$tabla == "persona", ]
   vars_validas <- mapa$variable
   vars_invalidas <- setdiff(variables, vars_validas)
   if (length(vars_invalidas) > 0) {
     cli::cli_abort(c(
       "Variable(s) no encontrada(s) en tabla persona: {.val {vars_invalidas}}",
       "i" = "Usa {.fn variables_armonizadas} para ver las opciones disponibles.",
-      "i" = "Para variables de vivienda usa {.fn get_longitudinal_vivienda}."
+      "i" = "Para variables de vivienda usa {.fn get_temporal_vivienda}."
     ))
   }
 
@@ -312,7 +312,7 @@ get_longitudinal <- function(
 }
 
 
-#' Obtiene datos longitudinales comparables de la tabla vivienda entre censos
+#' Obtiene datos temporales comparables de la tabla vivienda entre censos
 #'
 #' Descarga y armoniza variables de vivienda de múltiples censos para análisis
 #' de tendencias en condiciones habitacionales. El resultado tiene una fila por
@@ -330,7 +330,7 @@ get_longitudinal <- function(
 #'   vivienda. Las variables no disponibles en un año aparecen como `NA`.
 #'
 #' @details
-#' Variables disponibles para comparación longitudinal de vivienda:
+#' Variables disponibles para comparación temporal de vivienda:
 #' `material_paredes`, `material_techo`, `material_piso`, `fuente_agua`,
 #' `energia_electrica`, `servicio_sanitario`, `tenencia_vivienda`,
 #' `habitaciones_total`.
@@ -343,7 +343,7 @@ get_longitudinal <- function(
 #' @examples
 #' \dontrun{
 #' # Evolución del acceso a agua potable
-#' agua <- get_longitudinal_vivienda(
+#' agua <- get_temporal_vivienda(
 #'   variables = c("fuente_agua", "energia_electrica"),
 #'   anios = c(1992, 2001, 2012, 2024)
 #' )
@@ -351,7 +351,7 @@ get_longitudinal <- function(
 #' agua |> count(anio, fuente_agua) |> group_by(anio) |>
 #'   mutate(pct = n / sum(n))
 #' }
-get_longitudinal_vivienda <- function(
+get_temporal_vivienda <- function(
     variables,
     anios        = c(1976L, 1992L, 2001L, 2012L, 2024L),
     departamento = NULL,
@@ -366,7 +366,7 @@ get_longitudinal_vivienda <- function(
     ))
   }
 
-  mapa <- variable_longitudinal_map[variable_longitudinal_map$tabla == "vivienda", ]
+  mapa <- variable_temporal_map[variable_temporal_map$tabla == "vivienda", ]
   vars_invalidas <- setdiff(variables, mapa$variable)
   if (length(vars_invalidas) > 0) {
     cli::cli_abort(c(

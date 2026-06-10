@@ -1,8 +1,8 @@
-## Genera variable_longitudinal_map.rda: mapeo de variables armonizadas
+## Genera variable_temporal_map.rda: mapeo de variables armonizadas
 ## entre censos de Bolivia (1976, 1992, 2001, 2012, 2024).
 ## Ejecutar desde la raíz del paquete: source("data-raw/build_harmonization_table.R")
 
-variable_longitudinal_map <- data.frame(
+variable_temporal_map <- data.frame(
   variable       = character(),
   etiqueta       = character(),
   descripcion    = character(),
@@ -19,7 +19,7 @@ variable_longitudinal_map <- data.frame(
 add_var <- function(variable, etiqueta, descripcion,
                      v1976 = NA, v1992 = NA, v2001 = NA, v2012 = NA, v2024 = NA,
                      notas = "", tabla = "persona") {
-  variable_longitudinal_map <<- rbind(variable_longitudinal_map, data.frame(
+  variable_temporal_map <<- rbind(variable_temporal_map, data.frame(
     variable, etiqueta, descripcion,
     tabla,
     v1976 = as.character(v1976),
@@ -40,7 +40,7 @@ add_var <- function(variable, etiqueta, descripcion,
 add_var("sexo", "Sexo",
         "Sexo del individuo. Harmonizado a 1=Mujer, 2=Hombre para todos los censos",
         v1976 = "p03", v1992 = "P03", v2001 = "P28", v2012 = "P24", v2024 = "p25_sexo",
-        notas = "1976/1992/2001: codificación original 1=Hombre, 2=Mujer (invertida). 2012/2024: 1=Mujer, 2=Hombre. get_longitudinal() harmoniza todo a 1=Mujer, 2=Hombre.")
+        notas = "1976/1992/2001: codificación original 1=Hombre, 2=Mujer (invertida). 2012/2024: 1=Mujer, 2=Hombre. get_temporal() harmoniza todo a 1=Mujer, 2=Hombre.")
 
 add_var("edad", "Edad en años",
         "Edad del individuo en años cumplidos",
@@ -66,12 +66,12 @@ add_var("estado_civil", "Estado conyugal o civil",
 add_var("sabe_leer", "Sabe leer y escribir",
         "Indica si el individuo sabe leer y escribir. Harmonizado a 1=Sí, 2=No",
         v1976 = "p10", v1992 = "P10", v2001 = "P36", v2012 = "P35", v2024 = "p40_lee",
-        notas = "1992 (P10): códigos 7=Sí, 8=No (distinto al resto). get_longitudinal() harmoniza a 1=Sí, 2=No.")
+        notas = "1992 (P10): códigos 7=Sí, 8=No (distinto al resto). get_temporal() harmoniza a 1=Sí, 2=No.")
 
 add_var("nivel_edu", "Nivel de instrucción",
-        "Nivel educativo más alto alcanzado. Para comparación longitudinal se harmoniza a 4 categorías: 0=Sin instrucción, 1=Primaria, 2=Secundaria, 3=Superior",
+        "Nivel educativo más alto alcanzado. Para comparación temporal se harmoniza a 4 categorías: 0=Sin instrucción, 1=Primaria, 2=Secundaria, 3=Superior",
         v1976 = "nivela", v1992 = "P12", v2001 = "P39NIV", v2012 = "P37A_NIVELNUE", v2024 = "nivel_edu",
-        notas = "1976: 'nivela' es var. derivada (1=Ninguno..5=Técnico). 1992: P12 solo cubre quienes asistieron; Ninguno se obtiene combinando con P11 en get_longitudinal(). 2001: P39NIV con códigos reales 11=Ninguno,12=Preescolar,13=Básico,14=Intermedio,15=Medio,16=Primaria,17=Secundaria,18=Licenciatura,19=Técnico,20=Normal,21-23=Otros. 2012: P37A_NIVELNUE usa códigos no secuenciales (1,2,3,9,10,11-18,99). La Ley Avelino Siñani (2010) cambió la nomenclatura en 2012.")
+        notas = "1976: 'nivela' es var. derivada (1=Ninguno..5=Técnico). 1992: P12 solo cubre quienes asistieron; Ninguno se obtiene combinando con P11 en get_temporal(). 2001: P39NIV con códigos reales 11=Ninguno,12=Preescolar,13=Básico,14=Intermedio,15=Medio,16=Primaria,17=Secundaria,18=Licenciatura,19=Técnico,20=Normal,21-23=Otros. 2012: P37A_NIVELNUE usa códigos no secuenciales (1,2,3,9,10,11-18,99). La Ley Avelino Siñani (2010) cambió la nomenclatura en 2012.")
 
 add_var("asistencia_escolar", "Asistencia educativa actual",
         "Indica si el individuo asiste actualmente a un centro educativo. 1=Sí asiste, 2=No asiste.",
@@ -109,7 +109,7 @@ add_var("idioma_materno", "Idioma materno o principal",
 add_var("migracion_nac_dpto", "Migración: departamento de nacimiento vs residencia",
         "Compara el departamento de nacimiento con el de residencia actual. 1=Nacido en el mismo dpto, 2=Nacido en otro dpto del país, 3=Nacido en el exterior.",
         v1976 = "lugnac", v1992 = "P07A", v2001 = "DEP34", v2012 = "P32J", v2024 = "p35j_deptocod",
-        notas = "Variable DERIVADA: compara columna de dpto de nacimiento con dpto de residencia (idep o dep). 1976: lugnac=1-9 (dpto nac), 10=exterior. 1992: P07A=dpto nac (1-9). 2001: DEP34=dpto nac (1-9). 2012: P32J=dpto nac (1-9), 99=ignorado. 2024: p35j_deptocod=dpto nac (1-9). La comparación con idep actual se hace en get_longitudinal().")
+        notas = "Variable DERIVADA: compara columna de dpto de nacimiento con dpto de residencia (idep o dep). 1976: lugnac=1-9 (dpto nac), 10=exterior. 1992: P07A=dpto nac (1-9). 2001: DEP34=dpto nac (1-9). 2012: P32J=dpto nac (1-9), 99=ignorado. 2024: p35j_deptocod=dpto nac (1-9). La comparación con idep actual se hace en get_temporal().")
 
 add_var("migracion_rec_dpto", "Migración reciente: residencia hace 5 años vs actual",
         "Compara el departamento de residencia hace 5 años con el actual. 1=Mismo dpto, 2=Otro dpto del país, 3=Estaba en el exterior, 4=No había nacido.",
@@ -136,7 +136,7 @@ add_var("area", "Área urbana o rural",
 add_var("departamento", "Departamento",
         "Código de departamento (01-09)",
         v1976 = "dep", v1992 = "idep", v2001 = "idep", v2012 = "idep", v2024 = "idep",
-        notas = "En 1976: columna 'dep' (numérica 1-9). En censos REDATAM: 'idep' se calcula desde REDCODEN via join con munic.parquet; get_longitudinal() lo fuerza automáticamente.")
+        notas = "En 1976: columna 'dep' (numérica 1-9). En censos REDATAM: 'idep' se calcula desde REDCODEN via join con munic.parquet; get_temporal() lo fuerza automáticamente.")
 
 
 # ===========================================================================
@@ -196,9 +196,9 @@ add_var("habitaciones_total", "Total de habitaciones del hogar",
 # Guardar
 # ===========================================================================
 
-usethis::use_data(variable_longitudinal_map, overwrite = TRUE)
-message("variable_longitudinal_map guardado en data/variable_longitudinal_map.rda")
-message("\nVariables armonizadas (", nrow(variable_longitudinal_map), " total) por tabla:")
-print(table(variable_longitudinal_map$tabla))
+usethis::use_data(variable_temporal_map, overwrite = TRUE)
+message("variable_temporal_map guardado en data/variable_temporal_map.rda")
+message("\nVariables armonizadas (", nrow(variable_temporal_map), " total) por tabla:")
+print(table(variable_temporal_map$tabla))
 message("\nDetalle:")
-print(variable_longitudinal_map[, c("variable", "etiqueta", "tabla")])
+print(variable_temporal_map[, c("variable", "etiqueta", "tabla")])

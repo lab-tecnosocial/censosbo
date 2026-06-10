@@ -4,10 +4,14 @@
 \alias{etiquetar_variables}
 \title{Etiqueta los nombres de las variables (columnas)}
 \usage{
-etiquetar_variables(df)
+etiquetar_variables(df, anio = NULL)
 }
 \arguments{
 \item{df}{Un data.frame.}
+
+\item{anio}{Entero. Año del censo: `1976`, `1992`, `2001`, `2012` o `2024`.
+Si `NULL` (por defecto), se detecta automáticamente a partir de los nombres
+de columna del data frame.}
 }
 \value{
 El mismo `df` con los nombres de columnas reemplazados por sus
@@ -17,26 +21,37 @@ El mismo `df` con los nombres de columnas reemplazados por sus
 \description{
 Reemplaza los nombres técnicos de las columnas (e.g., `p25_sexo`) por sus
 descripciones en español del diccionario oficial del INE
-(e.g., `"25. Es mujer u hombre"`). Útil para tablas y reportes destinados
-a lectores no técnicos.
+(e.g., `"25. Es mujer u hombre"`). Detecta automáticamente el censo
+(1976, 1992, 2001, 2012 o 2024) a partir de los nombres de columna.
+Útil para tablas y reportes destinados a lectores no técnicos.
 }
 \details{
 Las descripciones pueden contener espacios y caracteres especiales.
 En RMarkdown/Quarto se muestran directamente en tablas. Para referenciarlas
 en código R usa backticks: \code{df$`25. Es mujer u hombre`}.
 
-Para etiquetar también los valores de las columnas, encadena con
-`etiquetar_valores()`.
+La detección automática del censo compara nombres de columna con los
+codebooks disponibles. Usa `anio` explícito si el data frame tiene muy
+pocas columnas o solo columnas geográficas.
 }
 \examples{
 # Renombrar columnas de un resumen del diccionario
 codebook_meta[1:5, c("variable", "etiqueta", "tabla")] |>
   etiquetar_variables()
 
-# Con datos reales: valores y nombres etiquetados
+# Censo 2024: valores y nombres etiquetados
 \dontrun{
 get_personas_2024(departamento = "Pando") |>
   dplyr::count(p25_sexo, nivel_edu) |>
+  dplyr::collect() |>
+  etiquetar_valores() |>
+  etiquetar_variables()
+}
+
+# Censo 1992: mismo flujo sin especificar año
+\dontrun{
+get_personas_1992(departamento = "07") |>
+  dplyr::count(P25) |>
   dplyr::collect() |>
   etiquetar_valores() |>
   etiquetar_variables()

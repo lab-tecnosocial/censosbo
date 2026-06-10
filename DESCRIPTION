@@ -11,7 +11,7 @@ Description: Proporciona acceso programático a los microdatos de los censos
     desde GitHub Releases, los almacena en caché local y permite filtrar por
     departamento, provincia o municipio. Soporta flujos de trabajo estilo dplyr
     vía Apache Arrow y consultas SQL vía DuckDB. Incluye diccionarios de
-    variables para todos los años, funciones de armonización longitudinal, análisis comparativos entre censos
+    variables para todos los años, funciones de armonización temporal, análisis comparativos entre censos
     y generación de mapas a nive departamental y municipal.
 License: MIT + file LICENSE
 Encoding: UTF-8
