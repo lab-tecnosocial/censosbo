@@ -22,7 +22,7 @@ home:
     1976, 1992, 2001, 2012 y CPV-2024. Descarga bajo demanda, caché local,
     compatible con dplyr, Arrow y DuckDB. Incluye diccionarios de variables
     para todos los años. funciones de análisis
-    longitudinal y generación de mapas
+    temporal y generación de mapas
   sidebar:
     structure: [links, license, community, citation, authors, dev]
   links:
@@ -62,8 +62,8 @@ navbar:
       - text: "Censos históricos"
       - text: "Acceso a censos históricos (1976–2012)"
         href: articles/censos-historicos.html
-      - text: "Análisis longitudinal entre censos"
-        href: articles/analisis-longitudinal.html
+      - text: "Análisis temporal entre censos"
+        href: articles/analisis-temporal.html
       - text: "---"
       - text: "Mapas y visualización"
       - text: "Visualización en mapas"
@@ -105,11 +105,11 @@ reference:
   - title: "Censos históricos: API general"
     desc: >
       Función principal para acceder a cualquier censo histórico (1976,
-      1992, 2001, 2012) y funciones de análisis longitudinal entre censos.
+      1992, 2001, 2012) y funciones de análisis temporal entre censos.
     contents:
       - get_censo
-      - get_longitudinal
-      - get_longitudinal_vivienda
+      - get_temporal
+      - get_temporal_vivienda
       - variables_armonizadas
       - grupos_variables
 
@@ -155,7 +155,7 @@ reference:
     contents:
       - codebook_meta
       - codebook_historico_meta
-      - variable_longitudinal_map
+      - variable_temporal_map
       - geo_bolivia
       - geo_departamentos
       - geo_municipios
@@ -180,7 +180,7 @@ articles:
     navbar: Censos históricos
     contents:
       - censos-historicos
-      - analisis-longitudinal
+      - analisis-temporal
   - title: "Mapas y visualización"
     navbar: Mapas
     contents:

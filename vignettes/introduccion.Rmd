@@ -334,7 +334,7 @@ El formato Parquet conserva todos los registros y variables originales sin modif
 
 
 - **[Censos históricos](censos-historicos.html)**: acceso a datos de 1976, 1992, 2001 y 2012.
-- **[Análisis longitudinal](analisis-longitudinal.html)**: comparar variables entre censos históricos.
+- **[Análisis temporal](analisis-temporal.html)**: comparar variables entre censos históricos.
 - **[Análisis demográfico](analisis-demografico.html)**: pirámide de edades, nivel educativo, alfabetismo.
 - **[Análisis de vivienda](analisis-vivienda.html)**: agua, energía, hacinamiento, joins personas-viviendas.
 - **[Análisis avanzado](analisis-avanzado.html)**: DuckDB, Arrow, datos más grandes que la RAM.

@@ -108,14 +108,14 @@ get_censo(2012, "persona", departamento = "07")
 get_poblacion_1976(departamento = "Cochabamba") 
 ```
 
-## Análisis longitudinal
+## Análisis temporal
 
-```{r ejemplo-longitudinal}
+```{r ejemplo-temporal}
 # Variables comparables entre censos
 variables_armonizadas()
 
 # Nivel educativo en todo el país, 1976–2024
-edu <- get_longitudinal(
+edu <- get_temporal(
   variables = c("sexo", "nivel_edu"),
   anios     = c(1976, 1992, 2001, 2012, 2024)
 )

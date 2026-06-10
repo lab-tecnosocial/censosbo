@@ -1,8 +1,8 @@
 ---
-title: "Análisis longitudinal entre censos (1976–2024)"
+title: "Análisis temporal entre censos (1976–2024)"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Análisis longitudinal entre censos (1976–2024)}
+  %\VignetteIndexEntry{Análisis temporal entre censos (1976–2024)}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -36,19 +36,19 @@ grupos_variables()
 
 Cada grupo combina variables complementarias para un análisis temático coherente. Los grupos disponibles son: `demografico`, `educacion`, `economia`, `cultural`, `migracion` y `fertilidad`.
 
-## Función `get_longitudinal()`
+## Función `get_temporal()`
 
 La función acepta variables individuales o un grupo predefinido:
 
-```{r longitudinal-basic}
+```{r temporal-basic}
 # Por grupo temático
-datos <- get_longitudinal(
+datos <- get_temporal(
   grupo = "educacion",
   anios = c(1992, 2001, 2012, 2024)
 )
 
 # Por variables individuales
-datos <- get_longitudinal(
+datos <- get_temporal(
   variables    = c("sexo", "nivel_edu", "sabe_leer"),
   anios        = c(1976, 1992, 2001, 2012, 2024),
   departamento = NULL   # todo el país
@@ -72,7 +72,7 @@ El resultado siempre incluye las columnas `anio`, las variables solicitadas, má
 Incluye `sexo`, `edad`, `sabe_leer`, `nivel_edu`, `asistencia_escolar`.
 
 ```{r grupo-educacion}
-edu <- get_longitudinal(grupo = "educacion",
+edu <- get_temporal(grupo = "educacion",
                         anios = c(1992, 2001, 2012, 2024))
 
 # Tasa de alfabetismo por año
@@ -142,7 +142,7 @@ edu |>
 Incluye `sexo`, `edad`, `pea`, `pet`, `categoria_ocupacion`.
 
 ```{r grupo-economia}
-eco <- get_longitudinal(grupo = "economia",
+eco <- get_temporal(grupo = "economia",
                         anios = c(1976, 1992, 2001, 2012, 2024))
 
 # Categoría de ocupación entre la PEA
@@ -173,7 +173,7 @@ eco |>
 Incluye `sexo`, `edad`, `identidad_indigena`, `idioma_materno`. Solo disponible desde 2001.
 
 ```{r grupo-cultural}
-cult <- get_longitudinal(grupo = "cultural",
+cult <- get_temporal(grupo = "cultural",
                          anios = c(2001, 2012, 2024))
 
 # Autoidentificación indígena
@@ -223,7 +223,7 @@ Incluye `sexo`, `edad`, `migracion_nac_dpto`, `migracion_rec_dpto`.
 Las variables de migración son **derivadas**: comparan el departamento de nacimiento (o de residencia hace 5 años) con el departamento de residencia actual.
 
 ```{r grupo-migracion}
-mig <- get_longitudinal(grupo = "migracion",
+mig <- get_temporal(grupo = "migracion",
                         anios = c(1992, 2001, 2012, 2024))
 
 # Migración de nacimiento
@@ -260,7 +260,7 @@ Para `migracion_rec_dpto` (residencia hace 5 años), el código 4 = "no había n
 Incluye `sexo`, `edad`, `hijos_nacidos_vivos`, `hijos_sobrevivientes`. Solo significativo para mujeres 12+.
 
 ```{r grupo-fertilidad}
-fert <- get_longitudinal(grupo = "fertilidad",
+fert <- get_temporal(grupo = "fertilidad",
                          anios = c(1976, 1992, 2001, 2012, 2024))
 
 # Promedio de hijos nacidos vivos por grupo de edad
@@ -281,12 +281,12 @@ fert |>
 
 ---
 
-## Vivienda longitudinal: `get_longitudinal_vivienda()`
+## Vivienda: `get_temporal_vivienda()`
 
 Para variables de la **tabla vivienda** existe una función equivalente:
 
-```{r longitudinal-vivienda}
-viv <- get_longitudinal_vivienda(
+```{r temporal-vivienda}
+viv <- get_temporal_vivienda(
   variables = c("material_paredes", "fuente_agua", "energia_electrica",
                 "tenencia_vivienda", "habitaciones_total"),
   anios     = c(1992, 2001, 2012, 2024)
@@ -302,7 +302,7 @@ variables_armonizadas(tabla = "vivienda")
 ### Ejemplo: evolución del acceso a servicios básicos
 
 ```{r servicios-basicos}
-viv_basicos <- get_longitudinal_vivienda(
+viv_basicos <- get_temporal_vivienda(
   variables = c("fuente_agua", "energia_electrica"),
   anios     = c(1992, 2001, 2012, 2024)
 )
@@ -329,7 +329,7 @@ bind_rows(
 ### Ejemplo: material de paredes por censo
 
 ```{r material-paredes}
-viv_mat <- get_longitudinal_vivienda(
+viv_mat <- get_temporal_vivienda(
   variables = c("material_paredes"),
   anios     = c(1992, 2001, 2012, 2024)
 )
@@ -354,16 +354,16 @@ viv_mat |>
 
 ## Filtrar por departamento
 
-Tanto `get_longitudinal()` como `get_longitudinal_vivienda()` aceptan un filtro por departamento:
+Tanto `get_temporal()` como `get_temporal_vivienda()` aceptan un filtro por departamento:
 
 ```{r por-departamento}
 # Por nombre
-edu_lp <- get_longitudinal(grupo = "educacion",
+edu_lp <- get_temporal(grupo = "educacion",
                             anios = c(2001, 2012, 2024),
                             departamento = "La Paz")
 
 # Por código
-viv_sc <- get_longitudinal_vivienda(
+viv_sc <- get_temporal_vivienda(
   variables    = c("fuente_agua", "energia_electrica"),
   anios        = c(2012, 2024),
   departamento = "05"   # Santa Cruz

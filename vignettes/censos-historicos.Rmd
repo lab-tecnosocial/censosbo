@@ -250,7 +250,7 @@ bind_rows(sexo_2012, sexo_2024) |>
   arrange(anio, sexo)
 ```
 
-Para comparaciones sistemáticas entre múltiples censos con variables armonizadas, ver la viñeta **[Análisis longitudinal](analisis-longitudinal.html)**.
+Para comparaciones sistemáticas entre múltiples censos con variables armonizadas, ver la viñeta **[Análisis temporal](analisis-temporal.html)**.
 
 ## Tablas complementarias
 
