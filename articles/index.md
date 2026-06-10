@@ -20,8 +20,8 @@
 
 - [Censos históricos de Bolivia
   (1976–2012)](https://lab-tecnosocial.github.io/censosbo/articles/censos-historicos.md):
-- [Análisis longitudinal entre censos
-  (1976–2024)](https://lab-tecnosocial.github.io/censosbo/articles/analisis-longitudinal.md):
+- [Análisis temporal entre censos
+  (1976–2024)](https://lab-tecnosocial.github.io/censosbo/articles/analisis-temporal.md):
 
 ### Mapas y visualización
 

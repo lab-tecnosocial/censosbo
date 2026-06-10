@@ -5,7 +5,7 @@
 Primera versión de lanzamiento. `censosbo` proporciona acceso
 programático a los microdatos de los cinco censos de Bolivia (1976,
 1992, 2001, 2012 y CPV-2024) y herramientas integradas para análisis
-demográfico, longitudinal y visualización geográfica.
+demográfico, temporal y visualización geográfica.
 
 ### Acceso a microdatos
 
@@ -29,14 +29,14 @@ demográfico, longitudinal y visualización geográfica.
 - Filtros geográficos por departamento, provincia y municipio en todas
   las funciones de descarga.
 
-### Análisis longitudinal
+### Análisis temporal
 
-- [`get_longitudinal()`](https://lab-tecnosocial.github.io/censosbo/reference/get_longitudinal.md):
+- [`get_temporal()`](https://lab-tecnosocial.github.io/censosbo/reference/get_temporal.md):
   datos comparables entre todos los censos (1976–2024) para 11 variables
   armonizadas: `sexo`, `edad`, `grupo_edad`, `parentesco`,
   `estado_civil`, `sabe_leer`, `nivel_edu`, `pea`, `pet`, `area`,
   `departamento`.
-- [`get_longitudinal_vivienda()`](https://lab-tecnosocial.github.io/censosbo/reference/get_longitudinal_vivienda.md):
+- [`get_temporal_vivienda()`](https://lab-tecnosocial.github.io/censosbo/reference/get_temporal_vivienda.md):
   equivalente para la tabla de vivienda.
 - [`variables_armonizadas()`](https://lab-tecnosocial.github.io/censosbo/reference/variables_armonizadas.md)
   y

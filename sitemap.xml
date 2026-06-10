@@ -4,7 +4,7 @@
 <url><loc>https://lab-tecnosocial.github.io/censosbo/LICENSE.html</loc></url>
 <url><loc>https://lab-tecnosocial.github.io/censosbo/articles/analisis-avanzado.html</loc></url>
 <url><loc>https://lab-tecnosocial.github.io/censosbo/articles/analisis-demografico.html</loc></url>
-<url><loc>https://lab-tecnosocial.github.io/censosbo/articles/analisis-longitudinal.html</loc></url>
+<url><loc>https://lab-tecnosocial.github.io/censosbo/articles/analisis-temporal.html</loc></url>
 <url><loc>https://lab-tecnosocial.github.io/censosbo/articles/analisis-vivienda.html</loc></url>
 <url><loc>https://lab-tecnosocial.github.io/censosbo/articles/censos-historicos.html</loc></url>
 <url><loc>https://lab-tecnosocial.github.io/censosbo/articles/diccionario.html</loc></url>
@@ -32,10 +32,10 @@
 <url><loc>https://lab-tecnosocial.github.io/censosbo/reference/geo_municipios.html</loc></url>
 <url><loc>https://lab-tecnosocial.github.io/censosbo/reference/get_censo.html</loc></url>
 <url><loc>https://lab-tecnosocial.github.io/censosbo/reference/get_emigracion_2024.html</loc></url>
-<url><loc>https://lab-tecnosocial.github.io/censosbo/reference/get_longitudinal.html</loc></url>
-<url><loc>https://lab-tecnosocial.github.io/censosbo/reference/get_longitudinal_vivienda.html</loc></url>
 <url><loc>https://lab-tecnosocial.github.io/censosbo/reference/get_mortalidad_2024.html</loc></url>
 <url><loc>https://lab-tecnosocial.github.io/censosbo/reference/get_personas_2024.html</loc></url>
+<url><loc>https://lab-tecnosocial.github.io/censosbo/reference/get_temporal.html</loc></url>
+<url><loc>https://lab-tecnosocial.github.io/censosbo/reference/get_temporal_vivienda.html</loc></url>
 <url><loc>https://lab-tecnosocial.github.io/censosbo/reference/get_viviendas_2024.html</loc></url>
 <url><loc>https://lab-tecnosocial.github.io/censosbo/reference/grupos_variables.html</loc></url>
 <url><loc>https://lab-tecnosocial.github.io/censosbo/reference/index.html</loc></url>
@@ -43,7 +43,7 @@
 <url><loc>https://lab-tecnosocial.github.io/censosbo/reference/mapa_mun.html</loc></url>
 <url><loc>https://lab-tecnosocial.github.io/censosbo/reference/municipios.html</loc></url>
 <url><loc>https://lab-tecnosocial.github.io/censosbo/reference/provincias.html</loc></url>
-<url><loc>https://lab-tecnosocial.github.io/censosbo/reference/variable_longitudinal_map.html</loc></url>
+<url><loc>https://lab-tecnosocial.github.io/censosbo/reference/variable_temporal_map.html</loc></url>
 <url><loc>https://lab-tecnosocial.github.io/censosbo/reference/variables_armonizadas.html</loc></url>
 </urlset>
 

@@ -28,7 +28,7 @@
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Censos históricos</h6></li>
     <li><a class="dropdown-item" href="../articles/censos-historicos.html">Acceso a censos históricos (1976–2012)</a></li>
-    <li><a class="dropdown-item" href="../articles/analisis-longitudinal.html">Análisis longitudinal entre censos</a></li>
+    <li><a class="dropdown-item" href="../articles/analisis-temporal.html">Análisis temporal entre censos</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Mapas y visualización</h6></li>
     <li><a class="dropdown-item" href="../articles/visualizacion-mapas.html">Visualización en mapas</a></li>
@@ -50,7 +50,7 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.0" id="censosbo-100">censosbo 1.0.0<a class="anchor" aria-label="anchor" href="#censosbo-100"></a></h2>
-<p>Primera versión de lanzamiento. <code>censosbo</code> proporciona acceso programático a los microdatos de los cinco censos de Bolivia (1976, 1992, 2001, 2012 y CPV-2024) y herramientas integradas para análisis demográfico, longitudinal y visualización geográfica.</p>
+<p>Primera versión de lanzamiento. <code>censosbo</code> proporciona acceso programático a los microdatos de los cinco censos de Bolivia (1976, 1992, 2001, 2012 y CPV-2024) y herramientas integradas para análisis demográfico, temporal y visualización geográfica.</p>
 <div class="section level3">
 <h3 id="acceso-a-microdatos-1-0-0">Acceso a microdatos<a class="anchor" aria-label="anchor" href="#acceso-a-microdatos-1-0-0"></a></h3>
 <ul><li>
@@ -61,11 +61,11 @@
 <li>Filtros geográficos por departamento, provincia y municipio en todas las funciones de descarga.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="análisis-longitudinal-1-0-0">Análisis longitudinal<a class="anchor" aria-label="anchor" href="#an%C3%A1lisis-longitudinal-1-0-0"></a></h3>
+<h3 id="análisis-temporal-1-0-0">Análisis temporal<a class="anchor" aria-label="anchor" href="#an%C3%A1lisis-temporal-1-0-0"></a></h3>
 <ul><li>
-<code><a href="../reference/get_longitudinal.html">get_longitudinal()</a></code>: datos comparables entre todos los censos (1976–2024) para 11 variables armonizadas: <code>sexo</code>, <code>edad</code>, <code>grupo_edad</code>, <code>parentesco</code>, <code>estado_civil</code>, <code>sabe_leer</code>, <code>nivel_edu</code>, <code>pea</code>, <code>pet</code>, <code>area</code>, <code>departamento</code>.</li>
+<code><a href="../reference/get_temporal.html">get_temporal()</a></code>: datos comparables entre todos los censos (1976–2024) para 11 variables armonizadas: <code>sexo</code>, <code>edad</code>, <code>grupo_edad</code>, <code>parentesco</code>, <code>estado_civil</code>, <code>sabe_leer</code>, <code>nivel_edu</code>, <code>pea</code>, <code>pet</code>, <code>area</code>, <code>departamento</code>.</li>
 <li>
-<code><a href="../reference/get_longitudinal_vivienda.html">get_longitudinal_vivienda()</a></code>: equivalente para la tabla de vivienda.</li>
+<code><a href="../reference/get_temporal_vivienda.html">get_temporal_vivienda()</a></code>: equivalente para la tabla de vivienda.</li>
 <li>
 <code><a href="../reference/variables_armonizadas.html">variables_armonizadas()</a></code> y <code><a href="../reference/grupos_variables.html">grupos_variables()</a></code>: exploración del mapa de armonización y los grupos temáticos predefinidos (<code>demografico</code>, <code>educacion</code>, <code>economia</code>, <code>cultural</code>, <code>migracion</code>, <code>fertilidad</code>).</li>
 </ul></div>

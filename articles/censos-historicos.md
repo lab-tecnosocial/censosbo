@@ -262,7 +262,7 @@ bind_rows(sexo_2012, sexo_2024) |>
 
 Para comparaciones sistemáticas entre múltiples censos con variables
 armonizadas, ver la viñeta **[Análisis
-longitudinal](https://lab-tecnosocial.github.io/censosbo/articles/analisis-longitudinal.md)**.
+temporal](https://lab-tecnosocial.github.io/censosbo/articles/analisis-temporal.md)**.
 
 ## Tablas complementarias
 

@@ -49,7 +49,7 @@
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Censos históricos</h6></li>
     <li><a class="dropdown-item" href="../articles/censos-historicos.html">Acceso a censos históricos (1976–2012)</a></li>
-    <li><a class="dropdown-item" href="../articles/analisis-longitudinal.html">Análisis longitudinal entre censos</a></li>
+    <li><a class="dropdown-item" href="../articles/analisis-temporal.html">Análisis temporal entre censos</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Mapas y visualización</h6></li>
     <li><a class="dropdown-item" href="../articles/visualizacion-mapas.html">Visualización en mapas</a></li>
@@ -111,7 +111,7 @@ traduce los verbos a operaciones sobre el Parquet, y solo
 <span>  as <span class="op">=</span> <span class="st">"arrow"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Descargando <span style="color: #0000BB;">persona_dep09.parquet</span> (~4 MB)...</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Descargado <span style="color: #0000BB;">persona_dep09.parquet</span> <span style="color: #B2B2B2;">[269ms]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Descargado <span style="color: #0000BB;">persona_dep09.parquet</span> <span style="color: #B2B2B2;">[359ms]</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">ds</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "FileSystemDataset" "Dataset"           "ArrowObject"      </span></span>
@@ -249,7 +249,7 @@ traduce los verbos a operaciones sobre el Parquet, y solo
 <span>                variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"idep"</span>,<span class="st">"iprov"</span>,<span class="st">"imun"</span>,<span class="st">"i00"</span>,<span class="st">"urbrur"</span>,<span class="st">"v07_aguapro"</span>,<span class="st">"v09_energia"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Descargando <span style="color: #0000BB;">vivienda.parquet</span> (~55 MB)...</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Descargado <span style="color: #0000BB;">vivienda.parquet</span> <span style="color: #B2B2B2;">[2s]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Descargado <span style="color: #0000BB;">vivienda.parquet</span> <span style="color: #B2B2B2;">[927ms]</span></span></span>
 <span></span>
 <span><span class="co"># Indicador: personas con educación superior en viviendas con servicios básicos</span></span>
 <span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbGetQuery.html" class="external-link">dbGetQuery</a></span><span class="op">(</span><span class="va">con</span>, <span class="st">"</span></span>

@@ -457,7 +457,7 @@ sin modificación de valores.
   históricos](https://lab-tecnosocial.github.io/censosbo/articles/censos-historicos.md)**:
   acceso a datos de 1976, 1992, 2001 y 2012.
 - **[Análisis
-  longitudinal](https://lab-tecnosocial.github.io/censosbo/articles/analisis-longitudinal.md)**:
+  temporal](https://lab-tecnosocial.github.io/censosbo/articles/analisis-temporal.md)**:
   comparar variables entre censos históricos.
 - **[Análisis
   demográfico](https://lab-tecnosocial.github.io/censosbo/articles/analisis-demografico.md)**:

@@ -17,9 +17,9 @@
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><link href="extra.css" rel="stylesheet">
 <meta property="og:title" content="censosbo: Censos de Bolivia (1976–2024)">
-<meta name="description" content="Acceso programático a los microdatos de los censos de Bolivia: 1976, 1992, 2001, 2012 y CPV-2024. Descarga bajo demanda, caché local, compatible con dplyr, Arrow y DuckDB. Incluye diccionarios de variables para todos los años. funciones de análisis longitudinal y generación de mapas
+<meta name="description" content="Acceso programático a los microdatos de los censos de Bolivia: 1976, 1992, 2001, 2012 y CPV-2024. Descarga bajo demanda, caché local, compatible con dplyr, Arrow y DuckDB. Incluye diccionarios de variables para todos los años. funciones de análisis temporal y generación de mapas
 ">
-<meta property="og:description" content="Acceso programático a los microdatos de los censos de Bolivia: 1976, 1992, 2001, 2012 y CPV-2024. Descarga bajo demanda, caché local, compatible con dplyr, Arrow y DuckDB. Incluye diccionarios de variables para todos los años. funciones de análisis longitudinal y generación de mapas
+<meta property="og:description" content="Acceso programático a los microdatos de los censos de Bolivia: 1976, 1992, 2001, 2012 y CPV-2024. Descarga bajo demanda, caché local, compatible con dplyr, Arrow y DuckDB. Incluye diccionarios de variables para todos los años. funciones de análisis temporal y generación de mapas
 ">
 <meta property="og:image" content="https://lab-tecnosocial.github.io/censosbo/logo.png">
 </head>
@@ -54,7 +54,7 @@
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Censos históricos</h6></li>
     <li><a class="dropdown-item" href="articles/censos-historicos.html">Acceso a censos históricos (1976–2012)</a></li>
-    <li><a class="dropdown-item" href="articles/analisis-longitudinal.html">Análisis longitudinal entre censos</a></li>
+    <li><a class="dropdown-item" href="articles/analisis-temporal.html">Análisis temporal entre censos</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Mapas y visualización</h6></li>
     <li><a class="dropdown-item" href="articles/visualizacion-mapas.html">Visualización en mapas</a></li>
@@ -81,7 +81,7 @@
 </div>
 <!-- badges: start -->
 
-<p><strong>censosbo</strong> proporciona acceso programático a los microdatos de los <strong>censos de población de Bolivia</strong>: 1976, 1992, 2001, 2012 y 2024. Los datos se descargan bajo demanda desde GitHub Releases, se guardan en caché local y se pueden consultar con <code>dplyr</code>, Apache Arrow o DuckDB.</p>
+<p><strong>censosbo</strong> proporciona acceso programático a los microdatos de los <strong>censos de población de Bolivia</strong>: 1976, 1992, 2001, 2012 y 2024. Los datos se descargan bajo demanda, se guardan en caché local y se pueden consultar con <code>dplyr</code>, Apache Arrow o DuckDB. Contiene además diccionarios de datos, funciones para comparación de datos entre censos y generación de mapas.</p>
 <div class="section level2">
 <h2 id="instalación">Instalación<a class="anchor" aria-label="anchor" href="#instalaci%C3%B3n"></a>
 </h2>
@@ -270,14 +270,14 @@
 <span><span class="fu"><a href="reference/get_censo.html">get_poblacion_1976</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Cochabamba"</span><span class="op">)</span> </span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="análisis-longitudinal">Análisis longitudinal<a class="anchor" aria-label="anchor" href="#an%C3%A1lisis-longitudinal"></a>
+<h2 id="análisis-temporal">Análisis temporal<a class="anchor" aria-label="anchor" href="#an%C3%A1lisis-temporal"></a>
 </h2>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Variables comparables entre censos</span></span>
 <span><span class="fu"><a href="reference/variables_armonizadas.html">variables_armonizadas</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Nivel educativo en todo el país, 1976–2024</span></span>
-<span><span class="va">edu</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_longitudinal.html">get_longitudinal</a></span><span class="op">(</span></span>
+<span><span class="va">edu</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_temporal.html">get_temporal</a></span><span class="op">(</span></span>
 <span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sexo"</span>, <span class="st">"nivel_edu"</span><span class="op">)</span>,</span>
 <span>  anios     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1976</span>, <span class="fl">1992</span>, <span class="fl">2001</span>, <span class="fl">2012</span>, <span class="fl">2024</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
@@ -384,7 +384,7 @@
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"censosbo"</span><span class="op">)</span></span></code></pre></div>
 <blockquote>
-<p>Ojeda Copa, A. (2026). <em>censosbo: Acceso y análisis de los censos de Bolivia (1976–2024)</em>. R package version 1.0.0. <a href="https://github.com/lab-tecnosocial/censosbo" class="external-link uri">https://github.com/lab-tecnosocial/censosbo</a></p>
+<p>Ojeda Copa A (2026). <em>censosbo: Paquete de R para el acceso, análisis y visualización de datos censales en Bolivia (1976-2024)</em>. Lab TecnoSocial, Cochabamba, Bolivia. R package version 1.0.0. <a href="https://lab-tecnosocial.github.io/censosbo/" class="uri">https://lab-tecnosocial.github.io/censosbo/</a></p>
 </blockquote>
 </div>
 </div>
@@ -418,6 +418,7 @@
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Alex Ojeda Copa <br><small class="roles"> Author, maintainer </small>   </li>
+<li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
 

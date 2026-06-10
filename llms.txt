@@ -2,8 +2,10 @@
 
 **censosbo** proporciona acceso programático a los microdatos de los
 **censos de población de Bolivia**: 1976, 1992, 2001, 2012 y 2024. Los
-datos se descargan bajo demanda desde GitHub Releases, se guardan en
-caché local y se pueden consultar con `dplyr`, Apache Arrow o DuckDB.
+datos se descargan bajo demanda, se guardan en caché local y se pueden
+consultar con `dplyr`, Apache Arrow o DuckDB. Contiene además
+diccionarios de datos, funciones para comparación de datos entre censos
+y generación de mapas.
 
 ## Instalación
 
@@ -102,7 +104,7 @@ get_censo(2012, "persona", departamento = "07")
 get_poblacion_1976(departamento = "Cochabamba") 
 ```
 
-## Análisis longitudinal
+## Análisis temporal
 
 ``` r
 
@@ -110,7 +112,7 @@ get_poblacion_1976(departamento = "Cochabamba")
 variables_armonizadas()
 
 # Nivel educativo en todo el país, 1976–2024
-edu <- get_longitudinal(
+edu <- get_temporal(
   variables = c("sexo", "nivel_edu"),
   anios     = c(1976, 1992, 2001, 2012, 2024)
 )
@@ -196,9 +198,10 @@ sin modificación de valores.
 citation("censosbo")
 ```
 
-> Ojeda Copa, A. (2026). *censosbo: Acceso y análisis de los censos de
-> Bolivia (1976–2024)*. R package version 1.0.0.
-> <https://github.com/lab-tecnosocial/censosbo>
+> Ojeda Copa A (2026). *censosbo: Paquete de R para el acceso, análisis
+> y visualización de datos censales en Bolivia (1976-2024)*. Lab
+> TecnoSocial, Cochabamba, Bolivia. R package version 1.0.0.
+> <https://lab-tecnosocial.github.io/censosbo/>
 
 # Package index
 
@@ -239,7 +242,7 @@ tibble, o una conexión DuckDB.
 ## Censos históricos: API general
 
 Función principal para acceder a cualquier censo histórico (1976, 1992,
-2001, 2012) y funciones de análisis longitudinal entre censos.
+2001, 2012) y funciones de análisis temporal entre censos.
 
 - [`get_poblacion_1976()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md)
   [`get_viviendas_1976()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md)
@@ -254,11 +257,11 @@ Función principal para acceder a cualquier censo histórico (1976, 1992,
   [`get_discapacidad_2012()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md)
   [`get_censo()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md)
   : Accede a los microdatos de los censos históricos de Bolivia
-- [`get_longitudinal()`](https://lab-tecnosocial.github.io/censosbo/reference/get_longitudinal.md)
-  : Obtiene datos longitudinales comparables de la tabla persona entre
+- [`get_temporal()`](https://lab-tecnosocial.github.io/censosbo/reference/get_temporal.md)
+  : Obtiene datos temporales comparables de la tabla persona entre
   censos
-- [`get_longitudinal_vivienda()`](https://lab-tecnosocial.github.io/censosbo/reference/get_longitudinal_vivienda.md)
-  : Obtiene datos longitudinales comparables de la tabla vivienda entre
+- [`get_temporal_vivienda()`](https://lab-tecnosocial.github.io/censosbo/reference/get_temporal_vivienda.md)
+  : Obtiene datos temporales comparables de la tabla vivienda entre
   censos
 - [`variables_armonizadas()`](https://lab-tecnosocial.github.io/censosbo/reference/variables_armonizadas.md)
   : Muestra el mapeo de variables comparables entre censos de Bolivia
@@ -318,8 +321,8 @@ Datasets disponibles sin descarga, incluidos directamente en el paquete.
   : Diccionario de variables del CPV-2024
 - [`codebook_historico_meta`](https://lab-tecnosocial.github.io/censosbo/reference/codebook_historico_meta.md)
   : Diccionarios de variables de los censos históricos de Bolivia
-- [`variable_longitudinal_map`](https://lab-tecnosocial.github.io/censosbo/reference/variable_longitudinal_map.md)
-  : Variables armonizadas para análisis longitudinal
+- [`variable_temporal_map`](https://lab-tecnosocial.github.io/censosbo/reference/variable_temporal_map.md)
+  : Variables armonizadas para análisis temporal
 - [`geo_bolivia`](https://lab-tecnosocial.github.io/censosbo/reference/geo_bolivia.md)
   : Tabla de geografía de Bolivia
 - [`geo_departamentos`](https://lab-tecnosocial.github.io/censosbo/reference/geo_departamentos.md)
@@ -331,7 +334,8 @@ Datasets disponibles sin descarga, incluidos directamente en el paquete.
 
 - [`censosbo`](https://lab-tecnosocial.github.io/censosbo/reference/censosbo-package.md)
   [`censosbo-package`](https://lab-tecnosocial.github.io/censosbo/reference/censosbo-package.md)
-  : censosbo: Acceso y Análisis de los Datos de los Censos de Bolivia
+  : censosbo: Paquete de R para el acceso, análisis y visualización de
+  datos censales en Bolivia (1976-2024)
 
 # Articles
 
@@ -355,8 +359,8 @@ Datasets disponibles sin descarga, incluidos directamente en el paquete.
 
 - [Censos históricos de Bolivia
   (1976–2012)](https://lab-tecnosocial.github.io/censosbo/articles/censos-historicos.md):
-- [Análisis longitudinal entre censos
-  (1976–2024)](https://lab-tecnosocial.github.io/censosbo/articles/analisis-longitudinal.md):
+- [Análisis temporal entre censos
+  (1976–2024)](https://lab-tecnosocial.github.io/censosbo/articles/analisis-temporal.md):
 
 ### Mapas y visualización
 

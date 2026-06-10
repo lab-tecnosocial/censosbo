@@ -1,14 +1,14 @@
 # Etiqueta los valores de las variables categóricas
 
-Convierte los códigos numéricos de las columnas categóricas del CPV-2024
-en factores con las etiquetas en español del diccionario oficial del
-INE. Se usa típicamente después de \`collect()\` para que los resultados
-sean legibles directamente.
+Convierte los códigos numéricos de las columnas categóricas en factores
+con las etiquetas en español del diccionario oficial del INE. Detecta
+automáticamente el censo (1976, 1992, 2001, 2012 o 2024) a partir de los
+nombres de columna del data frame.
 
 ## Usage
 
 ``` r
-etiquetar_valores(df, columnas = NULL)
+etiquetar_valores(df, columnas = NULL, anio = NULL)
 ```
 
 ## Arguments
@@ -24,6 +24,12 @@ etiquetar_valores(df, columnas = NULL)
   \`NULL\` (por defecto), etiqueta todas las columnas categóricas
   presentes.
 
+- anio:
+
+  Entero. Año del censo: \`1976\`, \`1992\`, \`2001\`, \`2012\` o
+  \`2024\`. Si \`NULL\` (por defecto), se detecta automáticamente a
+  partir de los nombres de columna del data frame.
+
 ## Value
 
 El mismo \`df\` con las columnas categóricas convertidas a \`factor\`
@@ -32,15 +38,18 @@ diccionario se devuelven sin cambios.
 
 ## Details
 
+La detección automática del censo funciona comparando los nombres de
+columna del data frame con los de cada codebook. Dado que cada censo usa
+una convención de nombrado única (p.ej. \`p25_sexo\` en 2024 vs \`P25\`
+en 1992), la detección es confiable incluso después de \`count()\` o
+\`filter()\`.
+
 Los valores que no coinciden con ningún código del diccionario
 (incluyendo \`NA\`) quedan como \`NA\` en el factor resultante. Para ver
 los códigos disponibles de una variable usa \`codebook_valores()\`.
 
 Para volver de etiquetas a códigos: “\`r as.integer(df\$p25_sexo) \# →
 1, 2 as.character(df\$p25_sexo) \# → "Mujer", "Hombre" “\`
-
-Para etiquetar también los nombres de columna, encadena con
-\`etiquetar_variables()\`.
 
 ## See also
 
@@ -49,19 +58,22 @@ Para etiquetar también los nombres de columna, encadena con
 ## Examples
 
 ``` r
-# Etiquetar todas las columnas categóricas de un data.frame
+# Censo 2024 — detección automática
 if (FALSE) { # \dontrun{
 get_personas_2024(departamento = "Pando", as = "tibble") |>
   etiquetar_valores() |>
   head(3)
 } # }
 
-# Flujo típico: Arrow → collect → etiquetar_valores
+# Censo 1992 — detección automática
 if (FALSE) { # \dontrun{
-get_personas_2024(departamento = "Santa Cruz") |>
-  dplyr::filter(p26_edad >= 18) |>
-  dplyr::count(p25_sexo) |>
-  dplyr::collect() |>
+get_personas_1992(departamento = "07", as = "tibble") |>
+  dplyr::count(P25) |>
   etiquetar_valores()
+} # }
+
+# Año explícito como escape hatch
+if (FALSE) { # \dontrun{
+df |> etiquetar_valores(anio = 1992)
 } # }
 ```

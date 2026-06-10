@@ -105,11 +105,11 @@ mapa_dep(
 ``` r
 
 # Cambio en tasa de alfabetismo entre el censo 1992 y el CPV-2024
-alfa_92 <- get_longitudinal(variables = "sabe_leer", anios = 1992) |>
+alfa_92 <- get_temporal(variables = "sabe_leer", anios = 1992) |>
   group_by(departamento) |>
   summarise(alfa_1992 = mean(sabe_leer == 1, na.rm = TRUE) * 100)
 
-alfa_24 <- get_longitudinal(variables = "sabe_leer", anios = 2024) |>
+alfa_24 <- get_temporal(variables = "sabe_leer", anios = 2024) |>
   group_by(departamento) |>
   summarise(alfa_2024 = mean(sabe_leer == 1, na.rm = TRUE) * 100)
 

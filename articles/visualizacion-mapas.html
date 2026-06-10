@@ -49,7 +49,7 @@
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Censos históricos</h6></li>
     <li><a class="dropdown-item" href="../articles/censos-historicos.html">Acceso a censos históricos (1976–2012)</a></li>
-    <li><a class="dropdown-item" href="../articles/analisis-longitudinal.html">Análisis longitudinal entre censos</a></li>
+    <li><a class="dropdown-item" href="../articles/analisis-temporal.html">Análisis temporal entre censos</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Mapas y visualización</h6></li>
     <li><a class="dropdown-item" href="../articles/visualizacion-mapas.html">Visualización en mapas</a></li>
@@ -193,11 +193,11 @@ histórica de asentamientos.</p>
 </h3>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Cambio en tasa de alfabetismo entre el censo 1992 y el CPV-2024</span></span>
-<span><span class="va">alfa_92</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_longitudinal.html">get_longitudinal</a></span><span class="op">(</span>variables <span class="op">=</span> <span class="st">"sabe_leer"</span>, anios <span class="op">=</span> <span class="fl">1992</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span><span class="va">alfa_92</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_temporal.html">get_temporal</a></span><span class="op">(</span>variables <span class="op">=</span> <span class="st">"sabe_leer"</span>, anios <span class="op">=</span> <span class="fl">1992</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">departamento</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>alfa_1992 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">sabe_leer</span> <span class="op">==</span> <span class="fl">1</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">alfa_24</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_longitudinal.html">get_longitudinal</a></span><span class="op">(</span>variables <span class="op">=</span> <span class="st">"sabe_leer"</span>, anios <span class="op">=</span> <span class="fl">2024</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span><span class="va">alfa_24</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_temporal.html">get_temporal</a></span><span class="op">(</span>variables <span class="op">=</span> <span class="st">"sabe_leer"</span>, anios <span class="op">=</span> <span class="fl">2024</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">departamento</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>alfa_2024 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">sabe_leer</span> <span class="op">==</span> <span class="fl">1</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span><span class="op">)</span></span>
 <span></span>

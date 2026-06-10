@@ -2,8 +2,10 @@
 
 **censosbo** proporciona acceso programático a los microdatos de los
 **censos de población de Bolivia**: 1976, 1992, 2001, 2012 y 2024. Los
-datos se descargan bajo demanda desde GitHub Releases, se guardan en
-caché local y se pueden consultar con `dplyr`, Apache Arrow o DuckDB.
+datos se descargan bajo demanda, se guardan en caché local y se pueden
+consultar con `dplyr`, Apache Arrow o DuckDB. Contiene además
+diccionarios de datos, funciones para comparación de datos entre censos
+y generación de mapas.
 
 ## Instalación
 
@@ -102,7 +104,7 @@ get_censo(2012, "persona", departamento = "07")
 get_poblacion_1976(departamento = "Cochabamba") 
 ```
 
-## Análisis longitudinal
+## Análisis temporal
 
 ``` r
 
@@ -110,7 +112,7 @@ get_poblacion_1976(departamento = "Cochabamba")
 variables_armonizadas()
 
 # Nivel educativo en todo el país, 1976–2024
-edu <- get_longitudinal(
+edu <- get_temporal(
   variables = c("sexo", "nivel_edu"),
   anios     = c(1976, 1992, 2001, 2012, 2024)
 )
@@ -196,6 +198,7 @@ sin modificación de valores.
 citation("censosbo")
 ```
 
-> Ojeda Copa, A. (2026). *censosbo: Acceso y análisis de los censos de
-> Bolivia (1976–2024)*. R package version 1.0.0.
-> <https://github.com/lab-tecnosocial/censosbo>
+> Ojeda Copa A (2026). *censosbo: Paquete de R para el acceso, análisis
+> y visualización de datos censales en Bolivia (1976-2024)*. Lab
+> TecnoSocial, Cochabamba, Bolivia. R package version 1.0.0.
+> <https://lab-tecnosocial.github.io/censosbo/>

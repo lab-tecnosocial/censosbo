@@ -2,7 +2,7 @@
 
 Devuelve la lista de grupos temáticos disponibles y las variables que
 contiene cada uno, para usar con el parámetro \`grupo\` de
-\[get_longitudinal()\].
+\[get_temporal()\].
 
 ## Usage
 

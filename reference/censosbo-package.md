@@ -1,12 +1,13 @@
-# censosbo: Acceso y Análisis de los Datos de los Censos de Bolivia
+# censosbo: Paquete de R para el acceso, análisis y visualización de datos censales en Bolivia (1976-2024)
 
 Proporciona acceso programático a los microdatos de los censos de
 Bolivia: CPV-2024, 2012, 2001, 1992 y 1976. Descarga archivos Parquet
 desde GitHub Releases, los almacena en caché local y permite filtrar por
 departamento, provincia o municipio. Soporta flujos de trabajo estilo
 dplyr vía Apache Arrow y consultas SQL vía DuckDB. Incluye diccionarios
-de variables para todos los años, funciones de armonización longitudinal
-y análisis comparativos entre censos.
+de variables para todos los años, funciones de armonización temporal,
+análisis comparativos entre censos y generación de mapas a nive
+departamental y municipal.
 
 ## See also
 
@@ -20,8 +21,10 @@ Useful links:
 
 ## Author
 
-**Maintainer**: Alex Ojeda Copa <alex@labtecnosocial.org>
+**Maintainer**: Alex Ojeda Copa <alex@labtecnosocial.org> (organization:
+Lab TecnoSocial)
 
 Authors:
 
-- Alex Ojeda Copa <alex@labtecnosocial.org>
+- Alex Ojeda Copa <alex@labtecnosocial.org> (organization: Lab
+  TecnoSocial)
