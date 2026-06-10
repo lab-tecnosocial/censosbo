@@ -81,7 +81,7 @@
 </div>
 <!-- badges: start -->
 
-<p><strong>censosbo</strong> proporciona acceso programático a los microdatos de los <strong>censos de población de Bolivia</strong>: 1976, 1992, 2001, 2012 y 2024. Los datos se descargan bajo demanda, se guardan en caché local y se pueden consultar con <code>dplyr</code>, Apache Arrow o DuckDB. Contiene además diccionarios de datos, funciones para comparación de datos entre censos y generación de mapas.</p>
+<p><strong>censosbo</strong> proporciona acceso programático a los microdatos de los <strong>censos de población de Bolivia</strong>: 1976, 1992, 2001, 2012 y 2024. Los datos se descargan bajo demanda, se guardan en caché local y se pueden consultar con <code>dplyr</code>, Apache Arrow o DuckDB. Contiene además diccionarios de datos, funciones para comparación temporal de datos entre censos y generación de mapas.</p>
 <div class="section level2">
 <h2 id="instalación">Instalación<a class="anchor" aria-label="anchor" href="#instalaci%C3%B3n"></a>
 </h2>
@@ -330,7 +330,7 @@
 <div class="section level3">
 <h3 id="nota-metodológica">Nota metodológica<a class="anchor" aria-label="anchor" href="#nota-metodol%C3%B3gica"></a>
 </h3>
-<p>Los archivos originales fueron transformados a formato <strong>Parquet</strong> (compresión zstd nivel 6) para distribución eficiente. El proceso de conversión varía por censo:</p>
+<p>Los archivos originales fueron transformados a formato <strong>Parquet</strong> para una mejor distribución. El proceso de conversión varía por censo:</p>
 <table class="table">
 <colgroup>
 <col width="33%">
@@ -384,7 +384,7 @@
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"censosbo"</span><span class="op">)</span></span></code></pre></div>
 <blockquote>
-<p>Ojeda Copa A (2026). <em>censosbo: Paquete de R para el acceso, análisis y visualización de datos censales en Bolivia (1976-2024)</em>. Lab TecnoSocial, Cochabamba, Bolivia. R package version 1.0.0. <a href="https://lab-tecnosocial.github.io/censosbo/" class="uri">https://lab-tecnosocial.github.io/censosbo/</a></p>
+<p>Ojeda Copa A (2026). <em>censosbo: Paquete de R para el acceso, análisis y visualización de datos censales en Bolivia (1976-2024)</em>. Lab TecnoSocial, Cochabamba, Bolivia. R package version 1.0.1. <a href="https://lab-tecnosocial.github.io/censosbo/" class="uri">https://lab-tecnosocial.github.io/censosbo/</a></p>
 </blockquote>
 </div>
 </div>

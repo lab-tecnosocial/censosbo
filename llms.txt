@@ -4,8 +4,8 @@
 **censos de población de Bolivia**: 1976, 1992, 2001, 2012 y 2024. Los
 datos se descargan bajo demanda, se guardan en caché local y se pueden
 consultar con `dplyr`, Apache Arrow o DuckDB. Contiene además
-diccionarios de datos, funciones para comparación de datos entre censos
-y generación de mapas.
+diccionarios de datos, funciones para comparación temporal de datos
+entre censos y generación de mapas.
 
 ## Instalación
 
@@ -176,9 +176,8 @@ de Estadística (INE) de Bolivia**:
 
 ### Nota metodológica
 
-Los archivos originales fueron transformados a formato **Parquet**
-(compresión zstd nivel 6) para distribución eficiente. El proceso de
-conversión varía por censo:
+Los archivos originales fueron transformados a formato **Parquet** para
+una mejor distribución. El proceso de conversión varía por censo:
 
 | Censo | Formato original | Herramienta de conversión |
 |----|----|----|
@@ -200,7 +199,7 @@ citation("censosbo")
 
 > Ojeda Copa A (2026). *censosbo: Paquete de R para el acceso, análisis
 > y visualización de datos censales en Bolivia (1976-2024)*. Lab
-> TecnoSocial, Cochabamba, Bolivia. R package version 1.0.0.
+> TecnoSocial, Cochabamba, Bolivia. R package version 1.0.1.
 > <https://lab-tecnosocial.github.io/censosbo/>
 
 # Package index
