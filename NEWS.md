@@ -1,3 +1,7 @@
+# censosbo 1.0.1
+
+* Mejoras en ejemplos de documentación
+
 # censosbo 1.0.0
 
 Primera versión de lanzamiento. `censosbo` proporciona acceso programático a
