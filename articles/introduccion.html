@@ -261,9 +261,9 @@ se unen con la clave compuesta <code>idep + iprov + imun + i00</code>
 <div class="section level2">
 <h2 id="diccionario-de-variables">Diccionario de variables<a class="anchor" aria-label="anchor" href="#diccionario-de-variables"></a>
 </h2>
-<p>El paquete incluye un diccionario completo de las 168 variables del
-CPV-2024 con etiquetas en español, disponible sin necesidad de descargar
-nada:</p>
+<p>El paquete incluye diccionarios completos de los cinco censos (1976,
+1992, 2001, 2012 y CPV-2024) con etiquetas en español, disponibles sin
+necesidad de descargar nada:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Distribución de variables por tabla y tipo</span></span>
 <span><span class="va">codebook_meta</span> <span class="op">|&gt;</span></span>
@@ -337,6 +337,10 @@ funciones para hacerlos legibles:</p>
 <code><a href="../reference/etiquetar_variables.html">etiquetar_variables()</a></code> — renombra las
 <strong>columnas</strong> con sus descripciones del INE</li>
 </ul>
+<p>Ambas funciones <strong>detectan automáticamente el censo</strong> a
+partir de los nombres de columna del data frame, por lo que funcionan
+igual para el CPV-2024 y para los censos históricos (1976, 1992, 2001,
+2012) sin necesidad de especificar el año.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Ejemplo con los datos de geografía incluidos en el paquete</span></span>
 <span><span class="va">codebook_meta</span> <span class="op">|&gt;</span></span>
@@ -364,7 +368,8 @@ funciones para hacerlos legibles:</p>
 <p>En los siguientes ejemplos se aplican después de
 <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect()</a></code>:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"La Paz"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<code class="sourceCode R"><span><span class="co"># CPV-2024: detección automática</span></span>
+<span><span class="fu"><a href="../reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"La Paz"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">p25_sexo</span>, <span class="va">nivel_edu</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/etiquetar_valores.html">etiquetar_valores</a></span><span class="op">(</span><span class="op">)</span>    <span class="co"># 1 → "Mujer", 2 → "Hombre"; 1 → "Ninguno", etc.</span></span>
@@ -374,7 +379,14 @@ funciones para hacerlos legibles:</p>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">p25_sexo</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/etiquetar_valores.html">etiquetar_valores</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/etiquetar_variables.html">etiquetar_variables</a></span><span class="op">(</span><span class="op">)</span>  <span class="co"># "p25_sexo" → "25. Es mujer u hombre"</span></span></code></pre></div>
+<span>  <span class="fu"><a href="../reference/etiquetar_variables.html">etiquetar_variables</a></span><span class="op">(</span><span class="op">)</span>  <span class="co"># "p25_sexo" → "25. Es mujer u hombre"</span></span>
+<span></span>
+<span><span class="co"># Censos históricos: mismo flujo, sin especificar año</span></span>
+<span><span class="fu"><a href="../reference/get_censo.html">get_personas_1992</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"07"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">P03</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/etiquetar_valores.html">etiquetar_valores</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/etiquetar_variables.html">etiquetar_variables</a></span><span class="op">(</span><span class="op">)</span>  <span class="co"># "P03" → "Es hombre o mujer"</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="geografía-departamentos-provincias-y-municipios">Geografía: departamentos, provincias y municipios<a class="anchor" aria-label="anchor" href="#geograf%C3%ADa-departamentos-provincias-y-municipios"></a>

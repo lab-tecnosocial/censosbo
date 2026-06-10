@@ -42,6 +42,8 @@ Para etiquetar también los valores de las columnas, encadena con
 # Renombrar columnas de un resumen del diccionario
 codebook_meta[1:5, c("variable", "etiqueta", "tabla")] |>
   etiquetar_variables()
+#> Warning: No se pudo detectar el censo por los nombres de columnas. Usando 2024.
+#> ℹ Especifica el año con `anio`: `etiquetar_valores(df, anio = 1992)`
 #>       variable                                                       etiqueta
 #> 1 p24_parentes          24. Que parentesco tiene con la jefa o jefe del hogar
 #> 2     p25_sexo                                          25. Es mujer u hombre

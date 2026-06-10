@@ -157,7 +157,7 @@ duckdb::duckdb_register_arrow(
                variables = c("idep","iprov","imun","i00","p25_sexo","p26_edad","nivel_edu"))
 )
 #> ℹ Descargando persona_dep04.parquet (~14 MB)...
-#> ✔ Descargado persona_dep04.parquet [627ms]
+#> ✔ Descargado persona_dep04.parquet [464ms]
 #> 
 duckdb::duckdb_register_arrow(
   con, "viviendas",

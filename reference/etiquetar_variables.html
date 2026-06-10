@@ -99,6 +99,8 @@ en código R usa backticks: <code>df$`25. Es mujer u hombre`</code>.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Renombrar columnas de un resumen del diccionario</span></span></span>
 <span class="r-in"><span><span class="va">codebook_meta</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"variable"</span>, <span class="st">"etiqueta"</span>, <span class="st">"tabla"</span><span class="op">)</span><span class="op">]</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">etiquetar_variables</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>No se pudo detectar el censo por los nombres de columnas. Usando 2024.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Especifica el año con `anio`: `etiquetar_valores(df, anio = 1992)`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       variable                                                       etiqueta</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 p24_parentes          24. Que parentesco tiene con la jefa o jefe del hogar</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2     p25_sexo                                          25. Es mujer u hombre</span>

@@ -52,9 +52,9 @@ Las tablas del CPV-2024 se unen con la clave compuesta
 
 ## Diccionario de variables
 
-El paquete incluye un diccionario completo de las 168 variables del
-CPV-2024 con etiquetas en español, disponible sin necesidad de descargar
-nada:
+El paquete incluye diccionarios completos de los cinco censos (1976,
+1992, 2001, 2012 y CPV-2024) con etiquetas en español, disponibles sin
+necesidad de descargar nada:
 
 ``` r
 
@@ -135,6 +135,11 @@ funciones para hacerlos legibles:
 - [`etiquetar_variables()`](https://lab-tecnosocial.github.io/censosbo/reference/etiquetar_variables.md)
   — renombra las **columnas** con sus descripciones del INE
 
+Ambas funciones **detectan automáticamente el censo** a partir de los
+nombres de columna del data frame, por lo que funcionan igual para el
+CPV-2024 y para los censos históricos (1976, 1992, 2001, 2012) sin
+necesidad de especificar el año.
+
 ``` r
 
 # Ejemplo con los datos de geografía incluidos en el paquete
@@ -167,6 +172,7 @@ En los siguientes ejemplos se aplican después de
 
 ``` r
 
+# CPV-2024: detección automática
 get_personas_2024(departamento = "La Paz") |>
   count(p25_sexo, nivel_edu) |>
   collect() |>
@@ -178,6 +184,13 @@ get_personas_2024(departamento = "La Paz") |>
   collect() |>
   etiquetar_valores() |>
   etiquetar_variables()  # "p25_sexo" → "25. Es mujer u hombre"
+
+# Censos históricos: mismo flujo, sin especificar año
+get_personas_1992(departamento = "07") |>
+  count(P03) |>
+  collect() |>
+  etiquetar_valores() |>
+  etiquetar_variables()  # "P03" → "Es hombre o mujer"
 ```
 
 ## Geografía: departamentos, provincias y municipios

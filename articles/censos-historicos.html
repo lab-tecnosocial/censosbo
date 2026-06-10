@@ -307,9 +307,48 @@ puede no existir en otro.</p>
 <span><span class="fu"><a href="../reference/codebook_valores.html">codebook_valores</a></span><span class="op">(</span><span class="st">"p02"</span>, anio <span class="op">=</span> <span class="fl">1976</span><span class="op">)</span>   <span class="co"># sexo en 1976</span></span></code></pre></div>
 </div>
 <div class="section level2">
+<h2 id="etiquetado-de-resultados">Etiquetado de resultados<a class="anchor" aria-label="anchor" href="#etiquetado-de-resultados"></a>
+</h2>
+<p><code><a href="../reference/etiquetar_valores.html">etiquetar_valores()</a></code> y <code><a href="../reference/etiquetar_variables.html">etiquetar_variables()</a></code>
+detectan automáticamente el censo a partir de los nombres de columna,
+por lo que funcionan igual para datos históricos que para el
+CPV-2024:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># 1992: detección automática por el nombre de columna "P03"</span></span>
+<span><span class="fu"><a href="../reference/get_censo.html">get_personas_1992</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"07"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">P03</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/etiquetar_valores.html">etiquetar_valores</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/etiquetar_variables.html">etiquetar_variables</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 2 × 2</span></span>
+<span><span class="co">#&gt;   `Es hombre o mujer`       n</span></span>
+<span><span class="co">#&gt;   &lt;fct&gt;                 &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1 Hombre               686978</span></span>
+<span><span class="co">#&gt; 2 Mujer                677411</span></span>
+<span></span>
+<span><span class="co"># 2012: estado civil</span></span>
+<span><span class="fu"><a href="../reference/get_censo.html">get_personas_2012</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"02"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">P45</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/etiquetar_valores.html">etiquetar_valores</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/etiquetar_variables.html">etiquetar_variables</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># 1976: idioma que habla</span></span>
+<span><span class="fu"><a href="../reference/get_censo.html">get_poblacion_1976</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"03"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">p09</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/etiquetar_valores.html">etiquetar_valores</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/etiquetar_variables.html">etiquetar_variables</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>Si el data frame tiene muy pocas columnas o solo columnas genéricas,
+puedes especificar el año con el argumento <code>anio</code>:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">df</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/etiquetar_valores.html">etiquetar_valores</a></span><span class="op">(</span>anio <span class="op">=</span> <span class="fl">1992</span><span class="op">)</span></span>
+<span><span class="va">df</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/etiquetar_variables.html">etiquetar_variables</a></span><span class="op">(</span>anio <span class="op">=</span> <span class="fl">2001</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
 <h2 id="consulta-sql-con-duckdb">Consulta SQL con DuckDB<a class="anchor" aria-label="anchor" href="#consulta-sql-con-duckdb"></a>
 </h2>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dbi.r-dbi.org" class="external-link">DBI</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Censo 2012 con DuckDB</span></span>
@@ -331,7 +370,7 @@ puede no existir en otro.</p>
 <div class="section level2">
 <h2 id="selección-de-variables">Selección de variables<a class="anchor" aria-label="anchor" href="#selecci%C3%B3n-de-variables"></a>
 </h2>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Solo las variables que necesitas (más rápido)</span></span>
 <span><span class="fu"><a href="../reference/get_censo.html">get_personas_2012</a></span><span class="op">(</span></span>
 <span>  departamento <span class="op">=</span> <span class="st">"07"</span>,</span>
@@ -346,7 +385,7 @@ puede no existir en otro.</p>
 <div class="section level2">
 <h2 id="comparación-entre-dos-censos-mismo-año-de-referencia">Comparación entre dos censos (mismo año de referencia)<a class="anchor" aria-label="anchor" href="#comparaci%C3%B3n-entre-dos-censos-mismo-a%C3%B1o-de-referencia"></a>
 </h2>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Distribución de sexo en 2012 y 2024 para Santa Cruz</span></span>
 <span><span class="va">dep_sc</span> <span class="op">&lt;-</span> <span class="st">"07"</span></span>
 <span></span>
@@ -370,7 +409,7 @@ longitudinal</a></strong>.</p>
 <h2 id="tablas-complementarias">Tablas complementarias<a class="anchor" aria-label="anchor" href="#tablas-complementarias"></a>
 </h2>
 <p>Los censos 2012, 2001 y 1992 tienen tablas adicionales:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Emigración internacional (2012)</span></span>
 <span><span class="fu"><a href="../reference/get_censo.html">get_emigracion_2012</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"07"</span><span class="op">)</span></span>
 <span></span>

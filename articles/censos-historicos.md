@@ -154,6 +154,52 @@ codebook_valores("P24", anio = 2012)   # sexo en 2012
 codebook_valores("p02", anio = 1976)   # sexo en 1976
 ```
 
+## Etiquetado de resultados
+
+[`etiquetar_valores()`](https://lab-tecnosocial.github.io/censosbo/reference/etiquetar_valores.md)
+y
+[`etiquetar_variables()`](https://lab-tecnosocial.github.io/censosbo/reference/etiquetar_variables.md)
+detectan automáticamente el censo a partir de los nombres de columna,
+por lo que funcionan igual para datos históricos que para el CPV-2024:
+
+``` r
+
+# 1992: detección automática por el nombre de columna "P03"
+get_personas_1992(departamento = "07") |>
+  count(P03) |>
+  collect() |>
+  etiquetar_valores() |>
+  etiquetar_variables()
+#> # A tibble: 2 × 2
+#>   `Es hombre o mujer`       n
+#>   <fct>                 <int>
+#> 1 Hombre               686978
+#> 2 Mujer                677411
+
+# 2012: estado civil
+get_personas_2012(departamento = "02") |>
+  count(P45) |>
+  collect() |>
+  etiquetar_valores() |>
+  etiquetar_variables()
+
+# 1976: idioma que habla
+get_poblacion_1976(departamento = "03") |>
+  count(p09) |>
+  collect() |>
+  etiquetar_valores() |>
+  etiquetar_variables()
+```
+
+Si el data frame tiene muy pocas columnas o solo columnas genéricas,
+puedes especificar el año con el argumento `anio`:
+
+``` r
+
+df |> etiquetar_valores(anio = 1992)
+df |> etiquetar_variables(anio = 2001)
+```
+
 ## Consulta SQL con DuckDB
 
 ``` r
