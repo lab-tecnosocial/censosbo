@@ -1,0 +1,12 @@
+bibentry(
+  bibtype  = "Manual",
+  title    = "censosbo: Paquete de R para el acceso, análisis y visualización de datos censales en Bolivia (1976-2024)",
+  author   = person("Alex", "Ojeda Copa",
+                    email   = "alex@labtecnosocial.org",
+                    comment = c(organization = "Lab TecnoSocial")),
+  organization = "Lab TecnoSocial",
+  address  = "Cochabamba, Bolivia",
+  year     = "2026",
+  note     = "R package version 1.0.0",
+  url      = "https://lab-tecnosocial.github.io/censosbo/"
+)

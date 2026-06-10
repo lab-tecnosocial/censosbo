@@ -14,8 +14,10 @@ MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.or
 
 **censosbo** proporciona acceso programático a los microdatos de los
 **censos de población de Bolivia**: 1976, 1992, 2001, 2012 y 2024. Los
-datos se descargan bajo demanda desde GitHub Releases, se guardan en
-caché local y se pueden consultar con `dplyr`, Apache Arrow o DuckDB.
+datos se descargan bajo demanda, se guardan en caché local y se pueden
+consultar con `dplyr`, Apache Arrow o DuckDB. Contiene además
+diccionarios de datos, funciones para comparación de datos entre censos
+y generación de mapas.
 
 ## Instalación
 
@@ -190,6 +192,7 @@ sin modificación de valores.
 citation("censosbo")
 ```
 
-> Ojeda Copa, A. (2026). *censosbo: Acceso y análisis de los censos de
-> Bolivia (1976–2024)*. R package version 1.0.0.
-> <https://github.com/lab-tecnosocial/censosbo>
+> Ojeda Copa A (2026). *censosbo: Paquete de R para el acceso, análisis
+> y visualización de datos censales en Bolivia (1976-2024)*. Lab
+> TecnoSocial, Cochabamba, Bolivia. R package version 1.0.0.
+> <https://lab-tecnosocial.github.io/censosbo/>
