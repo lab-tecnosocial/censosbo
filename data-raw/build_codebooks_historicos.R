@@ -3,6 +3,7 @@
 ## Ejecutar desde la raíz del paquete: source("data-raw/build_codebooks_historicos.R")
 
 library(arrow)
+source("data-raw/clasificar_tipos.R")
 
 base_dir <- "original-data/r/censos-historicos"
 
@@ -73,15 +74,26 @@ parse_censo_codebook <- function(anio) {
     subset_etiq
   })
 
+  # Clasificar `tipo` con el clasificador compartido. El tipo de almacenamiento
+  # real se lee de los parquets de datos del censo (deriva del varType de los
+  # .dicx REDATAM / .sav SPSS de origen).
+  sm <- storage_map(data_parquets_de(censo_dir))
+  tipo <- vapply(seq_len(nrow(vars_df)), function(i) {
+    clasificar_tipo(vars_df$variable[i], vars_df$valores_codigos[[i]],
+                    sm[tolower(vars_df$variable[i])])
+  }, character(1))
+
   result <- data.frame(
     variable         = vars_df$variable,
     etiqueta         = vars_df$label,
     tabla            = vars_df$tabla,
-    tipo             = ifelse(vapply(vars_df$valores_codigos, is.null, logical(1)),
-                              "numerica", "categorica"),
+    tipo             = tipo,
     stringsAsFactors = FALSE
   )
-  result$valores_codigos <- vars_df$valores_codigos
+  # Conservar categorías solo para variables categóricas.
+  result$valores_codigos <- lapply(seq_len(nrow(vars_df)), function(i) {
+    if (tipo[i] == "categorica") vars_df$valores_codigos[[i]] else NULL
+  })
 
   # Bug 2: correcciones manuales para variables cuyo label es NA en el Parquet
   # (el encabezado REDATAM tenía "label" como placeholder en lugar del texto real)

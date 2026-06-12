@@ -11,7 +11,9 @@ Una lista con elementos `"1976"`, `"1992"`, `"2001"` y `"2012"`,
   \item{variable}{Nombre original de la variable en el censo}
   \item{etiqueta}{Descripción de la variable}
   \item{tabla}{Tabla/entidad REDATAM de origen}
-  \item{tipo}{`"categorica"` o `"numerica"`}
+  \item{tipo}{`"categorica"`, `"numerica"` o `"texto"` (misma regla que en
+    [codebook_meta]: códigos con etiquetas o con nombre tipo `cod` son
+    categóricos aunque sus valores sean números)}
   \item{valores_codigos}{Lista de data.frames con códigos y etiquetas}
 }
 }

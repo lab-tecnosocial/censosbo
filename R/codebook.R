@@ -9,9 +9,14 @@
 #'   \item{etiqueta}{Descripción en español de la variable}
 #'   \item{tabla}{Tabla a la que pertenece: `"persona"`, `"vivienda"`,
 #'     `"emigracion"` o `"mortalidad"`}
-#'   \item{tipo}{Tipo de dato: `"numerica"`, `"categorica"` o `"texto"`}
+#'   \item{tipo}{Tipo de dato: `"categorica"`, `"numerica"` o `"texto"`.
+#'     Una variable es `"categorica"` si sus valores son códigos con etiquetas
+#'     (aunque sean números, como `sexo` 1/2) o si su nombre indica un código de
+#'     clasificación (sufijo `cod`: códigos geográficos, de ocupación, etc.);
+#'     `"texto"` si almacena texto libre; `"numerica"` en los demás casos
+#'     (conteos y medidas)}
 #'   \item{valores_codigos}{Lista de data.frames con los códigos y etiquetas
-#'     para variables categóricas; `NULL` para variables numéricas}
+#'     para variables categóricas; `NULL` para variables numéricas o de texto}
 #' }
 #' @source INE Bolivia, CPV-2024. Diccionario de Variables CPV 2024.xlsx.
 "codebook_meta"
@@ -28,7 +33,9 @@
 #'   \item{variable}{Nombre original de la variable en el censo}
 #'   \item{etiqueta}{Descripción de la variable}
 #'   \item{tabla}{Tabla/entidad REDATAM de origen}
-#'   \item{tipo}{`"categorica"` o `"numerica"`}
+#'   \item{tipo}{`"categorica"`, `"numerica"` o `"texto"` (misma regla que en
+#'     [codebook_meta]: códigos con etiquetas o con nombre tipo `cod` son
+#'     categóricos aunque sus valores sean números)}
 #'   \item{valores_codigos}{Lista de data.frames con códigos y etiquetas}
 #' }
 #' @source INE Bolivia. Diccionarios Parquet generados por open-redatam.

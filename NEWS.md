@@ -1,3 +1,7 @@
+# censosbo 1.0.3
+
+* Tipos de variable corregidos en los diccionarios.
+
 # censosbo 1.0.2
 
 * Ajustes menores en datos y sus etiquetas

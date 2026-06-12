@@ -14,3 +14,26 @@ test_that("codebook() filtra por búsqueda de texto", {
   expect_s3_class(result, "data.frame")
   expect_equal(nrow(result), 0L)
 })
+
+test_that("tipo solo toma valores válidos y es consistente", {
+  validos <- c("categorica", "numerica", "texto")
+  metas <- c(list(`2024` = codebook_meta), codebook_historico_meta)
+  for (nm in names(metas)) {
+    meta <- metas[[nm]]
+    expect_true(all(meta$tipo %in% validos),
+                info = paste("tipos inválidos en censo", nm))
+    # Solo las categóricas conservan categorías.
+    tiene_vals <- !vapply(meta$valores_codigos, is.null, logical(1))
+    expect_true(all(meta$tipo[tiene_vals] == "categorica"),
+                info = paste("variable no categórica con valores en censo", nm))
+  }
+})
+
+test_that("códigos numéricos categóricos se clasifican como categorica", {
+  # Variables cuyos valores son números pero representan categorías.
+  expect_equal(codebook("p25_sexo")$tipo, "categorica")
+  # Código de clasificación con nombre tipo `cod` (antes marcado numerica).
+  expect_equal(codebook("p35h_muncod")$tipo, "categorica")
+  # Código de ocupación del censo 2001 sin etiquetas enumeradas.
+  expect_equal(codebook("P33COD", anio = 2001)$tipo, "categorica")
+})

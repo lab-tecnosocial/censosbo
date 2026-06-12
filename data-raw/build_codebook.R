@@ -1,7 +1,8 @@
 ## Genera codebook_meta.rda desde el Diccionario de Variables CPV 2024.xlsx.
-## Requiere: readxl, usethis
+## Requiere: readxl, arrow, usethis
 
 library(readxl)
+source("data-raw/clasificar_tipos.R")
 
 xlsx_path <- "original-data/fuentes/cpv-2024/Diccionario de variables CPV 2024.xlsx"
 stopifnot(file.exists(xlsx_path))
@@ -60,42 +61,17 @@ parse_sheet <- function(hoja, tabla_name) {
     vars[[length(vars) + 1]] <- current
   }
 
-  # Detecta si los únicos códigos son valores centinela (sin especificar, omisión,
-  # top-coding como "100 y más"). En ese caso la variable es numérica aunque tenga
-  # una entrada en valores_codigos.
-  SENTINEL_RE <- paste(
-    "sin especificar", "sin dato", "omisi.n", "y m.s", "no sabe",
-    "no responde", "ignorado", sep = "|"
-  )
-  solo_centinelas <- function(vc_list) {
-    if (length(vc_list) == 0) return(TRUE)
-    vc <- do.call(rbind, vc_list)
-    all(grepl(SENTINEL_RE, tolower(trimws(vc$etiqueta))))
-  }
-
-  # Convertir a data.frame
+  # Convertir a data.frame. El `tipo` se asigna más abajo con el clasificador
+  # compartido (clasificar_tipos.R); aquí solo se arman los valores_codigos crudos.
   if (length(vars) == 0) return(NULL)
   result <- data.frame(
     variable         = vapply(vars, function(v) v$variable %||% NA_character_, character(1)),
     etiqueta         = vapply(vars, function(v) v$etiqueta %||% NA_character_, character(1)),
     tabla            = tabla_name,
-    tipo             = vapply(vars, function(v) {
-      t <- v$tipo
-      if (is.na(t) || t %in% c("integer", "string", "chr")) {
-        if (length(v$valores_codigos) > 0 && !solo_centinelas(v$valores_codigos)) {
-          "categorica"
-        } else {
-          "numerica"
-        }
-      } else "numerica"
-    }, character(1)),
     stringsAsFactors = FALSE
   )
-  result$valores_codigos <- lapply(seq_len(nrow(result)), function(i) {
-    v  <- vars[[i]]
-    vc <- if (length(v$valores_codigos) == 0) NULL else do.call(rbind, v$valores_codigos)
-    # Para variables numéricas, no guardar categorías centinela
-    if (result$tipo[i] == "numerica") NULL else vc
+  result$valores_codigos <- lapply(vars, function(v) {
+    if (length(v$valores_codigos) == 0) NULL else do.call(rbind, v$valores_codigos)
   })
   result
 }
@@ -119,7 +95,29 @@ for (hoja in names(tabla_map)) {
 codebook_meta <- do.call(rbind, all_vars)
 rownames(codebook_meta) <- NULL
 
+# Clasificar `tipo` con el clasificador compartido. El tipo de almacenamiento
+# real se lee de los parquets de datos del CPV-2024 (los CSV del INE no traen
+# tipos útiles: el Excel marca todo como "integer").
+dir24 <- "original-data/r/cpv-2024/parquets"
+sm24  <- storage_map(c(
+  file.path(dir24, "persona_dep01.parquet"),
+  file.path(dir24, "vivienda.parquet"),
+  file.path(dir24, "emigracion.parquet"),
+  file.path(dir24, "mortalidad.parquet")
+))
+codebook_meta$tipo <- vapply(seq_len(nrow(codebook_meta)), function(i) {
+  clasificar_tipo(codebook_meta$variable[i], codebook_meta$valores_codigos[[i]],
+                  sm24[tolower(codebook_meta$variable[i])])
+}, character(1))
+# Para variables no categóricas no se conservan categorías (suelen ser solo
+# centinelas como "Sin especificar").
+codebook_meta$valores_codigos <- lapply(seq_len(nrow(codebook_meta)), function(i) {
+  if (codebook_meta$tipo[i] == "categorica") codebook_meta$valores_codigos[[i]] else NULL
+})
+
 message("\nTotal de variables: ", nrow(codebook_meta))
+message("Por tipo:")
+print(table(codebook_meta$tipo))
 message("Por tabla:")
 print(table(codebook_meta$tabla))
 message("\nEjemplos:")

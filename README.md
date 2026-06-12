@@ -195,5 +195,5 @@ citation("censosbo")
 
 > Ojeda Copa A (2026). *censosbo: Paquete de R para el acceso, análisis
 > y visualización de datos censales en Bolivia (1976-2024)*. Lab
-> TecnoSocial, Cochabamba, Bolivia. R package version 1.0.2.
+> TecnoSocial, Cochabamba, Bolivia. R package version 1.0.3.
 > <https://lab-tecnosocial.github.io/censosbo/>

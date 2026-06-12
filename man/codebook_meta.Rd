@@ -11,9 +11,14 @@ Un data.frame con las siguientes columnas:
   \item{etiqueta}{Descripción en español de la variable}
   \item{tabla}{Tabla a la que pertenece: `"persona"`, `"vivienda"`,
     `"emigracion"` o `"mortalidad"`}
-  \item{tipo}{Tipo de dato: `"numerica"`, `"categorica"` o `"texto"`}
+  \item{tipo}{Tipo de dato: `"categorica"`, `"numerica"` o `"texto"`.
+    Una variable es `"categorica"` si sus valores son códigos con etiquetas
+    (aunque sean números, como `sexo` 1/2) o si su nombre indica un código de
+    clasificación (sufijo `cod`: códigos geográficos, de ocupación, etc.);
+    `"texto"` si almacena texto libre; `"numerica"` en los demás casos
+    (conteos y medidas)}
   \item{valores_codigos}{Lista de data.frames con los códigos y etiquetas
-    para variables categóricas; `NULL` para variables numéricas}
+    para variables categóricas; `NULL` para variables numéricas o de texto}
 }
 }
 \source{
