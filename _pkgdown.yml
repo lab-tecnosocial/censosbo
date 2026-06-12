@@ -148,6 +148,7 @@ reference:
       - censosbo_cache_dir
       - censosbo_cache_info
       - censosbo_cache_clear
+      - update_censosbo
 
   - title: "Datos incluidos en el paquete"
     desc: >

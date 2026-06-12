@@ -31,6 +31,12 @@ knitr::opts_chunk$set(
 remotes::install_github("lab-tecnosocial/censosbo")
 ```
 
+El paquete se desarrolla activamente (mejoras, corrección de errores), si ya lo tienes instalado te recomendamos actualizarlo a la última versión `r packageVersion("censosbo")` con:
+
+```{r update, eval=FALSE}
+update_censosbo()
+```
+
 ## Censos disponibles
 
 | Año | Función | Registros | Variables | Disco (Parquet) | RAM (aprox.)¹ |
@@ -158,6 +164,7 @@ mapa_mun(personas_beni, "edad_prom", departamento = "Beni",
 censosbo_cache_dir()    # dónde está el caché
 censosbo_cache_info()   # qué archivos están descargados
 censosbo_cache_clear()  # liberar espacio en disco
+update_censosbo()       # actualizar paquete y limpiar caché
 ```
 
 ## Fuentes de datos

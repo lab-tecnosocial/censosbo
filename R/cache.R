@@ -102,6 +102,49 @@ censosbo_cache_clear <- function(ask = TRUE) {
   invisible(NULL)
 }
 
+#' Actualiza el paquete censosbo y limpia el caché
+#'
+#' Reinstala la última versión de `censosbo` desde GitHub y elimina el caché
+#' local de datos Parquet, para que los datos se vuelvan a descargar en su
+#' versión más reciente. Útil cuando se publica una nueva versión que incluye
+#' correcciones en los datos o nuevas variables.
+#'
+#' @param clear_cache Lógico. Si `TRUE` (defecto), limpia el caché local
+#'   automáticamente tras actualizar el paquete. Usa `FALSE` solo si quieres
+#'   conservar los archivos descargados.
+#' @return Invisible `NULL`.
+#' @export
+#' @examples
+#' \dontrun{
+#' # Actualizar paquete y limpiar caché (recomendado)
+#' update_censosbo()
+#'
+#' # Solo actualizar el paquete sin tocar el caché
+#' update_censosbo(clear_cache = FALSE)
+#' }
+update_censosbo <- function(clear_cache = TRUE) {
+  if (!requireNamespace("remotes", quietly = TRUE)) {
+    cli::cli_abort(
+      "El paquete {.pkg remotes} es necesario para actualizar censosbo.
+       Instálalo con: {.code install.packages('remotes')}"
+    )
+  }
+  cli::cli_h1("Actualizando censosbo")
+  cli::cli_alert_info("Instalando la última versión desde GitHub...")
+  remotes::install_github("lab-tecnosocial/censosbo", quiet = FALSE)
+  cli::cli_alert_success("Paquete actualizado.")
+  if (clear_cache) {
+    cli::cli_alert_warning(
+      "Se eliminará el caché local para que los datos se descarguen en su versión más reciente."
+    )
+    censosbo_cache_clear(ask = FALSE)
+  }
+  cli::cli_alert_success(
+    "Listo. Reinicia R y vuelve a cargar el paquete con {.code library(censosbo)}."
+  )
+  invisible(NULL)
+}
+
 .cache_path <- function(filename, subdir = NULL) {
   if (is.null(subdir)) {
     fs::path(censosbo_cache_dir(), filename)
