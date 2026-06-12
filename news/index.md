@@ -1,5 +1,43 @@
 # Changelog
 
+## censosbo 1.0.4
+
+### Correcciones
+
+- [`get_censo()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md)
+  ahora muestra un mensaje claro al recibir un año no válido (antes
+  fallaba con un error interno de `cli` por nombres de variable con
+  punto). Mismo arreglo en los mensajes de error de descarga.
+- [`etiquetar_valores()`](https://lab-tecnosocial.github.io/censosbo/reference/etiquetar_valores.md)
+  ahora usa las etiquetas **armonizadas** correctas con los datos de
+  [`get_temporal()`](https://lab-tecnosocial.github.io/censosbo/reference/get_temporal.md)/[`get_temporal_vivienda()`](https://lab-tecnosocial.github.io/censosbo/reference/get_temporal_vivienda.md)
+  (antes aplicaba por error el diccionario del CPV-2024, produciendo
+  etiquetas incorrectas en `nivel_edu` y otras).
+- [`departamentos()`](https://lab-tecnosocial.github.io/censosbo/reference/departamentos.md),
+  [`provincias()`](https://lab-tecnosocial.github.io/censosbo/reference/provincias.md)
+  y
+  [`municipios()`](https://lab-tecnosocial.github.io/censosbo/reference/municipios.md)
+  reinician los nombres de fila (`1:n`) en lugar de arrastrar los del
+  filtrado interno.
+
+### Armonización temporal
+
+- **`estado_civil`** ahora se armoniza a 4 categorías comparables entre
+  censos (1=Soltero/a, 2=Casado/a o conviviente, 3=Separado/a o
+  divorciado/a, 4=Viudo/a), limitadas por la granularidad del censo
+  1992.
+- **`pea`** y **`pet`** corregidas: el mapeo apuntaba a columnas
+  equivocadas del CPV-2024 (`fft_19`/`ft_19`). Ahora usan `pea_13`
+  (1=Ocupado, 2=Cesante, 3=Aspirante) y `pet_13` (1=Sí, 2=No),
+  consistentes con los censos previos.
+- `variable_temporal_map` y
+  [`variables_armonizadas()`](https://lab-tecnosocial.github.io/censosbo/reference/variables_armonizadas.md)
+  incluyen una nueva columna `armonizada` que indica si los códigos son
+  comparables entre censos.
+- [`get_temporal()`](https://lab-tecnosocial.github.io/censosbo/reference/get_temporal.md)
+  advierte cuando se solicita una variable no armonizada (`parentesco`),
+  cuyos códigos crudos no son comparables entre años.
+
 ## censosbo 1.0.3
 
 - Tipos de variable corregidos en los diccionarios.

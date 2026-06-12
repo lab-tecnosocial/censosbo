@@ -13,7 +13,7 @@ nombres de columna del data frame."><meta property="og:image" content="https://l
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -101,6 +101,11 @@ la detección es confiable incluso después de `count()` o `filter()`.</p>
 <p>Los valores que no coinciden con ningún código del diccionario (incluyendo
 `NA`) quedan como `NA` en el factor resultante. Para ver los códigos
 disponibles de una variable usa `codebook_valores()`.</p>
+<p>Con datos de [get_temporal()] / [get_temporal_vivienda()] se usan las etiquetas
+**armonizadas** (no las de un censo concreto). Esto se detecta por la columna
+`anio`; conviene conservarla al resumir. Para variables cuyo nombre también
+existe como columna cruda (`nivel_edu`, `area`, `pea`, `pet`), la columna `anio`
+es necesaria para distinguir datos temporales de datos crudos del CPV-2024.</p>
 <p>Para volver de etiquetas a códigos:
 “`r
 as.integer(df$p25_sexo)   # → 1, 2

@@ -30,6 +30,12 @@ Un data.frame con columnas:
 
   Tabla de origen: \`"persona"\` o \`"vivienda"\`
 
+- armonizada:
+
+  \`TRUE\` si \`get_temporal()\` remapea los códigos a un esquema
+  comparable entre censos; \`FALSE\` si devuelve los códigos crudos de
+  cada año (no comparables, p.ej. \`parentesco\`)
+
 - v1976, v1992, v2001, v2012, v2024:
 
   Nombre de la columna en cada censo (\`NA\` si no disponible)

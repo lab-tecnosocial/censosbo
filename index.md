@@ -15,6 +15,15 @@ entre censos y generación de mapas.
 remotes::install_github("lab-tecnosocial/censosbo")
 ```
 
+El paquete se desarrolla activamente (mejoras, corrección de errores),
+si ya lo tienes instalado te recomendamos actualizarlo a la última
+versión 1.0.4 con:
+
+``` r
+
+update_censosbo()
+```
+
 ## Censos disponibles
 
 | Año | Función | Registros | Variables | Disco (Parquet) | RAM (aprox.)¹ |
@@ -164,6 +173,7 @@ mapa_mun(personas_beni, "edad_prom", departamento = "Beni",
 censosbo_cache_dir()    # dónde está el caché
 censosbo_cache_info()   # qué archivos están descargados
 censosbo_cache_clear()  # liberar espacio en disco
+update_censosbo()       # actualizar paquete y limpiar caché
 ```
 
 ## Fuentes de datos
@@ -201,5 +211,5 @@ citation("censosbo")
 
 > Ojeda Copa A (2026). *censosbo: Paquete de R para el acceso, análisis
 > y visualización de datos censales en Bolivia (1976-2024)*. Lab
-> TecnoSocial, Cochabamba, Bolivia. R package version 1.0.3.
+> TecnoSocial, Cochabamba, Bolivia. R package version 1.0.4.
 > <https://lab-tecnosocial.github.io/censosbo/>

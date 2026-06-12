@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -403,16 +403,16 @@ igual para el CPV-2024 y para los censos históricos (1976, 1992, 2001,
 Bolivia sin necesidad de descargar nada:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/departamentos.html">departamentos</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;     idep nombre_dep</span></span>
-<span><span class="co">#&gt; 1     01 Chuquisaca</span></span>
-<span><span class="co">#&gt; 30    02     La Paz</span></span>
-<span><span class="co">#&gt; 117   03 Cochabamba</span></span>
-<span><span class="co">#&gt; 165   04      Oruro</span></span>
-<span><span class="co">#&gt; 200   05     Potosí</span></span>
-<span><span class="co">#&gt; 242   06     Tarija</span></span>
-<span><span class="co">#&gt; 253   07 Santa Cruz</span></span>
-<span><span class="co">#&gt; 309   08       Beni</span></span>
-<span><span class="co">#&gt; 329   09      Pando</span></span></code></pre></div>
+<span><span class="co">#&gt;   idep nombre_dep</span></span>
+<span><span class="co">#&gt; 1   01 Chuquisaca</span></span>
+<span><span class="co">#&gt; 2   02     La Paz</span></span>
+<span><span class="co">#&gt; 3   03 Cochabamba</span></span>
+<span><span class="co">#&gt; 4   04      Oruro</span></span>
+<span><span class="co">#&gt; 5   05     Potosí</span></span>
+<span><span class="co">#&gt; 6   06     Tarija</span></span>
+<span><span class="co">#&gt; 7   07 Santa Cruz</span></span>
+<span><span class="co">#&gt; 8   08       Beni</span></span>
+<span><span class="co">#&gt; 9   09      Pando</span></span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">geo_bolivia</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">idep</span>, <span class="va">nombre_dep</span>, name <span class="op">=</span> <span class="st">"municipios"</span><span class="op">)</span> <span class="op">|&gt;</span></span>

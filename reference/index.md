@@ -107,6 +107,8 @@ Los archivos Parquet se descargan una sola vez y quedan en caché local.
   : Información sobre los archivos en caché
 - [`censosbo_cache_clear()`](https://lab-tecnosocial.github.io/censosbo/reference/censosbo_cache_clear.md)
   : Limpia el caché local de datos
+- [`update_censosbo()`](https://lab-tecnosocial.github.io/censosbo/reference/update_censosbo.md)
+  : Actualiza el paquete censosbo y limpia el caché
 
 ## Datos incluidos en el paquete
 

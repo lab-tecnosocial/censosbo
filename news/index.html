@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,6 +48,29 @@
       <small>Source: <a href="https://github.com/lab-tecnosocial/censosbo/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.4" id="censosbo-104">censosbo 1.0.4<a class="anchor" aria-label="anchor" href="#censosbo-104"></a></h2>
+<div class="section level3">
+<h3 id="correcciones-1-0-4">Correcciones<a class="anchor" aria-label="anchor" href="#correcciones-1-0-4"></a></h3>
+<ul><li>
+<code><a href="../reference/get_censo.html">get_censo()</a></code> ahora muestra un mensaje claro al recibir un año no válido (antes fallaba con un error interno de <code>cli</code> por nombres de variable con punto). Mismo arreglo en los mensajes de error de descarga.</li>
+<li>
+<code><a href="../reference/etiquetar_valores.html">etiquetar_valores()</a></code> ahora usa las etiquetas <strong>armonizadas</strong> correctas con los datos de <code><a href="../reference/get_temporal.html">get_temporal()</a></code>/<code><a href="../reference/get_temporal_vivienda.html">get_temporal_vivienda()</a></code> (antes aplicaba por error el diccionario del CPV-2024, produciendo etiquetas incorrectas en <code>nivel_edu</code> y otras).</li>
+<li>
+<code><a href="../reference/departamentos.html">departamentos()</a></code>, <code><a href="../reference/provincias.html">provincias()</a></code> y <code><a href="../reference/municipios.html">municipios()</a></code> reinician los nombres de fila (<code>1:n</code>) en lugar de arrastrar los del filtrado interno.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="armonización-temporal-1-0-4">Armonización temporal<a class="anchor" aria-label="anchor" href="#armonizaci%C3%B3n-temporal-1-0-4"></a></h3>
+<ul><li>
+<strong><code>estado_civil</code></strong> ahora se armoniza a 4 categorías comparables entre censos (1=Soltero/a, 2=Casado/a o conviviente, 3=Separado/a o divorciado/a, 4=Viudo/a), limitadas por la granularidad del censo 1992.</li>
+<li>
+<strong><code>pea</code></strong> y <strong><code>pet</code></strong> corregidas: el mapeo apuntaba a columnas equivocadas del CPV-2024 (<code>fft_19</code>/<code>ft_19</code>). Ahora usan <code>pea_13</code> (1=Ocupado, 2=Cesante, 3=Aspirante) y <code>pet_13</code> (1=Sí, 2=No), consistentes con los censos previos.</li>
+<li>
+<code>variable_temporal_map</code> y <code><a href="../reference/variables_armonizadas.html">variables_armonizadas()</a></code> incluyen una nueva columna <code>armonizada</code> que indica si los códigos son comparables entre censos.</li>
+<li>
+<code><a href="../reference/get_temporal.html">get_temporal()</a></code> advierte cuando se solicita una variable no armonizada (<code>parentesco</code>), cuyos códigos crudos no son comparables entre años.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.3" id="censosbo-103">censosbo 1.0.3<a class="anchor" aria-label="anchor" href="#censosbo-103"></a></h2>
 <ul><li>Tipos de variable corregidos en los diccionarios.</li>

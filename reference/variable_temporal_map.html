@@ -11,7 +11,7 @@ a lo largo del tiempo."><meta property="og:image" content="https://lab-tecnosoci
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -77,6 +77,11 @@ a lo largo del tiempo.</p>
 
   <dt>tabla</dt>
 <dd><p>Tabla de origen: `"persona"` o `"vivienda"`</p></dd>
+
+  <dt>armonizada</dt>
+<dd><p>`TRUE` si `get_temporal()` remapea los códigos a un esquema
+    comparable entre censos; `FALSE` si devuelve los códigos crudos de cada año
+    (no comparables, p.ej. `parentesco`)</p></dd>
 
   <dt>v1976, v1992, v2001, v2012, v2024</dt>
 <dd><p>Nombre de la columna en cada censo (`NA` si no disponible)</p></dd>

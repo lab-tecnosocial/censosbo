@@ -31,7 +31,7 @@
 
     <a class="navbar-brand me-2" href="index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -88,6 +88,9 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"lab-tecnosocial/censosbo"</span><span class="op">)</span></span></code></pre></div>
+<p>El paquete se desarrolla activamente (mejoras, corrección de errores), si ya lo tienes instalado te recomendamos actualizarlo a la última versión 1.0.4 con:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/update_censosbo.html">update_censosbo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="censos-disponibles">Censos disponibles<a class="anchor" aria-label="anchor" href="#censos-disponibles"></a>
@@ -233,7 +236,7 @@
 <div class="section level2">
 <h2 id="uso-rápido--cpv-2024">Uso rápido — CPV-2024<a class="anchor" aria-label="anchor" href="#uso-r%C3%A1pido--cpv-2024"></a>
 </h2>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lab-tecnosocial.github.io/censosbo/">censosbo</a></span><span class="op">)</span></span>
 <span></span>
@@ -248,7 +251,7 @@
 <div class="section level2">
 <h2 id="diccionario-de-variables">Diccionario de variables<a class="anchor" aria-label="anchor" href="#diccionario-de-variables"></a>
 </h2>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Buscar variables del CPV-2024</span></span>
 <span><span class="fu"><a href="reference/codebook.html">codebook</a></span><span class="op">(</span>buscar <span class="op">=</span> <span class="st">"educa"</span><span class="op">)</span></span>
 <span></span>
@@ -263,7 +266,7 @@
 <div class="section level2">
 <h2 id="etiquetas-en-los-resultados">Etiquetas en los resultados<a class="anchor" aria-label="anchor" href="#etiquetas-en-los-resultados"></a>
 </h2>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Santa Cruz"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -275,7 +278,7 @@
 <div class="section level2">
 <h2 id="censos-históricos">Censos históricos<a class="anchor" aria-label="anchor" href="#censos-hist%C3%B3ricos"></a>
 </h2>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Personas de Santa Cruz en el censo 2012</span></span>
 <span><span class="fu"><a href="reference/get_censo.html">get_personas_2012</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Santa Cruz"</span><span class="op">)</span></span>
 <span></span>
@@ -288,7 +291,7 @@
 <div class="section level2">
 <h2 id="análisis-temporal">Análisis temporal<a class="anchor" aria-label="anchor" href="#an%C3%A1lisis-temporal"></a>
 </h2>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Variables comparables entre censos</span></span>
 <span><span class="fu"><a href="reference/variables_armonizadas.html">variables_armonizadas</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
@@ -302,12 +305,12 @@
 <div class="section level2">
 <h2 id="geografía-y-mapas">Geografía y mapas<a class="anchor" aria-label="anchor" href="#geograf%C3%ADa-y-mapas"></a>
 </h2>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/departamentos.html">departamentos</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/provincias.html">provincias</a></span><span class="op">(</span><span class="st">"La Paz"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/municipios.html">municipios</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Santa Cruz"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span></code></pre></div>
 <p>El paquete incluye geometrías sf para los 9 departamentos (<code>geo_departamentos</code>) y 336 municipios (<code>geo_municipios</code>) de Bolivia. Las funciones <code><a href="reference/mapa_dep.html">mapa_dep()</a></code> y <code><a href="reference/mapa_mun.html">mapa_mun()</a></code> generan mapas coropléticos a partir de cualquier agregación de datos del censo.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># mapa_dep(): nivel departamental — geometrías incluidas en el paquete</span></span>
@@ -326,10 +329,11 @@
 <div class="section level2">
 <h2 id="gestión-del-caché">Gestión del caché<a class="anchor" aria-label="anchor" href="#gesti%C3%B3n-del-cach%C3%A9"></a>
 </h2>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/censosbo_cache_dir.html">censosbo_cache_dir</a></span><span class="op">(</span><span class="op">)</span>    <span class="co"># dónde está el caché</span></span>
 <span><span class="fu"><a href="reference/censosbo_cache_info.html">censosbo_cache_info</a></span><span class="op">(</span><span class="op">)</span>   <span class="co"># qué archivos están descargados</span></span>
-<span><span class="fu"><a href="reference/censosbo_cache_clear.html">censosbo_cache_clear</a></span><span class="op">(</span><span class="op">)</span>  <span class="co"># liberar espacio en disco</span></span></code></pre></div>
+<span><span class="fu"><a href="reference/censosbo_cache_clear.html">censosbo_cache_clear</a></span><span class="op">(</span><span class="op">)</span>  <span class="co"># liberar espacio en disco</span></span>
+<span><span class="fu"><a href="reference/update_censosbo.html">update_censosbo</a></span><span class="op">(</span><span class="op">)</span>       <span class="co"># actualizar paquete y limpiar caché</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="fuentes-de-datos">Fuentes de datos<a class="anchor" aria-label="anchor" href="#fuentes-de-datos"></a>
@@ -396,10 +400,10 @@
 <div class="section level2">
 <h2 id="citar">Citar<a class="anchor" aria-label="anchor" href="#citar"></a>
 </h2>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"censosbo"</span><span class="op">)</span></span></code></pre></div>
 <blockquote>
-<p>Ojeda Copa A (2026). <em>censosbo: Paquete de R para el acceso, análisis y visualización de datos censales en Bolivia (1976-2024)</em>. Lab TecnoSocial, Cochabamba, Bolivia. R package version 1.0.3. <a href="https://lab-tecnosocial.github.io/censosbo/" class="uri">https://lab-tecnosocial.github.io/censosbo/</a></p>
+<p>Ojeda Copa A (2026). <em>censosbo: Paquete de R para el acceso, análisis y visualización de datos censales en Bolivia (1976-2024)</em>. Lab TecnoSocial, Cochabamba, Bolivia. R package version 1.0.4. <a href="https://lab-tecnosocial.github.io/censosbo/" class="uri">https://lab-tecnosocial.github.io/censosbo/</a></p>
 </blockquote>
 </div>
 </div>

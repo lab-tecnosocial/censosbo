@@ -209,16 +209,16 @@ Bolivia sin necesidad de descargar nada:
 ``` r
 
 departamentos()
-#>     idep nombre_dep
-#> 1     01 Chuquisaca
-#> 30    02     La Paz
-#> 117   03 Cochabamba
-#> 165   04      Oruro
-#> 200   05     Potosí
-#> 242   06     Tarija
-#> 253   07 Santa Cruz
-#> 309   08       Beni
-#> 329   09      Pando
+#>   idep nombre_dep
+#> 1   01 Chuquisaca
+#> 2   02     La Paz
+#> 3   03 Cochabamba
+#> 4   04      Oruro
+#> 5   05     Potosí
+#> 6   06     Tarija
+#> 7   07 Santa Cruz
+#> 8   08       Beni
+#> 9   09      Pando
 ```
 
 ``` r
