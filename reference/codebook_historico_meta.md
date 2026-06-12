@@ -29,7 +29,9 @@ cada uno un data.frame con columnas:
 
 - tipo:
 
-  \`"categorica"\` o \`"numerica"\`
+  \`"categorica"\`, \`"numerica"\` o \`"texto"\` (misma regla que en
+  \[codebook_meta\]: códigos con etiquetas o con nombre tipo \`cod\` son
+  categóricos aunque sus valores sean números)
 
 - valores_codigos:
 

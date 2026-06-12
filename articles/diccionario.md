@@ -21,6 +21,20 @@ codebook_valores("P24", anio = 2012)   # Censo 2012
 codebook_1992(tabla = "persona")
 ```
 
+La columna **Tipo** clasifica cada variable como:
+
+- **`categorica`** — sus valores son códigos con significado. Incluye
+  variables cuyos valores son números pero representan categorías
+  (p. ej. `sexo` 1/2) y códigos de clasificación con nombre terminado en
+  `cod` (departamento, municipio, ocupación, idioma…), aunque no todos
+  sus códigos estén enumerados.
+- **`numerica`** — conteos y medidas continuas (edad, número de
+  habitaciones…).
+- **`texto`** — texto libre.
+
+Esta clasificación está disponible también en la columna `tipo` de los
+`diccionario_variables.parquet` publicados.
+
 ------------------------------------------------------------------------
 
 ## CPV-2024

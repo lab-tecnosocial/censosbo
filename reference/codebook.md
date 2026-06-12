@@ -50,8 +50,8 @@ Un data.frame con las variables que coinciden con los filtros.
 ``` r
 # Ver etiqueta de una variable específica del CPV-2024
 codebook("p25_sexo")
-#>   variable              etiqueta   tabla       tipo     valores_codigos
-#> 1 p25_sexo 25. Es mujer u hombre persona categorica 1, 2, Mujer, Hombre
+#>   variable              etiqueta   tabla     valores_codigos       tipo
+#> 1 p25_sexo 25. Es mujer u hombre persona 1, 2, Mujer, Hombre categorica
 
 # Variables de sexo en el censo 2012
 codebook(buscar = "sexo", anio = 2012)

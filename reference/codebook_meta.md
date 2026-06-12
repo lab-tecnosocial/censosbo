@@ -28,12 +28,17 @@ Un data.frame con las siguientes columnas:
 
 - tipo:
 
-  Tipo de dato: \`"numerica"\`, \`"categorica"\` o \`"texto"\`
+  Tipo de dato: \`"categorica"\`, \`"numerica"\` o \`"texto"\`. Una
+  variable es \`"categorica"\` si sus valores son códigos con etiquetas
+  (aunque sean números, como \`sexo\` 1/2) o si su nombre indica un
+  código de clasificación (sufijo \`cod\`: códigos geográficos, de
+  ocupación, etc.); \`"texto"\` si almacena texto libre; \`"numerica"\`
+  en los demás casos (conteos y medidas)
 
 - valores_codigos:
 
   Lista de data.frames con los códigos y etiquetas para variables
-  categóricas; \`NULL\` para variables numéricas
+  categóricas; \`NULL\` para variables numéricas o de texto
 
 ## Source
 

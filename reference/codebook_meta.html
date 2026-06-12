@@ -9,7 +9,7 @@ de Bolivia, extraídos del Diccionario de Variables oficial del INE."><meta prop
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -74,11 +74,16 @@ de Bolivia, extraídos del Diccionario de Variables oficial del INE.</p>
     `"emigracion"` o `"mortalidad"`</p></dd>
 
   <dt>tipo</dt>
-<dd><p>Tipo de dato: `"numerica"`, `"categorica"` o `"texto"`</p></dd>
+<dd><p>Tipo de dato: `"categorica"`, `"numerica"` o `"texto"`.
+    Una variable es `"categorica"` si sus valores son códigos con etiquetas
+    (aunque sean números, como `sexo` 1/2) o si su nombre indica un código de
+    clasificación (sufijo `cod`: códigos geográficos, de ocupación, etc.);
+    `"texto"` si almacena texto libre; `"numerica"` en los demás casos
+    (conteos y medidas)</p></dd>
 
   <dt>valores_codigos</dt>
 <dd><p>Lista de data.frames con los códigos y etiquetas
-    para variables categóricas; `NULL` para variables numéricas</p></dd>
+    para variables categóricas; `NULL` para variables numéricas o de texto</p></dd>
 
 
 </dl></div>

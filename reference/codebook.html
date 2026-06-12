@@ -9,7 +9,7 @@ las etiquetas."><meta property="og:image" content="https://lab-tecnosocial.githu
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -104,8 +104,8 @@ o `2012`.</p></dd>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Ver etiqueta de una variable específica del CPV-2024</span></span></span>
 <span class="r-in"><span><span class="fu">codebook</span><span class="op">(</span><span class="st">"p25_sexo"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   variable              etiqueta   tabla       tipo     valores_codigos</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 p25_sexo 25. Es mujer u hombre persona categorica 1, 2, Mujer, Hombre</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   variable              etiqueta   tabla     valores_codigos       tipo</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 p25_sexo 25. Es mujer u hombre persona 1, 2, Mujer, Hombre categorica</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Variables de sexo en el censo 2012</span></span></span>
 <span class="r-in"><span><span class="fu">codebook</span><span class="op">(</span>buscar <span class="op">=</span> <span class="st">"sexo"</span>, anio <span class="op">=</span> <span class="fl">2012</span><span class="op">)</span></span></span>
