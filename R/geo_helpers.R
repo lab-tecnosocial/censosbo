@@ -22,7 +22,8 @@
 #' @examples
 #' departamentos()
 departamentos <- function() {
-  unique(geo_bolivia[, c("idep", "nombre_dep")])
+  res <- unique(geo_bolivia[, c("idep", "nombre_dep")])
+  `rownames<-`(res, NULL)
 }
 
 #' Lista las provincias de un departamento
@@ -37,7 +38,8 @@ departamentos <- function() {
 provincias <- function(departamento) {
   dep_codes <- .resolve_dep_codes(departamento)
   geo <- geo_bolivia[geo_bolivia$idep %in% dep_codes, ]
-  unique(geo[, c("idep", "nombre_dep", "iprov", "nombre_prov")])
+  res <- unique(geo[, c("idep", "nombre_dep", "iprov", "nombre_prov")])
+  `rownames<-`(res, NULL)
 }
 
 #' Lista los municipios de Bolivia
@@ -59,7 +61,7 @@ municipios <- function(departamento = NULL, provincia = NULL) {
   if (!is.null(provincia)) {
     geo <- geo[geo$iprov %in% as.character(provincia), ]
   }
-  geo
+  `rownames<-`(geo, NULL)
 }
 
 #' Geometrías de los departamentos de Bolivia

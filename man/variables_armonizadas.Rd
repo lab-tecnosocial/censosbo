@@ -12,7 +12,8 @@ para todas. Por defecto `NULL`.}
 }
 \value{
 Un data.frame con las variables armonizadas y sus equivalentes en
-  cada año de censo.
+  cada año de censo. La columna `armonizada` indica si los códigos son
+  comparables entre censos (`TRUE`) o crudos de cada año (`FALSE`).
 }
 \description{
 Retorna la tabla de variables armonizadas que pueden usarse en análisis

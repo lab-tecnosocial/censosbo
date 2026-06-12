@@ -11,6 +11,9 @@ Un data.frame con columnas:
   \item{etiqueta}{Descripción en español}
   \item{descripcion}{Descripción detallada y notas de comparabilidad}
   \item{tabla}{Tabla de origen: `"persona"` o `"vivienda"`}
+  \item{armonizada}{`TRUE` si `get_temporal()` remapea los códigos a un esquema
+    comparable entre censos; `FALSE` si devuelve los códigos crudos de cada año
+    (no comparables, p.ej. `parentesco`)}
   \item{v1976, v1992, v2001, v2012, v2024}{Nombre de la columna en cada censo (`NA` si no disponible)}
   \item{notas}{Advertencias sobre diferencias metodológicas entre censos}
 }

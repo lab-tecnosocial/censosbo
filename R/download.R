@@ -33,10 +33,11 @@
     curl::curl_download(url, as.character(dest), quiet = TRUE),
     error = function(e) {
       if (fs::file_exists(dest)) fs::file_delete(dest)
+      release_tag <- .CENSOSBO_RELEASE_TAG
       cli::cli_abort(c(
         "Error al descargar {.file {filename}}.",
         "x" = conditionMessage(e),
-        "i" = "Verifica tu conexión o que el release {.val {.CENSOSBO_RELEASE_TAG}} exista en GitHub."
+        "i" = "Verifica tu conexión o que el release {.val {release_tag}} exista en GitHub."
       ))
     }
   )

@@ -47,6 +47,12 @@
 #' `NA`) quedan como `NA` en el factor resultante. Para ver los códigos
 #' disponibles de una variable usa `codebook_valores()`.
 #'
+#' Con datos de [get_temporal()] / [get_temporal_vivienda()] se usan las etiquetas
+#' **armonizadas** (no las de un censo concreto). Esto se detecta por la columna
+#' `anio`; conviene conservarla al resumir. Para variables cuyo nombre también
+#' existe como columna cruda (`nivel_edu`, `area`, `pea`, `pet`), la columna `anio`
+#' es necesaria para distinguir datos temporales de datos crudos del CPV-2024.
+#'
 #' Para volver de etiquetas a códigos:
 #' ```r
 #' as.integer(df$p25_sexo)   # → 1, 2
@@ -75,9 +81,37 @@
 #' df |> etiquetar_valores(anio = 1992)
 #' }
 etiquetar_valores <- function(df, columnas = NULL, anio = NULL) {
+  cols <- if (is.null(columnas)) names(df) else columnas
+
+  # Datos armonizados de get_temporal()/get_temporal_vivienda(). Sus códigos NO
+  # coinciden con el diccionario de ningún censo individual, así que se usan
+  # etiquetas propias (y las variables passthrough se dejan sin tocar).
+  # Detección: (a) columna `anio` con años censales —señal definitiva, incluso para
+  # nombres que también existen como columnas crudas (nivel_edu, area, pea, pet)—, o
+  # (b) sin `anio`, basta un nombre armonizado que no colisione con ningún censo crudo.
+  anios_censales <- c(1976L, 1992L, 2001L, 2012L, 2024L)
+  tiene_anio <- "anio" %in% names(df) &&
+    length(stats::na.omit(as.integer(df[["anio"]]))) > 0 &&
+    all(stats::na.omit(as.integer(df[["anio"]])) %in% anios_censales)
+  nombres_armon_unicos <- setdiff(names(.HARMONIZED_VALUE_LABELS),
+                                  c("area", "nivel_edu", "pea", "pet"))
+  es_temporal <- is.null(anio) &&
+    (tiene_anio || any(intersect(cols, names(df)) %in% nombres_armon_unicos))
+  if (es_temporal) {
+    for (col in intersect(cols, names(df))) {
+      labs <- .HARMONIZED_VALUE_LABELS[[col]]
+      if (is.null(labs)) next
+      df[[col]] <- factor(
+        as.character(df[[col]]),
+        levels = names(labs),
+        labels = unname(labs)
+      )
+    }
+    return(df)
+  }
+
   anio <- if (!is.null(anio)) as.integer(anio) else .detect_censo_anio(df)
   meta <- .get_codebook_for_anio(anio)
-  cols <- if (is.null(columnas)) names(df) else columnas
 
   for (col in intersect(cols, names(df))) {
     idx <- which(meta$variable == col & meta$tipo == "categorica")

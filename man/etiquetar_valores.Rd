@@ -37,6 +37,12 @@ Los valores que no coinciden con ningún código del diccionario (incluyendo
 `NA`) quedan como `NA` en el factor resultante. Para ver los códigos
 disponibles de una variable usa `codebook_valores()`.
 
+Con datos de [get_temporal()] / [get_temporal_vivienda()] se usan las etiquetas
+**armonizadas** (no las de un censo concreto). Esto se detecta por la columna
+`anio`; conviene conservarla al resumir. Para variables cuyo nombre también
+existe como columna cruda (`nivel_edu`, `area`, `pea`, `pet`), la columna `anio`
+es necesaria para distinguir datos temporales de datos crudos del CPV-2024.
+
 Para volver de etiquetas a códigos:
 ```r
 as.integer(df$p25_sexo)   # → 1, 2

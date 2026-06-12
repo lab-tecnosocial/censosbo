@@ -4,6 +4,14 @@ test_that("departamentos() devuelve un data.frame con las columnas correctas", {
   expect_true(all(c("idep", "nombre_dep") %in% names(d)))
 })
 
+test_that("los helpers geográficos reinician los row.names (1:n)", {
+  expect_equal(rownames(departamentos()), as.character(seq_len(9)))
+  p <- provincias("Pando")
+  expect_equal(rownames(p), as.character(seq_len(nrow(p))))
+  m <- municipios(departamento = "Pando")
+  expect_equal(rownames(m), as.character(seq_len(nrow(m))))
+})
+
 test_that(".resolve_dep_codes() acepta códigos numéricos", {
   expect_equal(censosbo:::.resolve_dep_codes("7"),  "07")
   expect_equal(censosbo:::.resolve_dep_codes("02"), "02")

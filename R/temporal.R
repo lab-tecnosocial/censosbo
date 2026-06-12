@@ -10,6 +10,9 @@
 #'   \item{etiqueta}{Descripción en español}
 #'   \item{descripcion}{Descripción detallada y notas de comparabilidad}
 #'   \item{tabla}{Tabla de origen: `"persona"` o `"vivienda"`}
+#'   \item{armonizada}{`TRUE` si `get_temporal()` remapea los códigos a un esquema
+#'     comparable entre censos; `FALSE` si devuelve los códigos crudos de cada año
+#'     (no comparables, p.ej. `parentesco`)}
 #'   \item{v1976, v1992, v2001, v2012, v2024}{Nombre de la columna en cada censo (`NA` si no disponible)}
 #'   \item{notas}{Advertencias sobre diferencias metodológicas entre censos}
 #' }
@@ -26,7 +29,8 @@
 #'   para todas. Por defecto `NULL`.
 #'
 #' @return Un data.frame con las variables armonizadas y sus equivalentes en
-#'   cada año de censo.
+#'   cada año de censo. La columna `armonizada` indica si los códigos son
+#'   comparables entre censos (`TRUE`) o crudos de cada año (`FALSE`).
 #' @export
 #' @examples
 #' variables_armonizadas()
@@ -59,6 +63,21 @@ grupos_variables <- function() {
     migracion   = c("sexo", "edad", "migracion_nac_dpto", "migracion_rec_dpto"),
     fertilidad  = c("sexo", "edad", "hijos_nacidos_vivos", "hijos_sobrevivientes")
   )
+}
+
+# Advierte si entre las variables pedidas hay alguna no armonizada (códigos crudos
+# no comparables entre censos). Usa la columna `armonizada` de variable_temporal_map.
+.warn_no_armonizadas <- function(mapa, variables, verbose) {
+  if (!isTRUE(verbose) || !"armonizada" %in% names(mapa)) return(invisible())
+  no_arm <- mapa$variable[mapa$variable %in% variables & !mapa$armonizada]
+  if (length(no_arm) > 0) {
+    cli::cli_warn(c(
+      "!" = "Variable(s) no armonizada(s): {.val {no_arm}}.",
+      "i" = "Se devuelven los códigos crudos de cada censo, que NO son comparables entre años.",
+      "i" = "Consulta {.code codebook_1976()}/{.code codebook_1992()}/... para interpretarlos por año."
+    ))
+  }
+  invisible()
 }
 
 #' Obtiene datos temporales comparables de la tabla persona entre censos
@@ -158,6 +177,8 @@ get_temporal <- function(
       "i" = "Para variables de vivienda usa {.fn get_temporal_vivienda}."
     ))
   }
+
+  .warn_no_armonizadas(mapa, variables, verbose)
 
   partes <- vector("list", length(anios))
   names(partes) <- as.character(anios)
@@ -375,6 +396,8 @@ get_temporal_vivienda <- function(
     ))
   }
 
+  .warn_no_armonizadas(mapa, variables, verbose)
+
   partes <- vector("list", length(anios))
   names(partes) <- as.character(anios)
 
@@ -447,9 +470,55 @@ get_temporal_vivienda <- function(
 # Funciones internas de armonización — tabla PERSONA
 # ===========================================================================
 
-# Despacha a la función correcta según variable y año
+# Etiquetas de los códigos armonizados que produce get_temporal()/get_temporal_vivienda().
+# Fuente única de verdad: debe coincidir con los códigos destino de las funciones
+# .harmonize_*() de abajo. Solo incluye variables efectivamente armonizadas (códigos
+# comparables entre censos). Las variables passthrough (solo `parentesco`) NO se
+# etiquetan porque sus códigos varían entre censos.
+.HARMONIZED_VALUE_LABELS <- list(
+  # tabla persona
+  sexo                = c("1" = "Mujer", "2" = "Hombre"),
+  area                = c("1" = "Urbana", "2" = "Rural"),
+  estado_civil        = c("1" = "Soltero/a", "2" = "Casado/a o conviviente",
+                          "3" = "Separado/a o divorciado/a", "4" = "Viudo/a"),
+  pea                 = c("1" = "Ocupado", "2" = "Cesante", "3" = "Aspirante"),
+  pet                 = c("1" = "Sí", "2" = "No"),
+  sabe_leer           = c("1" = "Sí", "2" = "No"),
+  nivel_edu           = c("0" = "Sin instrucción", "1" = "Primaria",
+                          "2" = "Secundaria", "3" = "Superior"),
+  asistencia_escolar  = c("1" = "Sí asiste", "2" = "No asiste"),
+  categoria_ocupacion = c("1" = "Empleado/Obrero", "2" = "Cuenta propia",
+                          "3" = "Empleador/Patrón", "4" = "Familiar no remunerado",
+                          "5" = "Otro"),
+  identidad_indigena  = c("1" = "Sí", "2" = "No"),
+  idioma_materno      = c("1" = "Castellano", "2" = "Quechua", "3" = "Aymara",
+                          "4" = "Guaraní", "5" = "Otro nativo boliviano",
+                          "6" = "Otro idioma (extranjero)"),
+  migracion_nac_dpto  = c("1" = "Mismo departamento", "2" = "Otro departamento",
+                          "3" = "Exterior", "4" = "No había nacido"),
+  migracion_rec_dpto  = c("1" = "Mismo departamento", "2" = "Otro departamento",
+                          "3" = "Exterior", "4" = "No había nacido"),
+  # tabla vivienda
+  material_paredes    = c("1" = "Ladrillo/Bloque/Hormigón", "2" = "Adobe/Tapial",
+                          "3" = "Madera/Tabique/Caña/Palma", "4" = "Piedra", "5" = "Otro"),
+  material_techo      = c("1" = "Calamina/Plancha/Teja", "2" = "Losa de hormigón",
+                          "3" = "Paja/Caña/Palma", "4" = "Otro"),
+  material_piso       = c("1" = "Tierra", "2" = "Cemento/Ladrillo",
+                          "3" = "Mosaico/Parquet/Madera", "4" = "Otro"),
+  fuente_agua         = c("1" = "Cañería/Red pública", "2" = "Otra fuente protegida",
+                          "3" = "Fuente no protegida"),
+  energia_electrica   = c("1" = "Sí", "2" = "No"),
+  servicio_sanitario  = c("1" = "Sí tiene", "2" = "No tiene"),
+  tenencia_vivienda   = c("1" = "Propia", "2" = "Alquilada",
+                          "3" = "Cedida/Anticrético/Servicios", "4" = "Otra")
+)
+
+# Despacha a la función de armonización correcta según variable y año
 .harmonize_col <- function(x, variable, anio) {
   if (variable == "sexo")               return(.harmonize_sexo(x, anio))
+  if (variable == "estado_civil")       return(.harmonize_estado_civil(x, anio))
+  if (variable == "pea")                return(.harmonize_pea(x, anio))
+  if (variable == "pet")                return(.harmonize_pet(x, anio))
   if (variable == "sabe_leer")          return(.harmonize_sabe_leer(x, anio))
   if (variable == "nivel_edu")          return(.harmonize_nivel_edu(x, anio))
   if (variable == "asistencia_escolar") return(.harmonize_asistencia_escolar(x, anio))
@@ -479,6 +548,63 @@ get_temporal_vivienda <- function(
     dplyr::case_when(x_num == 1L ~ 2L, x_num == 2L ~ 1L, TRUE ~ NA_integer_)
   } else {
     dplyr::case_when(x_num %in% c(1L, 2L) ~ x_num, TRUE ~ NA_integer_)
+  }
+}
+
+# estado_civil → 1=Soltero/a, 2=Casado/a o conviviente,
+#   3=Separado/a o divorciado/a, 4=Viudo/a
+# Harmonizado al máximo nivel comparable, limitado por 1992 (agrupa casado/conviviente
+# y separado/divorciado).
+.harmonize_estado_civil <- function(x, anio) {
+  x_num <- suppressWarnings(as.integer(x))
+  if (anio == 1976L) {
+    # p05: 1=Soltero, 2=Casado, 3=Viudo, 4=Divorciado
+    dplyr::case_when(
+      x_num == 1L ~ 1L, x_num == 2L ~ 2L, x_num == 3L ~ 4L, x_num == 4L ~ 3L,
+      TRUE ~ NA_integer_
+    )
+  } else if (anio == 1992L) {
+    # P05: 1=Casado/conviviente, 2=Viudo, 3=Separado/divorciado, 4=Soltero
+    dplyr::case_when(
+      x_num == 1L ~ 2L, x_num == 2L ~ 4L, x_num == 3L ~ 3L, x_num == 4L ~ 1L,
+      TRUE ~ NA_integer_
+    )
+  } else if (anio %in% c(2001L, 2012L)) {
+    # 1=Soltero, 2=Casado, 3=Conviviente, 4=Separado, 5=Divorciado, 6=Viudo
+    dplyr::case_when(
+      x_num == 1L ~ 1L, x_num %in% c(2L, 3L) ~ 2L,
+      x_num %in% c(4L, 5L) ~ 3L, x_num == 6L ~ 4L, TRUE ~ NA_integer_
+    )
+  } else if (anio == 2024L) {
+    # p53_ecivil: 1=Casado, 2=Conviviente, 3=Separado, 4=Divorciado,
+    #             5=Viudo, 6=Soltero, 9=Sin especificar
+    dplyr::case_when(
+      x_num == 6L ~ 1L, x_num %in% c(1L, 2L) ~ 2L,
+      x_num %in% c(3L, 4L) ~ 3L, x_num == 5L ~ 4L, TRUE ~ NA_integer_
+    )
+  } else {
+    NA_integer_
+  }
+}
+
+# pea (condición de actividad de la PEA) → 1=Ocupado, 2=Cesante, 3=Aspirante
+# Codificación idéntica en todos los años; inactivos quedan como NA.
+.harmonize_pea <- function(x, anio) {
+  if (anio == 2001L) return(rep(NA_integer_, length(x)))
+  x_num <- suppressWarnings(as.integer(x))
+  dplyr::case_when(x_num %in% c(1L, 2L, 3L) ~ x_num, TRUE ~ NA_integer_)
+}
+
+# pet (en edad de trabajar) → 1=Sí, 2=No
+.harmonize_pet <- function(x, anio) {
+  if (anio == 2001L) return(rep(NA_integer_, length(x)))
+  x_num <- suppressWarnings(as.integer(x))
+  if (anio %in% c(1992L, 2012L)) {
+    # NPET/PET: 1=en edad de trabajar, 0=no
+    dplyr::case_when(x_num == 1L ~ 1L, x_num == 0L ~ 2L, TRUE ~ NA_integer_)
+  } else {
+    # 1976 pet: 1=PET, 2=PENT.  2024 pet_13: 1=PET, 2=PENT, 9=no especificó
+    dplyr::case_when(x_num == 1L ~ 1L, x_num == 2L ~ 2L, TRUE ~ NA_integer_)
   }
 }
 

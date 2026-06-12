@@ -7,6 +7,7 @@ variable_temporal_map <- data.frame(
   etiqueta       = character(),
   descripcion    = character(),
   tabla          = character(),
+  armonizada     = logical(),
   v1976          = character(),
   v1992          = character(),
   v2001          = character(),
@@ -18,10 +19,11 @@ variable_temporal_map <- data.frame(
 
 add_var <- function(variable, etiqueta, descripcion,
                      v1976 = NA, v1992 = NA, v2001 = NA, v2012 = NA, v2024 = NA,
-                     notas = "", tabla = "persona") {
+                     notas = "", tabla = "persona", armonizada = TRUE) {
   variable_temporal_map <<- rbind(variable_temporal_map, data.frame(
     variable, etiqueta, descripcion,
     tabla,
+    armonizada,
     v1976 = as.character(v1976),
     v1992 = as.character(v1992),
     v2001 = as.character(v2001),
@@ -53,14 +55,15 @@ add_var("grupo_edad", "Grupos de edad quinquenales",
         notas = "1976/1992: variable ya agrupada en la fuente. 2001/2012/2024: se calcula automáticamente desde la edad individual con (edad %/% 5) * 5.")
 
 add_var("parentesco", "Relación con el/la jefe/a del hogar",
-        "Parentesco o relación del individuo con el jefe o jefa del hogar",
+        "Parentesco o relación del individuo con el jefe o jefa del hogar. NO armonizada: los códigos varían entre censos.",
         v1976 = "p02", v1992 = "P02", v2001 = "P31", v2012 = "P23", v2024 = "p24_parentes",
-        notas = "Códigos varían entre censos: consultar codebook_ANIO() por año")
+        notas = "NO ARMONIZADA: get_temporal() devuelve los códigos crudos de cada censo, que no son comparables. Consulta codebook_ANIO() por año para interpretarlos.",
+        armonizada = FALSE)
 
 add_var("estado_civil", "Estado conyugal o civil",
-        "Situación conyugal del individuo",
+        "Situación conyugal del individuo. Harmonizado a 4 categorías: 1=Soltero/a, 2=Casado/a o conviviente, 3=Separado/a o divorciado/a, 4=Viudo/a.",
         v1976 = "p05", v1992 = "P05", v2001 = "P48", v2012 = "P45", v2024 = "p53_ecivil",
-        notas = "Categorías similares entre censos; verificar codebook para equivalencias exactas")
+        notas = "Harmonizado al máximo nivel comparable (limitado por 1992, que agrupa casado/conviviente y separado/divorciado). 1976: 1=Soltero→1, 2=Casado→2, 3=Viudo→4, 4=Divorciado→3 (sin categoría conviviente ni separado). 1992: 1=Casado/conviviente→2, 2=Viudo→4, 3=Separado/divorciado→3, 4=Soltero→1. 2001/2012: 1=Soltero→1, 2=Casado→2, 3=Conviviente→2, 4=Separado→3, 5=Divorciado→3, 6=Viudo→4. 2024: 1=Casado→2, 2=Conviviente→2, 3=Separado→3, 4=Divorciado→3, 5=Viudo→4, 6=Soltero→1, 9=Sin especificar→NA.")
 
 # --- Educación ---
 add_var("sabe_leer", "Sabe leer y escribir",
@@ -79,15 +82,15 @@ add_var("asistencia_escolar", "Asistencia educativa actual",
         notas = "1992: 1=Asiste, 2=No asiste pero asistió, 3=Nunca asistió → harmonizado a 1=Asiste, 2=No. 2001: CÓDIGOS INVERTIDOS — 1=NO asiste, 2=SÍ (pública), 3=SÍ (privada). 2012: 1/2/3=SÍ (pública/privada/convenio), 4=No asiste.")
 
 # --- Actividad económica ---
-add_var("pea", "Población Económicamente Activa",
-        "Indicador: si el individuo pertenece a la PEA",
-        v1976 = "pea", v1992 = "NPEA", v2001 = NA, v2012 = "PEA", v2024 = "fft_19",
-        notas = "NO disponible directamente en 2001 (requiere cálculo desde variables de actividad). En 2024: fft_19 codifica PEA")
+add_var("pea", "Condición de actividad (PEA)",
+        "Condición de actividad económica de la Población Económicamente Activa. 1=Ocupado, 2=Cesante, 3=Aspirante. Los inactivos (fuera de la PEA) quedan como NA.",
+        v1976 = "pea", v1992 = "NPEA", v2001 = NA, v2012 = "PEA", v2024 = "pea_13",
+        notas = "Codificación idéntica en todos los años: 1=Ocupado, 2=Cesante, 3=Aspirante. NO disponible en 2001 (retorna NA). 2024: se usa pea_13 (Población Económicamente Activa, 13° CIET); NO confundir con fft_19 (fuera de la fuerza de trabajo) ni ft_19 (condición de actividad de la fuerza de trabajo).")
 
 add_var("pet", "Población en Edad de Trabajar",
-        "Indica si el individuo está en edad de trabajar",
-        v1976 = "pet", v1992 = "NPET", v2001 = NA, v2012 = "PET", v2024 = "ft_19",
-        notas = "NO disponible directamente en 2001. Edad mínima puede variar entre censos")
+        "Indica si el individuo está en edad de trabajar. Harmonizado a 1=Sí (en edad de trabajar), 2=No.",
+        v1976 = "pet", v1992 = "NPET", v2001 = NA, v2012 = "PET", v2024 = "pet_13",
+        notas = "Harmonizado a 1=Sí, 2=No. 1976: 1=PET→1, 2=PENT→2. 1992 NPET: 1=PET→1, 0=PENT→2. 2012 PET: 1=trabajar→1, 0=no trabajar→2. 2024 pet_13: 1=PET→1, 2=PENT→2, 9=no especificó→NA. NO disponible en 2001 (retorna NA). La edad mínima de referencia puede variar entre censos (7+ en 2024).")
 
 add_var("categoria_ocupacion", "Categoría en el empleo",
         "Categoría ocupacional del individuo. 1=Empleado/Obrero, 2=Cuenta propia, 3=Empleador/Patrón, 4=Familiar no remunerado, 5=Otro",

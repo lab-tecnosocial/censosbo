@@ -27,9 +27,10 @@
 
 .validate_censo_args <- function(anio, tabla) {
   if (!anio %in% .CENSOS_HISTORICOS) {
+    disponibles <- .CENSOS_HISTORICOS
     cli::cli_abort(c(
       "Año de censo no válido: {.val {anio}}.",
-      "i" = "Los censos históricos disponibles son: {.val {.CENSOS_HISTORICOS}}.",
+      "i" = "Los censos históricos disponibles son: {.val {disponibles}}.",
       "i" = "Para el CPV-2024 usa {.fn get_personas_2024} o {.fn get_viviendas_2024}."
     ))
   }
