@@ -11,7 +11,7 @@
 library(piggyback)
 
 REPO <- "lab-tecnosocial/censosbo"
-BASE <- "original-data/censos-historicos"
+BASE <- "original-data/r/censos-historicos"
 
 # Mapa: anio → tag del release + archivos a subir
 # local_name  = nombre del archivo en disco
@@ -50,9 +50,6 @@ RELEASES <- list(
     files = list(
       list(local = "persona.parquet",               remote = "persona.parquet"),
       list(local = "vivienda.parquet",              remote = "vivienda.parquet"),
-      # En disco: poblacion_comunidades.parquet → sube como: comunidades_poblacion.parquet
-      list(local = "poblacion_comunidades.parquet", remote = "comunidades_poblacion.parquet"),
-      list(local = "vivienda_comunidades.parquet",  remote = "comunidades_vivienda.parquet"),
       list(local = "depto.parquet",                 remote = "depto.parquet"),
       list(local = "provin.parquet",                remote = "provin.parquet"),
       list(local = "munic.parquet",                 remote = "munic.parquet"),

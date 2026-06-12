@@ -3,7 +3,7 @@
 
 library(readxl)
 
-xlsx_path <- "original-data/cpv-2024/raw/Diccionario de variables CPV 2024.xlsx"
+xlsx_path <- "original-data/fuentes/cpv-2024/Diccionario de variables CPV 2024.xlsx"
 stopifnot(file.exists(xlsx_path))
 
 hojas <- readxl::excel_sheets(xlsx_path)

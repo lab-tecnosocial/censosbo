@@ -3,7 +3,7 @@
 .CENSO_TABLAS <- list(
   "1976" = c("poblacion", "vivienda"),
   "1992" = c("persona", "vivienda", "mortalidad"),
-  "2001" = c("persona", "vivienda", "comunidades_poblacion", "comunidades_vivienda"),
+  "2001" = c("persona", "vivienda"),
   "2012" = c("persona", "vivienda", "emigracion", "discapacidad")
 )
 
@@ -20,7 +20,6 @@
   "1992" = list(persona = 135, vivienda = 30, mortalidad = 17,
                 depto = 1, provin = 1, munic = 1),
   "2001" = list(persona = 137, vivienda = 20,
-                comunidades_poblacion = 2, comunidades_vivienda = 1,
                 depto = 1, provin = 1, munic = 1),
   "2012" = list(persona = 147, vivienda = 39, emigracion = 6, discapacidad = 4,
                 depto = 1, provin = 1, munic = 1)

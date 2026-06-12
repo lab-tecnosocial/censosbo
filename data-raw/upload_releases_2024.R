@@ -12,10 +12,13 @@ library(piggyback)
 
 REPO    <- "lab-tecnosocial/censosbo"
 TAG     <- "data-v1.0.0"
-DIR_OUT <- "original-data/cpv-2024/parquets"
+DIR_OUT <- "original-data/r/cpv-2024/parquets"
 
 # Archivos a subir (persona_dep01-09 con area; vivienda/emigracion/mortalidad sin cambios)
 PERSONA_DEPS <- sprintf("persona_dep%02d.parquet", 1:9)
+
+# Diccionarios generados desde el Excel del INE
+DICTS <- c("diccionario_variables.parquet", "diccionario_etiquetas.parquet")
 
 # vivienda, emigracion, mortalidad se leen del caché (no cambiaron)
 CACHE <- file.path(
@@ -38,6 +41,19 @@ if (!TAG %in% releases_existentes) {
     name = "Datos CPV-2024 Bolivia",
     body = "Microdatos del Censo de Población y Vivienda 2024 de Bolivia (formato Parquet)."
   )
+}
+
+# Subir diccionarios
+for (fname in DICTS) {
+  path <- file.path(DIR_OUT, fname)
+  if (!file.exists(path)) {
+    warning("No encontrado, saltando: ", path)
+    next
+  }
+  kb <- round(file.size(path) / 1024, 1)
+  message("  Subiendo ", fname, " (", kb, " KB)...")
+  pb_upload(path, repo = REPO, tag = TAG, name = fname, overwrite = TRUE)
+  message("  OK")
 }
 
 # Subir persona_dep01-09 (con columna area)

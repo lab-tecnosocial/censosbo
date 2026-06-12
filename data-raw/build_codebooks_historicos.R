@@ -4,7 +4,7 @@
 
 library(arrow)
 
-base_dir <- "original-data/censos-historicos"
+base_dir <- "original-data/r/censos-historicos"
 
 # Columnas de nombre de tabla según el censo
 # 1976: columna "tabla"; 1992/2001/2012: columna "entidad"
@@ -86,12 +86,15 @@ parse_censo_codebook <- function(anio) {
   # Bug 2: correcciones manuales para variables cuyo label es NA en el Parquet
   # (el encabezado REDATAM tenía "label" como placeholder en lugar del texto real)
   label_fixes <- list(
+    "1992" = list(REDCODEN = "Código geográfico REDATAM"),
+    "2001" = list(REDCODEN = "Código geográfico REDATAM"),
     "2012" = list(
-      P19   = "Condición de tenencia de la vivienda",
-      P24   = "¿Es mujer u hombre?",
-      P32J  = "Departamento o país de nacimiento",
-      P44   = "Actividad económica del establecimiento donde trabaja",
-      P22F1 = "Dificultad para ver"
+      REDCODEN = "Código geográfico REDATAM",
+      P19      = "Condición de tenencia de la vivienda",
+      P24      = "¿Es mujer u hombre?",
+      P32J     = "Departamento o país de nacimiento",
+      P44      = "Actividad económica del establecimiento donde trabaja",
+      P22F1    = "Dificultad para ver"
     )
   )
   fixes <- label_fixes[[as.character(anio)]]

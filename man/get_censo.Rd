@@ -163,7 +163,7 @@ Si `NULL`, devuelve todas las columnas.}
 \item{tabla}{Caracteres. Nombre de la tabla a consultar. Depende del año:
 - **1976**: `"poblacion"` (o `"persona"` como alias), `"vivienda"`
 - **1992**: `"persona"`, `"vivienda"`, `"mortalidad"`
-- **2001**: `"persona"`, `"vivienda"`, `"comunidades_poblacion"`, `"comunidades_vivienda"`
+- **2001**: `"persona"`, `"vivienda"`
 - **2012**: `"persona"`, `"vivienda"`, `"emigracion"`, `"discapacidad"`}
 }
 \value{
