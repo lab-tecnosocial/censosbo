@@ -31,7 +31,7 @@
 
     <a class="navbar-brand me-2" href="index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -130,9 +130,9 @@
 <td align="center"><strong>1992</strong></td>
 <td><code><a href="reference/get_censo.html">get_personas_1992()</a></code></td>
 <td align="right">6,420,792</td>
-<td align="right">54</td>
-<td align="right">135 MB</td>
-<td align="right">238 MB</td>
+<td align="right">55</td>
+<td align="right">99 MB</td>
+<td align="right">~200 MB</td>
 </tr>
 <tr>
 <td align="center"><strong>1992</strong></td>
@@ -143,35 +143,43 @@
 <td align="right">43 MB</td>
 </tr>
 <tr>
+<td align="center"><strong>1992</strong></td>
+<td><code><a href="reference/get_censo.html">get_mortalidad_1992()</a></code></td>
+<td align="right">1,706,107</td>
+<td align="right">14</td>
+<td align="right">15 MB</td>
+<td align="right">~30 MB</td>
+</tr>
+<tr>
 <td align="center"><strong>2001</strong></td>
 <td><code><a href="reference/get_censo.html">get_personas_2001()</a></code></td>
 <td align="right">8,274,325</td>
-<td align="right">66</td>
-<td align="right">136 MB</td>
-<td align="right">316 MB</td>
+<td align="right">67</td>
+<td align="right">135 MB</td>
+<td align="right">~320 MB</td>
 </tr>
 <tr>
 <td align="center"><strong>2001</strong></td>
 <td><code><a href="reference/get_censo.html">get_viviendas_2001()</a></code></td>
 <td align="right">2,290,414</td>
 <td align="right">39</td>
-<td align="right">20 MB</td>
+<td align="right">30 MB</td>
 <td align="right">37 MB</td>
 </tr>
 <tr>
 <td align="center"><strong>2012</strong></td>
 <td><code><a href="reference/get_censo.html">get_personas_2012()</a></code></td>
 <td align="right">10,059,856</td>
-<td align="right">33</td>
-<td align="right">146 MB</td>
-<td align="right">279 MB</td>
+<td align="right">38</td>
+<td align="right">165 MB</td>
+<td align="right">~330 MB</td>
 </tr>
 <tr>
 <td align="center"><strong>2012</strong></td>
 <td><code><a href="reference/get_censo.html">get_viviendas_2012()</a></code></td>
 <td align="right">3,172,321</td>
 <td align="right">32</td>
-<td align="right">38 MB</td>
+<td align="right">37 MB</td>
 <td align="right">58 MB</td>
 </tr>
 <tr>
@@ -183,12 +191,20 @@
 <td align="right">11 MB</td>
 </tr>
 <tr>
+<td align="center"><strong>2012</strong></td>
+<td><code><a href="reference/get_censo.html">get_discapacidad_2012()</a></code></td>
+<td align="right">342,929</td>
+<td align="right">8</td>
+<td align="right">4 MB</td>
+<td align="right">~10 MB</td>
+</tr>
+<tr>
 <td align="center">
 <strong>2024</strong>²</td>
 <td><code><a href="reference/get_personas_2024.html">get_personas_2024()</a></code></td>
 <td align="right">11,365,333</td>
-<td align="right">118</td>
-<td align="right">283 MB</td>
+<td align="right">119</td>
+<td align="right">282 MB</td>
 <td align="right">~490 MB</td>
 </tr>
 <tr>
@@ -347,31 +363,30 @@
 <td>1976</td>
 <td>SPSS (<code>.sav</code>)</td>
 <td>
-<code>pyreadstat</code> + <code>pyarrow</code>
-</td>
+<code>haven</code> + <code>arrow</code> (R)</td>
 </tr>
 <tr>
 <td>1992</td>
 <td>REDATAM (<code>.dic</code> binario + <code>.rbf</code>)</td>
 <td>
-<code>open-redatam</code> CLI → CSV → Parquet</td>
+<code>open-redatam</code> CLI → CSV → <code>arrow</code> (R)</td>
 </tr>
 <tr>
 <td>2001</td>
 <td>REDATAM (<code>.wxp</code> → <code>.dicX</code>)</td>
-<td>conversión <code>.wxp</code>→<code>.dicX</code> + <code>open-redatam</code> → CSV → Parquet</td>
+<td>conversión <code>.wxp</code>→<code>.dicX</code> + <code>open-redatam</code> CLI → CSV → <code>arrow</code> (R)</td>
 </tr>
 <tr>
 <td>2012</td>
-<td>REDATAM (<code>.dic</code> binario + <code>.ptr</code>)</td>
+<td>REDATAM (<code>.dic</code>/<code>.dicx</code> binario + <code>.ptr</code>)</td>
 <td>
-<code>open-redatam</code> CLI → CSV → Parquet</td>
+<code>open-redatam</code> CLI → CSV → <code>arrow</code> (R)</td>
 </tr>
 <tr>
 <td>2024</td>
 <td>CSV delimitado por <code>;</code> (~3.6 GB total)</td>
 <td>
-<code>pandas</code> + <code>pyarrow</code>; persona particionada por departamento</td>
+<code>readr</code> + <code>arrow</code> (R); persona particionada por departamento</td>
 </tr>
 </tbody>
 </table>
@@ -384,7 +399,7 @@
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"censosbo"</span><span class="op">)</span></span></code></pre></div>
 <blockquote>
-<p>Ojeda Copa A (2026). <em>censosbo: Paquete de R para el acceso, análisis y visualización de datos censales en Bolivia (1976-2024)</em>. Lab TecnoSocial, Cochabamba, Bolivia. R package version 1.0.1. <a href="https://lab-tecnosocial.github.io/censosbo/" class="uri">https://lab-tecnosocial.github.io/censosbo/</a></p>
+<p>Ojeda Copa A (2026). <em>censosbo: Paquete de R para el acceso, análisis y visualización de datos censales en Bolivia (1976-2024)</em>. Lab TecnoSocial, Cochabamba, Bolivia. R package version 1.0.2. <a href="https://lab-tecnosocial.github.io/censosbo/" class="uri">https://lab-tecnosocial.github.io/censosbo/</a></p>
 </blockquote>
 </div>
 </div>

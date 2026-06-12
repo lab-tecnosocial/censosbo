@@ -1,5 +1,9 @@
 # Changelog
 
+## censosbo 1.0.2
+
+- Ajustes menores en datos y sus etiquetas
+
 ## censosbo 1.0.1
 
 - Mejoras en ejemplos de documentación
