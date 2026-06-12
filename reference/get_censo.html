@@ -9,7 +9,7 @@ de Bolivia de 1976, 1992, 2001 y 2012, con filtros geográficos opcionales."><me
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -241,12 +241,13 @@ Si `NULL`, devuelve todas las columnas.</p></dd>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>Los censos 1992, 2001 y 2012 usan la estructura jerárquica de REDATAM
-(persona → vivienda → municipio → provincia → departamento). Cuando se aplica
-un filtro geográfico, `get_censo()` resuelve la jerarquía internamente.</p>
-<p>Con filtro geográfico, el resultado incluye las columnas `idep`, `iprov` e `imun`
-con los códigos geográficos armonizados (2 dígitos, consistentes con el CPV-2024).</p>
-<p>El censo 1976 usa columnas geográficas directas (`dep`, `pro`, `can`), no REDATAM.</p>
+    <p>Todas las tablas exponen los códigos geográficos armonizados como columnas
+directas: `idep`, `iprov` e `imun` (2 dígitos, consistentes con el CPV-2024).
+Esto permite filtrar por geografía sin reconstruir la jerarquía REDATAM
+(antes requería un join `persona → vivienda → municipio`). El filtrado se hace
+directamente sobre estas columnas, igual que en el CPV-2024.</p>
+<p>El censo 1976 no tuvo municipios comparables (usó cantones), por lo que solo
+expone `idep` e `iprov`; el filtro de `municipio` se aplica sobre el cantón.</p>
     </div>
     <div class="section level2">
     <h2 id="advertencia-sobre-municipios">Advertencia sobre municipios<a class="anchor" aria-label="anchor" href="#advertencia-sobre-municipios"></a></h2>

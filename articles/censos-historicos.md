@@ -7,12 +7,17 @@ los datos del 2024.
 
 ## Tablas disponibles por año
 
-| Año | Tablas | Filas | Estructura geográfica |
+| Año | Tablas | Filas | Columnas geográficas |
 |----|----|---:|----|
-| 1976 | `poblacion` (alias: `persona`), `vivienda` | ~4.6M | Columnas directas `dep`, `pro`, `can` |
-| 1992 | `persona`, `vivienda`, `mortalidad` | ~6.4M | REDATAM (REF_ID) |
-| 2001 | `persona`, `vivienda`, `comunidades_poblacion`, `comunidades_vivienda` | ~8.3M | REDATAM (REF_ID) |
-| 2012 | `persona`, `vivienda`, `emigracion`, `discapacidad` | ~10M | REDATAM (REF_ID) |
+| 1976 | `poblacion` (alias: `persona`), `vivienda` | ~4.6M | `idep`, `iprov` (string `"01"`–`"09"`) |
+| 1992 | `persona`, `vivienda`, `mortalidad` | ~6.4M | `idep`, `iprov`, `imun` |
+| 2001 | `persona`, `vivienda` | ~8.3M | `idep`, `iprov`, `imun` |
+| 2012 | `persona`, `vivienda`, `emigracion`, `discapacidad` | ~10M | `idep`, `iprov`, `imun` |
+
+Todas las tablas traen las columnas geográficas armonizadas
+`idep`/`iprov`/`imun` (mismo formato que el CPV-2024), por lo que se
+puede filtrar por geografía directamente, sin reconstruir la jerarquía
+REDATAM ni hacer joins.
 
 ## API: `get_censo()` y funciones cortas
 
@@ -97,11 +102,15 @@ get_personas_1992(municipio = "100")
 
 ## Censo 1976: estructura diferente
 
-El censo de 1976 no usa REDATAM. Sus columnas geográficas son:
+El censo de 1976 no usa REDATAM. Conserva sus columnas originales y
+además expone las armonizadas `idep`/`iprov` (string `"01"`–`"09"`, como
+el resto):
 
-- `dep` — código de departamento (1–9, entero)
-- `pro` — código de provincia
-- `can` — código de cantón/municipio
+- `idep` / `iprov` — departamento y provincia armonizados (recomendadas)
+- `dep` — código de departamento original (1–9, entero)
+- `pro` — código de provincia original
+- `can` — código de cantón (1976 no tuvo municipios comparables → no hay
+  `imun`; el filtro `municipio` se aplica sobre el cantón)
 
 ``` r
 
@@ -290,7 +299,7 @@ get_discapacidad_2012()
 # Mortalidad (1992)
 get_mortalidad_1992(departamento = "02")
 
-# Comunidades (2001)
-get_censo(2001, "comunidades_poblacion")
-get_censo(2001, "comunidades_vivienda")
+# Emigración y discapacidad (2012)
+get_emigracion_2012(departamento = "07")
+get_discapacidad_2012(departamento = "07")
 ```

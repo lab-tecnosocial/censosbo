@@ -188,17 +188,16 @@ registrada; cierra con \`DBI::dbDisconnect(con)\`.
 
 ## Details
 
-Los censos 1992, 2001 y 2012 usan la estructura jerárquica de REDATAM
-(persona → vivienda → municipio → provincia → departamento). Cuando se
-aplica un filtro geográfico, \`get_censo()\` resuelve la jerarquía
-internamente.
+Todas las tablas exponen los códigos geográficos armonizados como
+columnas directas: \`idep\`, \`iprov\` e \`imun\` (2 dígitos,
+consistentes con el CPV-2024). Esto permite filtrar por geografía sin
+reconstruir la jerarquía REDATAM (antes requería un join \`persona →
+vivienda → municipio\`). El filtrado se hace directamente sobre estas
+columnas, igual que en el CPV-2024.
 
-Con filtro geográfico, el resultado incluye las columnas \`idep\`,
-\`iprov\` e \`imun\` con los códigos geográficos armonizados (2 dígitos,
-consistentes con el CPV-2024).
-
-El censo 1976 usa columnas geográficas directas (\`dep\`, \`pro\`,
-\`can\`), no REDATAM.
+El censo 1976 no tuvo municipios comparables (usó cantones), por lo que
+solo expone \`idep\` e \`iprov\`; el filtro de \`municipio\` se aplica
+sobre el cantón.
 
 ## Advertencia sobre municipios
 

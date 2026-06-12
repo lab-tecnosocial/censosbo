@@ -104,6 +104,9 @@ codebook(tabla = "vivienda", anio = 1992)
 #> 40       URBRUR                                     Urbano/Rural vivienda
 #> 41   NBI_GRUP_V                                       NBI_GRUPOS vivienda
 #> 42 NBI_POBRES_V                                       NBI_POBRES vivienda
+#> 43         idep                   Código de departamento (01-09) vivienda
+#> 44        iprov                              Código de provincia vivienda
+#> 45         imun                              Código de municipio vivienda
 #>          tipo
 #> 1  categorica
 #> 2  categorica
@@ -147,6 +150,9 @@ codebook(tabla = "vivienda", anio = 1992)
 #> 40 categorica
 #> 41 categorica
 #> 42 categorica
+#> 43 categorica
+#> 44 categorica
+#> 45 categorica
 #>                                                                                                                                                                                                                                                                                                                                                                    valores_codigos
 #> 1                                                                                                                                                                                                                                                                                                                                                                         SIZE, 16
 #> 2                                                                                                                                                                                                                                                                 0, 1, 2, 3, 4, 5, 6, 7, 8, Comunidad, Estancia, Hacienda, Ex-Hacienda, Rancho, Sindicato, Colonia, Barraca, Otra
@@ -190,4 +196,7 @@ codebook(tabla = "vivienda", anio = 1992)
 #> 40                                                                                                                                                                                                                                                                                                                                                             1, 2, Urbana, Rural
 #> 41                                                                                                                                                                                                                                                                                                                       1, 2, 3, 4, 5, NBS, Umbral, Moderada, Indigente, Marginal
 #> 42                                                                                                                                                                                                                                                                                                                                                         1, 2, No pobres, Pobres
+#> 43                                                                                                                                                                                                                                                                                                                                                                            NULL
+#> 44                                                                                                                                                                                                                                                                                                                                                                            NULL
+#> 45                                                                                                                                                                                                                                                                                                                                                                            NULL
 ```

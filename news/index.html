@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,6 +48,20 @@
       <small>Source: <a href="https://github.com/lab-tecnosocial/censosbo/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.1.0" id="censosbo-110">censosbo 1.1.0<a class="anchor" aria-label="anchor" href="#censosbo-110"></a></h2>
+<div class="section level3">
+<h3 id="geografía-directa-en-censos-históricos-sin-consultas-estrella-1-1-0">Geografía directa en censos históricos (sin “consultas estrella”)<a class="anchor" aria-label="anchor" href="#geograf%C3%ADa-directa-en-censos-hist%C3%B3ricos-sin-consultas-estrella-1-1-0"></a></h3>
+<ul><li>Las tablas de los censos 1992, 2001 y 2012 (<code>persona</code>, <code>vivienda</code>, <code>mortalidad</code>, <code>emigracion</code>, <code>discapacidad</code>) ahora incluyen las columnas geográficas <strong><code>idep</code>, <code>iprov</code> e <code>imun</code></strong> pre-unidas, idénticas en formato al CPV-2024 (string de 2 dígitos, <code>"01"</code>–<code>"09"</code>). El censo 1976 (<code>poblacion</code>, <code>vivienda</code>) expone <code>idep</code> e <code>iprov</code> (no <code>imun</code>: usó cantones, no municipios comparables).</li>
+<li>
+<code><a href="../reference/get_censo.html">get_censo()</a></code> filtra ahora por geografía <strong>directamente sobre estas columnas</strong>, sin reconstruir la jerarquía REDATAM (<code>persona → vivienda → municipio</code>). Esto elimina el join estrella vía DuckDB y la descarga de <code>depto</code>/<code>provin</code>/<code>munic</code>, y hace que los Parquet sean usables tal cual desde otras herramientas (QGIS, Python, DuckDB) sin joins.</li>
+<li>
+<code><a href="../reference/codebook.html">codebook()</a></code> documenta <code>idep</code>/<code>iprov</code>/<code>imun</code> (tipo <code>categorica</code>) en todos los censos.</li>
+</ul><blockquote>
+<p><strong>Actualización de datos:</strong> esta versión cambia los Parquet publicados. Si ya tenías datos en caché, ejecuta <code><a href="../reference/update_censosbo.html">update_censosbo()</a></code> (o <code><a href="../reference/censosbo_cache_clear.html">censosbo_cache_clear()</a></code>) para descargar la versión con las columnas geográficas.</p>
+</blockquote>
+</div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.4" id="censosbo-104">censosbo 1.0.4<a class="anchor" aria-label="anchor" href="#censosbo-104"></a></h2>
 <div class="section level3">

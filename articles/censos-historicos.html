@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -101,7 +101,7 @@ y se almacenan en el mismo caché local que los datos del 2024.</p>
 <th>Año</th>
 <th>Tablas</th>
 <th align="right">Filas</th>
-<th>Estructura geográfica</th>
+<th>Columnas geográficas</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
@@ -111,9 +111,9 @@ y se almacenan en el mismo caché local que los datos del 2024.</p>
 <code>vivienda</code>
 </td>
 <td align="right">~4.6M</td>
-<td>Columnas directas <code>dep</code>, <code>pro</code>,
-<code>can</code>
-</td>
+<td>
+<code>idep</code>, <code>iprov</code> (string
+<code>"01"</code>–<code>"09"</code>)</td>
 </tr>
 <tr class="even">
 <td>1992</td>
@@ -122,17 +122,19 @@ y se almacenan en el mismo caché local que los datos del 2024.</p>
 <code>mortalidad</code>
 </td>
 <td align="right">~6.4M</td>
-<td>REDATAM (REF_ID)</td>
+<td>
+<code>idep</code>, <code>iprov</code>, <code>imun</code>
+</td>
 </tr>
 <tr class="odd">
 <td>2001</td>
 <td>
-<code>persona</code>, <code>vivienda</code>,
-<code>comunidades_poblacion</code>,
-<code>comunidades_vivienda</code>
+<code>persona</code>, <code>vivienda</code>
 </td>
 <td align="right">~8.3M</td>
-<td>REDATAM (REF_ID)</td>
+<td>
+<code>idep</code>, <code>iprov</code>, <code>imun</code>
+</td>
 </tr>
 <tr class="even">
 <td>2012</td>
@@ -141,10 +143,16 @@ y se almacenan en el mismo caché local que los datos del 2024.</p>
 <code>emigracion</code>, <code>discapacidad</code>
 </td>
 <td align="right">~10M</td>
-<td>REDATAM (REF_ID)</td>
+<td>
+<code>idep</code>, <code>iprov</code>, <code>imun</code>
+</td>
 </tr>
 </tbody>
 </table>
+<p>Todas las tablas traen las columnas geográficas armonizadas
+<code>idep</code>/<code>iprov</code>/<code>imun</code> (mismo formato
+que el CPV-2024), por lo que se puede filtrar por geografía
+directamente, sin reconstruir la jerarquía REDATAM ni hacer joins.</p>
 </div>
 <div class="section level2">
 <h2 id="api-get_censo-y-funciones-cortas">API: <code>get_censo()</code> y funciones cortas<a class="anchor" aria-label="anchor" href="#api-get_censo-y-funciones-cortas"></a>
@@ -251,14 +259,22 @@ puede no existir en otro.</p>
 <div class="section level2">
 <h2 id="censo-1976-estructura-diferente">Censo 1976: estructura diferente<a class="anchor" aria-label="anchor" href="#censo-1976-estructura-diferente"></a>
 </h2>
-<p>El censo de 1976 no usa REDATAM. Sus columnas geográficas son:</p>
+<p>El censo de 1976 no usa REDATAM. Conserva sus columnas originales y
+además expone las armonizadas <code>idep</code>/<code>iprov</code>
+(string <code>"01"</code>–<code>"09"</code>, como el resto):</p>
 <ul>
 <li>
-<code>dep</code> — código de departamento (1–9, entero)</li>
+<code>idep</code> / <code>iprov</code> — departamento y provincia
+armonizados (recomendadas)</li>
 <li>
-<code>pro</code> — código de provincia</li>
+<code>dep</code> — código de departamento original (1–9,
+entero)</li>
 <li>
-<code>can</code> — código de cantón/municipio</li>
+<code>pro</code> — código de provincia original</li>
+<li>
+<code>can</code> — código de cantón (1976 no tuvo municipios
+comparables → no hay <code>imun</code>; el filtro <code>municipio</code>
+se aplica sobre el cantón)</li>
 </ul>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Población del censo 1976 en el depto de Cochabamba (código 3)</span></span>
@@ -429,9 +445,9 @@ armonizadas, ver la viñeta <strong><a href="analisis-temporal.html">Análisis t
 <span><span class="co"># Mortalidad (1992)</span></span>
 <span><span class="fu"><a href="../reference/get_censo.html">get_mortalidad_1992</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"02"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Comunidades (2001)</span></span>
-<span><span class="fu"><a href="../reference/get_censo.html">get_censo</a></span><span class="op">(</span><span class="fl">2001</span>, <span class="st">"comunidades_poblacion"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/get_censo.html">get_censo</a></span><span class="op">(</span><span class="fl">2001</span>, <span class="st">"comunidades_vivienda"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co"># Emigración y discapacidad (2012)</span></span>
+<span><span class="fu"><a href="../reference/get_censo.html">get_emigracion_2012</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"07"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/get_censo.html">get_discapacidad_2012</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"07"</span><span class="op">)</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

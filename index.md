@@ -15,9 +15,10 @@ entre censos y generación de mapas.
 remotes::install_github("lab-tecnosocial/censosbo")
 ```
 
-El paquete se desarrolla activamente (mejoras, corrección de errores),
-si ya lo tienes instalado te recomendamos actualizarlo a la última
-versión 1.0.4 con:
+El paquete se desarrolla continuamente (mejoras, corrección de errores),
+si lo instalaste anteriormente te recomendamos volver a ejecutar el
+anterior código y borrar el caché para actualizar a la versión 1.1.0 o
+usar la siguiente función:
 
 ``` r
 
@@ -211,5 +212,5 @@ citation("censosbo")
 
 > Ojeda Copa A (2026). *censosbo: Paquete de R para el acceso, análisis
 > y visualización de datos censales en Bolivia (1976-2024)*. Lab
-> TecnoSocial, Cochabamba, Bolivia. R package version 1.0.4.
+> TecnoSocial, Cochabamba, Bolivia. R package version 1.1.0.
 > <https://lab-tecnosocial.github.io/censosbo/>

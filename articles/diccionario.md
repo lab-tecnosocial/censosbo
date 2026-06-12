@@ -41,26 +41,26 @@ Esta clasificación está disponible también en la columna `tipo` de los
 
 ### Persona (`get_personas_2024`)
 
-Datos de cada persona empadronada: **114** variables.
+Datos de cada persona empadronada: **117** variables.
 
 ------------------------------------------------------------------------
 
 ### Vivienda (`get_viviendas_2024`)
 
-Características de cada vivienda: **44** variables.
+Características de cada vivienda: **47** variables.
 
 ------------------------------------------------------------------------
 
 ### Emigración (`get_emigracion_2024`)
 
-Personas que emigraron al exterior en los últimos 5 años: **4**
+Personas que emigraron al exterior en los últimos 5 años: **7**
 variables.
 
 ------------------------------------------------------------------------
 
 ### Mortalidad (`get_mortalidad_2024`)
 
-Fallecimientos en el hogar durante los últimos 12 meses: **6**
+Fallecimientos en el hogar durante los últimos 12 meses: **9**
 variables.
 
 ------------------------------------------------------------------------
@@ -96,25 +96,25 @@ DBI::dbDisconnect(con)
 
 ### Persona (`get_personas_2012`)
 
-**36** variables.
+**39** variables.
 
 ------------------------------------------------------------------------
 
 ### Vivienda (`get_viviendas_2012`)
 
-**30** variables.
+**33** variables.
 
 ------------------------------------------------------------------------
 
 ### Emigración (`get_emigracion_2012`)
 
-**4** variables.
+**7** variables.
 
 ------------------------------------------------------------------------
 
 ### Discapacidad (`get_discapacidad_2012`)
 
-**6** variables.
+**9** variables.
 
 ------------------------------------------------------------------------
 
@@ -122,13 +122,13 @@ DBI::dbDisconnect(con)
 
 ### Persona (`get_personas_2001`)
 
-**65** variables.
+**68** variables.
 
 ------------------------------------------------------------------------
 
 ### Vivienda (`get_viviendas_2001`)
 
-**37** variables.
+**40** variables.
 
 ------------------------------------------------------------------------
 
@@ -136,19 +136,19 @@ DBI::dbDisconnect(con)
 
 ### Persona (`get_personas_1992`)
 
-**53** variables.
+**56** variables.
 
 ------------------------------------------------------------------------
 
 ### Vivienda (`get_viviendas_1992`)
 
-**42** variables.
+**45** variables.
 
 ------------------------------------------------------------------------
 
 ### Mortalidad (`get_mortalidad_1992`)
 
-**12** variables.
+**15** variables.
 
 ------------------------------------------------------------------------
 
@@ -156,13 +156,13 @@ DBI::dbDisconnect(con)
 
 ### Población (`get_poblacion_1976`)
 
-**46** variables.
+**48** variables.
 
 ------------------------------------------------------------------------
 
 ### Vivienda (`get_viviendas_1976`)
 
-**28** variables.
+**29** variables.
 
 ------------------------------------------------------------------------
 
