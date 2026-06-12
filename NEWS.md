@@ -1,3 +1,23 @@
+# censosbo 1.1.0
+
+## Geografía directa en censos históricos (sin "consultas estrella")
+
+* Las tablas de los censos 1992, 2001 y 2012 (`persona`, `vivienda`, `mortalidad`,
+  `emigracion`, `discapacidad`) ahora incluyen las columnas geográficas
+  **`idep`, `iprov` e `imun`** pre-unidas, idénticas en formato al CPV-2024
+  (string de 2 dígitos, `"01"`–`"09"`). El censo 1976 (`poblacion`, `vivienda`)
+  expone `idep` e `iprov` (no `imun`: usó cantones, no municipios comparables).
+* `get_censo()` filtra ahora por geografía **directamente sobre estas columnas**,
+  sin reconstruir la jerarquía REDATAM (`persona → vivienda → municipio`). Esto
+  elimina el join estrella vía DuckDB y la descarga de `depto`/`provin`/`munic`,
+  y hace que los Parquet sean usables tal cual desde otras herramientas
+  (QGIS, Python, DuckDB) sin joins.
+* `codebook()` documenta `idep`/`iprov`/`imun` (tipo `categorica`) en todos los censos.
+
+> **Actualización de datos:** esta versión cambia los Parquet publicados. Si ya
+> tenías datos en caché, ejecuta `update_censosbo()` (o `censosbo_cache_clear()`)
+> para descargar la versión con las columnas geográficas.
+
 # censosbo 1.0.4
 
 ## Correcciones

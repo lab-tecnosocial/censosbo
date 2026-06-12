@@ -7,9 +7,9 @@ source("data-raw/clasificar_tipos.R")
 
 base_dir <- "original-data/r/censos-historicos"
 
-# Columnas de nombre de tabla según el censo
-# 1976: columna "tabla"; 1992/2001/2012: columna "entidad"
-# Columnas de etiqueta: 1976 = "etiqueta_variable"; 1992+ = "label"
+# Todos los censos usan ahora columnas "entidad" y "label" en el diccionario
+# de variables. La normalización de abajo (tabla→entidad, etiqueta_variable→label)
+# se conserva como defensa por si se leen parquets antiguos del esquema previo.
 
 parse_censo_codebook <- function(anio) {
   censo_dir <- file.path(base_dir, paste0("censo_", anio))

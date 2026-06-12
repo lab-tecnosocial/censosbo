@@ -7,13 +7,6 @@
   "2012" = c("persona", "vivienda", "emigracion", "discapacidad")
 )
 
-# Tablas de personas (necesitan join via VIVIENDA_REF_ID en REDATAM)
-.CENSO_TABLAS_PERSONA <- list(
-  "1992" = c("persona", "mortalidad"),
-  "2001" = c("persona"),
-  "2012" = c("persona", "emigracion", "discapacidad")
-)
-
 # Tamaños estimados en MB para mensajes de progreso
 .CENSO_SIZE_MB <- list(
   "1976" = list(poblacion = 64, vivienda = 8),
@@ -41,49 +34,6 @@
       "i" = "Las tablas disponibles son: {.val {validas}}."
     ))
   }
-}
-
-# Construye el geo lookup MUNIC_REF_ID → (idep, iprov, imun) desde munic.parquet
-# El REDCODEN en munic es de 5 dígitos: dep(1) + prov(2) + mun(2)
-# Ej: "10101" = dep=1, prov=01, mun=01 → idep="01", iprov="01", imun="01"
-.build_geo_lookup <- function(munic_path) {
-  munic_df  <- arrow::read_parquet(munic_path)
-  redcoden  <- as.integer(munic_df$REDCODEN)
-  data.frame(
-    MUNIC_REF_ID = munic_df$MUNIC_REF_ID,
-    idep  = sprintf("%02d", redcoden %/% 10000L),
-    iprov = sprintf("%02d", (redcoden %% 10000L) %/% 100L),
-    imun  = sprintf("%02d", redcoden %% 100L),
-    stringsAsFactors = FALSE
-  )
-}
-
-# Registra un archivo Parquet como vista en una conexión DuckDB
-.duckdb_view <- function(con, name, path) {
-  DBI::dbExecute(con, sprintf(
-    "CREATE OR REPLACE VIEW %s AS SELECT * FROM read_parquet('%s')",
-    name, path
-  ))
-}
-
-# Construye cláusula WHERE basada en REDCODEN del munic (5 dígitos)
-# dep_codes, prov_codes, mun_codes son vectores de strings de 2 dígitos ("01"-"09")
-# DuckDB usa // para división entera (/ devuelve float)
-.build_geo_where <- function(dep_codes, prov_codes, mun_codes) {
-  parts <- character(0)
-  if (!is.null(dep_codes)) {
-    dep_int <- paste(as.integer(dep_codes), collapse = ", ")
-    parts <- c(parts, sprintf("(CAST(m.REDCODEN AS INTEGER) // 10000) IN (%s)", dep_int))
-  }
-  if (!is.null(prov_codes)) {
-    prov_int <- paste(as.integer(prov_codes), collapse = ", ")
-    parts <- c(parts, sprintf("((CAST(m.REDCODEN AS INTEGER) %% 10000) // 100) IN (%s)", prov_int))
-  }
-  if (!is.null(mun_codes)) {
-    mun_int <- paste(as.integer(mun_codes), collapse = ", ")
-    parts <- c(parts, sprintf("(CAST(m.REDCODEN AS INTEGER) %% 100) IN (%s)", mun_int))
-  }
-  if (length(parts) == 0) "" else paste("WHERE", paste(parts, collapse = " AND "))
 }
 
 # Verifica si el filtro geográfico resultó en datos y advierte si no

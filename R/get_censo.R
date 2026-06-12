@@ -30,14 +30,14 @@
 #'     `DBI::dbDisconnect(con)`.
 #'
 #' @details
-#' Los censos 1992, 2001 y 2012 usan la estructura jerárquica de REDATAM
-#' (persona → vivienda → municipio → provincia → departamento). Cuando se aplica
-#' un filtro geográfico, `get_censo()` resuelve la jerarquía internamente.
+#' Todas las tablas exponen los códigos geográficos armonizados como columnas
+#' directas: `idep`, `iprov` e `imun` (2 dígitos, consistentes con el CPV-2024).
+#' Esto permite filtrar por geografía sin reconstruir la jerarquía REDATAM
+#' (antes requería un join `persona → vivienda → municipio`). El filtrado se hace
+#' directamente sobre estas columnas, igual que en el CPV-2024.
 #'
-#' Con filtro geográfico, el resultado incluye las columnas `idep`, `iprov` e `imun`
-#' con los códigos geográficos armonizados (2 dígitos, consistentes con el CPV-2024).
-#'
-#' El censo 1976 usa columnas geográficas directas (`dep`, `pro`, `can`), no REDATAM.
+#' El censo 1976 no tuvo municipios comparables (usó cantones), por lo que solo
+#' expone `idep` e `iprov`; el filtro de `municipio` se aplica sobre el cantón.
 #'
 #' @section Advertencia sobre municipios:
 #' El número de municipios cambió entre censos. Un código de municipio válido en
@@ -108,20 +108,12 @@ get_censo <- function(
   main_path <- .download_censo(1976L, filename, overwrite, verbose)
   ds <- arrow::open_dataset(main_path)
 
-  dep_col <- if (tabla == "poblacion") "dep" else "idep"
-  pro_col <- "pro"
-  can_col <- "can"
-
-  if (!is.null(dep_codes)) {
-    dep_int <- as.integer(dep_codes)
-    ds <- dplyr::filter(ds, .data[[dep_col]] %in% dep_int)
-  }
-  if (!is.null(prov_codes)) {
-    ds <- dplyr::filter(ds, .data[[pro_col]] %in% as.integer(prov_codes))
-  }
-  if (!is.null(mun_codes)) {
-    ds <- dplyr::filter(ds, .data[[can_col]] %in% as.integer(mun_codes))
-  }
+  # idep/iprov disponibles como columnas string ("01".."09") en poblacion y
+  # vivienda. 1976 no tiene municipios comparables: el filtro de municipio usa
+  # el cantón (`can`, entero).
+  if (!is.null(dep_codes))  ds <- dplyr::filter(ds, .data$idep  %in% dep_codes)
+  if (!is.null(prov_codes)) ds <- dplyr::filter(ds, .data$iprov %in% prov_codes)
+  if (!is.null(mun_codes))  ds <- dplyr::filter(ds, .data$can %in% as.integer(mun_codes))
 
   ds <- .apply_variable_selection(ds, variables)
   result <- .return_as(ds, as, table_name = tabla, verbose = verbose)
@@ -134,116 +126,27 @@ get_censo <- function(
   result
 }
 
-# --- 1992/2001/2012: jerarquía REDATAM, join via DuckDB ---
+# --- 1992/2001/2012: idep/iprov/imun denormalizados como columnas directas ---
 
 .get_censo_redatam <- function(anio, tabla, dep_codes, prov_codes, mun_codes,
                                 variables, as, overwrite, verbose) {
   filename  <- paste0(tabla, ".parquet")
   main_path <- .download_censo(anio, filename, overwrite, verbose)
+  ds <- arrow::open_dataset(main_path)
 
-  needs_geo <- !is.null(dep_codes) || !is.null(prov_codes) || !is.null(mun_codes)
-  # Forzar join si se piden columnas geo (idep/iprov/imun) que solo existen via REDCODEN
-  needs_join <- needs_geo || (!is.null(variables) && any(c("idep", "iprov", "imun") %in% variables))
+  # Todas las tablas (persona, vivienda, mortalidad, emigracion, discapacidad)
+  # traen idep/iprov/imun pre-unidos. El filtro geográfico es directo sobre esas
+  # columnas string, sin join estrella ni descarga de depto/provin/munic.
+  if (!is.null(dep_codes))  ds <- dplyr::filter(ds, .data$idep  %in% dep_codes)
+  if (!is.null(prov_codes)) ds <- dplyr::filter(ds, .data$iprov %in% prov_codes)
+  if (!is.null(mun_codes))  ds <- dplyr::filter(ds, .data$imun  %in% mun_codes)
 
-  # Sin necesidad de join y no se pide duckdb: retorna Arrow Dataset directamente
-  if (!needs_join && as != "duckdb") {
-    ds <- arrow::open_dataset(main_path)
-    ds <- .apply_variable_selection(ds, variables)
-    return(.return_as(ds, as, table_name = tabla, verbose = verbose))
+  ds <- .apply_variable_selection(ds, variables)
+  result <- .return_as(ds, as, table_name = tabla, verbose = verbose)
+
+  if (is.data.frame(result) && nrow(result) == 0) {
+    .warn_if_empty_geo(0L, anio, dep_codes, prov_codes, mun_codes)
+    return(NULL)
   }
-
-  # Descargar tablas geográficas auxiliares para el join REDATAM
-  geo_files <- c("depto.parquet", "provin.parquet", "munic.parquet")
-  geo_paths <- stats::setNames(
-    vapply(geo_files, function(f) {
-      .download_censo(anio, f, overwrite = FALSE, verbose = verbose)
-    }, character(1)),
-    c("depto", "provin", "munic")
-  )
-
-  # Para tablas con VIVIENDA_REF_ID, descargar vivienda para el join
-  tablas_persona <- .CENSO_TABLAS_PERSONA[[as.character(anio)]]
-  is_persona_table <- tabla %in% tablas_persona
-  viv_path <- if (is_persona_table || tabla == "vivienda") {
-    .download_censo(anio, "vivienda.parquet", overwrite = FALSE, verbose = verbose)
-  } else NULL
-
-  # Construir conexión DuckDB para el join
-  con <- DBI::dbConnect(duckdb::duckdb(), ":memory:")
-
-  # Registrar todas las vistas
-  .duckdb_view(con, "main_tbl", main_path)
-  .duckdb_view(con, "depto",    geo_paths[["depto"]])
-  .duckdb_view(con, "provin",   geo_paths[["provin"]])
-  .duckdb_view(con, "munic",    geo_paths[["munic"]])
-  if (!is.null(viv_path)) .duckdb_view(con, "vivienda", viv_path)
-
-  # Columnas geo armonizadas calculadas desde REDCODEN de munic (5 dígitos)
-  # DuckDB usa // para división entera; % para módulo
-  geo_select <- paste(
-    "PRINTF('%02d', CAST(m.REDCODEN AS INTEGER) // 10000) AS idep",
-    "PRINTF('%02d', (CAST(m.REDCODEN AS INTEGER) % 10000) // 100) AS iprov",
-    "PRINTF('%02d', CAST(m.REDCODEN AS INTEGER) % 100) AS imun",
-    sep = ", "
-  )
-
-  # Cláusula WHERE usando REDCODEN
-  where_clause <- .build_geo_where(dep_codes, prov_codes, mun_codes)
-
-  # JOIN según tipo de tabla
-  if (tabla == "vivienda") {
-    join_clause <- "JOIN munic m ON main_tbl.MUNIC_REF_ID = m.MUNIC_REF_ID"
-  } else if (is_persona_table) {
-    join_clause <- paste(
-      "JOIN vivienda v ON main_tbl.VIVIENDA_REF_ID = v.VIVIENDA_REF_ID",
-      "JOIN munic m ON v.MUNIC_REF_ID = m.MUNIC_REF_ID"
-    )
-  } else {
-    join_clause <- ""
-    geo_select  <- ""
-    where_clause <- ""
-  }
-
-  select_part <- if (nchar(geo_select) > 0) {
-    paste("main_tbl.*,", geo_select)
-  } else {
-    "main_tbl.*"
-  }
-
-  sql_view <- sprintf(
-    "SELECT %s FROM main_tbl %s %s",
-    select_part, join_clause, where_clause
-  )
-
-  if (as == "duckdb") {
-    DBI::dbExecute(con, sprintf("CREATE VIEW %s AS %s", tabla, sql_view))
-    return(con)
-  }
-
-  on.exit(DBI::dbDisconnect(con, shutdown = TRUE), add = TRUE)
-
-  if (verbose) cli::cli_inform(c("i" = "Aplicando filtros geográficos..."))
-  result <- DBI::dbGetQuery(con, sql_view)
-
-  .warn_if_empty_geo(nrow(result), anio, dep_codes, prov_codes, mun_codes)
-  if (nrow(result) == 0) return(NULL)
-
-  # Aplicar selección de variables
-  if (!is.null(variables)) {
-    geo_always <- c("idep", "iprov", "imun")
-    keep <- unique(c(intersect(geo_always, names(result)), variables))
-    missing_cols <- setdiff(variables, names(result))
-    if (length(missing_cols) > 0) {
-      cli::cli_warn(c(
-        "Columnas no encontradas: {.val {missing_cols}}",
-        "i" = "Usa {.code codebook(anio = {anio})} para ver las variables disponibles."
-      ))
-    }
-    result <- result[, intersect(keep, names(result)), drop = FALSE]
-  }
-
-  switch(as,
-    "tibble" = dplyr::as_tibble(result),
-    "arrow"  = arrow::as_arrow_table(result)
-  )
+  result
 }

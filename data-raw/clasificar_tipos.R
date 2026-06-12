@@ -20,6 +20,11 @@
 # Patrón de nombre que delata un código de clasificación.
 CODE_RE <- "(^|_)cod([0-9]|$)|cod$"
 
+# Códigos geográficos armonizados (idep/iprov/imun/i00). Son categóricos aunque
+# se almacenen como string y no tengan value labels enumerados. Consistentes con
+# las columnas geográficas del CPV-2024.
+GEO_CODE_VARS <- c("idep", "iprov", "imun", "i00")
+
 # Etiquetas centinela: si TODOS los value labels de una variable son de este
 # tipo (omisión, top-coding "8 y más", "ignorado", ...), no se considera
 # categórica, porque la variable subyacente es numérica.
@@ -36,6 +41,7 @@ tiene_etiquetas_sustantivas <- function(vc) {
 
 # storage_type: "string" | "numeric" | NA_character_ (desconocido)
 clasificar_tipo <- function(variable, valores_codigos, storage_type = NA_character_) {
+  if (tolower(variable) %in% GEO_CODE_VARS)                  return("categorica")
   if (tiene_etiquetas_sustantivas(valores_codigos))        return("categorica")
   if (grepl(CODE_RE, variable, ignore.case = TRUE))         return("categorica")
   if (!is.na(storage_type) && storage_type == "string")     return("texto")

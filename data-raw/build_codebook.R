@@ -95,6 +95,19 @@ for (hoja in names(tabla_map)) {
 codebook_meta <- do.call(rbind, all_vars)
 rownames(codebook_meta) <- NULL
 
+# Códigos geográficos armonizados: existen como columnas en los datos pero no en
+# el Excel del INE. Se añaden para que codebook() sea consistente con los censos
+# históricos (que ahora también exponen idep/iprov/imun como columnas directas).
+geo_defs <- c(idep = "Código de departamento (01-09)",
+              iprov = "Código de provincia",
+              imun  = "Código de municipio")
+geo_rows <- do.call(rbind, lapply(c("persona", "vivienda", "emigracion", "mortalidad"),
+  function(tb) data.frame(variable = names(geo_defs), etiqueta = unname(geo_defs),
+                          tabla = tb, stringsAsFactors = FALSE)))
+geo_rows$valores_codigos <- vector("list", nrow(geo_rows))  # sin value labels (son códigos)
+codebook_meta <- rbind(codebook_meta, geo_rows)
+rownames(codebook_meta) <- NULL
+
 # Clasificar `tipo` con el clasificador compartido. El tipo de almacenamiento
 # real se lee de los parquets de datos del CPV-2024 (los CSV del INE no traen
 # tipos útiles: el Excel marca todo como "integer").

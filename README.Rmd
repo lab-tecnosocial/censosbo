@@ -31,7 +31,7 @@ knitr::opts_chunk$set(
 remotes::install_github("lab-tecnosocial/censosbo")
 ```
 
-El paquete se desarrolla activamente (mejoras, corrección de errores), si ya lo tienes instalado te recomendamos actualizarlo a la última versión `r packageVersion("censosbo")` con:
+El paquete se desarrolla continuamente (mejoras, corrección de errores), si lo instalaste anteriormente te recomendamos volver a ejecutar el anterior código y borrar el caché para actualizar a la versión `r packageVersion("censosbo")` o usar la siguiente función:
 
 ```{r update, eval=FALSE}
 update_censosbo()
