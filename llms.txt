@@ -17,7 +17,7 @@ remotes::install_github("lab-tecnosocial/censosbo")
 
 El paquete se desarrolla continuamente (mejoras, corrección de errores),
 si lo instalaste anteriormente te recomendamos volver a ejecutar el
-anterior código y borrar el caché para actualizar a la versión 1.1.0 o
+anterior código y borrar el caché para actualizar a la versión 1.2.0 o
 usar la siguiente función:
 
 ``` r
@@ -140,6 +140,23 @@ provincias("La Paz")
 municipios(departamento = "Santa Cruz") |> head(5)
 ```
 
+`departamento`, `provincia` y `municipio` aceptan **código o nombre** en
+las funciones `get_*`. Y
+[`etiquetar_geografia()`](https://lab-tecnosocial.github.io/censosbo/reference/etiquetar_geografia.md)
+agrega los nombres legibles a los microdatos sin `left_join` manual:
+
+``` r
+
+# Filtrar por nombre (el departamento se infiere si hace falta)
+get_personas_2024(departamento = "Cochabamba", municipio = "Cochabamba")
+
+# Agregar nombre_dep / nombre_prov / nombre_mun a partir de los códigos
+get_personas_2024(departamento = "Cochabamba") |>
+  count(idep, iprov, imun) |>
+  collect() |>
+  etiquetar_geografia()
+```
+
 El paquete incluye geometrías sf para los 9 departamentos
 (`geo_departamentos`) y 336 municipios (`geo_municipios`) de Bolivia.
 Las funciones
@@ -212,7 +229,7 @@ citation("censosbo")
 
 > Ojeda Copa A (2026). *censosbo: Paquete de R para el acceso, análisis
 > y visualización de datos censales en Bolivia (1976-2024)*. Lab
-> TecnoSocial, Cochabamba, Bolivia. R package version 1.1.0.
+> TecnoSocial, Cochabamba, Bolivia. R package version 1.2.0.
 > <https://lab-tecnosocial.github.io/censosbo/>
 
 # Package index
@@ -235,6 +252,8 @@ para convertir códigos numéricos a texto legible.
   : Etiqueta los valores de las variables categóricas
 - [`etiquetar_variables()`](https://lab-tecnosocial.github.io/censosbo/reference/etiquetar_variables.md)
   : Etiqueta los nombres de las variables (columnas)
+- [`etiquetar_geografia()`](https://lab-tecnosocial.github.io/censosbo/reference/etiquetar_geografia.md)
+  : Añade nombres geográficos legibles a los microdatos
 
 ## CPV-2024: microdatos
 

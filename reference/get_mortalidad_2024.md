@@ -27,13 +27,18 @@ get_mortalidad_2024(
 
 - provincia:
 
-  Vector de caracteres. Código(s) de provincia. Si \`NULL\`, incluye
-  todas.
+  Vector de caracteres. Código(s) (\`"01"\`) o nombre(s) (\`"Cercado"\`)
+  de provincia. Si \`NULL\`, incluye todas. Los valores no existentes
+  producen un error (en vez de un resultado vacío silencioso).
 
 - municipio:
 
-  Vector de caracteres. Código(s) de municipio. Si \`NULL\`, incluye
-  todos.
+  Vector de caracteres. Código(s) (\`"01"\`) o nombre(s)
+  (\`"Cochabamba"\`) de municipio. Si \`NULL\`, incluye todos. Si se
+  especifica \`provincia\`/\`municipio\` sin \`departamento\`, este se
+  infiere del catálogo para no descargar todo el país. Un nombre
+  repetido entre departamentos requiere indicar \`departamento\` para
+  desambiguar.
 
 - variables:
 

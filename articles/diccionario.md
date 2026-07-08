@@ -41,7 +41,7 @@ Esta clasificación está disponible también en la columna `tipo` de los
 
 ### Persona (`get_personas_2024`)
 
-Datos de cada persona empadronada: **117** variables.
+Datos de cada persona empadronada: **118** variables.
 
 ------------------------------------------------------------------------
 
@@ -88,6 +88,47 @@ DBI::dbGetQuery(con, "
                   AND p.imun=v.imun AND p.i00=v.i00
 ")
 DBI::dbDisconnect(con)
+```
+
+------------------------------------------------------------------------
+
+### Área urbana/rural y grupos de edad derivados (CPV-2024)
+
+Algunas columnas de la tabla **persona** son **derivadas** por el INE
+(no son preguntas del cuestionario). Todas están en el diccionario y se
+etiquetan con
+[`etiquetar_valores()`](https://lab-tecnosocial.github.io/censosbo/reference/etiquetar_valores.md).
+
+**Urbano/rural.** El mismo concepto usa dos nombres según la tabla:
+
+| Tabla    | Columna  | Códigos                   |
+|----------|----------|---------------------------|
+| persona  | `area`   | `1 = Urbana`, `2 = Rural` |
+| vivienda | `urbrur` | `1 = Urbana`, `2 = Rural` |
+
+``` r
+
+codebook_valores("area")     # persona
+codebook_valores("urbrur")   # vivienda
+```
+
+**Grupos de edad.** La tabla persona trae varias agrupaciones de edad,
+además de la edad exacta en años (`p26_edad`, numérica). Se distinguen
+por sus cortes:
+
+| Variable | Descripción | Cortes |
+|----|----|----|
+| `edad_qui` | Edad quinquenal | 0–4, 5–9, …, 95–99, 100+ |
+| `g_edad` | Grandes grupos de edad (estándar internacional) | 0–14, 15–64, 65+ |
+| `g_edad_bol` | Grandes grupos de edad (corte boliviano) | 0–14, 15–59, 60+ |
+| `gedadedu` | Grupo de edad según asistencia educativa | 0–3, 4–5, 6–11, 12–17, 18–24, 25–59, 60+ |
+
+``` r
+
+codebook_valores("g_edad")       # 0-14 / 15-64 / 65 y más
+codebook_valores("g_edad_bol")   # 0-14 / 15-59 / 60 y más (Bolivia)
+codebook_valores("edad_qui")     # quinquenios
+codebook_valores("gedadedu")     # grupos de edad educativa
 ```
 
 ------------------------------------------------------------------------

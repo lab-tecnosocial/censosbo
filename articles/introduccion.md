@@ -209,16 +209,18 @@ Bolivia sin necesidad de descargar nada:
 ``` r
 
 departamentos()
-#>   idep nombre_dep
-#> 1   01 Chuquisaca
-#> 2   02     La Paz
-#> 3   03 Cochabamba
-#> 4   04      Oruro
-#> 5   05     Potosí
-#> 6   06     Tarija
-#> 7   07 Santa Cruz
-#> 8   08       Beni
-#> 9   09      Pando
+#> # A tibble: 9 × 2
+#>   idep  nombre_dep
+#>   <chr> <chr>     
+#> 1 01    Chuquisaca
+#> 2 02    La Paz    
+#> 3 03    Cochabamba
+#> 4 04    Oruro     
+#> 5 05    Potosí    
+#> 6 06    Tarija    
+#> 7 07    Santa Cruz
+#> 8 08    Beni      
+#> 9 09    Pando
 ```
 
 ``` r
@@ -314,17 +316,45 @@ disco, no en RAM.
 
 ## Filtros geográficos
 
+`departamento`, `provincia` y `municipio` aceptan **códigos o nombres**
+(mezclables). Los nombres son únicos dentro de su departamento, así que
+basta con dar el departamento para desambiguar.
+
 ``` r
 
-# CPV-2024
+# CPV-2024 — por código o por nombre
 get_personas_2024(departamento = "La Paz")
 get_personas_2024(departamento = c("La Paz", "Cochabamba", "Santa Cruz"))
-get_personas_2024(departamento = "Santa Cruz", provincia = "01")
-get_personas_2024(departamento = "Santa Cruz", municipio = "01")
+get_personas_2024(departamento = "Santa Cruz", provincia = "Andrés Ibáñez")
+get_personas_2024(departamento = "Cochabamba", municipio = "Cochabamba")
 
-# Censos históricos — mismos argumentos
+# Si das municipio/provincia sin departamento, se infiere (no descarga todo el país)
+get_personas_2024(municipio = "Cochabamba")
+
+# Censos históricos — mismos argumentos (1992/2001/2012 también por nombre)
 get_personas_2012(departamento = "La Paz")
-get_censo(2001, "persona", departamento = "Santa Cruz", municipio = "01")
+get_censo(2001, "persona", departamento = "Santa Cruz", municipio = "Andrés Ibáñez")
+```
+
+Un valor inexistente produce un **error claro** (no un resultado vacío
+en silencio). Un nombre repetido entre departamentos (p. ej.
+`"Cercado"`, `"Totora"`) pide indicar `departamento`.
+
+### Nombres geográficos legibles en los microdatos
+
+Los microdatos traen solo códigos (`idep`, `iprov`, `imun`).
+[`etiquetar_geografia()`](https://lab-tecnosocial.github.io/censosbo/reference/etiquetar_geografia.md)
+agrega los nombres (`nombre_dep`, `nombre_prov`, `nombre_mun`) sin
+necesidad de un `left_join` manual con
+[`municipios()`](https://lab-tecnosocial.github.io/censosbo/reference/municipios.md):
+
+``` r
+
+get_personas_2024(departamento = "Cochabamba") |>
+  count(idep, iprov, imun) |>
+  collect() |>
+  etiquetar_geografia()
+#> # ... columnas nombre_dep, nombre_prov, nombre_mun añadidas
 ```
 
 ## Selección de variables

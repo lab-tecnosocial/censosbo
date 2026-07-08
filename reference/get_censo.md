@@ -139,14 +139,17 @@ get_censo(
 
 - provincia:
 
-  Vector de caracteres. Código(s) de provincia. Si \`NULL\`, incluye
-  todas.
+  Vector de caracteres. Código(s) o nombre(s) de provincia. En
+  1992/2001/2012 acepta nombres (se resuelven contra el catálogo del
+  CPV-2024). En \*\*1976\*\* solo acepta códigos numéricos (geografía
+  cantonal distinta). Si \`NULL\`, incluye todas.
 
 - municipio:
 
-  Vector de caracteres. Código(s) de municipio. Si \`NULL\`, incluye
-  todos. Si el municipio no existe en el año solicitado, se emite una
-  advertencia y se retorna \`NULL\`.
+  Vector de caracteres. Código(s) o nombre(s) de municipio. En
+  1992/2001/2012 acepta nombres; en \*\*1976\*\* solo códigos de cantón.
+  Si \`NULL\`, incluye todos. Si el municipio no existe en el año
+  solicitado, se emite una advertencia y se retorna \`NULL\`.
 
 - variables:
 

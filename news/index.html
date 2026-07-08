@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,6 +48,32 @@
       <small>Source: <a href="https://github.com/lab-tecnosocial/censosbo/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.2.0" id="censosbo-120">censosbo 1.2.0<a class="anchor" aria-label="anchor" href="#censosbo-120"></a></h2>
+<div class="section level3">
+<h3 id="filtros-geográficos-por-nombre-y-validación-provincia--municipio-1-2-0">Filtros geográficos por nombre y validación (provincia / municipio)<a class="anchor" aria-label="anchor" href="#filtros-geogr%C3%A1ficos-por-nombre-y-validaci%C3%B3n-provincia--municipio-1-2-0"></a></h3>
+<ul><li>
+<code>provincia</code> y <code>municipio</code> ahora aceptan <strong>nombres además de códigos</strong> en <code><a href="../reference/get_personas_2024.html">get_personas_2024()</a></code>, <code><a href="../reference/get_viviendas_2024.html">get_viviendas_2024()</a></code>, <code><a href="../reference/get_emigracion_2024.html">get_emigracion_2024()</a></code>, <code><a href="../reference/get_mortalidad_2024.html">get_mortalidad_2024()</a></code> y en los censos históricos 1992/2001/2012 vía <code><a href="../reference/get_censo.html">get_censo()</a></code>. Ejemplo: <code>get_personas_2024(departamento = "Cochabamba", municipio = "Cochabamba")</code>. (El censo 1976 mantiene solo códigos: usó cantones.)</li>
+<li>Los valores inexistentes ahora producen un <strong>error claro</strong> en vez de un resultado de 0 filas en silencio. Un nombre repetido entre departamentos (p.ej. <code>"Totora"</code>, <code>"Cercado"</code>) pide indicar <code>departamento</code> para desambiguar.</li>
+<li>Si se pasa <code>provincia</code>/<code>municipio</code> <strong>sin</strong> <code>departamento</code>, este se <strong>infiere</strong> del catálogo, de modo que <code>get_personas_2024(municipio = "Cochabamba")</code> solo descarga el departamento correspondiente en vez de todo el país.</li>
+<li>El filtrado se hace por la <strong>tupla completa</strong> <code>(idep, iprov, imun)</code>, corrigiendo un sobre-emparejamiento latente (el código de municipio se repite entre provincias y hay nombres de municipio repetidos entre departamentos).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="nuevas-funciones-y-mejoras-de-etiquetado-1-2-0">Nuevas funciones y mejoras de etiquetado<a class="anchor" aria-label="anchor" href="#nuevas-funciones-y-mejoras-de-etiquetado-1-2-0"></a></h3>
+<ul><li>Nueva función <strong><code><a href="../reference/etiquetar_geografia.html">etiquetar_geografia()</a></code></strong>: agrega <code>nombre_dep</code>, <code>nombre_prov</code> y <code>nombre_mun</code> a un data frame de microdatos a partir de sus códigos geográficos, eliminando el <code>left_join</code> manual con <code><a href="../reference/municipios.html">municipios()</a></code>. Es el equivalente geográfico de <code><a href="../reference/etiquetar_valores.html">etiquetar_valores()</a></code>.</li>
+<li>
+<code><a href="../reference/etiquetar_valores.html">etiquetar_valores()</a></code> etiqueta <strong><code>area</code></strong> (Urbana/Rural de la tabla persona) de forma determinista. Antes dependía de qué otras columnas acompañaran a <code>area</code> (la variable solo figuraba en el diccionario de 1976), por lo que a veces la dejaba como entero sin aviso.</li>
+<li>
+<code><a href="../reference/etiquetar_valores.html">etiquetar_valores()</a></code> ahora <strong>avisa</strong> cuando la detección automática del censo parece equivocada: si los valores de una columna reconocida no coinciden con los códigos del censo detectado, la deja cruda y sugiere usar <code>anio =</code> (en vez de devolver una columna toda-<code>NA</code> en silencio).</li>
+<li>
+<code><a href="../reference/codebook.html">codebook()</a></code> / <code><a href="../reference/codebook_valores.html">codebook_valores()</a></code> documentan la variable derivada <strong><code>area</code></strong> (persona) con sus valores <code>1 = Urbana</code>, <code>2 = Rural</code>, equivalente a <code>urbrur</code> (vivienda).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="consistencia-1-2-0">Consistencia<a class="anchor" aria-label="anchor" href="#consistencia-1-2-0"></a></h3>
+<ul><li>
+<code><a href="../reference/departamentos.html">departamentos()</a></code>, <code><a href="../reference/provincias.html">provincias()</a></code> y <code><a href="../reference/municipios.html">municipios()</a></code> devuelven <strong><code>tibble</code></strong> (antes <code>data.frame</code>), por lo que <code>print(x, n = )</code> y la exploración funcionan como en el resto del tidyverse.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.1.0" id="censosbo-110">censosbo 1.1.0<a class="anchor" aria-label="anchor" href="#censosbo-110"></a></h2>
 <div class="section level3">

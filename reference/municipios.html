@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -67,70 +67,37 @@
 
 
 <dt id="arg-provincia">provincia<a class="anchor" aria-label="anchor" href="#arg-provincia"></a></dt>
-<dd><p>Código de provincia. Opcional.</p></dd>
+<dd><p>Código o nombre de provincia. Opcional.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>Un data.frame con columnas `idep`, `nombre_dep`, `iprov`,
+    <p>Un [tibble][dplyr::tibble] con columnas `idep`, `nombre_dep`, `iprov`,
   `nombre_prov`, `imun`, `nombre_mun`.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">municipios</span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Cochabamba"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    idep nombre_dep iprov   nombre_prov imun                 nombre_mun</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    03 Cochabamba    01       Cercado   01                 Cochabamba</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    03 Cochabamba    02       Campero   01                    Aiquile</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    03 Cochabamba    02       Campero   02                   Pasorapa</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    03 Cochabamba    02       Campero   03                   Omereque</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5    03 Cochabamba    03       Ayopaya   01                    Ayopaya</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6    03 Cochabamba    03       Ayopaya   02                  Morochata</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7    03 Cochabamba    03       Ayopaya   03                   Cocapata</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8    03 Cochabamba    04  Esteban Arze   01                     Tarata</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9    03 Cochabamba    04  Esteban Arze   02                    Anzaldo</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10   03 Cochabamba    04  Esteban Arze   03                    Arbieto</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11   03 Cochabamba    04  Esteban Arze   04                  Sacabamba</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12   03 Cochabamba    05         Arani   01                      Arani</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13   03 Cochabamba    05         Arani   02                      Vacas</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14   03 Cochabamba    06         Arque   01                      Arque</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15   03 Cochabamba    06         Arque   02                   Tacopaya</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16   03 Cochabamba    07      Capinota   01                   Capinota</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17   03 Cochabamba    07      Capinota   02                 Santiváñez</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18   03 Cochabamba    07      Capinota   03                     Sicaya</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19   03 Cochabamba    08 Germán Jordán   01                      Cliza</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20   03 Cochabamba    08 Germán Jordán   02                       Toco</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21   03 Cochabamba    08 Germán Jordán   03                     Tolata</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22   03 Cochabamba    09   Quillacollo   01                Quillacollo</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23   03 Cochabamba    09   Quillacollo   02                   Sipesipe</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24   03 Cochabamba    09   Quillacollo   03                  Tiquipaya</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25   03 Cochabamba    09   Quillacollo   04                      Vinto</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26   03 Cochabamba    09   Quillacollo   05                Colcapirhua</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27   03 Cochabamba    10       Chapare   01                     Sacaba</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28   03 Cochabamba    10       Chapare   02                     Colomi</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29   03 Cochabamba    10       Chapare   03               Villa Tunari</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30   03 Cochabamba    11      Tapacarí   01                   Tapacarí</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31   03 Cochabamba    12      Carrasco   01                     Totora</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 32   03 Cochabamba    12      Carrasco   02                       Pojo</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 33   03 Cochabamba    12      Carrasco   03                     Pocona</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 34   03 Cochabamba    12      Carrasco   04                    Chimoré</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 35   03 Cochabamba    12      Carrasco   05          Puerto Villarroel</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 36   03 Cochabamba    12      Carrasco   06                 Entre Ríos</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 37   03 Cochabamba    13        Mizque   01                     Mizque</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 38   03 Cochabamba    13        Mizque   02                  Vila Vila</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 39   03 Cochabamba    13        Mizque   03                     Alalay</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 40   03 Cochabamba    13        Mizque   04            TIOC-Raqaypampa</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 41   03 Cochabamba    14        Punata   01                     Punata</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 42   03 Cochabamba    14        Punata   02               Villa Rivero</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 43   03 Cochabamba    14        Punata   03                 San Benito</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 44   03 Cochabamba    14        Punata   04                    Tacachi</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 45   03 Cochabamba    14        Punata   05 Villa Gualberto Villarroel</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 46   03 Cochabamba    15       Bolívar   01                    Bolívar</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 47   03 Cochabamba    16       Tiraque   01                    Tiraque</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 48   03 Cochabamba    16       Tiraque   02                  Shinahota</span>
-<span class="r-in"><span><span class="fu">municipios</span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"02"</span>, provincia <span class="op">=</span> <span class="st">"217"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] idep        nombre_dep  iprov       nombre_prov imun        nombre_mun </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;0 rows&gt; (or 0-length row.names)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 48 × 6</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    idep  nombre_dep iprov nombre_prov  imun  nombre_mun</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 03    Cochabamba 01    Cercado      01    Cochabamba</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 03    Cochabamba 02    Campero      01    Aiquile   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 03    Cochabamba 02    Campero      02    Pasorapa  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 03    Cochabamba 02    Campero      03    Omereque  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 03    Cochabamba 03    Ayopaya      01    Ayopaya   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 03    Cochabamba 03    Ayopaya      02    Morochata </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 03    Cochabamba 03    Ayopaya      03    Cocapata  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 03    Cochabamba 04    Esteban Arze 01    Tarata    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 03    Cochabamba 04    Esteban Arze 02    Anzaldo   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 03    Cochabamba 04    Esteban Arze 03    Arbieto   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 38 more rows</span></span>
+<span class="r-in"><span><span class="fu">municipios</span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Cochabamba"</span>, provincia <span class="op">=</span> <span class="st">"Cercado"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 6</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   idep  nombre_dep iprov nombre_prov imun  nombre_mun</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 03    Cochabamba 01    Cercado     01    Cochabamba</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

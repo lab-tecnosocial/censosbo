@@ -9,7 +9,7 @@ de Bolivia de 1976, 1992, 2001 y 2012, con filtros geográficos opcionales."><me
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -191,14 +191,17 @@ departamento. Si `NULL`, incluye todos.</p></dd>
 
 
 <dt id="arg-provincia">provincia<a class="anchor" aria-label="anchor" href="#arg-provincia"></a></dt>
-<dd><p>Vector de caracteres. Código(s) de provincia. Si `NULL`,
-incluye todas.</p></dd>
+<dd><p>Vector de caracteres. Código(s) o nombre(s) de provincia.
+En 1992/2001/2012 acepta nombres (se resuelven contra el catálogo del
+CPV-2024). En **1976** solo acepta códigos numéricos (geografía cantonal
+distinta). Si `NULL`, incluye todas.</p></dd>
 
 
 <dt id="arg-municipio">municipio<a class="anchor" aria-label="anchor" href="#arg-municipio"></a></dt>
-<dd><p>Vector de caracteres. Código(s) de municipio. Si `NULL`,
-incluye todos. Si el municipio no existe en el año solicitado, se emite
-una advertencia y se retorna `NULL`.</p></dd>
+<dd><p>Vector de caracteres. Código(s) o nombre(s) de municipio.
+En 1992/2001/2012 acepta nombres; en **1976** solo códigos de cantón.
+Si `NULL`, incluye todos. Si el municipio no existe en el año solicitado,
+se emite una advertencia y se retorna `NULL`.</p></dd>
 
 
 <dt id="arg-variables">variables<a class="anchor" aria-label="anchor" href="#arg-variables"></a></dt>

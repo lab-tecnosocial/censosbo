@@ -18,6 +18,8 @@ para convertir códigos numéricos a texto legible.
   : Etiqueta los valores de las variables categóricas
 - [`etiquetar_variables()`](https://lab-tecnosocial.github.io/censosbo/reference/etiquetar_variables.md)
   : Etiqueta los nombres de las variables (columnas)
+- [`etiquetar_geografia()`](https://lab-tecnosocial.github.io/censosbo/reference/etiquetar_geografia.md)
+  : Añade nombres geográficos legibles a los microdatos
 
 ## CPV-2024: microdatos
 
