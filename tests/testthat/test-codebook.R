@@ -29,6 +29,16 @@ test_that("tipo solo toma valores válidos y es consistente", {
   }
 })
 
+test_that("`area` (persona) está en el codebook 2024 con sus valores (bug #4)", {
+  ca <- codebook("area")
+  expect_true("persona" %in% ca$tabla)
+  expect_equal(codebook("area")$tipo[1], "categorica")
+  va <- codebook_valores("area")
+  expect_s3_class(va, "data.frame")
+  expect_equal(nrow(va), 2L)
+  expect_equal(va$etiqueta, c("Urbana", "Rural"))
+})
+
 test_that("códigos numéricos categóricos se clasifican como categorica", {
   # Variables cuyos valores son números pero representan categorías.
   expect_equal(codebook("p25_sexo")$tipo, "categorica")

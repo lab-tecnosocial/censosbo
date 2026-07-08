@@ -9,10 +9,10 @@ municipios(departamento = NULL, provincia = NULL)
 \arguments{
 \item{departamento}{Código o nombre del departamento. Opcional.}
 
-\item{provincia}{Código de provincia. Opcional.}
+\item{provincia}{Código o nombre de provincia. Opcional.}
 }
 \value{
-Un data.frame con columnas `idep`, `nombre_dep`, `iprov`,
+Un [tibble][dplyr::tibble] con columnas `idep`, `nombre_dep`, `iprov`,
   `nombre_prov`, `imun`, `nombre_mun`.
 }
 \description{
@@ -20,5 +20,5 @@ Lista los municipios de Bolivia
 }
 \examples{
 municipios(departamento = "Cochabamba")
-municipios(departamento = "02", provincia = "217")
+municipios(departamento = "Cochabamba", provincia = "Cercado")
 }

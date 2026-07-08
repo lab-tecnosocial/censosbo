@@ -7,7 +7,7 @@
 departamentos()
 }
 \value{
-Un data.frame con columnas `idep` y `nombre_dep`.
+Un [tibble][dplyr::tibble] con columnas `idep` y `nombre_dep`.
 }
 \description{
 Lista los departamentos de Bolivia

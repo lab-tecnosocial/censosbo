@@ -141,12 +141,15 @@ get_censo(
 \item{departamento}{Vector de caracteres. Código(s) `"01"`-`"09"` o nombre(s) del
 departamento. Si `NULL`, incluye todos.}
 
-\item{provincia}{Vector de caracteres. Código(s) de provincia. Si `NULL`,
-incluye todas.}
+\item{provincia}{Vector de caracteres. Código(s) o nombre(s) de provincia.
+En 1992/2001/2012 acepta nombres (se resuelven contra el catálogo del
+CPV-2024). En **1976** solo acepta códigos numéricos (geografía cantonal
+distinta). Si `NULL`, incluye todas.}
 
-\item{municipio}{Vector de caracteres. Código(s) de municipio. Si `NULL`,
-incluye todos. Si el municipio no existe en el año solicitado, se emite
-una advertencia y se retorna `NULL`.}
+\item{municipio}{Vector de caracteres. Código(s) o nombre(s) de municipio.
+En 1992/2001/2012 acepta nombres; en **1976** solo códigos de cantón.
+Si `NULL`, incluye todos. Si el municipio no existe en el año solicitado,
+se emite una advertencia y se retorna `NULL`.}
 
 \item{variables}{Vector de caracteres. Nombres de columnas a seleccionar.
 Si `NULL`, devuelve todas las columnas.}

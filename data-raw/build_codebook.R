@@ -3,6 +3,7 @@
 
 library(readxl)
 source("data-raw/clasificar_tipos.R")
+source("data-raw/derived_codebook_vars.R")
 
 xlsx_path <- "original-data/fuentes/cpv-2024/Diccionario de variables CPV 2024.xlsx"
 stopifnot(file.exists(xlsx_path))
@@ -127,6 +128,9 @@ codebook_meta$tipo <- vapply(seq_len(nrow(codebook_meta)), function(i) {
 codebook_meta$valores_codigos <- lapply(seq_len(nrow(codebook_meta)), function(i) {
   if (codebook_meta$tipo[i] == "categorica") codebook_meta$valores_codigos[[i]] else NULL
 })
+
+# Variables derivadas (p.ej. `area` en persona) que no están en el Excel del INE.
+codebook_meta <- .add_derived_codebook_vars(codebook_meta)
 
 message("\nTotal de variables: ", nrow(codebook_meta))
 message("Por tipo:")

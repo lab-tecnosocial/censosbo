@@ -17,20 +17,21 @@
 
 #' Lista los departamentos de Bolivia
 #'
-#' @return Un data.frame con columnas `idep` y `nombre_dep`.
+#' @return Un [tibble][dplyr::tibble] con columnas `idep` y `nombre_dep`.
 #' @export
 #' @examples
 #' departamentos()
 departamentos <- function() {
   res <- unique(geo_bolivia[, c("idep", "nombre_dep")])
-  `rownames<-`(res, NULL)
+  dplyr::as_tibble(`rownames<-`(res, NULL))
 }
 
 #' Lista las provincias de un departamento
 #'
 #' @param departamento Código (e.g., `"07"`) o nombre (e.g., `"Santa Cruz"`)
 #'   del departamento. Acepta vectores.
-#' @return Un data.frame con columnas `idep`, `nombre_dep`, `iprov`, `nombre_prov`.
+#' @return Un [tibble][dplyr::tibble] con columnas `idep`, `nombre_dep`, `iprov`,
+#'   `nombre_prov`.
 #' @export
 #' @examples
 #' provincias("Santa Cruz")
@@ -39,19 +40,19 @@ provincias <- function(departamento) {
   dep_codes <- .resolve_dep_codes(departamento)
   geo <- geo_bolivia[geo_bolivia$idep %in% dep_codes, ]
   res <- unique(geo[, c("idep", "nombre_dep", "iprov", "nombre_prov")])
-  `rownames<-`(res, NULL)
+  dplyr::as_tibble(`rownames<-`(res, NULL))
 }
 
 #' Lista los municipios de Bolivia
 #'
 #' @param departamento Código o nombre del departamento. Opcional.
-#' @param provincia Código de provincia. Opcional.
-#' @return Un data.frame con columnas `idep`, `nombre_dep`, `iprov`,
+#' @param provincia Código o nombre de provincia. Opcional.
+#' @return Un [tibble][dplyr::tibble] con columnas `idep`, `nombre_dep`, `iprov`,
 #'   `nombre_prov`, `imun`, `nombre_mun`.
 #' @export
 #' @examples
 #' municipios(departamento = "Cochabamba")
-#' municipios(departamento = "02", provincia = "217")
+#' municipios(departamento = "Cochabamba", provincia = "Cercado")
 municipios <- function(departamento = NULL, provincia = NULL) {
   geo <- geo_bolivia
   if (!is.null(departamento)) {
@@ -59,9 +60,65 @@ municipios <- function(departamento = NULL, provincia = NULL) {
     geo <- geo[geo$idep %in% dep_codes, ]
   }
   if (!is.null(provincia)) {
-    geo <- geo[geo$iprov %in% as.character(provincia), ]
+    geo <- .match_geo_level(geo, provincia, "iprov", "nombre_prov",
+                            "provincia", "provincias(departamento)")
   }
-  `rownames<-`(geo, NULL)
+  dplyr::as_tibble(`rownames<-`(geo, NULL))
+}
+
+#' Añade nombres geográficos legibles a los microdatos
+#'
+#' Une un data frame de microdatos con [geo_bolivia] para agregar los nombres
+#' de departamento, provincia y municipio (`nombre_dep`, `nombre_prov`,
+#' `nombre_mun`) a partir de los códigos geográficos (`idep`, `iprov`, `imun`).
+#' Es el equivalente geográfico de [etiquetar_valores()] y evita el `left_join`
+#' manual con [municipios()] que antes hacía falta para trabajar por municipio.
+#'
+#' @param df Un data.frame ya materializado (tras `collect()`) que contenga al
+#'   menos la columna `idep`. El nivel de detalle se detecta automáticamente
+#'   según las columnas presentes: solo `idep` agrega `nombre_dep`; `idep`+`iprov`
+#'   agrega también `nombre_prov`; `idep`+`iprov`+`imun` agrega los tres.
+#'
+#' @return El mismo `df` con las columnas de nombre añadidas. Si ya existían
+#'   columnas de nombre, se reemplazan.
+#'
+#' @details
+#' Los códigos se normalizan a 2 dígitos antes de unir, por lo que funciona
+#' aunque `idep`/`iprov`/`imun` vengan como enteros. Los nombres provienen de la
+#' geografía del CPV-2024 ([geo_bolivia]); en censos históricos algunos códigos
+#' de municipio pueden no tener correspondencia y quedar como `NA`.
+#'
+#' @seealso [etiquetar_valores()], [municipios()]
+#' @export
+#' @examples
+#' \dontrun{
+#' library(dplyr)
+#' get_personas_2024(departamento = "Cochabamba") |>
+#'   count(idep, iprov, imun) |>
+#'   collect() |>
+#'   etiquetar_geografia()
+#' }
+etiquetar_geografia <- function(df) {
+  cols <- names(df)
+  if (!"idep" %in% cols) {
+    cli::cli_abort(c(
+      "El data frame no tiene la columna {.field idep}.",
+      "i" = "Usa microdatos con códigos geográficos (p.ej. de {.fn get_personas_2024})."
+    ))
+  }
+
+  key <- intersect(c("idep", "iprov", "imun"), cols)
+  name_cols <- c(idep = "nombre_dep", iprov = "nombre_prov", imun = "nombre_mun")
+  keep_names <- unname(name_cols[key])
+
+  # Normaliza las claves a código de 2 dígitos (acepta enteros o cadenas).
+  for (k in key) df[[k]] <- .pad2(df[[k]])
+
+  # Elimina columnas de nombre preexistentes para evitar sufijos .x/.y en el join.
+  df <- df[, setdiff(names(df), keep_names), drop = FALSE]
+
+  lookup <- dplyr::as_tibble(unique(geo_bolivia[, c(key, keep_names)]))
+  dplyr::left_join(df, lookup, by = key)
 }
 
 #' Geometrías de los departamentos de Bolivia

@@ -19,6 +19,18 @@
   if (anio == 2024L) codebook_meta else codebook_historico_meta[[as.character(anio)]]
 }
 
+# Columnas que son categóricas en ALGÚN codebook (2024 o histórico). Se usa para
+# distinguir "no se etiquetó porque no hay nada categórico" de "no se etiquetó
+# porque se detectó el censo equivocado".
+.cols_categoricas_conocidas <- function(cols) {
+  all_cbs <- c(list(codebook_meta), unname(codebook_historico_meta))
+  reconocidas <- character(0)
+  for (cb in all_cbs) {
+    reconocidas <- c(reconocidas, cb$variable[cb$tipo == "categorica"])
+  }
+  intersect(cols, unique(reconocidas))
+}
+
 #' Etiqueta los valores de las variables categóricas
 #'
 #' Convierte los códigos numéricos de las columnas categóricas en factores con
@@ -110,21 +122,48 @@ etiquetar_valores <- function(df, columnas = NULL, anio = NULL) {
     return(df)
   }
 
+  deteccion_auto <- is.null(anio)
   anio <- if (!is.null(anio)) as.integer(anio) else .detect_censo_anio(df)
   meta <- .get_codebook_for_anio(anio)
 
-  for (col in intersect(cols, names(df))) {
+  cols_presentes <- intersect(cols, names(df))
+  etiquetadas <- 0L
+  sin_match   <- character(0)  # categóricas reconocidas cuyos valores no matchearon
+
+  for (col in cols_presentes) {
     idx <- which(meta$variable == col & meta$tipo == "categorica")
     if (length(idx) == 0) next
 
     vc <- meta$valores_codigos[[idx[1]]]
     if (is.null(vc) || nrow(vc) == 0) next
 
-    df[[col]] <- factor(
-      as.character(df[[col]]),
-      levels = vc$codigo,
-      labels = vc$etiqueta
-    )
+    orig <- as.character(df[[col]])
+    f <- factor(orig, levels = vc$codigo, labels = vc$etiqueta)
+
+    # Si la columna traía datos pero NINGÚN valor coincidió con los códigos del
+    # censo detectado, es señal de censo equivocado: se deja cruda y se avisa
+    # (en vez de devolver una columna toda-NA en silencio).
+    if (any(!is.na(orig)) && all(is.na(f))) {
+      sin_match <- c(sin_match, col)
+      next
+    }
+    df[[col]] <- f
+    etiquetadas <- etiquetadas + 1L
+  }
+
+  # Avisos de detección ambigua / etiquetado fallido (solo con detección auto).
+  if (deteccion_auto) {
+    if (length(sin_match) > 0) {
+      cli::cli_warn(c(
+        "!" = "No se pudo etiquetar {.val {sin_match}}: sus valores no coinciden con los códigos del censo {anio}.",
+        "i" = "Puede que el censo detectado sea incorrecto. Especifícalo con {.arg anio}, p.ej. {.code etiquetar_valores(df, anio = 1992)}."
+      ))
+    } else if (etiquetadas == 0L && length(.cols_categoricas_conocidas(cols_presentes)) > 0) {
+      cli::cli_warn(c(
+        "!" = "No se etiquetó ninguna columna: ninguna de las categóricas presentes existe en el censo {anio} detectado.",
+        "i" = "Especifica el censo con {.arg anio}, p.ej. {.code etiquetar_valores(df, anio = 1992)}."
+      ))
+    }
   }
   df
 }

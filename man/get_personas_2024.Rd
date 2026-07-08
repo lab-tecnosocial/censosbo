@@ -19,11 +19,15 @@ get_personas_2024(
 (`"01"`-`"09"`) o nombre(s) (e.g., `"La Paz"`, `"Santa Cruz"`).
 Si `NULL`, incluye todos los departamentos (descarga ~500 MB).}
 
-\item{provincia}{Vector de caracteres. Código(s) de provincia. Si `NULL`,
-incluye todas.}
+\item{provincia}{Vector de caracteres. Código(s) (`"01"`) o nombre(s)
+(`"Cercado"`) de provincia. Si `NULL`, incluye todas. Los valores no
+existentes producen un error (en vez de un resultado vacío silencioso).}
 
-\item{municipio}{Vector de caracteres. Código(s) de municipio. Si `NULL`,
-incluye todos.}
+\item{municipio}{Vector de caracteres. Código(s) (`"01"`) o nombre(s)
+(`"Cochabamba"`) de municipio. Si `NULL`, incluye todos. Si se especifica
+`provincia`/`municipio` sin `departamento`, este se infiere del catálogo
+para no descargar todo el país. Un nombre repetido entre departamentos
+requiere indicar `departamento` para desambiguar.}
 
 \item{variables}{Vector de caracteres. Nombres de columnas a seleccionar.
 Si `NULL`, devuelve todas (118 columnas). Las columnas geográficas

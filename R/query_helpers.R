@@ -1,16 +1,132 @@
-# Aplica filtros geográficos a un Arrow Dataset usando dplyr (que Arrow soporta)
-.apply_geo_filters <- function(ds, departamento, provincia, municipio) {
-  dep_codes <- .resolve_dep_codes(departamento)
-  if (!is.null(dep_codes)) {
-    ds <- dplyr::filter(ds, .data$idep %in% dep_codes)
+# ===========================================================================
+# Resolución de filtros geográficos (departamento / provincia / municipio)
+# ===========================================================================
+#
+# Acepta CÓDIGOS ("03", "01") o NOMBRES ("Cochabamba", "Cercado") en cualquiera
+# de los tres niveles, mezclables. Resuelve jerárquicamente contra `geo_bolivia`
+# y filtra por la TUPLA completa (idep, iprov, imun), porque:
+#   - `imun` NO es único por departamento (se repite por provincia),
+#   - hay nombres de municipio repetidos entre departamentos.
+# Por eso filtrar columnas de forma independiente sobre-emparejaría.
+
+# Normaliza a código de 2 dígitos los valores numéricos; deja intactos los nombres.
+.pad2 <- function(x) {
+  x <- as.character(x)
+  num <- grepl("^[0-9]+$", x)
+  x[num] <- sprintf("%02d", as.integer(x[num]))
+  x
+}
+
+# Filtra un subconjunto de geo_bolivia por un vector de valores (códigos o
+# nombres) de un nivel. Valida existencia y detecta ambigüedad de nombres.
+.match_geo_level <- function(geo, valores, code_col, name_col, nivel, sugerencia) {
+  valores <- as.character(valores)
+  keep <- rep(FALSE, nrow(geo))
+  for (v in valores) {
+    if (grepl("^[0-9]+$", v)) {
+      m <- geo[[code_col]] == sprintf("%02d", as.integer(v))
+    } else {
+      m <- tolower(trimws(geo[[name_col]])) == tolower(trimws(v))
+      # Un nombre que cae en más de un departamento es ambiguo sin `departamento`.
+      deps_match <- unique(geo$idep[m])
+      if (length(deps_match) > 1) {
+        deps_nom <- unique(geo$nombre_dep[geo$idep %in% deps_match])
+        cli::cli_abort(c(
+          "El nombre de {nivel} {.val {v}} existe en varios departamentos.",
+          "i" = "Especifica {.arg departamento} para desambiguar.",
+          "i" = "Departamentos con ese {nivel}: {.val {deps_nom}}"
+        ))
+      }
+    }
+    if (!any(m)) {
+      cli::cli_abort(c(
+        "{nivel} no encontrado en el catálogo: {.val {v}}",
+        "i" = "Acepta código (p.ej. {.val 01}) o nombre (p.ej. {.val Cochabamba}).",
+        "i" = "Consulta los valores válidos con {.code {sugerencia}}."
+      ))
+    }
+    keep <- keep | m
+  }
+  geo[keep, , drop = FALSE]
+}
+
+# Resuelve los filtros geográficos a códigos de departamento + tuplas de filtrado.
+#
+# Devuelve una lista:
+#   dep_codes: vector de códigos de departamento ("01".."09") implicados por el
+#     filtro, o NULL si no se especificó ningún filtro. Sirve para (a) elegir qué
+#     archivos descargar en get_personas_2024() y (b) inferir el departamento
+#     cuando solo se dio provincia/municipio (evita descargar todo el país).
+#   rows: subconjunto de geo_bolivia con columnas idep/iprov/imun para hacer
+#     semi_join sobre los microdatos; NULL cuando el filtro llega solo a nivel
+#     de departamento (o no hay filtro).
+.resolve_geo <- function(departamento = NULL, provincia = NULL, municipio = NULL) {
+  geo <- geo_bolivia
+  dep_codes <- NULL
+  filtrado_sub <- FALSE  # ¿se filtró más allá de departamento?
+
+  if (!is.null(departamento)) {
+    dep_codes <- .resolve_dep_codes(departamento)
+    geo <- geo[geo$idep %in% dep_codes, , drop = FALSE]
   }
   if (!is.null(provincia)) {
-    ds <- dplyr::filter(ds, .data$iprov %in% as.character(provincia))
+    geo <- .match_geo_level(geo, provincia, "iprov", "nombre_prov",
+                            "provincia", "provincias(departamento)")
+    filtrado_sub <- TRUE
   }
   if (!is.null(municipio)) {
-    ds <- dplyr::filter(ds, .data$imun %in% as.character(municipio))
+    geo <- .match_geo_level(geo, municipio, "imun", "nombre_mun",
+                            "municipio", "municipios(departamento)")
+    filtrado_sub <- TRUE
+  }
+
+  # Inferir departamento(s) cuando no se dio pero sí provincia/municipio.
+  if (is.null(dep_codes) && filtrado_sub) {
+    dep_codes <- sort(unique(geo$idep))
+  }
+
+  list(
+    dep_codes = dep_codes,
+    rows = if (filtrado_sub) unique(geo[, c("idep", "iprov", "imun")]) else NULL
+  )
+}
+
+# Aplica un filtro geográfico ya resuelto a un Arrow Dataset.
+.apply_geo <- function(ds, geo, filter_dep = TRUE) {
+  key <- c("idep", "iprov", "imun")
+
+  # Alinea los tipos de las columnas clave del data.frame de filtro con el
+  # esquema del dataset ANTES de filtrar. Algunos Parquet usan `large_utf8`
+  # (p.ej. vivienda) y otros `utf8` (persona); sin esto, el semi_join de arrow
+  # falla con "Incompatible data types ... large_string vs string".
+  keys_tbl <- NULL
+  if (!is.null(geo$rows)) {
+    sch <- tryCatch(ds$schema, error = function(e) NULL)
+    if (!is.null(sch)) {
+      tipos <- stats::setNames(
+        lapply(key, function(cn) sch$GetFieldByName(cn)$type), key
+      )
+      keys_tbl <- arrow::arrow_table(geo$rows, schema = do.call(arrow::schema, tipos))
+    } else {
+      keys_tbl <- geo$rows
+    }
+  }
+
+  if (filter_dep && !is.null(geo$dep_codes)) {
+    dc <- geo$dep_codes
+    ds <- dplyr::filter(ds, .data$idep %in% dc)
+  }
+  if (!is.null(keys_tbl)) {
+    ds <- dplyr::semi_join(ds, keys_tbl, by = key)
   }
   ds
+}
+
+# Compatibilidad: resuelve y aplica en un paso (para las tablas de un solo archivo
+# del CPV-2024: vivienda, emigracion, mortalidad).
+.apply_geo_filters <- function(ds, departamento, provincia, municipio) {
+  geo <- .resolve_geo(departamento, provincia, municipio)
+  .apply_geo(ds, geo)
 }
 
 # Selecciona variables preservando siempre las columnas geográficas cuando existen
@@ -40,6 +156,8 @@
     },
     "duckdb" = {
       con <- DBI::dbConnect(duckdb::duckdb(), dbdir = ":memory:")
+      # duckdb_register_arrow acepta tanto Datasets como consultas arrow
+      # (p.ej. tras un semi_join de filtrado geográfico).
       duckdb::duckdb_register_arrow(con, table_name, ds)
       con
     }

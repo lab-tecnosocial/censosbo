@@ -1,3 +1,46 @@
+# censosbo 1.2.0
+
+## Filtros geográficos por nombre y validación (provincia / municipio)
+
+* `provincia` y `municipio` ahora aceptan **nombres además de códigos** en
+  `get_personas_2024()`, `get_viviendas_2024()`, `get_emigracion_2024()`,
+  `get_mortalidad_2024()` y en los censos históricos 1992/2001/2012 vía
+  `get_censo()`. Ejemplo: `get_personas_2024(departamento = "Cochabamba",
+  municipio = "Cochabamba")`. (El censo 1976 mantiene solo códigos: usó cantones.)
+* Los valores inexistentes ahora producen un **error claro** en vez de un
+  resultado de 0 filas en silencio. Un nombre repetido entre departamentos
+  (p.ej. `"Totora"`, `"Cercado"`) pide indicar `departamento` para desambiguar.
+* Si se pasa `provincia`/`municipio` **sin** `departamento`, este se **infiere**
+  del catálogo, de modo que `get_personas_2024(municipio = "Cochabamba")` solo
+  descarga el departamento correspondiente en vez de todo el país.
+* El filtrado se hace por la **tupla completa** `(idep, iprov, imun)`, corrigiendo
+  un sobre-emparejamiento latente (el código de municipio se repite entre
+  provincias y hay nombres de municipio repetidos entre departamentos).
+
+## Nuevas funciones y mejoras de etiquetado
+
+* Nueva función **`etiquetar_geografia()`**: agrega `nombre_dep`, `nombre_prov` y
+  `nombre_mun` a un data frame de microdatos a partir de sus códigos geográficos,
+  eliminando el `left_join` manual con `municipios()`. Es el equivalente
+  geográfico de `etiquetar_valores()`.
+* `etiquetar_valores()` etiqueta **`area`** (Urbana/Rural de la tabla persona) de
+  forma determinista. Antes dependía de qué otras columnas acompañaran a `area`
+  (la variable solo figuraba en el diccionario de 1976), por lo que a veces la
+  dejaba como entero sin aviso.
+* `etiquetar_valores()` ahora **avisa** cuando la detección automática del censo
+  parece equivocada: si los valores de una columna reconocida no coinciden con
+  los códigos del censo detectado, la deja cruda y sugiere usar `anio =` (en vez
+  de devolver una columna toda-`NA` en silencio).
+* `codebook()` / `codebook_valores()` documentan la variable derivada **`area`**
+  (persona) con sus valores `1 = Urbana`, `2 = Rural`, equivalente a `urbrur`
+  (vivienda).
+
+## Consistencia
+
+* `departamentos()`, `provincias()` y `municipios()` devuelven **`tibble`**
+  (antes `data.frame`), por lo que `print(x, n = )` y la exploración funcionan
+  como en el resto del tidyverse.
+
 # censosbo 1.1.0
 
 ## Geografía directa en censos históricos (sin "consultas estrella")

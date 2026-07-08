@@ -6,10 +6,14 @@
 #' @param departamento Vector de caracteres. Código(s) de departamento
 #'   (`"01"`-`"09"`) o nombre(s) (e.g., `"La Paz"`, `"Santa Cruz"`).
 #'   Si `NULL`, incluye todos los departamentos (descarga ~500 MB).
-#' @param provincia Vector de caracteres. Código(s) de provincia. Si `NULL`,
-#'   incluye todas.
-#' @param municipio Vector de caracteres. Código(s) de municipio. Si `NULL`,
-#'   incluye todos.
+#' @param provincia Vector de caracteres. Código(s) (`"01"`) o nombre(s)
+#'   (`"Cercado"`) de provincia. Si `NULL`, incluye todas. Los valores no
+#'   existentes producen un error (en vez de un resultado vacío silencioso).
+#' @param municipio Vector de caracteres. Código(s) (`"01"`) o nombre(s)
+#'   (`"Cochabamba"`) de municipio. Si `NULL`, incluye todos. Si se especifica
+#'   `provincia`/`municipio` sin `departamento`, este se infiere del catálogo
+#'   para no descargar todo el país. Un nombre repetido entre departamentos
+#'   requiere indicar `departamento` para desambiguar.
 #' @param variables Vector de caracteres. Nombres de columnas a seleccionar.
 #'   Si `NULL`, devuelve todas (118 columnas). Las columnas geográficas
 #'   (`idep`, `iprov`, `imun`, `i00`) siempre se incluyen.
@@ -73,7 +77,10 @@ get_personas_2024 <- function(
     verbose      = TRUE
 ) {
   as <- match.arg(as)
-  dep_codes <- .resolve_dep_codes(departamento)
+  # Resuelve códigos/nombres de departamento/provincia/municipio. Si solo se dio
+  # provincia/municipio, dep_codes queda inferido para no descargar todo el país.
+  geo <- .resolve_geo(departamento, provincia, municipio)
+  dep_codes <- geo$dep_codes
 
   files_needed <- if (is.null(dep_codes)) {
     sprintf("persona_dep%02d.parquet", 1:9)
@@ -94,7 +101,9 @@ get_personas_2024 <- function(
   }, character(1))
 
   ds <- arrow::open_dataset(local_paths, format = "parquet")
-  ds <- .apply_geo_filters(ds, NULL, provincia, municipio)
+  # El departamento ya está acotado por la selección de archivos; solo resta
+  # aplicar el filtro fino de provincia/municipio (tupla idep/iprov/imun).
+  ds <- .apply_geo(ds, geo, filter_dep = FALSE)
   ds <- .apply_variable_selection(ds, variables)
   .return_as(ds, as, table_name = "personas", verbose = verbose)
 }

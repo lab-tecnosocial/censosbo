@@ -47,6 +47,24 @@ test_that("etiquetar_valores() sigue usando el diccionario por censo en datos cr
   expect_equal(as.character(res$p25_sexo), c("Mujer", "Hombre"))
 })
 
+test_that("etiquetar_valores() etiqueta `area` de forma determinista (bug #1)", {
+  # `area` (persona) debe etiquetarse igual sin importar qué otra columna
+  # acompañe: antes dependía de la detección del censo (área solo estaba en 1976).
+  r1 <- etiquetar_valores(data.frame(area = c(1L, 2L), n = c(10L, 20L)))
+  r2 <- etiquetar_valores(data.frame(area = c(1L, 2L), p26_edad = c(30L, 40L)))
+  expect_s3_class(r1$area, "factor")
+  expect_s3_class(r2$area, "factor")
+  expect_equal(as.character(r1$area), c("Urbana", "Rural"))
+  expect_equal(as.character(r2$area), as.character(r1$area))
+})
+
+test_that("etiquetar_valores() avisa y deja cruda una columna que no matchea el censo", {
+  # p25_sexo es de 2024 pero 7/8 no son códigos válidos -> aviso + columna cruda.
+  df <- data.frame(p25_sexo = c(7L, 8L))
+  expect_warning(res <- etiquetar_valores(df), "no coinciden")
+  expect_type(res$p25_sexo, "integer")  # se conserva cruda, no toda-NA
+})
+
 test_that("las etiquetas armonizadas cubren las variables armonizadas categóricas", {
   # Toda variable con etiquetas debe existir en variable_temporal_map.
   e <- new.env()

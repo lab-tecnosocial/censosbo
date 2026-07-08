@@ -11,11 +11,14 @@
 #'   - **2012**: `"persona"`, `"vivienda"`, `"emigracion"`, `"discapacidad"`
 #' @param departamento Vector de caracteres. Código(s) `"01"`-`"09"` o nombre(s) del
 #'   departamento. Si `NULL`, incluye todos.
-#' @param provincia Vector de caracteres. Código(s) de provincia. Si `NULL`,
-#'   incluye todas.
-#' @param municipio Vector de caracteres. Código(s) de municipio. Si `NULL`,
-#'   incluye todos. Si el municipio no existe en el año solicitado, se emite
-#'   una advertencia y se retorna `NULL`.
+#' @param provincia Vector de caracteres. Código(s) o nombre(s) de provincia.
+#'   En 1992/2001/2012 acepta nombres (se resuelven contra el catálogo del
+#'   CPV-2024). En **1976** solo acepta códigos numéricos (geografía cantonal
+#'   distinta). Si `NULL`, incluye todas.
+#' @param municipio Vector de caracteres. Código(s) o nombre(s) de municipio.
+#'   En 1992/2001/2012 acepta nombres; en **1976** solo códigos de cantón.
+#'   Si `NULL`, incluye todos. Si el municipio no existe en el año solicitado,
+#'   se emite una advertencia y se retorna `NULL`.
 #' @param variables Vector de caracteres. Nombres de columnas a seleccionar.
 #'   Si `NULL`, devuelve todas las columnas.
 #' @param as Formato de retorno: `"arrow"` (lazy, por defecto), `"tibble"` o
@@ -89,14 +92,29 @@ get_censo <- function(
 
   .validate_censo_args(anio, tabla)
 
-  dep_codes  <- .resolve_dep_codes(departamento)
-  prov_codes <- if (!is.null(provincia))  sprintf("%02d", as.integer(provincia))  else NULL
-  mun_codes  <- if (!is.null(municipio))  sprintf("%02d", as.integer(municipio))  else NULL
-
   if (anio == 1976L) {
+    # 1976 usa geografía cantonal (columna `can`), no comparable con los
+    # municipios del CPV-2024: provincia/municipio solo aceptan códigos.
+    if (!is.null(provincia) && any(grepl("[^0-9]", as.character(provincia)))) {
+      cli::cli_abort("En el censo 1976, {.arg provincia} solo acepta códigos numéricos.")
+    }
+    if (!is.null(municipio) && any(grepl("[^0-9]", as.character(municipio)))) {
+      cli::cli_abort(c(
+        "En el censo 1976, {.arg municipio} solo acepta códigos de cantón numéricos.",
+        "i" = "El censo 1976 no tiene municipios comparables con el CPV-2024."
+      ))
+    }
+    dep_codes  <- .resolve_dep_codes(departamento)
+    prov_codes <- if (!is.null(provincia)) sprintf("%02d", as.integer(provincia)) else NULL
+    mun_codes  <- if (!is.null(municipio)) sprintf("%02d", as.integer(municipio)) else NULL
     .get_censo_1976(tabla, dep_codes, prov_codes, mun_codes, variables, as, overwrite, verbose)
   } else {
-    .get_censo_redatam(anio, tabla, dep_codes, prov_codes, mun_codes, variables, as, overwrite, verbose)
+    # 1992/2001/2012 exponen idep/iprov/imun consistentes con el CPV-2024, así
+    # que se reutiliza el mismo resolver (acepta códigos o nombres, valida y
+    # filtra por la tupla completa). Un municipio válido en 2024 que no existía
+    # en el año pedido simplemente no traerá filas (aviso de resultado vacío).
+    geo <- .resolve_geo(departamento, provincia, municipio)
+    .get_censo_redatam(anio, tabla, geo, variables, as, overwrite, verbose)
   }
 }
 
@@ -128,24 +146,23 @@ get_censo <- function(
 
 # --- 1992/2001/2012: idep/iprov/imun denormalizados como columnas directas ---
 
-.get_censo_redatam <- function(anio, tabla, dep_codes, prov_codes, mun_codes,
-                                variables, as, overwrite, verbose) {
+.get_censo_redatam <- function(anio, tabla, geo, variables, as, overwrite, verbose) {
   filename  <- paste0(tabla, ".parquet")
   main_path <- .download_censo(anio, filename, overwrite, verbose)
   ds <- arrow::open_dataset(main_path)
 
   # Todas las tablas (persona, vivienda, mortalidad, emigracion, discapacidad)
   # traen idep/iprov/imun pre-unidos. El filtro geográfico es directo sobre esas
-  # columnas string, sin join estrella ni descarga de depto/provin/munic.
-  if (!is.null(dep_codes))  ds <- dplyr::filter(ds, .data$idep  %in% dep_codes)
-  if (!is.null(prov_codes)) ds <- dplyr::filter(ds, .data$iprov %in% prov_codes)
-  if (!is.null(mun_codes))  ds <- dplyr::filter(ds, .data$imun  %in% mun_codes)
+  # columnas string (por departamento y, si aplica, por la tupla completa).
+  ds <- .apply_geo(ds, geo)
 
   ds <- .apply_variable_selection(ds, variables)
   result <- .return_as(ds, as, table_name = tabla, verbose = verbose)
 
   if (is.data.frame(result) && nrow(result) == 0) {
-    .warn_if_empty_geo(0L, anio, dep_codes, prov_codes, mun_codes)
+    .warn_if_empty_geo(0L, anio, geo$dep_codes,
+                       if (is.null(geo$rows)) NULL else unique(geo$rows$iprov),
+                       if (is.null(geo$rows)) NULL else unique(geo$rows$imun))
     return(NULL)
   }
   result

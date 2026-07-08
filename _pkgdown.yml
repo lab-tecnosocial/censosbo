@@ -90,6 +90,7 @@ reference:
       - codebook_2024
       - etiquetar_valores
       - etiquetar_variables
+      - etiquetar_geografia
 
   - title: "CPV-2024: microdatos"
     desc: >

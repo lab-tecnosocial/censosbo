@@ -11,7 +11,8 @@ provincias(departamento)
 del departamento. Acepta vectores.}
 }
 \value{
-Un data.frame con columnas `idep`, `nombre_dep`, `iprov`, `nombre_prov`.
+Un [tibble][dplyr::tibble] con columnas `idep`, `nombre_dep`, `iprov`,
+  `nombre_prov`.
 }
 \description{
 Lista las provincias de un departamento
