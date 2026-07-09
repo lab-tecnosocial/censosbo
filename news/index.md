@@ -1,5 +1,63 @@
 # Changelog
 
+## censosbo 1.2.1
+
+### Correcciones
+
+- **`get_temporal(variables = "grupo_edad")`**: los grupos de edad
+  quinquenales ahora se calculan desde la edad individual en **todos**
+  los censos y son comparables entre años. Antes, 1976 y 1992 tomaban
+  variables ya agrupadas (`edad5`/`GEDAD`), cuyos códigos no eran
+  quinquenios: 1992 producía bins sin sentido y 1976 devolvía códigos
+  crudos. (`grupo_edad` está en el grupo `demografico`, así que afectaba
+  al análisis por defecto.)
+- **Filtro por `municipio` con código sin `provincia`**: el código de
+  municipio se repite entre provincias, por lo que `municipio = "01"`
+  emparejaba un municipio por provincia (p.ej. 16 en Cochabamba) en
+  silencio. Ahora se emite un **error** pidiendo indicar `provincia`
+  para desambiguar (igual que ya ocurría con nombres repetidos entre
+  departamentos). La comprobación de ambigüedad ahora cubre también los
+  códigos, no solo los nombres.
+- **Resultado vacío en
+  [`get_censo()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md)**:
+  la advertencia de filtro geográfico sin filas y el retorno `NULL`
+  ahora ocurren con cualquier `as` (`"arrow"`, `"duckdb"`, `"tibble"`);
+  antes solo con `"tibble"`, contradiciendo la documentación.
+
+### Robustez
+
+- **Descargas atómicas**: los Parquet se descargan a un archivo temporal
+  `.part` y solo se renombran al completar. Una interrupción ya no deja
+  un archivo truncado en caché que se reutilizaría indefinidamente.
+- **[`censosbo_cache_clear()`](https://lab-tecnosocial.github.io/censosbo/reference/censosbo_cache_clear.md)**
+  borra únicamente los archivos `.parquet` (y el subdirectorio
+  `historico/` si queda vacío), en lugar de eliminar todo el directorio
+  de caché. Evita perder otros archivos cuando el caché se redirige a
+  una carpeta del proyecto con `options(censosbo.cache_dir = ...)`.
+
+### Consistencia y DX
+
+- [`codebook()`](https://lab-tecnosocial.github.io/censosbo/reference/codebook.md)
+  y
+  [`variables_armonizadas()`](https://lab-tecnosocial.github.io/censosbo/reference/variables_armonizadas.md)
+  **validan el argumento `tabla`** y abortan con la lista de tablas
+  disponibles ante un valor no reconocido (antes devolvían 0 filas en
+  silencio).
+- [`codebook_valores()`](https://lab-tecnosocial.github.io/censosbo/reference/codebook_valores.md)
+  avisa cuando la variable existe en varias tablas e indica de cuál
+  muestra los valores.
+- La documentación de las conexiones DuckDB recomienda cerrarlas con
+  `DBI::dbDisconnect(con, shutdown = TRUE)` para liberar la instancia.
+- Correcciones de documentación: ejemplo de
+  [`mapa_mun()`](https://lab-tecnosocial.github.io/censosbo/reference/mapa_mun.md)
+  usaba una variable inexistente (`v10_agua` → `v07_aguapro`); tamaños
+  de descarga de
+  [`get_personas_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_personas_2024.md)
+  sincronizados con el README;
+  [`get_mortalidad_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_mortalidad_2024.md)
+  añadida a la tabla de censos del README; `NEWS.md` se incluye ahora en
+  el paquete instalado.
+
 ## censosbo 1.2.0
 
 ### Filtros geográficos por nombre y validación (provincia / municipio)

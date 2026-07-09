@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -153,7 +153,7 @@ una columna <code>anio</code> que identifica el censo.</p>
 <span><span class="co">#&gt;       tabla armonizada  v1976 v1992  v2001         v2012            v2024</span></span>
 <span><span class="co">#&gt; 1   persona       TRUE    p03   P03    P28           P24         p25_sexo</span></span>
 <span><span class="co">#&gt; 2   persona       TRUE    p04   P04    P29           P25         p26_edad</span></span>
-<span><span class="co">#&gt; 3   persona       TRUE  edad5 GEDAD    P29           P25         p26_edad</span></span>
+<span><span class="co">#&gt; 3   persona       TRUE    p04   P04    P29           P25         p26_edad</span></span>
 <span><span class="co">#&gt; 4   persona      FALSE    p02   P02    P31           P23     p24_parentes</span></span>
 <span><span class="co">#&gt; 5   persona       TRUE    p05   P05    P48           P45       p53_ecivil</span></span>
 <span><span class="co">#&gt; 6   persona       TRUE    p10   P10    P36           P35          p40_lee</span></span>
@@ -181,7 +181,7 @@ una columna <code>anio</code> que identifica el censo.</p>
 <span><span class="co">#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             notas</span></span>
 <span><span class="co">#&gt; 1                                                                                                                                                                                                                                                                                                                                                           1976/1992/2001: codificación original 1=Hombre, 2=Mujer (invertida). 2012/2024: 1=Mujer, 2=Hombre. get_temporal() harmoniza todo a 1=Mujer, 2=Hombre.</span></span>
 <span><span class="co">#&gt; 2                                                                                                                                                                                                                                                                                                                                                  2001: P29 re-exportado con .dicx corregido (bug fieldsize exportaba 3 bits en vez de 7). 2012: P25 re-exportado desde .dicx (el .dic binario no la exportaba).</span></span>
-<span><span class="co">#&gt; 3                                                                                                                                                                                                                                                                                                                                                                         1976/1992: variable ya agrupada en la fuente. 2001/2012/2024: se calcula automáticamente desde la edad individual con (edad %/% 5) * 5.</span></span>
+<span><span class="co">#&gt; 3                                                                                                                                                                                                                            Se calcula en todos los censos desde la edad individual en años con (edad %/% 5) * 5, por lo que los intervalos son idénticos y comparables entre años. (Antes 1976/1992 usaban las variables ya agrupadas edad5/GEDAD, cuyos códigos NO eran quinquenios y rompían la comparación.)</span></span>
 <span><span class="co">#&gt; 4                                                                                                                                                                                                                                                                                                                                                          NO ARMONIZADA: get_temporal() devuelve los códigos crudos de cada censo, que no son comparables. Consulta codebook_ANIO() por año para interpretarlos.</span></span>
 <span><span class="co">#&gt; 5  Harmonizado al máximo nivel comparable (limitado por 1992, que agrupa casado/conviviente y separado/divorciado). 1976: 1=Soltero→1, 2=Casado→2, 3=Viudo→4, 4=Divorciado→3 (sin categoría conviviente ni separado). 1992: 1=Casado/conviviente→2, 2=Viudo→4, 3=Separado/divorciado→3, 4=Soltero→1. 2001/2012: 1=Soltero→1, 2=Casado→2, 3=Conviviente→2, 4=Separado→3, 5=Divorciado→3, 6=Viudo→4. 2024: 1=Casado→2, 2=Conviviente→2, 3=Separado→3, 4=Divorciado→3, 5=Viudo→4, 6=Soltero→1, 9=Sin especificar→NA.</span></span>
 <span><span class="co">#&gt; 6                                                                                                                                                                                                                                                                                                                                                                                                                      1992 (P10): códigos 7=Sí, 8=No (distinto al resto). get_temporal() harmoniza a 1=Sí, 2=No.</span></span>
@@ -690,9 +690,11 @@ fieldsize exportaba 3 bits en vez de 7). 2012: P25 re-exportado desde
 <tr class="odd">
 <td align="left">grupo_edad</td>
 <td align="left">persona</td>
-<td align="left">1976/1992: variable ya agrupada en la fuente.
-2001/2012/2024: se calcula automáticamente desde la edad individual con
-(edad %/% 5) * 5.</td>
+<td align="left">Se calcula en todos los censos desde la edad individual
+en años con (edad %/% 5) * 5, por lo que los intervalos son idénticos y
+comparables entre años. (Antes 1976/1992 usaban las variables ya
+agrupadas edad5/GEDAD, cuyos códigos NO eran quinquenios y rompían la
+comparación.)</td>
 </tr>
 <tr class="even">
 <td align="left">parentesco</td>
@@ -971,7 +973,7 @@ directamente a cada censo:</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

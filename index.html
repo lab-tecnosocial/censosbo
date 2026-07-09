@@ -17,9 +17,9 @@
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><link href="extra.css" rel="stylesheet">
 <meta property="og:title" content="censosbo: Censos de Bolivia (1976–2024)">
-<meta name="description" content="Acceso programático a los microdatos de los censos de Bolivia: 1976, 1992, 2001, 2012 y CPV-2024. Descarga bajo demanda, caché local, compatible con dplyr, Arrow y DuckDB. Incluye diccionarios de variables para todos los años. funciones de análisis temporal y generación de mapas
+<meta name="description" content="Acceso programático a los microdatos de los censos de Bolivia: 1976, 1992, 2001, 2012 y CPV-2024. Descarga bajo demanda, caché local, compatible con dplyr, Arrow y DuckDB. Incluye diccionarios de variables para todos los años, funciones de análisis temporal y generación de mapas.
 ">
-<meta property="og:description" content="Acceso programático a los microdatos de los censos de Bolivia: 1976, 1992, 2001, 2012 y CPV-2024. Descarga bajo demanda, caché local, compatible con dplyr, Arrow y DuckDB. Incluye diccionarios de variables para todos los años. funciones de análisis temporal y generación de mapas
+<meta property="og:description" content="Acceso programático a los microdatos de los censos de Bolivia: 1976, 1992, 2001, 2012 y CPV-2024. Descarga bajo demanda, caché local, compatible con dplyr, Arrow y DuckDB. Incluye diccionarios de variables para todos los años, funciones de análisis temporal y generación de mapas.
 ">
 <meta property="og:image" content="https://lab-tecnosocial.github.io/censosbo/logo.png">
 </head>
@@ -31,7 +31,7 @@
 
     <a class="navbar-brand me-2" href="index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -88,7 +88,7 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"lab-tecnosocial/censosbo"</span><span class="op">)</span></span></code></pre></div>
-<p>El paquete se desarrolla continuamente (mejoras, corrección de errores), si lo instalaste anteriormente te recomendamos volver a ejecutar el anterior código y borrar el caché para actualizar a la versión 1.2.0 o usar la siguiente función:</p>
+<p>El paquete se desarrolla continuamente (mejoras, corrección de errores), si lo instalaste anteriormente te recomendamos volver a ejecutar el anterior código y borrar el caché para actualizar a la versión 1.2.1 o usar la siguiente función:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/update_censosbo.html">update_censosbo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -225,6 +225,15 @@
 <td><code><a href="reference/get_emigracion_2024.html">get_emigracion_2024()</a></code></td>
 <td align="right">500,914</td>
 <td align="right">8</td>
+<td align="right">2 MB</td>
+<td align="right">~7 MB</td>
+</tr>
+<tr>
+<td align="center">
+<strong>2024</strong>²</td>
+<td><code><a href="reference/get_mortalidad_2024.html">get_mortalidad_2024()</a></code></td>
+<td align="right">382,731</td>
+<td align="right">10</td>
 <td align="right">2 MB</td>
 <td align="right">~7 MB</td>
 </tr>
@@ -413,7 +422,7 @@
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"censosbo"</span><span class="op">)</span></span></code></pre></div>
 <blockquote>
-<p>Ojeda Copa A (2026). <em>censosbo: Paquete de R para el acceso, análisis y visualización de datos censales en Bolivia (1976-2024)</em>. Lab TecnoSocial, Cochabamba, Bolivia. R package version 1.2.0. <a href="https://lab-tecnosocial.github.io/censosbo/" class="uri">https://lab-tecnosocial.github.io/censosbo/</a></p>
+<p>Ojeda Copa A (2026). <em>censosbo: Paquete de R para el acceso, análisis y visualización de datos censales en Bolivia (1976-2024)</em>. Lab TecnoSocial, Cochabamba, Bolivia. R package version 1.2.1. <a href="https://lab-tecnosocial.github.io/censosbo/" class="uri">https://lab-tecnosocial.github.io/censosbo/</a></p>
 </blockquote>
 </div>
 </div>
@@ -469,7 +478,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

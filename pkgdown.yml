@@ -1,5 +1,5 @@
 pandoc: 3.8.3
-pkgdown: 2.2.0
+pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
   analisis-avanzado: analisis-avanzado.html
@@ -10,7 +10,7 @@ articles:
   diccionario: diccionario.html
   introduccion: introduccion.html
   visualizacion-mapas: visualizacion-mapas.html
-last_built: 2026-07-08T02:02Z
+last_built: 2026-07-09T01:10Z
 urls:
   reference: https://lab-tecnosocial.github.io/censosbo/reference
   article: https://lab-tecnosocial.github.io/censosbo/articles

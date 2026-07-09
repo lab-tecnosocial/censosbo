@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,6 +48,34 @@
       <small>Source: <a href="https://github.com/lab-tecnosocial/censosbo/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.2.1" id="censosbo-121">censosbo 1.2.1<a class="anchor" aria-label="anchor" href="#censosbo-121"></a></h2>
+<div class="section level3">
+<h3 id="correcciones-1-2-1">Correcciones<a class="anchor" aria-label="anchor" href="#correcciones-1-2-1"></a></h3>
+<ul><li>
+<strong><code>get_temporal(variables = "grupo_edad")</code></strong>: los grupos de edad quinquenales ahora se calculan desde la edad individual en <strong>todos</strong> los censos y son comparables entre años. Antes, 1976 y 1992 tomaban variables ya agrupadas (<code>edad5</code>/<code>GEDAD</code>), cuyos códigos no eran quinquenios: 1992 producía bins sin sentido y 1976 devolvía códigos crudos. (<code>grupo_edad</code> está en el grupo <code>demografico</code>, así que afectaba al análisis por defecto.)</li>
+<li>
+<strong>Filtro por <code>municipio</code> con código sin <code>provincia</code></strong>: el código de municipio se repite entre provincias, por lo que <code>municipio = "01"</code> emparejaba un municipio por provincia (p.ej. 16 en Cochabamba) en silencio. Ahora se emite un <strong>error</strong> pidiendo indicar <code>provincia</code> para desambiguar (igual que ya ocurría con nombres repetidos entre departamentos). La comprobación de ambigüedad ahora cubre también los códigos, no solo los nombres.</li>
+<li>
+<strong>Resultado vacío en <code><a href="../reference/get_censo.html">get_censo()</a></code></strong>: la advertencia de filtro geográfico sin filas y el retorno <code>NULL</code> ahora ocurren con cualquier <code>as</code> (<code>"arrow"</code>, <code>"duckdb"</code>, <code>"tibble"</code>); antes solo con <code>"tibble"</code>, contradiciendo la documentación.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="robustez-1-2-1">Robustez<a class="anchor" aria-label="anchor" href="#robustez-1-2-1"></a></h3>
+<ul><li>
+<strong>Descargas atómicas</strong>: los Parquet se descargan a un archivo temporal <code>.part</code> y solo se renombran al completar. Una interrupción ya no deja un archivo truncado en caché que se reutilizaría indefinidamente.</li>
+<li>
+<strong><code><a href="../reference/censosbo_cache_clear.html">censosbo_cache_clear()</a></code></strong> borra únicamente los archivos <code>.parquet</code> (y el subdirectorio <code>historico/</code> si queda vacío), en lugar de eliminar todo el directorio de caché. Evita perder otros archivos cuando el caché se redirige a una carpeta del proyecto con <code>options(censosbo.cache_dir = ...)</code>.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="consistencia-y-dx-1-2-1">Consistencia y DX<a class="anchor" aria-label="anchor" href="#consistencia-y-dx-1-2-1"></a></h3>
+<ul><li>
+<code><a href="../reference/codebook.html">codebook()</a></code> y <code><a href="../reference/variables_armonizadas.html">variables_armonizadas()</a></code> <strong>validan el argumento <code>tabla</code></strong> y abortan con la lista de tablas disponibles ante un valor no reconocido (antes devolvían 0 filas en silencio).</li>
+<li>
+<code><a href="../reference/codebook_valores.html">codebook_valores()</a></code> avisa cuando la variable existe en varias tablas e indica de cuál muestra los valores.</li>
+<li>La documentación de las conexiones DuckDB recomienda cerrarlas con <code>DBI::dbDisconnect(con, shutdown = TRUE)</code> para liberar la instancia.</li>
+<li>Correcciones de documentación: ejemplo de <code><a href="../reference/mapa_mun.html">mapa_mun()</a></code> usaba una variable inexistente (<code>v10_agua</code> → <code>v07_aguapro</code>); tamaños de descarga de <code><a href="../reference/get_personas_2024.html">get_personas_2024()</a></code> sincronizados con el README; <code><a href="../reference/get_mortalidad_2024.html">get_mortalidad_2024()</a></code> añadida a la tabla de censos del README; <code>NEWS.md</code> se incluye ahora en el paquete instalado.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.2.0" id="censosbo-120">censosbo 1.2.0<a class="anchor" aria-label="anchor" href="#censosbo-120"></a></h2>
 <div class="section level3">
@@ -183,7 +211,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

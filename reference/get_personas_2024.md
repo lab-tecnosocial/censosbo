@@ -24,7 +24,7 @@ get_personas_2024(
 
   Vector de caracteres. Código(s) de departamento (\`"01"\`-\`"09"\`) o
   nombre(s) (e.g., \`"La Paz"\`, \`"Santa Cruz"\`). Si \`NULL\`, incluye
-  todos los departamentos (descarga ~500 MB).
+  todos los departamentos (descarga ~282 MB).
 
 - provincia:
 
@@ -44,7 +44,7 @@ get_personas_2024(
 - variables:
 
   Vector de caracteres. Nombres de columnas a seleccionar. Si \`NULL\`,
-  devuelve todas (118 columnas). Las columnas geográficas (\`idep\`,
+  devuelve todas (119 columnas). Las columnas geográficas (\`idep\`,
   \`iprov\`, \`imun\`, \`i00\`) siempre se incluyen.
 
 - as:
@@ -67,13 +67,13 @@ get_personas_2024(
 Según \`as\`: - \`"arrow"\`: un \`arrow::Dataset\` (lazy, soporta dplyr
 y Arrow) - \`"tibble"\`: un \`data.frame\` con los datos en RAM -
 \`"duckdb"\`: una conexión \`DBI\` con tabla \`"personas"\` registrada;
-recuerda cerrarla con \`DBI::dbDisconnect(con)\`.
+recuerda cerrarla con \`DBI::dbDisconnect(con, shutdown = TRUE)\`.
 
 ## Details
 
 Los datos se descargan por departamento bajo demanda. Especificando
-\`departamento = "07"\` solo se descarga \`persona_dep07.parquet\` (~155
-MB). Sin especificar departamento se descargan los 9 archivos (~560 MB
+\`departamento = "07"\` solo se descarga \`persona_dep07.parquet\` (~77
+MB). Sin especificar departamento se descargan los 9 archivos (~282 MB
 en total).
 
 El caché se almacena en \`censosbo_cache_dir()\`. Usa
@@ -106,7 +106,7 @@ get_personas_2024(
 # Consulta SQL con DuckDB
 con <- get_personas_2024(departamento = "07", as = "duckdb")
 DBI::dbGetQuery(con, "SELECT p25_sexo, AVG(p26_edad) FROM personas GROUP BY 1")
-DBI::dbDisconnect(con)
+DBI::dbDisconnect(con, shutdown = TRUE)
 
 # Equivalente genérico
 get_censo(2024, "persona", departamento = "07")

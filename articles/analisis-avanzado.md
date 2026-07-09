@@ -25,7 +25,7 @@ ds <- get_personas_2024(
   as = "arrow"
 )
 #> ℹ Descargando persona_dep09.parquet (~4 MB)...
-#> ✔ Descargado persona_dep09.parquet [294ms]
+#> ✔ Descargado persona_dep09.parquet [258ms]
 #> 
 class(ds)
 #> [1] "FileSystemDataset" "Dataset"           "ArrowObject"      
@@ -87,9 +87,6 @@ library(DBI)
 
 con <- get_personas_2024(departamento = "Pando", as = "duckdb")
 #> ✔ Usando caché: persona_dep09.parquet
-#> duckdb: caching downloaded extensions in the package library:
-#> ℹ /home/runner/work/_temp/Library/duckdb/extensions
-#> ℹ This is removed when the package is re-installed; see `?duckdb_storage` to choose a different location.
 
 # SQL estándar con agregaciones
 DBI::dbGetQuery(con, "
@@ -182,7 +179,7 @@ duckdb::duckdb_register_arrow(
                 variables = c("idep","iprov","imun","i00","urbrur","v07_aguapro","v09_energia"))
 )
 #> ℹ Descargando vivienda.parquet (~55 MB)...
-#> ✔ Descargado vivienda.parquet [426ms]
+#> ✔ Descargado vivienda.parquet [348ms]
 
 # Indicador: personas con educación superior en viviendas con servicios básicos
 DBI::dbGetQuery(con, "

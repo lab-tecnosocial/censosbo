@@ -6,7 +6,7 @@ desde GitHub Releases, los almacena en caché local y permite filtrar por
 departamento, provincia o municipio. Soporta flujos de trabajo estilo
 dplyr vía Apache Arrow y consultas SQL vía DuckDB. Incluye diccionarios
 de variables para todos los años, funciones de armonización temporal,
-análisis comparativos entre censos y generación de mapas a nive
+análisis comparativos entre censos y generación de mapas a nivel
 departamental y municipal.
 
 ## See also

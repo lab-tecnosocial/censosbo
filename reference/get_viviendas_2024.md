@@ -24,7 +24,7 @@ get_viviendas_2024(
 
   Vector de caracteres. Código(s) de departamento (\`"01"\`-\`"09"\`) o
   nombre(s) (e.g., \`"La Paz"\`, \`"Santa Cruz"\`). Si \`NULL\`, incluye
-  todos los departamentos (descarga ~500 MB).
+  todos los departamentos (descarga ~282 MB).
 
 - provincia:
 
@@ -44,7 +44,7 @@ get_viviendas_2024(
 - variables:
 
   Vector de caracteres. Nombres de columnas a seleccionar. Si \`NULL\`,
-  devuelve todas (118 columnas). Las columnas geográficas (\`idep\`,
+  devuelve todas (119 columnas). Las columnas geográficas (\`idep\`,
   \`iprov\`, \`imun\`, \`i00\`) siempre se incluyen.
 
 - as:

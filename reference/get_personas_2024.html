@@ -9,7 +9,7 @@ y Vivienda 2024 de Bolivia, con filtros geográficos opcionales."><meta property
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -76,7 +76,7 @@ y Vivienda 2024 de Bolivia, con filtros geográficos opcionales.</p>
 <dl><dt id="arg-departamento">departamento<a class="anchor" aria-label="anchor" href="#arg-departamento"></a></dt>
 <dd><p>Vector de caracteres. Código(s) de departamento
 (`"01"`-`"09"`) o nombre(s) (e.g., `"La Paz"`, `"Santa Cruz"`).
-Si `NULL`, incluye todos los departamentos (descarga ~500 MB).</p></dd>
+Si `NULL`, incluye todos los departamentos (descarga ~282 MB).</p></dd>
 
 
 <dt id="arg-provincia">provincia<a class="anchor" aria-label="anchor" href="#arg-provincia"></a></dt>
@@ -95,7 +95,7 @@ requiere indicar `departamento` para desambiguar.</p></dd>
 
 <dt id="arg-variables">variables<a class="anchor" aria-label="anchor" href="#arg-variables"></a></dt>
 <dd><p>Vector de caracteres. Nombres de columnas a seleccionar.
-Si `NULL`, devuelve todas (118 columnas). Las columnas geográficas
+Si `NULL`, devuelve todas (119 columnas). Las columnas geográficas
 (`idep`, `iprov`, `imun`, `i00`) siempre se incluyen.</p></dd>
 
 
@@ -119,13 +119,13 @@ grandes), o `"duckdb"` (conexión DBI activa con tabla `"personas"`).</p></dd>
   - `"arrow"`: un `arrow::Dataset` (lazy, soporta dplyr y Arrow)
   - `"tibble"`: un `data.frame` con los datos en RAM
   - `"duckdb"`: una conexión `DBI` con tabla `"personas"` registrada;
-    recuerda cerrarla con `DBI::dbDisconnect(con)`.</p>
+    recuerda cerrarla con `DBI::dbDisconnect(con, shutdown = TRUE)`.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Los datos se descargan por departamento bajo demanda. Especificando
-`departamento = "07"` solo se descarga `persona_dep07.parquet` (~155 MB).
-Sin especificar departamento se descargan los 9 archivos (~560 MB en total).</p>
+`departamento = "07"` solo se descarga `persona_dep07.parquet` (~77 MB).
+Sin especificar departamento se descargan los 9 archivos (~282 MB en total).</p>
 <p>El caché se almacena en `censosbo_cache_dir()`. Usa `censosbo_cache_info()`
 para ver los archivos descargados.</p>
 <p>Para censos históricos usa [get_censo()] o los atajos [get_personas_1992()],
@@ -154,7 +154,7 @@ para ver los archivos descargados.</p>
 <span class="r-in"><span><span class="co"># Consulta SQL con DuckDB</span></span></span>
 <span class="r-in"><span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu">get_personas_2024</span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"07"</span>, as <span class="op">=</span> <span class="st">"duckdb"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbGetQuery.html" class="external-link">dbGetQuery</a></span><span class="op">(</span><span class="va">con</span>, <span class="st">"SELECT p25_sexo, AVG(p26_edad) FROM personas GROUP BY 1"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">con</span>, shutdown <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Equivalente genérico</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="get_censo.html">get_censo</a></span><span class="op">(</span><span class="fl">2024</span>, <span class="st">"persona"</span>, departamento <span class="op">=</span> <span class="st">"07"</span><span class="op">)</span></span></span>
@@ -170,7 +170,7 @@ para ver los archivos descargados.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>
