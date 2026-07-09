@@ -17,7 +17,7 @@ get_emigracion_2024(
 \arguments{
 \item{departamento}{Vector de caracteres. Código(s) de departamento
 (`"01"`-`"09"`) o nombre(s) (e.g., `"La Paz"`, `"Santa Cruz"`).
-Si `NULL`, incluye todos los departamentos (descarga ~500 MB).}
+Si `NULL`, incluye todos los departamentos (descarga ~282 MB).}
 
 \item{provincia}{Vector de caracteres. Código(s) (`"01"`) o nombre(s)
 (`"Cercado"`) de provincia. Si `NULL`, incluye todas. Los valores no
@@ -30,7 +30,7 @@ para no descargar todo el país. Un nombre repetido entre departamentos
 requiere indicar `departamento` para desambiguar.}
 
 \item{variables}{Vector de caracteres. Nombres de columnas a seleccionar.
-Si `NULL`, devuelve todas (118 columnas). Las columnas geográficas
+Si `NULL`, devuelve todas (119 columnas). Las columnas geográficas
 (`idep`, `iprov`, `imun`, `i00`) siempre se incluyen.}
 
 \item{as}{Formato de retorno: `"arrow"` (por defecto), `"tibble"` o

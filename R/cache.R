@@ -80,16 +80,20 @@ censosbo_cache_clear <- function(ask = TRUE) {
     cli::cli_inform("No hay caché que limpiar.")
     return(invisible(NULL))
   }
-  all_files <- fs::dir_ls(cache_dir, recurse = TRUE, type = "file")
-  if (length(all_files) == 0) {
-    cli::cli_inform("El caché ya está vacío.")
+  # Borrar SOLO los parquets de censosbo. El directorio de caché es configurable
+  # (opción censosbo.cache_dir) y puede apuntar a una carpeta del proyecto con
+  # otros archivos del usuario: un dir_delete() del directorio raíz los perdería.
+  parquets <- fs::dir_ls(cache_dir, recurse = TRUE, type = "file", glob = "*.parquet")
+  if (length(parquets) == 0) {
+    cli::cli_inform("El caché ya está vacío (no hay archivos {.file .parquet}).")
     return(invisible(NULL))
   }
-  total_size <- sum(fs::file_size(all_files))
+  total_size <- sum(fs::file_size(parquets))
   if (ask) {
     resp <- readline(sprintf(
-      "¿Eliminar %s de caché en %s? [s/N] ",
+      "¿Eliminar %s en %d archivo(s) Parquet de caché en %s? [s/N] ",
       format(total_size, units = "auto", standard = "SI"),
+      length(parquets),
       cache_dir
     ))
     if (!tolower(trimws(resp)) %in% c("s", "si", "sí", "y", "yes")) {
@@ -97,8 +101,16 @@ censosbo_cache_clear <- function(ask = TRUE) {
       return(invisible(NULL))
     }
   }
-  fs::dir_delete(cache_dir)
-  cli::cli_alert_success("Caché eliminado ({format(total_size, units = 'auto', standard = 'SI')}).")
+  fs::file_delete(parquets)
+  # Limpiar el subdirectorio de censos históricos si quedó vacío.
+  hist_dir <- fs::path(cache_dir, "historico")
+  if (fs::dir_exists(hist_dir) &&
+      length(fs::dir_ls(hist_dir, recurse = TRUE, type = "file")) == 0) {
+    fs::dir_delete(hist_dir)
+  }
+  cli::cli_alert_success(
+    "Caché eliminado: {length(parquets)} archivo(s), {format(total_size, units = 'auto', standard = 'SI')}."
+  )
   invisible(NULL)
 }
 

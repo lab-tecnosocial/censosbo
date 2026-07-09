@@ -51,8 +51,8 @@ add_var("edad", "Edad en años",
 
 add_var("grupo_edad", "Grupos de edad quinquenales",
         "Grupo de edad en intervalos de 5 años (0-4, 5-9, ..., 80+)",
-        v1976 = "edad5", v1992 = "GEDAD", v2001 = "P29", v2012 = "P25", v2024 = "p26_edad",
-        notas = "1976/1992: variable ya agrupada en la fuente. 2001/2012/2024: se calcula automáticamente desde la edad individual con (edad %/% 5) * 5.")
+        v1976 = "p04", v1992 = "P04", v2001 = "P29", v2012 = "P25", v2024 = "p26_edad",
+        notas = "Se calcula en todos los censos desde la edad individual en años con (edad %/% 5) * 5, por lo que los intervalos son idénticos y comparables entre años. (Antes 1976/1992 usaban las variables ya agrupadas edad5/GEDAD, cuyos códigos NO eran quinquenios y rompían la comparación.)")
 
 add_var("parentesco", "Relación con el/la jefe/a del hogar",
         "Parentesco o relación del individuo con el jefe o jefa del hogar. NO armonizada: los códigos varían entre censos.",

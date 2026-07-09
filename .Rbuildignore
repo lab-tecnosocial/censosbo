@@ -6,7 +6,6 @@
 ^README\.Rmd$
 ^_pkgdown\.yml$
 ^\.github$
-^NEWS\.md$
 ^\.gitignore$
 ^LICENSE\.md$
 ^docs$

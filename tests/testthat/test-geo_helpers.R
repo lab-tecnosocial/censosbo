@@ -29,6 +29,19 @@ test_that(".resolve_geo() infiere el departamento cuando solo se da municipio", 
   expect_equal(g$dep_codes, "03")
 })
 
+test_that(".resolve_geo() rechaza municipio por CÓDIGO sin provincia (bug A2)", {
+  # "01" es un imun que existe en casi todas las provincias del departamento:
+  # sin `provincia` es ambiguo y antes sobre-emparejaba (16 municipios).
+  expect_error(
+    censosbo:::.resolve_geo(departamento = "Cochabamba", municipio = "01"),
+    "provincia"
+  )
+  # Con provincia fijada, el código es inequívoco -> una sola tupla.
+  g <- censosbo:::.resolve_geo(departamento = "Cochabamba",
+                               provincia = "Cercado", municipio = "01")
+  expect_equal(nrow(g$rows), 1L)
+})
+
 test_that(".resolve_geo() falla con nombre inexistente o ambiguo", {
   expect_error(censosbo:::.resolve_geo(departamento = "Cochabamba", municipio = "Zzz"),
                "no encontrado")

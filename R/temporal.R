@@ -38,6 +38,13 @@
 variables_armonizadas <- function(tabla = NULL) {
   mapa <- variable_temporal_map
   if (!is.null(tabla)) {
+    tablas_validas <- unique(mapa$tabla)
+    if (!tabla %in% tablas_validas) {
+      cli::cli_abort(c(
+        "Tabla no reconocida: {.val {tabla}}",
+        "i" = "Tablas disponibles: {.val {tablas_validas}}."
+      ))
+    }
     mapa <- mapa[mapa$tabla == tabla, ]
   }
   mapa
@@ -534,7 +541,10 @@ get_temporal_vivienda <- function(
   if (variable == "edad") {
     return(suppressWarnings(as.integer(x)))
   }
-  if (variable == "grupo_edad" && anio != 1976L) {
+  if (variable == "grupo_edad") {
+    # La fuente es la edad individual en años en todos los censos (ver
+    # variable_temporal_map: p04/P04/P29/P25/p26_edad), así que el binning
+    # quinquenal es idéntico y comparable entre años.
     edad_num <- suppressWarnings(as.integer(x))
     return(ifelse(is.na(edad_num), NA_integer_, (edad_num %/% 5L) * 5L))
   }
@@ -818,14 +828,10 @@ get_temporal_vivienda <- function(
   if (!is.null(flag)) {
     flag_num <- suppressWarnings(as.integer(flag))
 
-    if (anio == 1976L || anio %in% c(1992L)) {
-      # 1976: sin flag útil para nacimiento; 1992: P07/P08 = 1 significa "aquí"
-      misma_localidad <- flag_num == 1L
-    } else {
-      # 2001/2012: P34A/P32A: 1=mismo muni, 2=otro Bolivia, 3=exterior, 4=no nacido
-      # 2024: p35_lugnac/p37_lugres5: mismos valores
-      misma_localidad <- flag_num == 1L
-    }
+    # En todos los censos con flag, el código 1 significa "aquí / mismo lugar":
+    #   1992 P07/P08=1 (aquí); 2001/2012 P34A/P32A=1 (mismo municipio);
+    #   2024 p35_lugnac/p37_lugres5=1 (este municipio).
+    misma_localidad <- flag_num == 1L
 
     # Calcular resultado
     exterior <- if (tipo == "rec" && anio %in% c(2012L, 2024L)) {

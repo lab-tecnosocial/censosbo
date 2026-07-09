@@ -173,8 +173,9 @@ Si `NULL`, devuelve todas las columnas.}
 Según `as`:
   - `"arrow"`: un `arrow::Dataset` o `arrow::Table` (lazy cuando no hay filtros geo)
   - `"tibble"`: un `data.frame` con los datos en RAM
-  - `"duckdb"`: una conexión `DBI` con la tabla registrada; cierra con
-    `DBI::dbDisconnect(con)`.
+  - `"duckdb"`: una conexión `DBI` con la tabla registrada (con el nombre de
+    `tabla`, p.ej. `"persona"`); cierra con
+    `DBI::dbDisconnect(con, shutdown = TRUE)`.
 }
 \description{
 Descarga y/o carga desde caché los microdatos de los censos de población
@@ -211,6 +212,6 @@ get_censo(1976, "poblacion")
 # Consulta SQL sobre censo 2001
 con <- get_censo(2001, "persona", departamento = "03", as = "duckdb")
 DBI::dbGetQuery(con, "SELECT P28, COUNT(*) AS n FROM persona GROUP BY P28")
-DBI::dbDisconnect(con)
+DBI::dbDisconnect(con, shutdown = TRUE)
 }
 }

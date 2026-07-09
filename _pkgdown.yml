@@ -21,8 +21,8 @@ home:
     Acceso programático a los microdatos de los censos de Bolivia:
     1976, 1992, 2001, 2012 y CPV-2024. Descarga bajo demanda, caché local,
     compatible con dplyr, Arrow y DuckDB. Incluye diccionarios de variables
-    para todos los años. funciones de análisis
-    temporal y generación de mapas
+    para todos los años, funciones de análisis
+    temporal y generación de mapas.
   sidebar:
     structure: [links, license, community, citation, authors, dev]
   links:

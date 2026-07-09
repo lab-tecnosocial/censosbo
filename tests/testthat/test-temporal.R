@@ -43,6 +43,68 @@ test_that("las etiquetas armonizadas cubren los códigos que producen las funcio
   }
 })
 
+test_that("grupo_edad se calcula desde edad individual y es idéntico entre censos (bug A1)", {
+  h <- function(x, a) censosbo:::.harmonize_col(x, "grupo_edad", a)
+  esperado <- c(0L, 0L, 5L, 5L, 20L, NA)
+  entrada  <- c(0, 4, 5, 9, 23, NA)
+  # El binning quinquenal debe ser idéntico en TODOS los años (incl. 1976 y 1992,
+  # que antes usaban variables ya agrupadas y rompían la comparación).
+  for (a in c(1976L, 1992L, 2001L, 2012L, 2024L)) {
+    expect_equal(h(entrada, a), esperado, info = paste("año", a))
+  }
+})
+
+test_that("grupo_edad apunta a la edad individual en el mapa (no a edad5/GEDAD)", {
+  e <- new.env()
+  utils::data("variable_temporal_map", package = "censosbo", envir = e)
+  vtm <- get("variable_temporal_map", envir = e)
+  fila <- vtm[vtm$variable == "grupo_edad", ]
+  expect_equal(fila$v1976, "p04")   # antes "edad5"
+  expect_equal(fila$v1992, "P04")   # antes "GEDAD"
+})
+
+test_that("sexo se armoniza a 1=Mujer, 2=Hombre (invertido en 1976/1992/2001)", {
+  h <- censosbo:::.harmonize_sexo
+  expect_equal(h(c(1, 2), 1992L), c(2L, 1L))  # invierte
+  expect_equal(h(c(1, 2), 2024L), c(1L, 2L))  # ya correcto
+})
+
+test_that("nivel_edu se armoniza a 0=Sin instrucción .. 3=Superior por año", {
+  h <- censosbo:::.harmonize_nivel_edu
+  expect_equal(h(c(1, 2, 3, 4), 2024L), c(0L, 1L, 2L, 3L))
+  expect_equal(h(c(1, 2, 3), 1976L), c(0L, 1L, 2L))
+  expect_equal(h(c(11, 13, 15, 18), 2001L), c(0L, 1L, 2L, 3L))
+})
+
+test_that("sabe_leer y asistencia_escolar respetan las codificaciones invertidas", {
+  expect_equal(censosbo:::.harmonize_sabe_leer(c(7, 8), 1992L), c(1L, 2L))
+  # 2001 P37 invertido: 1=NO asiste -> 2 ; 2/3=SÍ -> 1
+  expect_equal(censosbo:::.harmonize_asistencia_escolar(c(1, 2, 3), 2001L), c(2L, 1L, 1L))
+})
+
+test_that("categoria_ocupacion mapea empleado/obrero a 1 en todos los años", {
+  h <- censosbo:::.harmonize_categoria_ocupacion
+  expect_equal(h(2, 2024L), 1L)  # 2024: 2=Empleado/obrero -> 1
+  expect_equal(h(1, 2012L), 1L)  # 2012: 1=Obrero/empleado -> 1
+  expect_equal(h(3, 2001L), 1L)  # 2001: 3=Obrero/empleado -> 1
+})
+
+test_that("idioma_materno mapea castellano a 1 en 2001/2012/2024", {
+  h <- censosbo:::.harmonize_idioma_materno
+  expect_equal(h(3, 2001L), 1L)   # 2001: 3=Castellano
+  expect_equal(h(6, 2012L), 1L)   # 2012/2024: 6=Castellano
+  expect_equal(h(27, 2024L), 2L)  # 27=Quechua
+})
+
+test_that("armonizadores de vivienda mapean a las categorías comunes", {
+  # agua: cañería/red -> 1 en su codificación por año
+  expect_equal(censosbo:::.harmonize_agua(1, 2001L), 1L)
+  # energía 2001 usa 5=Sí, 6=No
+  expect_equal(censosbo:::.harmonize_energia(c(5, 6), 2001L), c(1L, 2L))
+  # tenencia 2024: 1/2=Propia -> 1, 4=Alquilada -> 2
+  expect_equal(censosbo:::.harmonize_tenencia(c(1, 2, 4), 2024L), c(1L, 1L, 2L))
+})
+
 test_that("parentesco está marcada como no armonizada en el mapa", {
   e <- new.env()
   utils::data("variable_temporal_map", package = "censosbo", envir = e)

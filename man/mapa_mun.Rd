@@ -55,7 +55,7 @@ pueden no corresponder a la división actual.
 library(dplyr)
 agua <- get_viviendas_2024(departamento = "07", as = "tibble") |>
   group_by(idep, iprov, imun) |>
-  summarise(pct_agua = mean(v10_agua == 1, na.rm = TRUE) * 100, .groups = "drop")
+  summarise(pct_agua = mean(v07_aguapro == 1, na.rm = TRUE) * 100, .groups = "drop")
 mapa_mun(agua, "pct_agua", departamento = "07",
          titulo = "\% viviendas con agua por cañería - Santa Cruz (2024)")
 }

@@ -29,10 +29,17 @@
     )
   }
 
+  # Descarga atómica: se baja a un archivo temporal `.part` en el mismo
+  # directorio y solo al completar se renombra a `dest`. Así una interrupción
+  # (Ctrl-C, caída de red) nunca deja un Parquet truncado que el caché reutilice.
+  part <- paste0(as.character(dest), ".part")
   tryCatch(
-    curl::curl_download(url, as.character(dest), quiet = TRUE),
+    {
+      curl::curl_download(url, part, quiet = TRUE)
+      fs::file_move(part, dest)
+    },
     error = function(e) {
-      if (fs::file_exists(dest)) fs::file_delete(dest)
+      if (fs::file_exists(part)) fs::file_delete(part)
       release_tag <- .CENSOSBO_RELEASE_TAG
       cli::cli_abort(c(
         "Error al descargar {.file {filename}}.",
@@ -81,10 +88,15 @@
     )
   }
 
+  # Descarga atómica (ver .download_parquet): `.part` temporal + renombrado final.
+  part <- paste0(as.character(dest), ".part")
   tryCatch(
-    curl::curl_download(url, as.character(dest), quiet = TRUE),
+    {
+      curl::curl_download(url, part, quiet = TRUE)
+      fs::file_move(part, dest)
+    },
     error = function(e) {
-      if (fs::file_exists(dest)) fs::file_delete(dest)
+      if (fs::file_exists(part)) fs::file_delete(part)
       cli::cli_abort(c(
         "Error al descargar {.file {filename}} del censo {anio}.",
         "x" = conditionMessage(e),

@@ -5,7 +5,7 @@
 #'
 #' @param departamento Vector de caracteres. Código(s) de departamento
 #'   (`"01"`-`"09"`) o nombre(s) (e.g., `"La Paz"`, `"Santa Cruz"`).
-#'   Si `NULL`, incluye todos los departamentos (descarga ~500 MB).
+#'   Si `NULL`, incluye todos los departamentos (descarga ~282 MB).
 #' @param provincia Vector de caracteres. Código(s) (`"01"`) o nombre(s)
 #'   (`"Cercado"`) de provincia. Si `NULL`, incluye todas. Los valores no
 #'   existentes producen un error (en vez de un resultado vacío silencioso).
@@ -15,7 +15,7 @@
 #'   para no descargar todo el país. Un nombre repetido entre departamentos
 #'   requiere indicar `departamento` para desambiguar.
 #' @param variables Vector de caracteres. Nombres de columnas a seleccionar.
-#'   Si `NULL`, devuelve todas (118 columnas). Las columnas geográficas
+#'   Si `NULL`, devuelve todas (119 columnas). Las columnas geográficas
 #'   (`idep`, `iprov`, `imun`, `i00`) siempre se incluyen.
 #' @param as Formato de retorno: `"arrow"` (Dataset Arrow, por defecto — lazy,
 #'   no carga en RAM), `"tibble"` (trae a memoria RAM; precaución con datos
@@ -27,12 +27,12 @@
 #'   - `"arrow"`: un `arrow::Dataset` (lazy, soporta dplyr y Arrow)
 #'   - `"tibble"`: un `data.frame` con los datos en RAM
 #'   - `"duckdb"`: una conexión `DBI` con tabla `"personas"` registrada;
-#'     recuerda cerrarla con `DBI::dbDisconnect(con)`.
+#'     recuerda cerrarla con `DBI::dbDisconnect(con, shutdown = TRUE)`.
 #'
 #' @details
 #' Los datos se descargan por departamento bajo demanda. Especificando
-#' `departamento = "07"` solo se descarga `persona_dep07.parquet` (~155 MB).
-#' Sin especificar departamento se descargan los 9 archivos (~560 MB en total).
+#' `departamento = "07"` solo se descarga `persona_dep07.parquet` (~77 MB).
+#' Sin especificar departamento se descargan los 9 archivos (~282 MB en total).
 #'
 #' El caché se almacena en `censosbo_cache_dir()`. Usa `censosbo_cache_info()`
 #' para ver los archivos descargados.
@@ -62,7 +62,7 @@
 #' # Consulta SQL con DuckDB
 #' con <- get_personas_2024(departamento = "07", as = "duckdb")
 #' DBI::dbGetQuery(con, "SELECT p25_sexo, AVG(p26_edad) FROM personas GROUP BY 1")
-#' DBI::dbDisconnect(con)
+#' DBI::dbDisconnect(con, shutdown = TRUE)
 #'
 #' # Equivalente genérico
 #' get_censo(2024, "persona", departamento = "07")

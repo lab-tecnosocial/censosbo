@@ -144,7 +144,7 @@ mapa_dep <- function(datos, variable, titulo = NULL, etiqueta_fill = NULL,
 #' library(dplyr)
 #' agua <- get_viviendas_2024(departamento = "07", as = "tibble") |>
 #'   group_by(idep, iprov, imun) |>
-#'   summarise(pct_agua = mean(v10_agua == 1, na.rm = TRUE) * 100, .groups = "drop")
+#'   summarise(pct_agua = mean(v07_aguapro == 1, na.rm = TRUE) * 100, .groups = "drop")
 #' mapa_mun(agua, "pct_agua", departamento = "07",
 #'          titulo = "% viviendas con agua por cañería - Santa Cruz (2024)")
 #' }
@@ -168,18 +168,16 @@ mapa_mun <- function(datos, variable, departamento = NULL,
     cli::cli_abort("La columna {.val {variable}} no existe en los datos.")
   }
 
-  geo_base <- geo_municipios
   dat <- datos
+  dep_codes <- NULL
   if (!is.null(departamento)) {
     dep_codes <- .resolve_dep_codes(departamento)
-    geo_base  <- geo_base[geo_base$idep %in% dep_codes, ]
-    dat       <- dat[dat$idep %in% dep_codes, ]
+    dat <- dat[dat$idep %in% dep_codes, ]
   }
 
   # Join con advertencias sobre municipios sin geometría
   geo_datos <- .geo_join_municipios(dat)
-  if (!is.null(departamento)) {
-    dep_codes <- .resolve_dep_codes(departamento)
+  if (!is.null(dep_codes)) {
     geo_datos <- geo_datos[geo_datos$idep %in% dep_codes, ]
   }
 

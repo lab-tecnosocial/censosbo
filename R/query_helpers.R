@@ -18,8 +18,14 @@
 }
 
 # Filtra un subconjunto de geo_bolivia por un vector de valores (códigos o
-# nombres) de un nivel. Valida existencia y detecta ambigüedad de nombres.
-.match_geo_level <- function(geo, valores, code_col, name_col, nivel, sugerencia) {
+# nombres) de un nivel. Valida existencia y detecta ambigüedad, tanto para
+# códigos como para nombres:
+#   - entre departamentos (aplica a provincia y municipio),
+#   - entre provincias (solo municipio, con `check_prov = TRUE`): el código de
+#     municipio se repite por provincia, así que `municipio = "01"` sin fijar la
+#     provincia es ambiguo y debe abortar en vez de sobre-emparejar.
+.match_geo_level <- function(geo, valores, code_col, name_col, nivel, sugerencia,
+                             check_prov = FALSE) {
   valores <- as.character(valores)
   keep <- rep(FALSE, nrow(geo))
   for (v in valores) {
@@ -27,16 +33,6 @@
       m <- geo[[code_col]] == sprintf("%02d", as.integer(v))
     } else {
       m <- tolower(trimws(geo[[name_col]])) == tolower(trimws(v))
-      # Un nombre que cae en más de un departamento es ambiguo sin `departamento`.
-      deps_match <- unique(geo$idep[m])
-      if (length(deps_match) > 1) {
-        deps_nom <- unique(geo$nombre_dep[geo$idep %in% deps_match])
-        cli::cli_abort(c(
-          "El nombre de {nivel} {.val {v}} existe en varios departamentos.",
-          "i" = "Especifica {.arg departamento} para desambiguar.",
-          "i" = "Departamentos con ese {nivel}: {.val {deps_nom}}"
-        ))
-      }
     }
     if (!any(m)) {
       cli::cli_abort(c(
@@ -44,6 +40,30 @@
         "i" = "Acepta código (p.ej. {.val 01}) o nombre (p.ej. {.val Cochabamba}).",
         "i" = "Consulta los valores válidos con {.code {sugerencia}}."
       ))
+    }
+    # Ambigüedad entre departamentos (sin `departamento` fijado, el subconjunto
+    # `geo` abarca varios; con él, queda uno solo y esta comprobación no dispara).
+    deps_match <- unique(geo$idep[m])
+    if (length(deps_match) > 1) {
+      deps_nom <- unique(geo$nombre_dep[geo$idep %in% deps_match])
+      cli::cli_abort(c(
+        "El {nivel} {.val {v}} existe en varios departamentos.",
+        "i" = "Especifica {.arg departamento} para desambiguar.",
+        "i" = "Departamentos con ese {nivel}: {.val {deps_nom}}"
+      ))
+    }
+    # Ambigüedad entre provincias (solo municipio): mismo criterio, un nivel abajo.
+    if (check_prov) {
+      provs_match <- unique(geo$iprov[m])
+      if (length(provs_match) > 1) {
+        provs_nom <- unique(geo$nombre_prov[geo$iprov %in% provs_match &
+                                              geo$idep %in% deps_match])
+        cli::cli_abort(c(
+          "El {nivel} {.val {v}} existe en varias provincias (el código de municipio se repite entre provincias).",
+          "i" = "Especifica {.arg provincia} para desambiguar.",
+          "i" = "Provincias con ese {nivel}: {.val {provs_nom}}"
+        ))
+      }
     }
     keep <- keep | m
   }
@@ -76,7 +96,8 @@
   }
   if (!is.null(municipio)) {
     geo <- .match_geo_level(geo, municipio, "imun", "nombre_mun",
-                            "municipio", "municipios(departamento)")
+                            "municipio", "municipios(departamento)",
+                            check_prov = is.null(provincia))
     filtrado_sub <- TRUE
   }
 
@@ -144,6 +165,17 @@
     ))
   }
   dplyr::select(ds, dplyr::all_of(intersect(cols, available)))
+}
+
+# ¿La consulta arrow no tiene filas? Se comprueba de forma barata trayendo solo
+# la primera fila (no materializa todo el dataset), para poder avisar de un
+# filtro geográfico vacío independientemente del formato `as` solicitado.
+.ds_is_empty <- function(ds) {
+  n <- tryCatch(
+    nrow(dplyr::collect(utils::head(ds, 1L))),
+    error = function(e) NA_integer_
+  )
+  isTRUE(n == 0L)
 }
 
 # Retorna el dataset en el formato solicitado

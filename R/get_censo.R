@@ -29,8 +29,9 @@
 #' @return Según `as`:
 #'   - `"arrow"`: un `arrow::Dataset` o `arrow::Table` (lazy cuando no hay filtros geo)
 #'   - `"tibble"`: un `data.frame` con los datos en RAM
-#'   - `"duckdb"`: una conexión `DBI` con la tabla registrada; cierra con
-#'     `DBI::dbDisconnect(con)`.
+#'   - `"duckdb"`: una conexión `DBI` con la tabla registrada (con el nombre de
+#'     `tabla`, p.ej. `"persona"`); cierra con
+#'     `DBI::dbDisconnect(con, shutdown = TRUE)`.
 #'
 #' @details
 #' Todas las tablas exponen los códigos geográficos armonizados como columnas
@@ -66,7 +67,7 @@
 #' # Consulta SQL sobre censo 2001
 #' con <- get_censo(2001, "persona", departamento = "03", as = "duckdb")
 #' DBI::dbGetQuery(con, "SELECT P28, COUNT(*) AS n FROM persona GROUP BY P28")
-#' DBI::dbDisconnect(con)
+#' DBI::dbDisconnect(con, shutdown = TRUE)
 #' }
 get_censo <- function(
     anio,
@@ -134,14 +135,16 @@ get_censo <- function(
   if (!is.null(mun_codes))  ds <- dplyr::filter(ds, .data$can %in% as.integer(mun_codes))
 
   ds <- .apply_variable_selection(ds, variables)
-  result <- .return_as(ds, as, table_name = tabla, verbose = verbose)
 
-  # Comprobar si hay datos (solo para tibble; Arrow no materializa)
-  if (is.data.frame(result) && nrow(result) == 0) {
-    .warn_if_empty_geo(0L, 1976L, dep_codes, prov_codes, mun_codes)
-    return(NULL)
+  # Contrato uniforme: si el filtro geográfico no deja filas, avisar y devolver
+  # NULL sea cual sea `as` (antes solo se comprobaba con as = "tibble").
+  if (!is.null(dep_codes) || !is.null(prov_codes) || !is.null(mun_codes)) {
+    if (.ds_is_empty(ds)) {
+      .warn_if_empty_geo(0L, 1976L, dep_codes, prov_codes, mun_codes)
+      return(NULL)
+    }
   }
-  result
+  .return_as(ds, as, table_name = tabla, verbose = verbose)
 }
 
 # --- 1992/2001/2012: idep/iprov/imun denormalizados como columnas directas ---
@@ -157,13 +160,15 @@ get_censo <- function(
   ds <- .apply_geo(ds, geo)
 
   ds <- .apply_variable_selection(ds, variables)
-  result <- .return_as(ds, as, table_name = tabla, verbose = verbose)
 
-  if (is.data.frame(result) && nrow(result) == 0) {
-    .warn_if_empty_geo(0L, anio, geo$dep_codes,
-                       if (is.null(geo$rows)) NULL else unique(geo$rows$iprov),
-                       if (is.null(geo$rows)) NULL else unique(geo$rows$imun))
-    return(NULL)
+  # Contrato uniforme de resultado vacío (ver .get_censo_1976).
+  if (!is.null(geo$dep_codes) || !is.null(geo$rows)) {
+    if (.ds_is_empty(ds)) {
+      .warn_if_empty_geo(0L, anio, geo$dep_codes,
+                         if (is.null(geo$rows)) NULL else unique(geo$rows$iprov),
+                         if (is.null(geo$rows)) NULL else unique(geo$rows$imun))
+      return(NULL)
+    }
   }
-  result
+  .return_as(ds, as, table_name = tabla, verbose = verbose)
 }

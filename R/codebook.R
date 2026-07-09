@@ -86,6 +86,14 @@ codebook <- function(variable = NULL, tabla = NULL, buscar = NULL, anio = 2024) 
   }
 
   if (!is.null(tabla)) {
+    tablas_validas <- unique(meta$tabla)
+    desconocidas <- setdiff(tolower(tabla), tolower(tablas_validas))
+    if (length(desconocidas) > 0) {
+      cli::cli_abort(c(
+        "Tabla no reconocida en el censo {anio}: {.val {desconocidas}}",
+        "i" = "Tablas disponibles: {.val {tablas_validas}}."
+      ))
+    }
     meta <- meta[tolower(meta$tabla) %in% tolower(tabla), ]
   }
   if (!is.null(variable)) {
@@ -132,6 +140,13 @@ codebook_valores <- function(variable, anio = 2024) {
   meta <- codebook(variable = variable, anio = anio)
   if (nrow(meta) == 0) {
     cli::cli_abort("Variable {.var {variable}} no encontrada en el diccionario del censo {anio}.")
+  }
+  if (nrow(meta) > 1) {
+    tabla_usada <- meta$tabla[1]
+    cli::cli_inform(c(
+      "i" = "{.var {variable}} existe en varias tablas ({.val {meta$tabla}}); se muestran los valores de {.val {tabla_usada}}.",
+      " " = "Para otra tabla usa {.code codebook_valores()} sobre el resultado de {.code codebook(variable, tabla = ...)}."
+    ))
   }
   vals <- meta$valores_codigos[[1]]
   if (is.null(vals) || nrow(vals) == 0) {

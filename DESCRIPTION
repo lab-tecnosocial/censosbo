@@ -1,8 +1,8 @@
 Package: censosbo
 Type: Package
 Title: Paquete de R para el acceso, análisis y visualización de datos censales en Bolivia (1976-2024)
-Version: 1.2.0
-Date: 2026-07-07
+Version: 1.2.1
+Date: 2026-07-08
 Authors@R: person("Alex", "Ojeda Copa", email = "alex@labtecnosocial.org",
     role = c("aut", "cre"),
     comment = c(organization = "Lab TecnoSocial"))
@@ -12,7 +12,7 @@ Description: Proporciona acceso programático a los microdatos de los censos
     departamento, provincia o municipio. Soporta flujos de trabajo estilo dplyr
     vía Apache Arrow y consultas SQL vía DuckDB. Incluye diccionarios de
     variables para todos los años, funciones de armonización temporal, análisis comparativos entre censos
-    y generación de mapas a nive departamental y municipal.
+    y generación de mapas a nivel departamental y municipal.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Language: es
@@ -31,6 +31,7 @@ Imports:
     fs,
     rlang,
     tools,
+    stats,
     dplyr,
     sf
 Suggests:

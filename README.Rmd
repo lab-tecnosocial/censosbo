@@ -55,6 +55,7 @@ update_censosbo()
 | **2024**² | `get_personas_2024()` | 11,365,333 | 119 | 282 MB | ~490 MB |
 | **2024**² | `get_viviendas_2024()` | 4,490,488 | 48 | 55 MB | ~111 MB |
 | **2024**² | `get_emigracion_2024()` | 500,914 | 8 | 2 MB | ~7 MB |
+| **2024**² | `get_mortalidad_2024()` | 382,731 | 10 | 2 MB | ~7 MB |
 
 ¹ Tamaño al cargar la tabla completa con `collect()` sin filtros, medido desde metadatos Parquet.
 ² Persona 2024 está particionada en 9 archivos por departamento (4–77 MB cada uno). Disco y RAM muestran el total; en la práctica se descarga solo el/los departamentos necesarios.
