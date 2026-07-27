@@ -4,8 +4,9 @@
 **censos de población de Bolivia**: 1976, 1992, 2001, 2012 y 2024. Los
 datos se descargan bajo demanda, se guardan en caché local y se pueden
 consultar con `dplyr`, Apache Arrow o DuckDB. Contiene además
-diccionarios de datos, funciones para comparación temporal de datos
-entre censos y generación de mapas.
+diccionarios de datos, funciones para comparación temporal entre censos,
+los datos agregados del CPV-2024 por manzano y comunidad, y generación
+de mapas.
 
 ## Instalación
 
@@ -17,7 +18,7 @@ remotes::install_github("lab-tecnosocial/censosbo")
 
 El paquete se desarrolla continuamente (mejoras, corrección de errores),
 si lo instalaste anteriormente te recomendamos volver a ejecutar el
-anterior código y borrar el caché para actualizar a la versión 1.2.1 o
+anterior código y borrar el caché para actualizar a la versión 1.3.0 o
 usar la siguiente función:
 
 ``` r
@@ -89,7 +90,7 @@ manzanos urbanos y comunidades rurales, con 194 indicadores cada una.
 # Universo de unidades: población, viviendas y si tienen ficha
 get_unidades_2024(departamento = "Cochabamba", as = "tibble")
 
-# Los 160 indicadores, y un mapa a nivel de manzano
+# Los 194 indicadores, y un mapa a nivel de manzano
 get_fichas_2024(municipio = "Sucre", as = "tibble") |>
   mutate(pct_internet = 100 * tic_internet / tic_total) |>
   mapa_man("pct_internet", municipio = "Sucre",
@@ -195,7 +196,10 @@ Las funciones
 y
 [`mapa_mun()`](https://lab-tecnosocial.github.io/censosbo/reference/mapa_mun.md)
 generan mapas coropléticos a partir de cualquier agregación de datos del
-censo.
+censo, y
+[`mapa_man()`](https://lab-tecnosocial.github.io/censosbo/reference/mapa_man.md)
+baja hasta el manzano y la comunidad dentro de un municipio (sus
+geometrías se descargan al caché la primera vez).
 
 ``` r
 
@@ -262,5 +266,5 @@ citation("censosbo")
 
 > Ojeda Copa A (2026). *censosbo: Paquete de R para el acceso, análisis
 > y visualización de datos censales en Bolivia (1976-2024)*. Lab
-> TecnoSocial, Cochabamba, Bolivia. R package version 1.2.1.
+> TecnoSocial, Cochabamba, Bolivia. R package version 1.3.0.
 > <https://lab-tecnosocial.github.io/censosbo/>
