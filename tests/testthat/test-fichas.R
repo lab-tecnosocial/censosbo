@@ -51,6 +51,18 @@ test_that("area y geografía se combinan", {
   expect_equal(out$area, 2L)
 })
 
+test_that("el filtro por departamento se aplica a un archivo nacional", {
+  # Las comunidades rurales van en un solo Parquet para todo el país, así que
+  # el filtro por departamento tiene que aplicarse sobre los datos y no puede
+  # delegarse en la selección de archivos como en los manzanos.
+  ds <- .ds_unidades()
+  geo <- censosbo:::.resolve_geo(departamento = "Chuquisaca")
+  out <- dplyr::collect(censosbo:::.apply_geo(ds, geo, filter_dep = TRUE))
+
+  expect_equal(nrow(out), 2L)
+  expect_true(all(out$idep == "01"))
+})
+
 test_that("las variables de ficha están documentadas en el codebook", {
   cb <- codebook(tabla = "ficha")
 

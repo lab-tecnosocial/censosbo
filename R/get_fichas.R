@@ -183,7 +183,11 @@ get_fichas_2024 <- function(
   rlang::check_installed("sf", reason = "para trabajar con geometrías")
 
   ds <- arrow::open_dataset(paths, format = "parquet")
-  ds <- .apply_geo(ds, geo, filter_dep = FALSE)
+  # `filter_dep = TRUE` es imprescindible aquí: las comunidades van en un único
+  # archivo nacional, así que sin este filtro `departamento = "Pando"` devolvía
+  # las 21.175 del país. En los manzanos es redundante —el departamento ya
+  # decidió qué archivos se abren— pero inocuo.
+  ds <- .apply_geo(ds, geo, filter_dep = TRUE)
   df <- dplyr::collect(ds)
 
   if (nrow(df) == 0) {
