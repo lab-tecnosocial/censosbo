@@ -150,6 +150,14 @@ ggplot(paredes, aes(x = reorder(v03_pared, pct), y = pct)) +
 library(DBI)
 
 con <- DBI::dbConnect(duckdb::duckdb(), dbdir = ":memory:")
+#> duckdb keeps downloaded extensions and secrets in a temporary directory:
+#> ℹ /tmp/Rtmpscl8Ug/duckdb
+#> This is removed when the R session ends.
+#> • Extensions are re-downloaded each session.
+#> • Secrets are lost.
+#> ℹ Run duckdb(shared_home = TRUE) (or create ~/.duckdb) to keep them (suitable for most users).
+#> ℹ Run duckdb(shared_home = FALSE) to accept the temporary directory (and silence this message).
+#> ℹ See ?duckdb_storage for details and alternatives.
 
 duckdb::duckdb_register_arrow(
   con, "personas",
@@ -157,8 +165,7 @@ duckdb::duckdb_register_arrow(
                variables = c("idep","iprov","imun","i00","p25_sexo","p26_edad","nivel_edu"))
 )
 #> ℹ Descargando persona_dep04.parquet (~14 MB)...
-#> ✔ Descargado persona_dep04.parquet [293ms]
-#> 
+#> ✔ Descargado persona_dep04.parquet [276ms]
 duckdb::duckdb_register_arrow(
   con, "viviendas",
   get_viviendas_2024(departamento = "Oruro",
