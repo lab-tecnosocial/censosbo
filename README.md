@@ -1,35 +1,31 @@
+---
+output: github_document
+---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
+
 
 # censosbo <img src="man/figures/logo.png" align="right" height="139" alt="" />
 
 <!-- badges: start -->
-
-[![Lifecycle:
-stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
-[![License:
-MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![R-CMD-check](https://github.com/lab-tecnosocial/censosbo/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/lab-tecnosocial/censosbo/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-**censosbo** proporciona acceso programático a los microdatos de los
-**censos de población de Bolivia**: 1976, 1992, 2001, 2012 y 2024. Los
-datos se descargan bajo demanda, se guardan en caché local y se pueden
-consultar con `dplyr`, Apache Arrow o DuckDB. Contiene además
-diccionarios de datos, funciones para comparación temporal de datos
-entre censos y generación de mapas.
+**censosbo** proporciona acceso programático a los microdatos de los **censos de población de Bolivia**: 1976, 1992, 2001, 2012 y 2024. Los datos se descargan bajo demanda, se guardan en caché local y se pueden consultar con `dplyr`, Apache Arrow o DuckDB. Contiene además diccionarios de datos, funciones para comparación temporal de datos entre censos y generación de mapas.
 
 ## Instalación
+
 
 ``` r
 # install.packages("remotes")
 remotes::install_github("lab-tecnosocial/censosbo")
 ```
 
-El paquete se desarrolla continuamente (mejoras, corrección de errores),
-si lo instalaste anteriormente te recomendamos volver a ejecutar el
-anterior código y borrar el caché para actualizar a la versión 1.2.1 o
-usar la siguiente función:
+El paquete se desarrolla continuamente (mejoras, corrección de errores), si lo instalaste anteriormente te recomendamos volver a ejecutar el anterior código y borrar el caché para actualizar a la versión 1.2.1 o usar la siguiente función:
+
 
 ``` r
 update_censosbo()
@@ -38,7 +34,7 @@ update_censosbo()
 ## Censos disponibles
 
 | Año | Función | Registros | Variables | Disco (Parquet) | RAM (aprox.)¹ |
-|:--:|----|---:|---:|---:|---:|
+|:---:|---------|----------:|----------:|----------------:|--------------:|
 | **1976** | `get_poblacion_1976()` | 4,613,419 | 46 | 63 MB | 83 MB |
 | **1976** | `get_viviendas_1976()` | 1,158,482 | 28 | 7 MB | 9 MB |
 | **1992** | `get_personas_1992()` | 6,420,792 | 55 | 99 MB | ~200 MB |
@@ -54,17 +50,17 @@ update_censosbo()
 | **2024**² | `get_viviendas_2024()` | 4,490,488 | 48 | 55 MB | ~111 MB |
 | **2024**² | `get_emigracion_2024()` | 500,914 | 8 | 2 MB | ~7 MB |
 | **2024**² | `get_mortalidad_2024()` | 382,731 | 10 | 2 MB | ~7 MB |
+| **2024**³ | `get_unidades_2024()` | 268,604 | 9 | 2 MB | ~25 MB |
+| **2024**³ | `get_fichas_2024()` | 150,744 | 199 | 15 MB | ~240 MB |
 
-¹ Tamaño al cargar la tabla completa con `collect()` sin filtros, medido
-desde metadatos Parquet. ² Persona 2024 está particionada en 9 archivos
-por departamento (4–77 MB cada uno). Disco y RAM muestran el total; en
-la práctica se descarga solo el/los departamentos necesarios.
+¹ Tamaño al cargar la tabla completa con `collect()` sin filtros, medido desde metadatos Parquet.
+² Persona 2024 está particionada en 9 archivos por departamento (4–77 MB cada uno). Disco y RAM muestran el total; en la práctica se descarga solo el/los departamentos necesarios.
+³ Datos **agregados** por manzano urbano y comunidad rural (no microdatos), del geoportal del INE. Ver la sección siguiente.
 
-El formato **Arrow** (por defecto) mantiene los datos en el disco hasta
-que ejecutas `collect()`. Las tablas del CPV-2024 se pueden unir por la
-clave `idep + iprov + imun + i00` (identificador de hogar).
+El formato **Arrow** (por defecto) mantiene los datos en el disco hasta que ejecutas `collect()`. Las tablas del CPV-2024 se pueden unir por la clave `idep + iprov + imun + i00` (identificador de hogar).
 
 ## Uso rápido — CPV-2024
+
 
 ``` r
 library(tidyverse)
@@ -79,7 +75,32 @@ get_personas_2024(departamento = "Santa Cruz") |>
   etiquetar_valores()
 ```
 
+## Manzanos y comunidades — el nivel más fino del CPV-2024
+
+Los microdatos llegan hasta el municipio (343 unidades). El geoportal del INE
+publica además una **ficha resumen por unidad censal**: 268.604 manzanos urbanos
+y comunidades rurales, con 194 indicadores cada una.
+
+
+``` r
+# Universo de unidades: población, viviendas y si tienen ficha
+get_unidades_2024(departamento = "Cochabamba", as = "tibble")
+
+# Los 160 indicadores, y un mapa a nivel de manzano
+get_fichas_2024(municipio = "Sucre", as = "tibble") |>
+  mutate(pct_internet = 100 * tic_internet / tic_total) |>
+  mapa_man("pct_internet", municipio = "Sucre",
+           titulo = "Hogares con internet (%) — Sucre, 2024")
+```
+
+El INE **no libera la ficha de las unidades con poca población**, por reserva
+estadística: eso afecta al 47 % de los manzanos, pero la ficha cubre igualmente el 92 %
+de la población. La columna `ficha` indica cuáles la tienen.
+
+Detalles en `vignette("manzanos-comunidades")`.
+
 ## Diccionario de variables
+
 
 ``` r
 # Buscar variables del CPV-2024
@@ -96,6 +117,7 @@ codebook_valores("P24", anio = 2012)  # Censo 2012
 
 ## Etiquetas en los resultados
 
+
 ``` r
 library(dplyr)
 
@@ -107,6 +129,7 @@ get_personas_2024(departamento = "Santa Cruz") |>
 ```
 
 ## Censos históricos
+
 
 ``` r
 # Personas de Santa Cruz en el censo 2012
@@ -121,6 +144,7 @@ get_poblacion_1976(departamento = "Cochabamba")
 
 ## Análisis temporal
 
+
 ``` r
 # Variables comparables entre censos
 variables_armonizadas()
@@ -133,7 +157,9 @@ edu <- get_temporal(
 edu |> count(anio, nivel_edu)
 ```
 
+
 ## Geografía y mapas
+
 
 ``` r
 departamentos()
@@ -141,9 +167,10 @@ provincias("La Paz")
 municipios(departamento = "Santa Cruz") |> head(5)
 ```
 
-`departamento`, `provincia` y `municipio` aceptan **código o nombre** en
-las funciones `get_*`. Y `etiquetar_geografia()` agrega los nombres
-legibles a los microdatos sin `left_join` manual:
+`departamento`, `provincia` y `municipio` aceptan **código o nombre** en las
+funciones `get_*`. Y `etiquetar_geografia()` agrega los nombres legibles a los
+microdatos sin `left_join` manual:
+
 
 ``` r
 # Filtrar por nombre (el departamento se infiere si hace falta)
@@ -156,10 +183,8 @@ get_personas_2024(departamento = "Cochabamba") |>
   etiquetar_geografia()
 ```
 
-El paquete incluye geometrías sf para los 9 departamentos
-(`geo_departamentos`) y 336 municipios (`geo_municipios`) de Bolivia.
-Las funciones `mapa_dep()` y `mapa_mun()` generan mapas coropléticos a
-partir de cualquier agregación de datos del censo.
+El paquete incluye geometrías sf para los 9 departamentos (`geo_departamentos`) y 336 municipios (`geo_municipios`) de Bolivia. Las funciones `mapa_dep()` y `mapa_mun()` generan mapas coropléticos a partir de cualquier agregación de datos del censo.
+
 
 ``` r
 library(dplyr)
@@ -180,6 +205,7 @@ mapa_mun(personas_beni, "edad_prom", departamento = "Beni",
 
 ## Gestión del caché
 
+
 ``` r
 censosbo_cache_dir()    # dónde está el caché
 censosbo_cache_info()   # qué archivos están descargados
@@ -189,37 +215,34 @@ update_censosbo()       # actualizar paquete y limpiar caché
 
 ## Fuentes de datos
 
-Los microdatos originales fueron publicados por el **Instituto Nacional
-de Estadística (INE) de Bolivia**:
+Los microdatos originales fueron publicados por el **Instituto Nacional de Estadística (INE) de Bolivia**:
 
-- **CPV-2024**:
-  <https://cpv2024.ine.gob.bo/index.php/principal/descargas/>
-- **Censos históricos 1976–2012**:
-  <https://www.ine.gob.bo/index.php/censos-y-banco-de-datos/censos/>
+- **CPV-2024**: <https://cpv2024.ine.gob.bo/index.php/principal/descargas/>
+- **Censos históricos 1976–2012**: <https://www.ine.gob.bo/index.php/censos-y-banco-de-datos/censos/>
+- **Fichas por manzano y comunidad (CPV-2024)**: <https://geoportal.ine.gob.bo/>
 
 ### Nota metodológica
 
-Los archivos originales fueron transformados a formato **Parquet** para
-una mejor distribución. El proceso de conversión varía por censo:
+Los archivos originales fueron transformados a formato **Parquet** para una mejor distribución. El proceso de conversión varía por censo:
 
 | Censo | Formato original | Herramienta de conversión |
-|----|----|----|
+|-------|-----------------|--------------------------|
 | 1976 | SPSS (`.sav`) | `haven` + `arrow` (R) |
 | 1992 | REDATAM (`.dic` binario + `.rbf`) | `open-redatam` CLI → CSV → `arrow` (R) |
 | 2001 | REDATAM (`.wxp` → `.dicX`) | conversión `.wxp`→`.dicX` + `open-redatam` CLI → CSV → `arrow` (R) |
 | 2012 | REDATAM (`.dic`/`.dicx` binario + `.ptr`) | `open-redatam` CLI → CSV → `arrow` (R) |
 | 2024 | CSV delimitado por `;` (~3.6 GB total) | `readr` + `arrow` (R); persona particionada por departamento |
 
-El formato Parquet conserva todos los registros y variables originales
-sin modificación de valores.
+El formato Parquet conserva todos los registros y variables originales sin modificación de valores.
 
 ## Citar
+
 
 ``` r
 citation("censosbo")
 ```
 
 > Ojeda Copa A (2026). *censosbo: Paquete de R para el acceso, análisis
-> y visualización de datos censales en Bolivia (1976-2024)*. Lab
-> TecnoSocial, Cochabamba, Bolivia. R package version 1.2.1.
+> y visualización de datos censales en Bolivia (1976-2024)*. Lab TecnoSocial,
+> Cochabamba, Bolivia. R package version 1.2.1.
 > <https://lab-tecnosocial.github.io/censosbo/>

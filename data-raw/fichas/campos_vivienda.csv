@@ -1,0 +1,35 @@
+bloque,variable,etiqueta,variable_origen
+material,mat_pared_ladrillo,"Paredes de ladrillo, bloque de cemento u hormigón",material_paredes_ladrillo
+material,mat_pared_adobe,"Paredes de adobe o tapial",material_paredes_adobe
+material,mat_pared_tabique,"Paredes de tabique o quinche",material_paredes_tabique
+material,mat_pared_piedra,Paredes de piedra,material_paredes_piedra
+material,mat_pared_madera,Paredes de madera,material_paredes_madera
+material,mat_pared_cana,"Paredes de caña, palma o tronco",material_paredes_caña
+material,mat_pared_otro,Paredes de otro material,material_paredes_otro
+material,mat_revoque_con,Vivienda con revoque en las paredes,material_revoque_con
+material,mat_revoque_sin,Vivienda sin revoque en las paredes,material_revoque_sin
+material,mat_techo_calamina,Techo de calamina o plancha metálica,material_techo_calamina
+material,mat_techo_teja,"Techo de teja de arcilla, cemento o fibrocemento",material_techo_teja
+material,mat_techo_losa,Techo de losa de hormigón armado,material_techo_losa
+material,mat_techo_paja,"Techo de paja, palma, caña o barro",material_techo_paja
+material,mat_techo_otro,Techo de otro material,material_techo_otro
+material,mat_piso_tierra,Piso de tierra,material_piso_tierra
+material,mat_piso_madera,Piso de tablón de madera,material_piso_madera
+material,mat_piso_machimbre,Piso de machimbre o parquet,material_piso_machimbre
+material,mat_piso_ceramica,Piso de cerámica o porcelanato,material_piso_ceramica
+material,mat_piso_cemento,Piso de cemento,material_piso_cemento
+material,mat_piso_mosaico,Piso de mosaico o baldosa,material_piso_mosaico
+material,mat_piso_ladrillo,Piso de ladrillo,material_piso_ladrillo
+material,mat_piso_flotante,Piso flotante,material_piso_flotante
+material,mat_piso_otro,Piso de otro material,material_piso_otro
+hacinamiento,hac_sin,Viviendas sin hacinamiento (hasta 2 personas por dormitorio),hacinamiento_sin
+hacinamiento,hac_medio,Viviendas con hacinamiento medio (más de 2 y hasta 3 por dormitorio),hacinamiento_medio
+hacinamiento,hac_alto,Viviendas con hacinamiento alto (más de 3 por dormitorio o sin dormitorio),hacinamiento_alto
+hogar,hogar_unipersonal,Hogares unipersonales,hogar_unipersonal
+hogar,hogar_pareja,Hogares de pareja nuclear,hogar_parejanuclear
+hogar,hogar_monoparental,Hogares monoparentales,hogar_monoparental
+hogar,hogar_nuclear,Hogares nucleares completos,hogar_nuclearcompleto
+hogar,hogar_extendido,Hogares extendidos,hogar_extendido
+hogar,hogar_compuesto,Hogares compuestos,hogar_compuesto
+hogar,hogar_otro,Hogares de otro tipo,hogar_otro
+hogar,hogar_sinjefe,Hogares sin jefe de hogar,hogar_sinjefe

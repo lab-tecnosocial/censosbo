@@ -211,3 +211,143 @@ mapa_mun <- function(datos, variable, departamento = NULL,
   p
 }
 
+#' Visualiza una variable a nivel de manzano o comunidad
+#'
+#' Genera un mapa de un municipio al máximo detalle disponible del CPV-2024:
+#' cada manzano urbano como polígono y cada comunidad rural como punto.
+#'
+#' @param datos Data.frame con una columna `codigo` de unidad censal y la
+#'   columna a visualizar. Típicamente sale de [get_fichas_2024()] o
+#'   [get_unidades_2024()].
+#' @param variable Nombre (caracter) de la columna a visualizar.
+#' @param municipio Nombre o código del municipio a mapear. Obligatorio: son
+#'   ~268.000 unidades en todo el país y un mapa nacional no se lee.
+#' @param departamento Departamento del municipio. Solo hace falta para
+#'   desambiguar nombres repetidos entre departamentos.
+#' @param area Qué unidades incluir: `"urbano"`, `"rural"` o ambas (defecto).
+#' @param titulo Título del mapa. Si `NULL`, usa el nombre de la variable.
+#' @param etiqueta_fill Etiqueta de la leyenda. Si `NULL`, usa `variable`.
+#' @param paleta Paleta de color. Por defecto `"Blues"` (continua) o `"Set3"`
+#'   (categórica).
+#' @param na_color Color para unidades sin datos. Por defecto `"grey80"`.
+#' @param tamano_punto Tamaño de los puntos de las comunidades rurales.
+#'
+#' @return Un objeto `ggplot` modificable con capas adicionales de ggplot2.
+#'
+#' @details
+#' Las geometrías se descargan al caché con [get_geo_manzanos()] y
+#' [get_geo_comunidades()] la primera vez; después se reutilizan.
+#'
+#' Las unidades del municipio que no estén en `datos` se dibujan con `na_color`.
+#' Eso es lo normal al mapear [get_fichas_2024()]: el 47% de los manzanos no
+#' tiene ficha por reserva estadística, y salen en gris.
+#'
+#' @seealso [mapa_mun()] para el nivel municipal, [mapa_dep()] para el departamental.
+#'
+#' @importFrom rlang .data
+#' @export
+#' @examples
+#' \dontrun{
+#' library(dplyr)
+#' agua <- get_fichas_2024(municipio = "Sucre", as = "tibble") |>
+#'   mutate(pct_caneria = 100 * serv_agua_caneria / serv_agua_total)
+#' mapa_man(agua, "pct_caneria", municipio = "Sucre",
+#'          titulo = "% viviendas con agua por cañería - Sucre (2024)")
+#' }
+mapa_man <- function(datos, variable, municipio, departamento = NULL,
+                     area = NULL, titulo = NULL, etiqueta_fill = NULL,
+                     paleta = NULL, na_color = "grey80", tamano_punto = 0.9) {
+  rlang::check_installed("ggplot2", reason = "para generar mapas")
+
+  if (!is.character(variable) || length(variable) != 1) {
+    cli::cli_abort("{.arg variable} debe ser un nombre de columna (caracter de longitud 1).")
+  }
+  if (missing(municipio) || is.null(municipio)) {
+    cli::cli_abort(c(
+      "{.arg municipio} es obligatorio en {.fn mapa_man}.",
+      "i" = "El país entero son ~268.000 unidades: elige un municipio."
+    ))
+  }
+  if (!"codigo" %in% names(datos)) {
+    cli::cli_abort(c(
+      "Los datos no tienen la columna {.field codigo}.",
+      "i" = "Usa {.code get_fichas_2024()} o {.code get_unidades_2024()}."
+    ))
+  }
+  if (!variable %in% names(datos)) {
+    cli::cli_abort("La columna {.val {variable}} no existe en los datos.")
+  }
+
+  areas <- if (is.null(area)) c("urbano", "rural") else
+    match.arg(tolower(as.character(area)), c("urbano", "rural"), several.ok = TRUE)
+
+  capas <- list()
+  if ("urbano" %in% areas) {
+    capas$urbano <- get_geo_manzanos(departamento = departamento,
+                                     municipio = municipio, verbose = FALSE)
+  }
+  if ("rural" %in% areas) {
+    capas$rural <- get_geo_comunidades(departamento = departamento,
+                                       municipio = municipio, verbose = FALSE)
+  }
+
+  # `datos` puede traer unidades de otros municipios; el join con la geometría
+  # del municipio pedido las descarta, y deja en NA las que no tengan dato.
+  valores <- data.frame(codigo = datos$codigo, .valor = datos[[variable]],
+                        stringsAsFactors = FALSE)
+  capas <- lapply(capas, function(x) {
+    x <- merge(x, valores, by = "codigo", all.x = TRUE)
+    names(x)[names(x) == ".valor"] <- variable
+    x
+  })
+
+  n_total <- sum(vapply(capas, nrow, integer(1)))
+  if (n_total == 0) {
+    cli::cli_abort(c(
+      "No hay geometrías para el municipio {.val {municipio}}.",
+      "i" = "Revisa el nombre con {.code municipios()}."
+    ))
+  }
+
+  titulo_fin <- if (is.null(titulo)) variable else titulo
+  etiq_fin   <- if (is.null(etiqueta_fill)) variable else etiqueta_fill
+
+  muestra <- capas[[1]][[variable]]
+  es_cat  <- is.character(muestra) || is.factor(muestra)
+  pal     <- if (is.null(paleta)) (if (es_cat) "Set3" else "Blues") else paleta
+
+  p <- ggplot2::ggplot()
+  # Las comunidades rurales van primero, debajo: son puntos y, al mapear un
+  # municipio entero, taparían la mancha urbana si se dibujaran encima.
+  if (!is.null(capas$rural) && nrow(capas$rural) > 0) {
+    p <- p + ggplot2::geom_sf(
+      data = capas$rural,
+      ggplot2::aes(color = .data[[variable]]),
+      size = tamano_punto, alpha = 0.85,
+      show.legend = is.null(capas$urbano)
+    )
+  }
+  if (!is.null(capas$urbano) && nrow(capas$urbano) > 0) {
+    p <- p + ggplot2::geom_sf(
+      data = capas$urbano,
+      ggplot2::aes(fill = .data[[variable]]),
+      color = NA  # a esta escala los bordes tapan los polígonos pequeños
+    )
+  }
+
+  p +
+    .scale_fill_auto(es_cat, pal, na_color, etiq_fin) +
+    (if (es_cat) {
+      ggplot2::scale_color_brewer(palette = pal, na.value = na_color, name = etiq_fin)
+    } else {
+      ggplot2::scale_color_distiller(palette = pal, direction = 1,
+                                     na.value = na_color, name = etiq_fin)
+    }) +
+    ggplot2::labs(title = titulo_fin) +
+    ggplot2::theme_void() +
+    ggplot2::theme(
+      plot.title      = ggplot2::element_text(hjust = 0.5, size = 13, face = "bold"),
+      legend.position = "right"
+    )
+}
+

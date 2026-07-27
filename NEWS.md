@@ -1,3 +1,43 @@
+# censosbo 1.3.0
+
+## Datos por manzano y comunidad (CPV-2024)
+
+El paquete llegaba hasta el municipio: 343 unidades. Ahora también da acceso al
+nivel más fino que publica el INE, **268.604 unidades censales** —manzanos
+urbanos y comunidades rurales— con 194 indicadores cada una.
+
+* **`get_unidades_2024()`**: universo completo de unidades con su población,
+  viviendas y si tienen ficha disponible. Filtra por departamento, provincia,
+  municipio y `area`.
+* **`get_fichas_2024()`**: los 194 indicadores de la ficha resumen del INE —
+  población por edad y sexo, educación, salud, migración, empleo, actividad
+  económica, vivienda, servicios básicos, TIC, materiales de construcción,
+  hacinamiento y tipo de hogar.
+* **`get_geo_manzanos()`** y **`get_geo_comunidades()`**: geometrías en `sf`
+  (EPSG:4326). Los manzanos están partidos por departamento; las comunidades
+  rurales son en su mayoría puntos, no polígonos.
+* **`mapa_man()`**: mapas de un municipio a nivel de manzano y comunidad.
+* Nueva viñeta: *Manzanos y comunidades: el CPV-2024 al máximo detalle*.
+
+Notas sobre estos datos:
+
+* El INE **no libera la ficha de las unidades con poca población**, por reserva
+  estadística. Eso deja fuera al 47 % de los manzanos, pero la cobertura efectiva
+  sigue siendo alta: 150.744 unidades con ficha, el 92 % de la población y el 90 %
+  de las viviendas del país. La columna `ficha` de `get_unidades_2024()` marca cuáles la
+  tienen.
+* Los bloques `salud_lugar_*` y `tic_*` son de **respuesta múltiple**: sus
+  categorías suman más que el total. Cada bloque incluye su propio total, que es
+  el denominador correcto.
+* `area` reutiliza el dominio de los microdatos (1 = Urbana, 2 = Rural), así que
+  `etiquetar_valores()` se comporta igual en ambas fuentes. Las funciones aceptan
+  además `"urbano"` y `"rural"` por legibilidad.
+* Los datos viven en su propio release (`data-fichas-v1.0.0`) y se cachean bajo
+  `fichas/`, separados de los microdatos.
+
+`codebook(tabla = "unidad")` y `codebook(tabla = "ficha")` documentan las
+variables nuevas.
+
 # censosbo 1.2.1
 
 ## Correcciones

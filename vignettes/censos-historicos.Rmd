@@ -90,14 +90,22 @@ get_personas_2012(departamento = "07")
 # Por departamento + provincia
 get_viviendas_1992(departamento = "03", provincia = "01")
 
-# Por municipio (1992, 2001, 2012 — no disponible en 1976)
-get_personas_2012(departamento = "07", municipio = "01")
+# Por municipio (1992, 2001, 2012 — no disponible en 1976).
+# El código de municipio se repite entre provincias, así que por código hay que
+# indicar también la provincia; por nombre no hace falta.
+get_personas_2012(municipio = "Cotoca")
+get_personas_2012(departamento = "07", provincia = "01", municipio = "01")
 ```
 
-Si el municipio no existe en ese año, se emite una advertencia y se retorna `NULL`:
+Hay dos situaciones distintas cuando un municipio no aparece:
 
-```{r municipio-ausente}
-# El municipio 100 no existe en el censo 1992 — emite cli_warn + retorna NULL
+- Si **no está en el catálogo geográfico** del paquete, es un error inmediato,
+  antes de descargar nada.
+- Si **está en el catálogo pero no tiene registros en ese censo**, se emite una
+  advertencia y se retorna `NULL`.
+
+```{r municipio-ausente, error=TRUE}
+# "100" no es un código de municipio válido — error con sugerencia
 get_personas_1992(municipio = "100")
 ```
 

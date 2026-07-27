@@ -1,0 +1,161 @@
+bloque,variable,etiqueta,celda,celda_rotulo,rotulo_esperado
+poblacion,pob_total_h,"Población total, hombres",D12,B12,Total
+poblacion,pob_total_m,"Población total, mujeres",E12,B12,Total
+poblacion,pob_edad_0a19_h,"Población de 0 a 19 años, hombres",D13,B13,De 0 a 19
+poblacion,pob_edad_0a19_m,"Población de 0 a 19 años, mujeres",E13,B13,De 0 a 19
+poblacion,pob_edad_20a39_h,"Población de 20 a 39 años, hombres",D14,B14,De 20 a 39
+poblacion,pob_edad_20a39_m,"Población de 20 a 39 años, mujeres",E14,B14,De 20 a 39
+poblacion,pob_edad_40a59_h,"Población de 40 a 59 años, hombres",D15,B15,De 40 a 59
+poblacion,pob_edad_40a59_m,"Población de 40 a 59 años, mujeres",E15,B15,De 40 a 59
+poblacion,pob_edad_60ymas_h,"Población de 60 o más años, hombres",D16,B16,De 60 o más
+poblacion,pob_edad_60ymas_m,"Población de 60 o más años, mujeres",E16,B16,De 60 o más
+educacion,edu_total_h,"Población de 19 o más años, hombres",D21,B21,Total
+educacion,edu_total_m,"Población de 19 o más años, mujeres",E21,B21,Total
+educacion,edu_ninguno_h,"Nivel de instrucción ninguno, hombres",D22,B22,Ninguno
+educacion,edu_ninguno_m,"Nivel de instrucción ninguno, mujeres",E22,B22,Ninguno
+educacion,edu_primaria_h,"Nivel de instrucción primaria, hombres",D23,B23,Primaria
+educacion,edu_primaria_m,"Nivel de instrucción primaria, mujeres",E23,B23,Primaria
+educacion,edu_secundaria_h,"Nivel de instrucción secundaria, hombres",D24,B24,Secundaria
+educacion,edu_secundaria_m,"Nivel de instrucción secundaria, mujeres",E24,B24,Secundaria
+educacion,edu_superior_h,"Nivel de instrucción superior, hombres",D25,B25,Superior
+educacion,edu_superior_m,"Nivel de instrucción superior, mujeres",E25,B25,Superior
+educacion,edu_ns_h,"Nivel de instrucción sin especificar, hombres",D26,B26,Sin especificar
+educacion,edu_ns_m,"Nivel de instrucción sin especificar, mujeres",E26,B26,Sin especificar
+salud_lugar,salud_lugar_total_h,"Población que acude por problemas de salud, hombres",D31,B31,Total
+salud_lugar,salud_lugar_total_m,"Población que acude por problemas de salud, mujeres",E31,B31,Total
+salud_lugar,salud_lugar_centropublico_h,"Acude a puesto/centro/hospital de salud público, hombres",D32,B32,Puesto/centro/hospital de salud público
+salud_lugar,salud_lugar_centropublico_m,"Acude a puesto/centro/hospital de salud público, mujeres",E32,B32,Puesto/centro/hospital de salud público
+salud_lugar,salud_lugar_cajasalud_h,"Acude a caja de salud, hombres",D33,B33,Caja de salud
+salud_lugar,salud_lugar_cajasalud_m,"Acude a caja de salud, mujeres",E33,B33,Caja de salud
+salud_lugar,salud_lugar_centroprivado_h,"Acude a consultorio/clínica/hospital privado, hombres",D34,B34,Consultorio/clínica/ hospital de salud privado
+salud_lugar,salud_lugar_centroprivado_m,"Acude a consultorio/clínica/hospital privado, mujeres",E34,B34,Consultorio/clínica/ hospital de salud privado
+salud_lugar,salud_lugar_domicilio_h,"Acude a atención médica en domicilio, hombres",D35,B35,Atención médica en domicilio
+salud_lugar,salud_lugar_domicilio_m,"Acude a atención médica en domicilio, mujeres",E35,B35,Atención médica en domicilio
+salud_lugar,salud_lugar_tradicional_h,"Acude a médica(o) tradicional ancestral, hombres",D36,B36,Médica(o) tradicional ancestral
+salud_lugar,salud_lugar_tradicional_m,"Acude a médica(o) tradicional ancestral, mujeres",E36,B36,Médica(o) tradicional ancestral
+salud_lugar,salud_lugar_farmacia_h,"Acude a farmacia sin receta o se automedica, hombres",D37,B37,Farmacia sin receta médica o se automedica
+salud_lugar,salud_lugar_farmacia_m,"Acude a farmacia sin receta o se automedica, mujeres",E37,B37,Farmacia sin receta médica o se automedica
+salud_lugar,salud_lugar_casero_h,"Acude a remedios caseros, hombres",D38,B38,Remedios caseros
+salud_lugar,salud_lugar_casero_m,"Acude a remedios caseros, mujeres",E38,B38,Remedios caseros
+salud_seguro,salud_seguro_total_h,"Población con registro al SUS o seguro de salud, hombres",D41,B41,Total
+salud_seguro,salud_seguro_total_m,"Población con registro al SUS o seguro de salud, mujeres",E41,B41,Total
+salud_seguro,salud_seguro_sus_h,"Registrado al SUS, hombres",D42,B42,SUS (Sistema Único de Salud)
+salud_seguro,salud_seguro_sus_m,"Registrado al SUS, mujeres",E42,B42,SUS (Sistema Único de Salud)
+salud_seguro,salud_seguro_cajasalud_h,"Afiliado a caja de salud, hombres",D43,B43,Caja de salud
+salud_seguro,salud_seguro_cajasalud_m,"Afiliado a caja de salud, mujeres",E43,B43,Caja de salud
+salud_seguro,salud_seguro_privado_h,"Afiliado a seguro privado de salud, hombres",D44,B44,Seguro privado de salud
+salud_seguro,salud_seguro_privado_m,"Afiliado a seguro privado de salud, mujeres",E44,B44,Seguro privado de salud
+salud_seguro,salud_seguro_ninguno_h,"Sin seguro de salud, hombres",D45,B45,Ninguno
+salud_seguro,salud_seguro_ninguno_m,"Sin seguro de salud, mujeres",E45,B45,Ninguno
+salud_seguro,salud_seguro_ns_h,"Seguro de salud sin especificar, hombres",D46,B46,Sin especificar
+salud_seguro,salud_seguro_ns_m,"Seguro de salud sin especificar, mujeres",E46,B46,Sin especificar
+nacimiento,nac_total_h,"Población por lugar de nacimiento, hombres",I12,G12,Total
+nacimiento,nac_total_m,"Población por lugar de nacimiento, mujeres",J12,G12,Total
+nacimiento,nac_aqui_h,"Nacida aquí, hombres",I13,G13,Aquí
+nacimiento,nac_aqui_m,"Nacida aquí, mujeres",J13,G13,Aquí
+nacimiento,nac_otromun_h,"Nacida en otro municipio/TIOC del país, hombres",I14,G14,En otro municipio/TIOC del país
+nacimiento,nac_otromun_m,"Nacida en otro municipio/TIOC del país, mujeres",J14,G14,En otro municipio/TIOC del país
+nacimiento,nac_otropais_h,"Nacida en otro país, hombres",I15,G15,En otro país
+nacimiento,nac_otropais_m,"Nacida en otro país, mujeres",J15,G15,En otro país
+nacimiento,nac_ns_h,"Lugar de nacimiento sin especificar, hombres",I16,G16,Sin especificar
+nacimiento,nac_ns_m,"Lugar de nacimiento sin especificar, mujeres",J16,G16,Sin especificar
+residencia,res_total_h,"Población por residencia habitual, hombres",I20,G20,Total
+residencia,res_total_m,"Población por residencia habitual, mujeres",J20,G20,Total
+residencia,res_aqui_h,"Reside habitualmente aquí, hombres",I21,G21,Aquí
+residencia,res_aqui_m,"Reside habitualmente aquí, mujeres",J21,G21,Aquí
+residencia,res_otromun_h,"Reside en otro municipio/TIOC del país, hombres",I22,G22,En otro municipio/TIOC del país
+residencia,res_otromun_m,"Reside en otro municipio/TIOC del país, mujeres",J22,G22,En otro municipio/TIOC del país
+residencia,res_otropais_h,"Reside en otro país, hombres",I23,G23,En otro país
+residencia,res_otropais_m,"Reside en otro país, mujeres",J23,G23,En otro país
+residencia,res_ns_h,"Residencia habitual sin especificar, hombres",I24,G24,Sin especificar
+residencia,res_ns_m,"Residencia habitual sin especificar, mujeres",J24,G24,Sin especificar
+ocupacion,ocup_total_h,"Población de 14 o más años por categoría ocupacional, hombres",I30,G30,Total
+ocupacion,ocup_total_m,"Población de 14 o más años por categoría ocupacional, mujeres",J30,G30,Total
+ocupacion,ocup_empleado_h,"Empleada(o) u obrera(o), hombres",I31,G31,Empleada(o) u obrera(o)
+ocupacion,ocup_empleado_m,"Empleada(o) u obrera(o), mujeres",J31,G31,Empleada(o) u obrera(o)
+ocupacion,ocup_cuentapropia_h,"Trabajadora(or) por cuenta propia, hombres",I32,G32,Trabajadora(or) por cuenta propia
+ocupacion,ocup_cuentapropia_m,"Trabajadora(or) por cuenta propia, mujeres",J32,G32,Trabajadora(or) por cuenta propia
+ocupacion,ocup_otros_h,"Otra categoría ocupacional, hombres",I33,G33,Otros
+ocupacion,ocup_otros_m,"Otra categoría ocupacional, mujeres",J33,G33,Otros
+ocupacion,ocup_ns_h,"Categoría ocupacional sin especificar, hombres",I34,G34,Sin especificar
+ocupacion,ocup_ns_m,"Categoría ocupacional sin especificar, mujeres",J34,G34,Sin especificar
+actividad,act_total_h,"Población de 14 o más años por actividad económica, hombres",I37,G37,Total
+actividad,act_total_m,"Población de 14 o más años por actividad económica, mujeres",J37,G37,Total
+actividad,act_agricultura_h,"Agricultura, ganadería, silvicultura y pesca, hombres",I38,G38,"Agricultura, ganadería, silvicultura y pesca"
+actividad,act_agricultura_m,"Agricultura, ganadería, silvicultura y pesca, mujeres",J38,G38,"Agricultura, ganadería, silvicultura y pesca"
+actividad,act_comercio_h,"Comercio y reparación de vehículos, hombres",I39,G39,Venta al por mayor y al por menor; reparación de vehículos
+actividad,act_comercio_m,"Comercio y reparación de vehículos, mujeres",J39,G39,Venta al por mayor y al por menor; reparación de vehículos
+actividad,act_manufactura_h,"Industria manufacturera, hombres",I40,G40,Industria manufactureras
+actividad,act_manufactura_m,"Industria manufacturera, mujeres",J40,G40,Industria manufactureras
+actividad,act_construccion_h,"Construcción, hombres",I41,G41,Construcción
+actividad,act_construccion_m,"Construcción, mujeres",J41,G41,Construcción
+actividad,act_transporte_h,"Transporte y almacenamiento, hombres",I42,G42,Transporte y almacenamiento
+actividad,act_transporte_m,"Transporte y almacenamiento, mujeres",J42,G42,Transporte y almacenamiento
+actividad,act_alojacomida_h,"Alojamiento y servicio de comidas, hombres",I43,G43,Actividades de alojamiento y de servicio de comidas
+actividad,act_alojacomida_m,"Alojamiento y servicio de comidas, mujeres",J43,G43,Actividades de alojamiento y de servicio de comidas
+actividad,act_ensenanza_h,"Enseñanza, hombres",I44,G44,Enseñanza
+actividad,act_ensenanza_m,"Enseñanza, mujeres",J44,G44,Enseñanza
+actividad,act_salud_h,"Salud humana y asistencia social, hombres",I45,G45,Actividades de atención de la salud humana y de asistencia social
+actividad,act_salud_m,"Salud humana y asistencia social, mujeres",J45,G45,Actividades de atención de la salud humana y de asistencia social
+actividad,act_otras_h,"Otras actividades económicas, hombres",I46,G46,Otras actividades
+actividad,act_otras_m,"Otras actividades económicas, mujeres",J46,G46,Otras actividades
+actividad,act_ns_h,"Actividad económica sin especificar, hombres",I47,G47,Sin especificar
+actividad,act_ns_m,"Actividad económica sin especificar, mujeres",J47,G47,Sin especificar
+vivienda,viv_total,Total de viviendas,E51,B51,Total viviendas
+vivienda,viv_tipo_particular,Viviendas particulares,E52,B52,Viviendas particulares
+vivienda,viv_tipo_presentes,Viviendas particulares con personas presentes,E53,B53,Con personas presentes(3)
+vivienda,viv_tipo_ausentes,Viviendas con personas temporalmente ausentes,E54,B54,Con personas temporalmente ausentes
+vivienda,viv_tipo_desocupada,Viviendas particulares desocupadas,E55,B55,Viviendas particulares desocupadas
+vivienda,viv_tipo_colectiva,Viviendas colectivas,E56,B56,Viviendas colectivas
+vivienda,viv_tenencia_total,Viviendas ocupadas por tenencia,E58,B58,Total
+vivienda,viv_tenencia_propia,Vivienda propia,E59,B59,Propia
+vivienda,viv_tenencia_alquilada,Vivienda alquilada,E60,B60,Alquilada
+vivienda,viv_tenencia_anticretico,Vivienda en anticrético o contrato mixto,E61,B61,Anticrético y en contrato mixto
+vivienda,viv_tenencia_prestada,Vivienda cedida o prestada,E62,B62,Cedida por servicios y prestada a parientes o amigos
+vivienda,viv_tenencia_otra,Vivienda con otra tenencia,E63,B63,Otra
+servicios,serv_luz_total,Viviendas ocupadas por disponibilidad de energía eléctrica,E65,B65,Total
+servicios,serv_luz_publica,Energía eléctrica de servicio público,E66,B66,Servicio público de energía eléctrica
+servicios,serv_luz_motor,Energía eléctrica de motor propio,E67,B67,Motor propio
+servicios,serv_luz_solar,Energía eléctrica de panel solar,E68,B68,Panel solar
+servicios,serv_luz_otra,Energía eléctrica de otra fuente,E69,B69,Otra
+servicios,serv_luz_ninguna,Sin energía eléctrica,E70,B70,No tiene
+servicios,serv_agua_total,Viviendas ocupadas por procedencia del agua,E72,B72,Total
+servicios,serv_agua_caneria,Agua por cañería de red,E73,B73,Cañería de red
+servicios,serv_agua_pileta,Agua de pileta pública,E74,B74,Pileta pública
+servicios,serv_agua_carro,Agua de carro repartidor,E75,B75,Carro repartidor (aguatero)
+servicios,serv_agua_pozobomba,Agua de pozo con bomba,E76,B76,Pozo excavado o perforado con bomba
+servicios,serv_agua_pozosinbomba,Agua de pozo sin bomba o no protegido,E77,B77,Pozo no protegido o sin bomba
+servicios,serv_agua_vertienteno,"Agua de río, acequia o vertiente no protegida",E78,B78,"Río, acequia o vertiente no protegida"
+servicios,serv_agua_vertientesi,Agua de manantial o vertiente protegida,E79,B79,Manantial o vertiente protegida
+servicios,serv_agua_lluvia,Agua de cosecha de lluvia,E80,B80,Cosecha de agua de lluvia
+servicios,serv_agua_otra,Agua de otra procedencia,E81,B81,Otra
+servicios,serv_desague_total,Viviendas ocupadas por desagüe del servicio sanitario,J50,G50,Total
+servicios,serv_desague_alcantarillado,Desagüe a la red de alcantarillado,J51,G51,A la red de alcantarillado
+servicios,serv_desague_camara,Desagüe a cámara séptica,J52,G52,A una cámara séptica
+servicios,serv_desague_pozociego,Desagüe a pozo ciego,J53,G53,A un pozo ciego
+servicios,serv_desague_superficie,Desagüe a la superficie,J54,G54,"A la superficie (calle, quebrada o río)"
+servicios,serv_desague_pozoabsorcion,Desagüe a pozo de absorción,J55,G55,A un pozo de absorción
+servicios,serv_desague_ecologico,Baño ecológico,J56,G56,Es baño ecológico
+servicios,serv_desague_ninguno,Sin servicio sanitario,J57,G57,No tiene
+servicios,serv_combustible_total,Viviendas ocupadas por combustible para cocinar,J59,G59,Total
+servicios,serv_combustible_gasgarrafa,Cocina con gas en garrafa,J60,G60,Gas en garrafa
+servicios,serv_combustible_gascaneria,Cocina con gas por cañería,J61,G61,Gas por cañería (a domicilio)
+servicios,serv_combustible_lena,Cocina con leña,J62,G62,Leña
+servicios,serv_combustible_guano,"Cocina con guano, bosta o taquia",J63,G63,"Guano, bosta o taquia"
+servicios,serv_combustible_electricidad,Cocina con electricidad,J64,G64,Electricidad
+servicios,serv_combustible_solar,Cocina con energía solar,J65,G65,Energía solar (cocina solar)
+servicios,serv_combustible_otro,Cocina con otro combustible,J66,G66,Otro
+servicios,serv_combustible_nococina,No cocina,J67,G67,No cocina
+servicios,serv_basura_total,Viviendas ocupadas por eliminación de la basura,J69,G69,Total
+servicios,serv_basura_basurero,Basura en contenedor o basurero público,J70,G70,La depositan en contenedor o basurero público
+servicios,serv_basura_carro,Basura al carro basurero,J71,G71,La entregan al carro basurero (servicio público)
+servicios,serv_basura_calle,Basura en terreno baldío o la calle,J72,G72,La botan en terreno baldío o la calle
+servicios,serv_basura_rio,Basura al río,J73,G73,La botan al río
+servicios,serv_basura_quema,Basura quemada,J74,G74,La queman
+servicios,serv_basura_entierra,Basura enterrada,J75,G75,La entierran
+servicios,serv_basura_otro,Basura eliminada de otra forma,J76,G76,Otra forma
+tic,tic_total,Hogares por tenencia de TIC,J78,G78,Total
+tic,tic_radio,Hogares con radio o equipo de sonido,J79,G79,Radio o equipo de sonido
+tic,tic_tv,Hogares con televisor,J80,G80,Televisor
+tic,tic_celular,Hogares con teléfono celular,J81,G81,Teléfono celular
+tic,tic_internet,Hogares con internet fijo o móvil,J82,G82,Internet fijo o móvil

@@ -113,7 +113,7 @@ codebook <- function(variable = NULL, tabla = NULL, buscar = NULL, anio = 2024) 
   # evitando que el usuario use por error variables de vivienda en datos de personas
   tabla_orden <- c(
     "persona", "vivienda", "emigracion", "mortalidad", "discapacidad",
-    "depto", "provin", "munic"
+    "unidad", "ficha", "depto", "provin", "munic"
   )
   rango <- match(meta$tabla, tabla_orden)
   rango[is.na(rango)] <- length(tabla_orden) + 1L

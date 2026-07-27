@@ -1,0 +1,10 @@
+# Datos intermedios de la descarga: se regeneran con los scripts de esta carpeta.
+crudo/
+muestras/
+release/
+*.parquet
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+*.log
+__pycache__/

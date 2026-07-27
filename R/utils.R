@@ -12,6 +12,14 @@
   "2012" = "data-2012-v1.0.0"
 )
 
+# Datos agregados del CPV-2024 por manzano urbano y comunidad rural.
+# Van en su propio release porque no son microdatos y se actualizan aparte.
+.FICHAS_RELEASE_TAG <- "data-fichas-v1.0.0"
+.FICHAS_BASE_URL <- paste0(
+  "https://github.com/", .CENSOSBO_REPO,
+  "/releases/download/", .FICHAS_RELEASE_TAG, "/"
+)
+
 .DEP_CODES <- c(
   "01" = "Chuquisaca", "02" = "La Paz",    "03" = "Cochabamba",
   "04" = "Oruro",      "05" = "Potosí",    "06" = "Tarija",
@@ -55,5 +63,10 @@
   persona_dep01 = 15,  persona_dep02 = 75,  persona_dep03 = 51,
   persona_dep04 = 14,  persona_dep05 = 22,  persona_dep06 = 13,
   persona_dep07 = 77,  persona_dep08 = 12,  persona_dep09 = 4,
-  vivienda = 55, emigracion = 2, mortalidad = 2
+  vivienda = 55, emigracion = 2, mortalidad = 2,
+  # Datos agregados por manzano y comunidad (release data-fichas-*)
+  unidad = 2.4, ficha = 15.4, geo_comunidad = 0.6,
+  geo_manzano_dep01 = 1.2, geo_manzano_dep02 = 6,   geo_manzano_dep03 = 5.5,
+  geo_manzano_dep04 = 1.6, geo_manzano_dep05 = 1.7, geo_manzano_dep06 = 1.1,
+  geo_manzano_dep07 = 6.7, geo_manzano_dep08 = 0.8, geo_manzano_dep09 = 0.3
 )

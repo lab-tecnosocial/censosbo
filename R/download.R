@@ -52,6 +52,62 @@
   invisible(as.character(dest))
 }
 
+#' Descarga un Parquet de datos agregados por manzano o comunidad
+#'
+#' Mismo mecanismo que [.download_parquet()], pero contra el release
+#' `data-fichas-*` y cacheando bajo `fichas/` para no mezclar estos datos
+#' agregados con los microdatos.
+#'
+#' @param filename Nombre del archivo (e.g., `"ficha.parquet"`).
+#' @param overwrite Lógico. Si `TRUE`, re-descarga aunque exista en caché.
+#' @param verbose Lógico. Mostrar progreso.
+#' @return Ruta local al archivo (invisible).
+#' @keywords internal
+.download_ficha <- function(filename, overwrite = FALSE, verbose = TRUE) {
+  subdir <- "fichas"
+  dest   <- .cache_path(filename, subdir = subdir)
+
+  if (.is_cached(filename, subdir = subdir) && !overwrite) {
+    if (verbose) {
+      cli::cli_inform(c("v" = "Usando caché: {.file {filename}}"))
+    }
+    return(invisible(as.character(dest)))
+  }
+
+  fs::dir_create(fs::path_dir(dest), recurse = TRUE)
+  url <- paste0(.FICHAS_BASE_URL, filename)
+
+  est_mb <- .PARQUET_SIZE_MB[[tools::file_path_sans_ext(filename)]]
+  size_msg <- if (!is.null(est_mb)) paste0(" (~", est_mb, " MB)") else ""
+
+  if (verbose) {
+    cli::cli_progress_step(
+      "Descargando {.file {filename}}{size_msg}...",
+      msg_done = "Descargado {.file {filename}}"
+    )
+  }
+
+  # Descarga atómica (ver .download_parquet): `.part` temporal + renombrado final.
+  part <- paste0(as.character(dest), ".part")
+  tryCatch(
+    {
+      curl::curl_download(url, part, quiet = TRUE)
+      fs::file_move(part, dest)
+    },
+    error = function(e) {
+      if (fs::file_exists(part)) fs::file_delete(part)
+      release_tag <- .FICHAS_RELEASE_TAG
+      cli::cli_abort(c(
+        "Error al descargar {.file {filename}}.",
+        "x" = conditionMessage(e),
+        "i" = "Verifica tu conexión o que el release {.val {release_tag}} exista en GitHub."
+      ))
+    }
+  )
+
+  invisible(as.character(dest))
+}
+
 #' Descarga un archivo de un censo histórico desde su GitHub Release
 #'
 #' @param anio Año del censo (1976, 1992, 2001 o 2012).

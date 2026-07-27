@@ -56,6 +56,8 @@ navbar:
         href: articles/analisis-demografico.html
       - text: "Análisis de condiciones de vivienda"
         href: articles/analisis-vivienda.html
+      - text: "Manzanos y comunidades"
+        href: articles/manzanos-comunidades.html
       - text: "Análisis avanzado con DuckDB y Arrow"
         href: articles/analisis-avanzado.html
       - text: "---"
@@ -103,6 +105,17 @@ reference:
       - get_emigracion_2024
       - get_mortalidad_2024
 
+  - title: "CPV-2024: manzanos y comunidades"
+    desc: >
+      Datos agregados del Censo 2024 por unidad censal (manzano urbano y
+      comunidad rural), el nivel geográfico más fino disponible: 268.604
+      unidades frente a los 343 municipios de los microdatos.
+    contents:
+      - get_unidades_2024
+      - get_fichas_2024
+      - get_geo_manzanos
+      - get_geo_comunidades
+
   - title: "Censos históricos: API general"
     desc: >
       Función principal para acceder a cualquier censo histórico (1976,
@@ -141,6 +154,7 @@ reference:
       - municipios
       - mapa_dep
       - mapa_mun
+      - mapa_man
 
   - title: "Gestión de caché"
     desc: >
@@ -177,6 +191,7 @@ articles:
     contents:
       - analisis-demografico
       - analisis-vivienda
+      - manzanos-comunidades
       - analisis-avanzado
   - title: "Censos históricos"
     navbar: Censos históricos
