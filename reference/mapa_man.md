@@ -1,8 +1,8 @@
-# Visualiza una variable censal a nivel de manzano
+# Visualiza una variable a nivel de manzano o comunidad
 
-Genera un mapa coroplético a nivel de manzano usando las geometrías del
-Geoportal INE. Requiere especificar al menos un municipio para limitar
-la carga de datos (el parquet cubre 247,000 manzanos en todo el país).
+Genera un mapa de un municipio al máximo detalle disponible del
+CPV-2024: cada manzano urbano como polígono y cada comunidad rural como
+punto.
 
 ## Usage
 
@@ -12,12 +12,12 @@ mapa_man(
   variable,
   municipio,
   departamento = NULL,
+  area = NULL,
   titulo = NULL,
   etiqueta_fill = NULL,
   paleta = NULL,
   na_color = "grey80",
-  mostrar_nombres = FALSE,
-  overwrite = FALSE
+  tamano_punto = 0.9
 )
 ```
 
@@ -25,9 +25,9 @@ mapa_man(
 
 - datos:
 
-  Data.frame con al menos las columnas \`codigo\` (código único de
-  manzano del INE, formato \`"XXXXXXXXXXX-X"\`) y \`variable\`.
-  Típicamente datos del CPV-2024 agregados a nivel de manzano.
+  Data.frame con una columna \`codigo\` de unidad censal y la columna a
+  visualizar. Típicamente sale de \[get_fichas_2024()\] o
+  \[get_unidades_2024()\].
 
 - variable:
 
@@ -35,17 +35,21 @@ mapa_man(
 
 - municipio:
 
-  Nombre o código XXYYZZ del municipio a mostrar. Acepta un vector para
-  mostrar varios municipios a la vez.
+  Nombre o código del municipio a mapear. Obligatorio: son ~268.000
+  unidades en todo el país y un mapa nacional no se lee.
 
 - departamento:
 
-  Nombre o código de departamento para resolver nombres de municipio
-  ambiguos (que existen en más de un departamento).
+  Departamento del municipio. Solo hace falta para desambiguar nombres
+  repetidos entre departamentos.
+
+- area:
+
+  Qué unidades incluir: \`"urbano"\`, \`"rural"\` o ambas (defecto).
 
 - titulo:
 
-  Título del mapa. Si \`NULL\`, genera \`"variable — municipio"\`.
+  Título del mapa. Si \`NULL\`, usa el nombre de la variable.
 
 - etiqueta_fill:
 
@@ -58,16 +62,11 @@ mapa_man(
 
 - na_color:
 
-  Color para manzanos sin datos. Por defecto \`"grey80"\`.
+  Color para unidades sin datos. Por defecto \`"grey80"\`.
 
-- mostrar_nombres:
+- tamano_punto:
 
-  Si \`TRUE\`, agrega etiquetas con el nombre del manzano (barrio/zona).
-  Recomendado solo con pocos manzanos.
-
-- overwrite:
-
-  Si \`TRUE\`, re-descarga el parquet aunque exista en caché.
+  Tamaño de los puntos de las comunidades rurales.
 
 ## Value
 
@@ -75,26 +74,26 @@ Un objeto \`ggplot\` modificable con capas adicionales de ggplot2.
 
 ## Details
 
-Las geometrías provienen del Geoportal INE Bolivia (CPV-2024). El
-parquet se descarga automáticamente desde GitHub Releases la primera vez
-y se almacena en caché local (\[censosbo_cache_dir()\]).
+Las geometrías se descargan al caché con \[get_geo_manzanos()\] y
+\[get_geo_comunidades()\] la primera vez; después se reutilizan.
 
-La clave de unión entre \`datos\` y las geometrías es la columna
-\`codigo\` del parquet INE (formato \`"XXXXXXXXXXX-X"\`).
+Las unidades del municipio que no estén en \`datos\` se dibujan con
+\`na_color\`. Eso es lo normal al mapear \[get_fichas_2024()\]: el 47
+tiene ficha por reserva estadística, y salen en gris.
+
+## See also
+
+\[mapa_mun()\] para el nivel municipal, \[mapa_dep()\] para el
+departamental.
 
 ## Examples
 
 ``` r
 if (FALSE) { # \dontrun{
 library(dplyr)
-# Obtener códigos de manzano del parquet y crear datos de ejemplo
-ruta <- censosbo_cache_dir() |> file.path("manzanos_ine.parquet")
-codigos <- arrow::open_dataset(ruta) |>
-  filter(codigo_municipio == 20101) |>
-  collect() |>
-  pull(codigo)
-datos <- data.frame(codigo = codigos, valor = runif(length(codigos)))
-mapa_man(datos, "valor", municipio = "La Paz",
-         titulo = "Variable aleatoria por manzano - La Paz")
+agua <- get_fichas_2024(municipio = "Sucre", as = "tibble") |>
+  mutate(pct_caneria = 100 * serv_agua_caneria / serv_agua_total)
+mapa_man(agua, "pct_caneria", municipio = "Sucre",
+         titulo = "% viviendas con agua por cañería - Sucre (2024)")
 } # }
 ```

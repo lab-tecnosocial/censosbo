@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,6 +24,7 @@
     <li><h6 class="dropdown-header" data-toc-skip>CPV-2024</h6></li>
     <li><a class="dropdown-item" href="../articles/analisis-demografico.html">Análisis demográfico</a></li>
     <li><a class="dropdown-item" href="../articles/analisis-vivienda.html">Análisis de condiciones de vivienda</a></li>
+    <li><a class="dropdown-item" href="../articles/manzanos-comunidades.html">Manzanos y comunidades</a></li>
     <li><a class="dropdown-item" href="../articles/analisis-avanzado.html">Análisis avanzado con DuckDB y Arrow</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Censos históricos</h6></li>
@@ -48,6 +49,29 @@
       <small>Source: <a href="https://github.com/lab-tecnosocial/censosbo/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.3.0" id="censosbo-130">censosbo 1.3.0<a class="anchor" aria-label="anchor" href="#censosbo-130"></a></h2>
+<div class="section level3">
+<h3 id="datos-por-manzano-y-comunidad-cpv-1-3-0">Datos por manzano y comunidad (CPV-2024)<a class="anchor" aria-label="anchor" href="#datos-por-manzano-y-comunidad-cpv-1-3-0"></a></h3>
+<p>El paquete llegaba hasta el municipio: 343 unidades. Ahora también da acceso al nivel más fino que publica el INE, <strong>268.604 unidades censales</strong> —manzanos urbanos y comunidades rurales— con 194 indicadores cada una.</p>
+<ul><li>
+<strong><code><a href="../reference/get_unidades_2024.html">get_unidades_2024()</a></code></strong>: universo completo de unidades con su población, viviendas y si tienen ficha disponible. Filtra por departamento, provincia, municipio y <code>area</code>.</li>
+<li>
+<strong><code><a href="../reference/get_fichas_2024.html">get_fichas_2024()</a></code></strong>: los 194 indicadores de la ficha resumen del INE — población por edad y sexo, educación, salud, migración, empleo, actividad económica, vivienda, servicios básicos, TIC, materiales de construcción, hacinamiento y tipo de hogar.</li>
+<li>
+<strong><code><a href="../reference/get_geo_manzanos.html">get_geo_manzanos()</a></code></strong> y <strong><code><a href="../reference/get_geo_comunidades.html">get_geo_comunidades()</a></code></strong>: geometrías en <code>sf</code> (EPSG:4326). Los manzanos están partidos por departamento; las comunidades rurales son en su mayoría puntos, no polígonos.</li>
+<li>
+<strong><code><a href="../reference/mapa_man.html">mapa_man()</a></code></strong>: mapas de un municipio a nivel de manzano y comunidad.</li>
+<li>Nueva viñeta: <em>Manzanos y comunidades: el CPV-2024 al máximo detalle</em>.</li>
+</ul><p>Notas sobre estos datos:</p>
+<ul><li>El INE <strong>no libera la ficha de las unidades con poca población</strong>, por reserva estadística. Eso deja fuera al 47 % de los manzanos, pero la cobertura efectiva sigue siendo alta: 150.744 unidades con ficha, el 92 % de la población y el 90 % de las viviendas del país. La columna <code>ficha</code> de <code><a href="../reference/get_unidades_2024.html">get_unidades_2024()</a></code> marca cuáles la tienen.</li>
+<li>Los bloques <code>salud_lugar_*</code> y <code>tic_*</code> son de <strong>respuesta múltiple</strong>: sus categorías suman más que el total. Cada bloque incluye su propio total, que es el denominador correcto.</li>
+<li>
+<code>area</code> reutiliza el dominio de los microdatos (1 = Urbana, 2 = Rural), así que <code><a href="../reference/etiquetar_valores.html">etiquetar_valores()</a></code> se comporta igual en ambas fuentes. Las funciones aceptan además <code>"urbano"</code> y <code>"rural"</code> por legibilidad.</li>
+<li>Los datos viven en su propio release (<code>data-fichas-v1.0.0</code>) y se cachean bajo <code>fichas/</code>, separados de los microdatos.</li>
+</ul><p><code>codebook(tabla = "unidad")</code> y <code>codebook(tabla = "ficha")</code> documentan las variables nuevas.</p>
+</div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.2.1" id="censosbo-121">censosbo 1.2.1<a class="anchor" aria-label="anchor" href="#censosbo-121"></a></h2>
 <div class="section level3">

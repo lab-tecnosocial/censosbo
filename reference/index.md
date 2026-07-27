@@ -36,6 +36,21 @@ tibble, o una conexión DuckDB.
 - [`get_mortalidad_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_mortalidad_2024.md)
   : Accede a los microdatos de mortalidad del CPV-2024
 
+## CPV-2024: manzanos y comunidades
+
+Datos agregados del Censo 2024 por unidad censal (manzano urbano y
+comunidad rural), el nivel geográfico más fino disponible: 268.604
+unidades frente a los 343 municipios de los microdatos.
+
+- [`get_unidades_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_unidades_2024.md)
+  : Accede al universo de unidades censales del CPV-2024
+- [`get_fichas_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_fichas_2024.md)
+  : Accede a los indicadores del CPV-2024 por manzano y comunidad
+- [`get_geo_manzanos()`](https://lab-tecnosocial.github.io/censosbo/reference/get_geo_manzanos.md)
+  : Descarga las geometrías de los manzanos urbanos del CPV-2024
+- [`get_geo_comunidades()`](https://lab-tecnosocial.github.io/censosbo/reference/get_geo_comunidades.md)
+  : Descarga las geometrías de las comunidades rurales del CPV-2024
+
 ## Censos históricos: API general
 
 Función principal para acceder a cualquier censo histórico (1976, 1992,
@@ -98,6 +113,8 @@ para generar mapas coropléticos con variables censales.
   : Visualiza una variable censal a nivel departamental
 - [`mapa_mun()`](https://lab-tecnosocial.github.io/censosbo/reference/mapa_mun.md)
   : Visualiza una variable censal a nivel municipal
+- [`mapa_man()`](https://lab-tecnosocial.github.io/censosbo/reference/mapa_man.md)
+  : Visualiza una variable a nivel de manzano o comunidad
 
 ## Gestión de caché
 

@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,6 +45,7 @@
     <li><h6 class="dropdown-header" data-toc-skip>CPV-2024</h6></li>
     <li><a class="dropdown-item" href="../articles/analisis-demografico.html">Análisis demográfico</a></li>
     <li><a class="dropdown-item" href="../articles/analisis-vivienda.html">Análisis de condiciones de vivienda</a></li>
+    <li><a class="dropdown-item" href="../articles/manzanos-comunidades.html">Manzanos y comunidades</a></li>
     <li><a class="dropdown-item" href="../articles/analisis-avanzado.html">Análisis avanzado con DuckDB y Arrow</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Censos históricos</h6></li>
@@ -243,12 +244,21 @@ etc.</p>
 <span><span class="co"># Por departamento + provincia</span></span>
 <span><span class="fu"><a href="../reference/get_censo.html">get_viviendas_1992</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"03"</span>, provincia <span class="op">=</span> <span class="st">"01"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Por municipio (1992, 2001, 2012 — no disponible en 1976)</span></span>
-<span><span class="fu"><a href="../reference/get_censo.html">get_personas_2012</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"07"</span>, municipio <span class="op">=</span> <span class="st">"01"</span><span class="op">)</span></span></code></pre></div>
-<p>Si el municipio no existe en ese año, se emite una advertencia y se
-retorna <code>NULL</code>:</p>
+<span><span class="co"># Por municipio (1992, 2001, 2012 — no disponible en 1976).</span></span>
+<span><span class="co"># El código de municipio se repite entre provincias, así que por código hay que</span></span>
+<span><span class="co"># indicar también la provincia; por nombre no hace falta.</span></span>
+<span><span class="fu"><a href="../reference/get_censo.html">get_personas_2012</a></span><span class="op">(</span>municipio <span class="op">=</span> <span class="st">"Cotoca"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/get_censo.html">get_personas_2012</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"07"</span>, provincia <span class="op">=</span> <span class="st">"01"</span>, municipio <span class="op">=</span> <span class="st">"01"</span><span class="op">)</span></span></code></pre></div>
+<p>Hay dos situaciones distintas cuando un municipio no aparece:</p>
+<ul>
+<li>Si <strong>no está en el catálogo geográfico</strong> del paquete,
+es un error inmediato, antes de descargar nada.</li>
+<li>Si <strong>está en el catálogo pero no tiene registros en ese
+censo</strong>, se emite una advertencia y se retorna
+<code>NULL</code>.</li>
+</ul>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># El municipio 100 no existe en el censo 1992 — emite cli_warn + retorna NULL</span></span>
+<code class="sourceCode R"><span><span class="co"># "100" no es un código de municipio válido — error con sugerencia</span></span>
 <span><span class="fu"><a href="../reference/get_censo.html">get_personas_1992</a></span><span class="op">(</span>municipio <span class="op">=</span> <span class="st">"100"</span><span class="op">)</span></span></code></pre></div>
 <blockquote>
 <p><strong>Nota:</strong> El número de municipios cambió entre censos

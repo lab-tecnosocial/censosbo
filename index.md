@@ -44,13 +44,17 @@ update_censosbo()
 | **2024**² | [`get_viviendas_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_viviendas_2024.md) | 4,490,488 | 48 | 55 MB | ~111 MB |
 | **2024**² | [`get_emigracion_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_emigracion_2024.md) | 500,914 | 8 | 2 MB | ~7 MB |
 | **2024**² | [`get_mortalidad_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_mortalidad_2024.md) | 382,731 | 10 | 2 MB | ~7 MB |
+| **2024**³ | [`get_unidades_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_unidades_2024.md) | 268,604 | 9 | 2 MB | ~25 MB |
+| **2024**³ | [`get_fichas_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_fichas_2024.md) | 150,744 | 199 | 15 MB | ~240 MB |
 
 ¹ Tamaño al cargar la tabla completa con
 [`collect()`](https://dplyr.tidyverse.org/reference/compute.html) sin
 filtros, medido desde metadatos Parquet. ² Persona 2024 está
 particionada en 9 archivos por departamento (4–77 MB cada uno). Disco y
 RAM muestran el total; en la práctica se descarga solo el/los
-departamentos necesarios.
+departamentos necesarios. ³ Datos **agregados** por manzano urbano y
+comunidad rural (no microdatos), del geoportal del INE. Ver la sección
+siguiente.
 
 El formato **Arrow** (por defecto) mantiene los datos en el disco hasta
 que ejecutas
@@ -73,6 +77,32 @@ get_personas_2024(departamento = "Santa Cruz") |>
   collect() |>
   etiquetar_valores()
 ```
+
+## Manzanos y comunidades — el nivel más fino del CPV-2024
+
+Los microdatos llegan hasta el municipio (343 unidades). El geoportal
+del INE publica además una **ficha resumen por unidad censal**: 268.604
+manzanos urbanos y comunidades rurales, con 194 indicadores cada una.
+
+``` r
+
+# Universo de unidades: población, viviendas y si tienen ficha
+get_unidades_2024(departamento = "Cochabamba", as = "tibble")
+
+# Los 160 indicadores, y un mapa a nivel de manzano
+get_fichas_2024(municipio = "Sucre", as = "tibble") |>
+  mutate(pct_internet = 100 * tic_internet / tic_total) |>
+  mapa_man("pct_internet", municipio = "Sucre",
+           titulo = "Hogares con internet (%) — Sucre, 2024")
+```
+
+El INE **no libera la ficha de las unidades con poca población**, por
+reserva estadística: eso afecta al 47 % de los manzanos, pero la ficha
+cubre igualmente el 92 % de la población. La columna `ficha` indica
+cuáles la tienen.
+
+Detalles en
+[`vignette("manzanos-comunidades")`](https://lab-tecnosocial.github.io/censosbo/articles/manzanos-comunidades.md).
 
 ## Diccionario de variables
 
@@ -204,6 +234,8 @@ de Estadística (INE) de Bolivia**:
   <https://cpv2024.ine.gob.bo/index.php/principal/descargas/>
 - **Censos históricos 1976–2012**:
   <https://www.ine.gob.bo/index.php/censos-y-banco-de-datos/censos/>
+- **Fichas por manzano y comunidad (CPV-2024)**:
+  <https://geoportal.ine.gob.bo/>
 
 ### Nota metodológica
 

@@ -1,0 +1,106 @@
+# Accede al universo de unidades censales del CPV-2024
+
+Devuelve todas las unidades censales de Bolivia —manzanos urbanos y
+comunidades rurales— con su población, sus viviendas y si el INE libera
+su ficha de indicadores. Es el nivel geográfico más fino disponible del
+Censo 2024: 268.604 unidades, frente a los 343 municipios de las demás
+funciones.
+
+## Usage
+
+``` r
+get_unidades_2024(
+  departamento = NULL,
+  provincia = NULL,
+  municipio = NULL,
+  area = NULL,
+  variables = NULL,
+  as = c("arrow", "tibble", "duckdb"),
+  overwrite = FALSE,
+  verbose = TRUE
+)
+```
+
+## Source
+
+Geoportal del INE Bolivia, \<https://geoportal.ine.gob.bo/\>.
+
+## Arguments
+
+- departamento:
+
+  Nombre o código del departamento (e.g., \`"Cochabamba"\` o \`"03"\`).
+  \`NULL\` (defecto) devuelve todo el país.
+
+- provincia:
+
+  Nombre o código de la provincia. Opcional.
+
+- municipio:
+
+  Nombre o código del municipio. Opcional.
+
+- area:
+
+  Filtra por tipo de unidad: \`"urbano"\` (manzanos) o \`"rural"\`
+  (comunidades). \`NULL\` (defecto) devuelve ambas. La columna \`area\`
+  se almacena con el mismo código que en los microdatos (1 = Urbana, 2 =
+  Rural), así que también acepta \`1\` o \`2\`.
+
+- variables:
+
+  Vector de nombres de variables a devolver. Las columnas geográficas se
+  conservan siempre. \`NULL\` (defecto) devuelve todas.
+
+- as:
+
+  Formato de retorno: \`"arrow"\` (por defecto), \`"tibble"\` o
+  \`"duckdb"\` (tabla \`"unidades"\`).
+
+- overwrite:
+
+  Lógico. Si \`TRUE\`, re-descarga aunque exista en caché.
+
+- verbose:
+
+  Lógico. Mostrar progreso.
+
+## Value
+
+Un \`Dataset\` de arrow, un \`tibble\` o una conexión DuckDB, según
+\`as\`.
+
+## Details
+
+La columna \`ficha\` indica si esta unidad tiene indicadores en
+\[get_fichas_2024()\]. El INE no publica la ficha de las unidades con
+poca población, por reserva estadística: deja fuera al 47 las 150.744
+unidades con ficha cubren el 92 excluidas son las pequeñas.
+
+Los códigos de unidad (\`codigo\`) no son jerárquicos: no contienen el
+departamento ni el municipio. Por eso las columnas \`idep\`, \`iprov\` e
+\`imun\` vienen desnormalizadas, y se pueden etiquetar con
+\[etiquetar_geografia()\].
+
+## See also
+
+\[get_fichas_2024()\] para los indicadores, \[get_geo_manzanos()\] y
+\[get_geo_comunidades()\] para las geometrías.
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+# Todas las unidades de Cochabamba
+get_unidades_2024(departamento = "Cochabamba")
+
+# Comunidades rurales de Potosí, con nombres de la geografía
+library(dplyr)
+get_unidades_2024(departamento = "Potosí", area = "rural", as = "tibble") |>
+  etiquetar_geografia()
+
+# ¿Qué parte de la población queda cubierta por las fichas?
+get_unidades_2024(municipio = "Sucre", as = "tibble") |>
+  summarise(cobertura = sum(personas[ficha]) / sum(personas))
+} # }
+```

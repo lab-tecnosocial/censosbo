@@ -13,6 +13,8 @@
   censosbo](https://lab-tecnosocial.github.io/censosbo/articles/analisis-demografico.md):
 - [Análisis de condiciones de
   vivienda](https://lab-tecnosocial.github.io/censosbo/articles/analisis-vivienda.md):
+- [Manzanos y comunidades: el CPV-2024 al máximo
+  detalle](https://lab-tecnosocial.github.io/censosbo/articles/manzanos-comunidades.md):
 - [Análisis avanzado con DuckDB y
   Arrow](https://lab-tecnosocial.github.io/censosbo/articles/analisis-avanzado.md):
 

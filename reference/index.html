@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,6 +24,7 @@
     <li><h6 class="dropdown-header" data-toc-skip>CPV-2024</h6></li>
     <li><a class="dropdown-item" href="../articles/analisis-demografico.html">Análisis demográfico</a></li>
     <li><a class="dropdown-item" href="../articles/analisis-vivienda.html">Análisis de condiciones de vivienda</a></li>
+    <li><a class="dropdown-item" href="../articles/manzanos-comunidades.html">Manzanos y comunidades</a></li>
     <li><a class="dropdown-item" href="../articles/analisis-avanzado.html">Análisis avanzado con DuckDB y Arrow</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Censos históricos</h6></li>
@@ -129,6 +130,43 @@
         </dt>
         <dd>Accede a los microdatos de mortalidad del CPV-2024</dd>
       </dl></div><div class="section level2">
+      <h2 id="cpv-manzanos-y-comunidades">CPV-2024: manzanos y comunidades<a class="anchor" aria-label="anchor" href="#cpv-manzanos-y-comunidades"></a></h2>
+
+      <div class="section-desc"><p>Datos agregados del Censo 2024 por unidad censal (manzano urbano y comunidad rural), el nivel geográfico más fino disponible: 268.604 unidades frente a los 343 municipios de los microdatos.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="get_unidades_2024.html">get_unidades_2024()</a></code>
+
+        </dt>
+        <dd>Accede al universo de unidades censales del CPV-2024</dd>
+
+        <dt>
+
+          <code><a href="get_fichas_2024.html">get_fichas_2024()</a></code>
+
+        </dt>
+        <dd>Accede a los indicadores del CPV-2024 por manzano y comunidad</dd>
+
+        <dt>
+
+          <code><a href="get_geo_manzanos.html">get_geo_manzanos()</a></code>
+
+        </dt>
+        <dd>Descarga las geometrías de los manzanos urbanos del CPV-2024</dd>
+
+        <dt>
+
+          <code><a href="get_geo_comunidades.html">get_geo_comunidades()</a></code>
+
+        </dt>
+        <dd>Descarga las geometrías de las comunidades rurales del CPV-2024</dd>
+      </dl></div><div class="section level2">
       <h2 id="censos-hist-ricos-api-general">Censos históricos: API general<a class="anchor" aria-label="anchor" href="#censos-hist-ricos-api-general"></a></h2>
 
       <div class="section-desc"><p>Función principal para acceder a cualquier censo histórico (1976, 1992, 2001, 2012) y funciones de análisis temporal entre censos.</p></div>
@@ -232,6 +270,13 @@
 
         </dt>
         <dd>Visualiza una variable censal a nivel municipal</dd>
+
+        <dt>
+
+          <code><a href="mapa_man.html">mapa_man()</a></code>
+
+        </dt>
+        <dd>Visualiza una variable a nivel de manzano o comunidad</dd>
       </dl></div><div class="section level2">
       <h2 id="gesti-n-de-cach-">Gestión de caché<a class="anchor" aria-label="anchor" href="#gesti-n-de-cach-"></a></h2>
 

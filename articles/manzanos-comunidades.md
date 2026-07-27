@@ -1,0 +1,184 @@
+# Manzanos y comunidades: el CPV-2024 al máximo detalle
+
+Los microdatos del CPV-2024 llegan hasta el municipio: 343 unidades para
+todo el país. Pero el INE también publica, en su
+[geoportal](https://geoportal.ine.gob.bo/), una **ficha resumen** por
+cada unidad censal —manzano urbano o comunidad rural—. Son **268.604
+unidades**: casi mil veces más resolución espacial.
+
+Este artículo cubre las cuatro funciones que dan acceso a esos datos:
+
+| Función | Qué devuelve |
+|----|----|
+| [`get_unidades_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_unidades_2024.md) | El universo: 268.604 unidades con población y viviendas |
+| [`get_fichas_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_fichas_2024.md) | 194 indicadores para las 150.744 unidades con ficha |
+| [`get_geo_manzanos()`](https://lab-tecnosocial.github.io/censosbo/reference/get_geo_manzanos.md) / [`get_geo_comunidades()`](https://lab-tecnosocial.github.io/censosbo/reference/get_geo_comunidades.md) | Las geometrías |
+| [`mapa_man()`](https://lab-tecnosocial.github.io/censosbo/reference/mapa_man.md) | Mapas de un municipio a nivel de manzano |
+
+## Dos tablas, no una
+
+La distinción entre las dos primeras funciones es importante y responde
+a cómo publica el INE.
+
+De **todas** las unidades se conoce cuánta gente y cuántas viviendas
+hay. Pero el INE **no libera la ficha detallada de las unidades con poca
+población**, por reserva estadística: en un manzano de seis viviendas,
+publicar la desagregación por edad, sexo y nivel educativo permitiría
+identificar personas.
+
+``` r
+
+unidades <- get_unidades_2024(as = "tibble")
+
+unidades |>
+  group_by(area) |>
+  summarise(
+    unidades = n(),
+    con_ficha = sum(ficha),
+    pct_unidades = 100 * mean(ficha),
+    pct_poblacion = 100 * sum(personas[ficha]) / sum(personas)
+  )
+```
+
+El resultado es el punto clave: **el 47% de los manzanos no tiene ficha,
+pero las que sí la tienen cubren el 92% de la población**. Las unidades
+sin ficha son las pequeñas. Para casi cualquier análisis poblacional, la
+cobertura efectiva es alta.
+
+`area` usa el mismo código que en los microdatos (1 = Urbana, 2 =
+Rural), así que
+[`etiquetar_valores()`](https://lab-tecnosocial.github.io/censosbo/reference/etiquetar_valores.md)
+funciona igual en ambas fuentes:
+
+``` r
+
+unidades |>
+  select(codigo, area, personas, viviendas) |>
+  etiquetar_valores() |>
+  head()
+```
+
+## Los 194 indicadores
+
+[`get_fichas_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_fichas_2024.md)
+devuelve conteos, no porcentajes ni microdatos. Cada bloque temático
+trae su propio **total**, que es el denominador correcto:
+
+``` r
+
+codebook(tabla = "ficha") |>
+  filter(grepl("^serv_agua", variable)) |>
+  select(variable, etiqueta)
+```
+
+Con eso, calcular un porcentaje es directo:
+
+``` r
+
+sucre <- get_fichas_2024(municipio = "Sucre", as = "tibble")
+
+sucre |>
+  mutate(pct_caneria = 100 * serv_agua_caneria / serv_agua_total) |>
+  select(codigo, serv_agua_total, serv_agua_caneria, pct_caneria) |>
+  head()
+```
+
+### Cuidado con los bloques de respuesta múltiple
+
+Dos bloques **no** son categorías excluyentes: `salud_lugar_*` (dónde
+acude una persona por problemas de salud) y `tic_*` (equipamiento del
+hogar). Una misma persona puede acudir a la farmacia y al centro
+público; un hogar puede tener radio y televisor. Sus categorías suman
+más que el total:
+
+``` r
+
+sucre |>
+  summarise(
+    total = sum(salud_lugar_total_h + salud_lugar_total_m),
+    categorias = sum(salud_lugar_centropublico_h + salud_lugar_centropublico_m +
+      salud_lugar_farmacia_h + salud_lugar_farmacia_m +
+      salud_lugar_casero_h + salud_lugar_casero_m)
+  )
+```
+
+En estos bloques el denominador es el total, nunca la suma de
+categorías.
+
+## Mapas a nivel de manzano
+
+[`mapa_man()`](https://lab-tecnosocial.github.io/censosbo/reference/mapa_man.md)
+pide siempre un municipio: dibujar 268.604 unidades del país entero no
+produce nada legible. Descarga las geometrías al caché la primera vez.
+
+``` r
+
+sucre |>
+  mutate(pct_internet = 100 * tic_internet / tic_total) |>
+  mapa_man("pct_internet",
+    municipio = "Sucre",
+    titulo = "Hogares con internet (%) — Sucre, 2024"
+  )
+```
+
+Los manzanos sin ficha aparecen en gris: no es un vacío de datos del
+paquete, es la reserva estadística del INE.
+
+Para trabajar con las geometrías directamente:
+
+``` r
+
+manzanos <- get_geo_manzanos(municipio = "Sucre")
+manzanos
+```
+
+Una advertencia sobre el área rural: el INE publica **casi todas las
+comunidades como puntos**, no como polígonos. No hay superficie que
+colorear, así que
+[`mapa_man()`](https://lab-tecnosocial.github.io/censosbo/reference/mapa_man.md)
+las dibuja como puntos y para mapas rurales suele funcionar mejor
+graduar el tamaño:
+
+``` r
+
+rural <- get_unidades_2024(departamento = "Pando", area = "rural", as = "tibble")
+geo <- get_geo_comunidades(departamento = "Pando")
+
+geo |>
+  left_join(rural, by = "codigo") |>
+  ggplot() +
+  geom_sf(aes(size = personas), alpha = 0.6) +
+  theme_void()
+```
+
+## Cruzar con los microdatos
+
+Las unidades traen `idep`, `iprov` e `imun`, así que agregan y se cruzan
+con cualquier otra tabla del paquete:
+
+``` r
+
+por_municipio <- get_unidades_2024(as = "tibble") |>
+  group_by(idep, iprov, imun) |>
+  summarise(manzanos = sum(area == 1), .groups = "drop") |>
+  etiquetar_geografia()
+
+mapa_mun(por_municipio, "manzanos", titulo = "Manzanos urbanos por municipio")
+```
+
+## De dónde salen estos datos
+
+Del geoportal del INE, que genera una ficha por unidad censal a demanda.
+El paquete no consulta ese servicio: los datos se descargaron una vez,
+se consolidaron y se publican como Parquet en un release de GitHub. El
+proceso completo, reproducible, está en `data-raw/fichas/` del
+repositorio.
+
+Dos notas sobre la fuente:
+
+- Los conteos corresponden a residentes habituales y **no incluyen a las
+  personas que residen en el exterior**, por lo que difieren ligeramente
+  de otros totales del censo.
+- El INE cambió su geoportal durante 2026 y la versión nueva
+  (`idg.ine.gob.bo`) exige captcha para estos endpoints. Los datos
+  provienen del servicio que atiende a `geoportal.ine.gob.bo`.

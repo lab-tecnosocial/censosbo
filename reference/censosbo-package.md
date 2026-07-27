@@ -7,7 +7,8 @@ departamento, provincia o municipio. Soporta flujos de trabajo estilo
 dplyr vía Apache Arrow y consultas SQL vía DuckDB. Incluye diccionarios
 de variables para todos los años, funciones de armonización temporal,
 análisis comparativos entre censos y generación de mapas a nivel
-departamental y municipal.
+departamental y municipal. Incluye también los datos agregados del
+CPV-2024 por manzano urbano y comunidad rural, con sus geometrías.
 
 ## See also
 
