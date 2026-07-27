@@ -22,7 +22,7 @@ knitr::opts_chunk$set(
 [![R-CMD-check](https://github.com/lab-tecnosocial/censosbo/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/lab-tecnosocial/censosbo/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-**censosbo** proporciona acceso programático a los microdatos de los **censos de población de Bolivia**: 1976, 1992, 2001, 2012 y 2024. Los datos se descargan bajo demanda, se guardan en caché local y se pueden consultar con `dplyr`, Apache Arrow o DuckDB. Contiene además diccionarios de datos, funciones para comparación temporal de datos entre censos y generación de mapas.
+**censosbo** proporciona acceso programático a los microdatos de los **censos de población de Bolivia**: 1976, 1992, 2001, 2012 y 2024. Los datos se descargan bajo demanda, se guardan en caché local y se pueden consultar con `dplyr`, Apache Arrow o DuckDB. Contiene además diccionarios de datos, funciones para comparación temporal entre censos, los datos agregados del CPV-2024 por manzano y comunidad, y generación de mapas.
 
 ## Instalación
 
@@ -90,7 +90,7 @@ y comunidades rurales, con 194 indicadores cada una.
 # Universo de unidades: población, viviendas y si tienen ficha
 get_unidades_2024(departamento = "Cochabamba", as = "tibble")
 
-# Los 160 indicadores, y un mapa a nivel de manzano
+# Los 194 indicadores, y un mapa a nivel de manzano
 get_fichas_2024(municipio = "Sucre", as = "tibble") |>
   mutate(pct_internet = 100 * tic_internet / tic_total) |>
   mapa_man("pct_internet", municipio = "Sucre",
@@ -181,7 +181,7 @@ get_personas_2024(departamento = "Cochabamba") |>
   etiquetar_geografia()
 ```
 
-El paquete incluye geometrías sf para los 9 departamentos (`geo_departamentos`) y 336 municipios (`geo_municipios`) de Bolivia. Las funciones `mapa_dep()` y `mapa_mun()` generan mapas coropléticos a partir de cualquier agregación de datos del censo.
+El paquete incluye geometrías sf para los 9 departamentos (`geo_departamentos`) y 336 municipios (`geo_municipios`) de Bolivia. Las funciones `mapa_dep()` y `mapa_mun()` generan mapas coropléticos a partir de cualquier agregación de datos del censo, y `mapa_man()` baja hasta el manzano y la comunidad dentro de un municipio (sus geometrías se descargan al caché la primera vez).
 
 ```{r mapa-dep}
 library(dplyr)
