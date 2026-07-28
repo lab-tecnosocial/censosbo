@@ -29,7 +29,7 @@ remotes::install_github("lab-tecnosocial/censosbo")
 
 El paquete se desarrolla continuamente (mejoras, corrección de errores),
 si lo instalaste anteriormente te recomendamos volver a ejecutar el
-anterior código y borrar el caché para actualizar a la versión 1.4.0 o
+anterior código y borrar el caché para actualizar a la versión 1.4.1 o
 usar la siguiente función:
 
 ``` r
@@ -366,7 +366,7 @@ citation("censosbo")
 #> 
 #>   Ojeda Copa A (2026). _censosbo: Paquete de R para el acceso, análisis
 #>   y visualización de datos censales en Bolivia (1976-2024)_. Lab
-#>   TecnoSocial, Cochabamba, Bolivia. R package version 1.4.0,
+#>   TecnoSocial, Cochabamba, Bolivia. R package version 1.4.1,
 #>   <https://lab-tecnosocial.github.io/censosbo/>.
 #> 
 #> A BibTeX entry for LaTeX users is
@@ -377,12 +377,12 @@ citation("censosbo")
 #>     organization = {Lab TecnoSocial},
 #>     address = {Cochabamba, Bolivia},
 #>     year = {2026},
-#>     note = {R package version 1.4.0},
+#>     note = {R package version 1.4.1},
 #>     url = {https://lab-tecnosocial.github.io/censosbo/},
 #>   }
 ```
 
 > Ojeda Copa A (2026). *censosbo: Paquete de R para el acceso, análisis
 > y visualización de datos censales en Bolivia (1976-2024)*. Lab
-> TecnoSocial, Cochabamba, Bolivia. R package version 1.4.0.
+> TecnoSocial, Cochabamba, Bolivia. R package version 1.4.1.
 > <https://lab-tecnosocial.github.io/censosbo/>

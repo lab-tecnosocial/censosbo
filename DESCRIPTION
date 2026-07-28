@@ -1,7 +1,7 @@
 Package: censosbo
 Type: Package
 Title: Paquete de R para el acceso, análisis y visualización de datos censales en Bolivia (1976-2024)
-Version: 1.4.0
+Version: 1.4.1
 Date: 2026-07-28
 Authors@R: person("Alex", "Ojeda Copa", email = "alex@labtecnosocial.org",
     role = c("aut", "cre"),
@@ -41,6 +41,7 @@ Suggests:
     DT,
     remotes,
     testthat (>= 3.0.0),
+    withr,
     knitr,
     rmarkdown,
     tidyr,

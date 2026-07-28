@@ -1,3 +1,13 @@
+# censosbo 1.4.1
+
+* **Las descargas reintentan ante fallos transitorios.** GitHub Releases devuelve
+  500 o 503 esporádicamente, y un único fallo abortaba toda la operación — algo
+  molesto cuando se piden los nueve archivos de persona o los nueve de manzanos.
+  Ahora se reintenta tres veces con espera creciente y solo se aborta si fallan
+  todos los intentos. De paso, los tres descargadores (`.download_parquet()`,
+  `.download_ficha()` y `.download_censo()`) comparten un solo helper en vez de
+  repetir la misma lógica de descarga atómica.
+
 # censosbo 1.4.0
 
 ## `get_censo()` ahora cubre también el CPV-2024

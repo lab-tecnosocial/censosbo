@@ -1,3 +1,31 @@
+# Descarga atómica con reintentos.
+#
+# Atómica: se baja a un `.part` en el mismo directorio y solo al completar se
+# renombra a `dest`. Así una interrupción (Ctrl-C, caída de red) nunca deja un
+# Parquet truncado que el caché reutilice.
+#
+# Con reintentos: GitHub Releases devuelve 500 o 503 esporádicamente, y una sola
+# descarga fallida abortaba toda la operación —molesto cuando se piden los nueve
+# archivos de persona o los nueve de manzanos—. Se reintenta con espera creciente
+# y solo se aborta si fallan todos los intentos.
+.curl_download_retry <- function(url, dest, intentos = 3L, espera = 1) {
+  part <- paste0(as.character(dest), ".part")
+  for (i in seq_len(intentos)) {
+    ok <- tryCatch({
+      curl::curl_download(url, part, quiet = TRUE)
+      TRUE
+    }, error = function(e) e)
+
+    if (isTRUE(ok)) {
+      fs::file_move(part, dest)
+      return(invisible(TRUE))
+    }
+    if (fs::file_exists(part)) fs::file_delete(part)
+    if (i == intentos) stop(ok)
+    Sys.sleep(espera * i)  # 1s, 2s, ... suficiente para un 500 pasajero
+  }
+}
+
 #' Descarga un archivo Parquet del CPV-2024 desde GitHub Releases
 #'
 #' @param filename Nombre del archivo (e.g., `"persona_dep07.parquet"`)
@@ -29,17 +57,9 @@
     )
   }
 
-  # Descarga atómica: se baja a un archivo temporal `.part` en el mismo
-  # directorio y solo al completar se renombra a `dest`. Así una interrupción
-  # (Ctrl-C, caída de red) nunca deja un Parquet truncado que el caché reutilice.
-  part <- paste0(as.character(dest), ".part")
   tryCatch(
-    {
-      curl::curl_download(url, part, quiet = TRUE)
-      fs::file_move(part, dest)
-    },
+    .curl_download_retry(url, dest),
     error = function(e) {
-      if (fs::file_exists(part)) fs::file_delete(part)
       release_tag <- .CENSOSBO_RELEASE_TAG
       cli::cli_abort(c(
         "Error al descargar {.file {filename}}.",
@@ -87,15 +107,9 @@
     )
   }
 
-  # Descarga atómica (ver .download_parquet): `.part` temporal + renombrado final.
-  part <- paste0(as.character(dest), ".part")
   tryCatch(
-    {
-      curl::curl_download(url, part, quiet = TRUE)
-      fs::file_move(part, dest)
-    },
+    .curl_download_retry(url, dest),
     error = function(e) {
-      if (fs::file_exists(part)) fs::file_delete(part)
       release_tag <- .FICHAS_RELEASE_TAG
       cli::cli_abort(c(
         "Error al descargar {.file {filename}}.",
@@ -144,15 +158,9 @@
     )
   }
 
-  # Descarga atómica (ver .download_parquet): `.part` temporal + renombrado final.
-  part <- paste0(as.character(dest), ".part")
   tryCatch(
-    {
-      curl::curl_download(url, part, quiet = TRUE)
-      fs::file_move(part, dest)
-    },
+    .curl_download_retry(url, dest),
     error = function(e) {
-      if (fs::file_exists(part)) fs::file_delete(part)
       cli::cli_abort(c(
         "Error al descargar {.file {filename}} del censo {anio}.",
         "x" = conditionMessage(e),
