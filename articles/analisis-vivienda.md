@@ -4,7 +4,7 @@
 
 Esta vignette analiza las condiciones habitacionales usando los datos de
 viviendas del CPV-2024. La tabla de viviendas se descarga como un único
-archivo (~100 MB) que incluye todos los departamentos.
+archivo (~55 MB) que incluye todos los departamentos.
 
 ``` r
 
@@ -151,7 +151,7 @@ library(DBI)
 
 con <- DBI::dbConnect(duckdb::duckdb(), dbdir = ":memory:")
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpzDcoAm/duckdb
+#> ℹ /tmp/RtmpxQZZF4/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
@@ -165,7 +165,7 @@ duckdb::duckdb_register_arrow(
                variables = c("idep","iprov","imun","i00","p25_sexo","p26_edad","nivel_edu"))
 )
 #> ℹ Descargando persona_dep04.parquet (~14 MB)...
-#> ✔ Descargado persona_dep04.parquet [381ms]
+#> ✔ Descargado persona_dep04.parquet [460ms]
 duckdb::duckdb_register_arrow(
   con, "viviendas",
   get_viviendas_2024(departamento = "Oruro",
@@ -188,7 +188,7 @@ resultado <- DBI::dbGetQuery(con, "
   ORDER BY personas DESC
 ")
 
-DBI::dbDisconnect(con)
+DBI::dbDisconnect(con, shutdown = TRUE)
 
 resultado |> etiquetar_valores()
 #>   urbrur personas edad_promedio

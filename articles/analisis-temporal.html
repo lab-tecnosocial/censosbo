@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -89,124 +89,79 @@ entre todos los censos bolivianos (1976, 1992, 2001, 2012 y 2024). Las
 variables originales son diferentes en cada censo; la librería aplica
 una armonización y devuelve un data.frame en formato largo (“tidy”) con
 una columna <code>anio</code> que identifica el censo.</p>
+<blockquote>
+<p><strong>Sobre los ejemplos de esta viñeta.</strong> Las cifras que se
+muestran son reales, pero están acotadas a <strong>Cochabamba</strong>
+(<code>departamento = DEP</code>, con
+<code>DEP &lt;- "Cochabamba"</code>): cargar los cinco censos completos
+del país en RAM requiere varios GB. El mismo código sin el argumento
+<code>departamento</code> devuelve las cifras nacionales. Nótese que la
+descarga es igual en ambos casos: los censos históricos se publican en
+un único archivo por tabla.</p>
+</blockquote>
 <div class="section level2">
 <h2 id="variables-y-grupos-disponibles">Variables y grupos disponibles<a class="anchor" aria-label="anchor" href="#variables-y-grupos-disponibles"></a>
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Lista completa de variables armonizadas</span></span>
-<span><span class="fu"><a href="../reference/variables_armonizadas.html">variables_armonizadas</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                variable                                             etiqueta</span></span>
-<span><span class="co">#&gt; 1                  sexo                                                 Sexo</span></span>
-<span><span class="co">#&gt; 2                  edad                                         Edad en años</span></span>
-<span><span class="co">#&gt; 3            grupo_edad                          Grupos de edad quinquenales</span></span>
-<span><span class="co">#&gt; 4            parentesco                  Relación con el/la jefe/a del hogar</span></span>
-<span><span class="co">#&gt; 5          estado_civil                              Estado conyugal o civil</span></span>
-<span><span class="co">#&gt; 6             sabe_leer                                 Sabe leer y escribir</span></span>
-<span><span class="co">#&gt; 7             nivel_edu                                 Nivel de instrucción</span></span>
-<span><span class="co">#&gt; 8    asistencia_escolar                          Asistencia educativa actual</span></span>
-<span><span class="co">#&gt; 9                   pea                         Condición de actividad (PEA)</span></span>
-<span><span class="co">#&gt; 10                  pet                        Población en Edad de Trabajar</span></span>
-<span><span class="co">#&gt; 11  categoria_ocupacion                               Categoría en el empleo</span></span>
-<span><span class="co">#&gt; 12   identidad_indigena               Autoidentificación con pueblo indígena</span></span>
-<span><span class="co">#&gt; 13       idioma_materno                           Idioma materno o principal</span></span>
-<span><span class="co">#&gt; 14   migracion_nac_dpto  Migración: departamento de nacimiento vs residencia</span></span>
-<span><span class="co">#&gt; 15   migracion_rec_dpto Migración reciente: residencia hace 5 años vs actual</span></span>
-<span><span class="co">#&gt; 16  hijos_nacidos_vivos                 Total de hijos e hijas nacidos vivos</span></span>
-<span><span class="co">#&gt; 17 hijos_sobrevivientes         Total de hijos e hijas que viven actualmente</span></span>
-<span><span class="co">#&gt; 18                 area                                  Área urbana o rural</span></span>
-<span><span class="co">#&gt; 19         departamento                                         Departamento</span></span>
-<span><span class="co">#&gt; 20     material_paredes              Material de construcción de las paredes</span></span>
-<span><span class="co">#&gt; 21       material_techo                   Material de construcción del techo</span></span>
-<span><span class="co">#&gt; 22        material_piso                                    Material del piso</span></span>
-<span><span class="co">#&gt; 23          fuente_agua                  Fuente de agua para beber y cocinar</span></span>
-<span><span class="co">#&gt; 24    energia_electrica                  Disponibilidad de energía eléctrica</span></span>
-<span><span class="co">#&gt; 25   servicio_sanitario                 Disponibilidad de servicio sanitario</span></span>
-<span><span class="co">#&gt; 26    tenencia_vivienda                              Tenencia de la vivienda</span></span>
-<span><span class="co">#&gt; 27   habitaciones_total                      Total de habitaciones del hogar</span></span>
-<span><span class="co">#&gt;                                                                                                                                                        descripcion</span></span>
-<span><span class="co">#&gt; 1                                                                                        Sexo del individuo. Harmonizado a 1=Mujer, 2=Hombre para todos los censos</span></span>
-<span><span class="co">#&gt; 2                                                                                                                             Edad del individuo en años cumplidos</span></span>
-<span><span class="co">#&gt; 3                                                                                                       Grupo de edad en intervalos de 5 años (0-4, 5-9, ..., 80+)</span></span>
-<span><span class="co">#&gt; 4                                                Parentesco o relación del individuo con el jefe o jefa del hogar. NO armonizada: los códigos varían entre censos.</span></span>
-<span><span class="co">#&gt; 5                     Situación conyugal del individuo. Harmonizado a 4 categorías: 1=Soltero/a, 2=Casado/a o conviviente, 3=Separado/a o divorciado/a, 4=Viudo/a.</span></span>
-<span><span class="co">#&gt; 6                                                                                            Indica si el individuo sabe leer y escribir. Harmonizado a 1=Sí, 2=No</span></span>
-<span><span class="co">#&gt; 7               Nivel educativo más alto alcanzado. Para comparación temporal se harmoniza a 4 categorías: 0=Sin instrucción, 1=Primaria, 2=Secundaria, 3=Superior</span></span>
-<span><span class="co">#&gt; 8                                                                       Indica si el individuo asiste actualmente a un centro educativo. 1=Sí asiste, 2=No asiste.</span></span>
-<span><span class="co">#&gt; 9       Condición de actividad económica de la Población Económicamente Activa. 1=Ocupado, 2=Cesante, 3=Aspirante. Los inactivos (fuera de la PEA) quedan como NA.</span></span>
-<span><span class="co">#&gt; 10                                                                Indica si el individuo está en edad de trabajar. Harmonizado a 1=Sí (en edad de trabajar), 2=No.</span></span>
-<span><span class="co">#&gt; 11                                   Categoría ocupacional del individuo. 1=Empleado/Obrero, 2=Cuenta propia, 3=Empleador/Patrón, 4=Familiar no remunerado, 5=Otro</span></span>
-<span><span class="co">#&gt; 12                                  Indica si el individuo se autoidentifica con alguna nación o pueblo indígena originario campesino o afroboliviano. 1=Sí, 2=No.</span></span>
-<span><span class="co">#&gt; 13                          Idioma aprendido en la niñez o idioma principal. 1=Castellano, 2=Quechua, 3=Aymara, 4=Guaraní, 5=Otro nativo boliviano, 6=Otro idioma.</span></span>
-<span><span class="co">#&gt; 14          Compara el departamento de nacimiento con el de residencia actual. 1=Nacido en el mismo dpto, 2=Nacido en otro dpto del país, 3=Nacido en el exterior.</span></span>
-<span><span class="co">#&gt; 15                Compara el departamento de residencia hace 5 años con el actual. 1=Mismo dpto, 2=Otro dpto del país, 3=Estaba en el exterior, 4=No había nacido.</span></span>
-<span><span class="co">#&gt; 16                                                                        Número total de hijos nacidos vivos que ha tenido la persona (para mujeres de 12+ años).</span></span>
-<span><span class="co">#&gt; 17                                                                                             Número de hijos nacidos vivos que están vivos al momento del censo.</span></span>
-<span><span class="co">#&gt; 18                                                                          Área de residencia: 1=Urbana, 2=Rural. Columna directa en todas las tablas de persona.</span></span>
-<span><span class="co">#&gt; 19                                                                                                                                  Código de departamento (01-09)</span></span>
-<span><span class="co">#&gt; 20                     Material predominante de las paredes exteriores. 1=Ladrillo/Bloque/Hormigón, 2=Adobe/Tapial, 3=Madera/Tabique/Caña/Palma, 4=Piedra, 5=Otro.</span></span>
-<span><span class="co">#&gt; 21                                                  Material predominante del techo. 1=Calamina/Plancha/Teja, 2=Losa de hormigón, 3=Paja/Caña/Palma/Barro, 4=Otro.</span></span>
-<span><span class="co">#&gt; 22                                                                 Material predominante del piso. 1=Tierra, 2=Cemento/Ladrillo, 3=Mosaico/Parquet/Madera, 4=Otro.</span></span>
-<span><span class="co">#&gt; 23 Fuente principal de agua. 1=Cañería/red pública, 2=Otra fuente protegida (pozo con bomba, carro, pileta), 3=Fuente no protegida (río, acequia, pozo sin bomba).</span></span>
-<span><span class="co">#&gt; 24                                                                                        Si el hogar cuenta con energía eléctrica (cualquier fuente). 1=Sí, 2=No.</span></span>
-<span><span class="co">#&gt; 25                                                                                                Si el hogar tiene baño, water o letrina. 1=Sí tiene, 2=No tiene.</span></span>
-<span><span class="co">#&gt; 26                                                         Forma en que el hogar ocupa la vivienda. 1=Propia, 2=Alquilada, 3=Cedida/anticrético/servicios, 4=Otra.</span></span>
-<span><span class="co">#&gt; 27                                                                                           Número de habitaciones que ocupa el hogar (sin contar baño y cocina).</span></span>
-<span><span class="co">#&gt;       tabla armonizada  v1976 v1992  v2001         v2012            v2024</span></span>
-<span><span class="co">#&gt; 1   persona       TRUE    p03   P03    P28           P24         p25_sexo</span></span>
-<span><span class="co">#&gt; 2   persona       TRUE    p04   P04    P29           P25         p26_edad</span></span>
-<span><span class="co">#&gt; 3   persona       TRUE    p04   P04    P29           P25         p26_edad</span></span>
-<span><span class="co">#&gt; 4   persona      FALSE    p02   P02    P31           P23     p24_parentes</span></span>
-<span><span class="co">#&gt; 5   persona       TRUE    p05   P05    P48           P45       p53_ecivil</span></span>
-<span><span class="co">#&gt; 6   persona       TRUE    p10   P10    P36           P35          p40_lee</span></span>
-<span><span class="co">#&gt; 7   persona       TRUE nivela   P12 P39NIV P37A_NIVELNUE        nivel_edu</span></span>
-<span><span class="co">#&gt; 8   persona       TRUE    p11   P11    P37           P36       p38_asiste</span></span>
-<span><span class="co">#&gt; 9   persona       TRUE    pea  NPEA   &lt;NA&gt;           PEA           pea_13</span></span>
-<span><span class="co">#&gt; 10  persona       TRUE    pet  NPET   &lt;NA&gt;           PET           pet_13</span></span>
-<span><span class="co">#&gt; 11  persona       TRUE    p18   P18    P46           P43         p50_semp</span></span>
-<span><span class="co">#&gt; 12  persona       TRUE   &lt;NA&gt;  &lt;NA&gt;   P491          P29C   p32_pueblo_per</span></span>
-<span><span class="co">#&gt; 13  persona       TRUE    p09  &lt;NA&gt;    P35          P30B p341_idiomat_cod</span></span>
-<span><span class="co">#&gt; 14  persona       TRUE lugnac  P07A  DEP34          P32J    p35j_deptocod</span></span>
-<span><span class="co">#&gt; 15  persona       TRUE  resh5  P08A  DEP41          P34H    p37j_deptocod</span></span>
-<span><span class="co">#&gt; 16  persona       TRUE    p20   P20    P50           P46        p54_hvtot</span></span>
-<span><span class="co">#&gt; 17  persona       TRUE    p21   P21    P51           P47        p55_hstot</span></span>
-<span><span class="co">#&gt; 18  persona       TRUE   area  area   area          area             area</span></span>
-<span><span class="co">#&gt; 19  persona       TRUE    dep  idep   idep          idep             idep</span></span>
-<span><span class="co">#&gt; 20 vivienda       TRUE    v03   V03    V06           P03        v03_pared</span></span>
-<span><span class="co">#&gt; 21 vivienda       TRUE    v04   V04    V08           P05        v05_techo</span></span>
-<span><span class="co">#&gt; 22 vivienda       TRUE    v05   V05    V09           P06         v06_piso</span></span>
-<span><span class="co">#&gt; 23 vivienda       TRUE    v07   V07    V10           P07      v07_aguapro</span></span>
-<span><span class="co">#&gt; 24 vivienda       TRUE    v09   V09    V15           P11      v09_energia</span></span>
-<span><span class="co">#&gt; 25 vivienda       TRUE   v081   V08    V12           P09      v15_servsan</span></span>
-<span><span class="co">#&gt; 26 vivienda       TRUE    v14   V14    V21           P19     v17_tenencia</span></span>
-<span><span class="co">#&gt; 27 vivienda       TRUE    v10   V10    V18           P14      v13_habitac</span></span>
-<span><span class="co">#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             notas</span></span>
-<span><span class="co">#&gt; 1                                                                                                                                                                                                                                                                                                                                                           1976/1992/2001: codificación original 1=Hombre, 2=Mujer (invertida). 2012/2024: 1=Mujer, 2=Hombre. get_temporal() harmoniza todo a 1=Mujer, 2=Hombre.</span></span>
-<span><span class="co">#&gt; 2                                                                                                                                                                                                                                                                                                                                                  2001: P29 re-exportado con .dicx corregido (bug fieldsize exportaba 3 bits en vez de 7). 2012: P25 re-exportado desde .dicx (el .dic binario no la exportaba).</span></span>
-<span><span class="co">#&gt; 3                                                                                                                                                                                                                            Se calcula en todos los censos desde la edad individual en años con (edad %/% 5) * 5, por lo que los intervalos son idénticos y comparables entre años. (Antes 1976/1992 usaban las variables ya agrupadas edad5/GEDAD, cuyos códigos NO eran quinquenios y rompían la comparación.)</span></span>
-<span><span class="co">#&gt; 4                                                                                                                                                                                                                                                                                                                                                          NO ARMONIZADA: get_temporal() devuelve los códigos crudos de cada censo, que no son comparables. Consulta codebook_ANIO() por año para interpretarlos.</span></span>
-<span><span class="co">#&gt; 5  Harmonizado al máximo nivel comparable (limitado por 1992, que agrupa casado/conviviente y separado/divorciado). 1976: 1=Soltero→1, 2=Casado→2, 3=Viudo→4, 4=Divorciado→3 (sin categoría conviviente ni separado). 1992: 1=Casado/conviviente→2, 2=Viudo→4, 3=Separado/divorciado→3, 4=Soltero→1. 2001/2012: 1=Soltero→1, 2=Casado→2, 3=Conviviente→2, 4=Separado→3, 5=Divorciado→3, 6=Viudo→4. 2024: 1=Casado→2, 2=Conviviente→2, 3=Separado→3, 4=Divorciado→3, 5=Viudo→4, 6=Soltero→1, 9=Sin especificar→NA.</span></span>
-<span><span class="co">#&gt; 6                                                                                                                                                                                                                                                                                                                                                                                                                      1992 (P10): códigos 7=Sí, 8=No (distinto al resto). get_temporal() harmoniza a 1=Sí, 2=No.</span></span>
-<span><span class="co">#&gt; 7                                             1976: 'nivela' es var. derivada (1=Ninguno..5=Técnico). 1992: P12 solo cubre quienes asistieron; Ninguno se obtiene combinando con P11 en get_temporal(). 2001: P39NIV con códigos reales 11=Ninguno,12=Preescolar,13=Básico,14=Intermedio,15=Medio,16=Primaria,17=Secundaria,18=Licenciatura,19=Técnico,20=Normal,21-23=Otros. 2012: P37A_NIVELNUE usa códigos no secuenciales (1,2,3,9,10,11-18,99). La Ley Avelino Siñani (2010) cambió la nomenclatura en 2012.</span></span>
-<span><span class="co">#&gt; 8                                                                                                                                                                                                                                                                                       1992: 1=Asiste, 2=No asiste pero asistió, 3=Nunca asistió → harmonizado a 1=Asiste, 2=No. 2001: CÓDIGOS INVERTIDOS — 1=NO asiste, 2=SÍ (pública), 3=SÍ (privada). 2012: 1/2/3=SÍ (pública/privada/convenio), 4=No asiste.</span></span>
-<span><span class="co">#&gt; 9                                                                                                                                                                                                             Codificación idéntica en todos los años: 1=Ocupado, 2=Cesante, 3=Aspirante. NO disponible en 2001 (retorna NA). 2024: se usa pea_13 (Población Económicamente Activa, 13° CIET); NO confundir con fft_19 (fuera de la fuerza de trabajo) ni ft_19 (condición de actividad de la fuerza de trabajo).</span></span>
-<span><span class="co">#&gt; 10                                                                                                                                                                                                                         Harmonizado a 1=Sí, 2=No. 1976: 1=PET→1, 2=PENT→2. 1992 NPET: 1=PET→1, 0=PENT→2. 2012 PET: 1=trabajar→1, 0=no trabajar→2. 2024 pet_13: 1=PET→1, 2=PENT→2, 9=no especificó→NA. NO disponible en 2001 (retorna NA). La edad mínima de referencia puede variar entre censos (7+ en 2024).</span></span>
-<span><span class="co">#&gt; 11                                                                                                              Solo aplica a personas ocupadas (PEA). 1976 p18: 1/2=Obrero/Empleado→1, 4=Cta propia→2, 5=Patrón→3, 3=Familiar→4. 1992 P18: 1/2=Obrero/Empleado→1, 3=Cta propia→2, 4=Patrón→3, 7=Familiar→4, 5/6=Otro→5. 2012 P43: 1/5=Obrero/TrabHogar→1, 2=Cta propia→2, 3=Empleador→3, 4=Familiar→4, 6=Coop→5. 2024 p50_semp: 2/5=Obrero/TrabHogar→1, 1=Cta propia→2, 3=Empleador→3, 4=Familiar→4, 6/7=Otro→5.</span></span>
-<span><span class="co">#&gt; 12                                                                                                                                                                                                                                                                                         NO disponible en 1976 ni 1992 (retorna NA). 2001 P491: 1-6=pueblo indígena→1, 7=NINGUNO→2. 2012 P29C: código de pueblo (1-123)→1, 0=NOTAPPLICABLE (no se identifica)→2, otros→NA. 2024 p32_pueblo_per: 1=Sí→1, 2=No→2.</span></span>
-<span><span class="co">#&gt; 13                                                                       LIMITACIÓN METODOLÓGICA: 1976 p09 captura 'idioma que habla' (no materno), con combinaciones bilingüísticas (ej. código 5=Castellano/Aymara → se clasifica como Aymara). 1992 NO disponible (solo flags binarios de idiomas hablados, no maternal). 2001-2024: primer idioma aprendido en la niñez. 2012/2024: códigos 1-37 para lenguas nativas (6=Castellano, 2=Aymara, 27=Quechua, 12=Guaraní); códigos &gt;=38 son idiomas extranjeros.</span></span>
-<span><span class="co">#&gt; 14                                                                                                                                                                           Variable DERIVADA: compara columna de dpto de nacimiento con dpto de residencia (idep o dep). 1976: lugnac=1-9 (dpto nac), 10=exterior. 1992: P07A=dpto nac (1-9). 2001: DEP34=dpto nac (1-9). 2012: P32J=dpto nac (1-9), 99=ignorado. 2024: p35j_deptocod=dpto nac (1-9). La comparación con idep actual se hace en get_temporal().</span></span>
-<span><span class="co">#&gt; 15                                                                                                                                                                                                                                                                                         Variable DERIVADA: compara dpto hace 5 años con dpto actual (idep o dep). 1976: resh5=10→exterior, 11→NA. 2024: p37_lugres5=4 (no había nacido) → se usa como indicador alternativo; p37j_deptocod para comparar dpto.</span></span>
-<span><span class="co">#&gt; 16                                                                                                                                                                                                                                                 Solo aplica a mujeres de 12 o más años. Hombres y mujeres menores de edad retornan 0 o NA. 1992: P20 (el diccionario del parquet confirma P20=nacidos vivos, P21=vivos actualmente). 2024: p54_hvtot es el total (existe también p54a/p54b por sexo del hijo).</span></span>
-<span><span class="co">#&gt; 17                                                                                                                                                                                                                                                                                                                                                                          Subconjunto de hijos_nacidos_vivos. Solo aplica a mujeres 12+. 1992: P21 (el diccionario del parquet confirma P21=vivos actualmente).</span></span>
-<span><span class="co">#&gt; 18                                                                                                                                                                                                                             Columna 'area' presente en todos los parquets de persona. 1976: fuente SPSS directa. 1992/2012: derivada de URBRUR de vivienda (pre-unida). 2001: derivada de TURUR de vivienda (pre-unida). 2024: derivada de urbrur de vivienda (pre-unida). Siempre 1=Urbana, 2=Rural, sin NAs.</span></span>
-<span><span class="co">#&gt; 19                                                                                                                                                                                                                                                                                                                                               En 1976: columna 'dep' (numérica 1-9). En censos REDATAM: 'idep' se calcula desde REDCODEN via join con munic.parquet; get_temporal() lo fuerza automáticamente.</span></span>
-<span><span class="co">#&gt; 20                                                                                                                                                                                                                                                        1976/1992: 1=Adobe revocado→2, 2=Adobe/tapial→2, 3=Ladrillo/bloque/cemento→1, 4=Piedra→4, 5=Madera→3, 6=Caña/palma→3, 7=Otros→5. 2001/2012/2024: 1=Ladrillo→1, 2=Adobe/tapial→2, 3=Tabique/quinche→3, 4=Piedra→4, 5=Madera→3, 6=Caña/palma→3, 7=Otro→5.</span></span>
-<span><span class="co">#&gt; 21                                                                                                                                                                                                                                                                                                                                                                    Códigos muy consistentes entre censos: 1=Calamina→1, 2=Tejas→1, 3=Losa hormigón→2, 4=Paja/caña/palma→3, 5=Otro→4. Idéntico en los 5 censos.</span></span>
-<span><span class="co">#&gt; 22                                                                                                                                                                                                                                                                                                                                                           1976/1992: 1=Madera→3, 2=Mosaico→3, 3=Ladrillo→2, 4=Cemento→2, 5=Tierra→1, 6=Otros→4. 2001/2012/2024: 1=Tierra→1, y demás materiales mapeados a 2-4.</span></span>
-<span><span class="co">#&gt; 23                                                                                                                                                                              1976 usa v07 (procedencia), no v06 (distribución). 1976: 1/2=Red→1, 3/4=Pozo/aljibe→2, 5=Río/lago→3, 6=Carro→2, 7=Otra→2. 1992: 1=Red→1, 2=Pozo→2, 3=Río→3, 4=Carro→2, 5=Otra→2. 2001: 1=Cañería→1, 2=Pileta→1, 3=Carro→2, 4=Pozo bomba→2, 5=Pozo sin bomba→3, 6/7=Río/lago→3. 2024: 3=Cosecha lluvia→3, 6=Vertiente protegida→2.</span></span>
-<span><span class="co">#&gt; 24                                                                                                                                                                                                                                                                                                                    1976/1992: 1=Sí, 2=No. 2001 V15: 5=Sí→1, 6=No→2 (codificación distinta). 2012 P11: 1-4=cualquier fuente (red/motor/solar/otra)→1, 5=No tiene→2. 2024: 1-4=cualquier fuente→1, 5=No tiene→2.</span></span>
-<span><span class="co">#&gt; 25                                                                                                                                                                                                                                                                                                             1976: 1/2=Tiene→1, 3=No→2. 1992: 1/2=Tiene (con/sin descarga)→1, 3=No→2. 2001: 1=Tiene→1, 2=No→2. 2012 P09: 1/2=Tiene (privado/compartido)→1, 3=No→2. 2024: 1/2=Tiene (solo/compartido)→1, 3=No→2.</span></span>
-<span><span class="co">#&gt; 26                                                                                                                                                                                                                                                                           Categorías muy consistentes entre censos. 1→1 (Propia), 2→2 (Alquiler), anticrético/cedida/servicios→3, otro→4. 2024: código 1/2=Propia pagada/pagando→1, código 4=Alquilada→2, códigos 3/5/6/7=Cedida/anticr/servicios→3, 8=Otra→4.</span></span>
-<span><span class="co">#&gt; 27                                                                                                                                                                                                                                                                                               Variable numérica en 1976/1992/2001. 2012 P14: valores 1-7 directos, 8='8 y más', 98/99=NA. 2024 v13_habitac codificada como categorías ordinales (1=Una, ..., 8=Ocho o más). Se recomienda tratar como ordinal.</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Lista completa de variables armonizadas y su nombre en cada censo</span></span>
+<span><span class="fu"><a href="../reference/variables_armonizadas.html">variables_armonizadas</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">variable</span>, <span class="va">tabla</span>, <span class="va">armonizada</span>, <span class="va">v1976</span>, <span class="va">v1992</span>, <span class="va">v2001</span>, <span class="va">v2012</span>, <span class="va">v2024</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                variable    tabla armonizada  v1976 v1992  v2001         v2012</span></span>
+<span><span class="co">#&gt; 1                  sexo  persona       TRUE    p03   P03    P28           P24</span></span>
+<span><span class="co">#&gt; 2                  edad  persona       TRUE    p04   P04    P29           P25</span></span>
+<span><span class="co">#&gt; 3            grupo_edad  persona       TRUE    p04   P04    P29           P25</span></span>
+<span><span class="co">#&gt; 4            parentesco  persona      FALSE    p02   P02    P31           P23</span></span>
+<span><span class="co">#&gt; 5          estado_civil  persona       TRUE    p05   P05    P48           P45</span></span>
+<span><span class="co">#&gt; 6             sabe_leer  persona       TRUE    p10   P10    P36           P35</span></span>
+<span><span class="co">#&gt; 7             nivel_edu  persona       TRUE nivela   P12 P39NIV P37A_NIVELNUE</span></span>
+<span><span class="co">#&gt; 8    asistencia_escolar  persona       TRUE    p11   P11    P37           P36</span></span>
+<span><span class="co">#&gt; 9                   pea  persona       TRUE    pea  NPEA   &lt;NA&gt;           PEA</span></span>
+<span><span class="co">#&gt; 10                  pet  persona       TRUE    pet  NPET   &lt;NA&gt;           PET</span></span>
+<span><span class="co">#&gt; 11  categoria_ocupacion  persona       TRUE    p18   P18    P46           P43</span></span>
+<span><span class="co">#&gt; 12   identidad_indigena  persona       TRUE   &lt;NA&gt;  &lt;NA&gt;   P491          P29C</span></span>
+<span><span class="co">#&gt; 13       idioma_materno  persona       TRUE    p09  &lt;NA&gt;    P35          P30B</span></span>
+<span><span class="co">#&gt; 14   migracion_nac_dpto  persona       TRUE lugnac  P07A  DEP34          P32J</span></span>
+<span><span class="co">#&gt; 15   migracion_rec_dpto  persona       TRUE  resh5  P08A  DEP41          P34H</span></span>
+<span><span class="co">#&gt; 16  hijos_nacidos_vivos  persona       TRUE    p20   P20    P50           P46</span></span>
+<span><span class="co">#&gt; 17 hijos_sobrevivientes  persona       TRUE    p21   P21    P51           P47</span></span>
+<span><span class="co">#&gt; 18                 area  persona       TRUE   area  area   area          area</span></span>
+<span><span class="co">#&gt; 19         departamento  persona       TRUE    dep  idep   idep          idep</span></span>
+<span><span class="co">#&gt; 20     material_paredes vivienda       TRUE    v03   V03    V06           P03</span></span>
+<span><span class="co">#&gt; 21       material_techo vivienda       TRUE    v04   V04    V08           P05</span></span>
+<span><span class="co">#&gt; 22        material_piso vivienda       TRUE    v05   V05    V09           P06</span></span>
+<span><span class="co">#&gt; 23          fuente_agua vivienda       TRUE    v07   V07    V10           P07</span></span>
+<span><span class="co">#&gt; 24    energia_electrica vivienda       TRUE    v09   V09    V15           P11</span></span>
+<span><span class="co">#&gt; 25   servicio_sanitario vivienda       TRUE   v081   V08    V12           P09</span></span>
+<span><span class="co">#&gt; 26    tenencia_vivienda vivienda       TRUE    v14   V14    V21           P19</span></span>
+<span><span class="co">#&gt; 27   habitaciones_total vivienda       TRUE    v10   V10    V18           P14</span></span>
+<span><span class="co">#&gt;               v2024</span></span>
+<span><span class="co">#&gt; 1          p25_sexo</span></span>
+<span><span class="co">#&gt; 2          p26_edad</span></span>
+<span><span class="co">#&gt; 3          p26_edad</span></span>
+<span><span class="co">#&gt; 4      p24_parentes</span></span>
+<span><span class="co">#&gt; 5        p53_ecivil</span></span>
+<span><span class="co">#&gt; 6           p40_lee</span></span>
+<span><span class="co">#&gt; 7         nivel_edu</span></span>
+<span><span class="co">#&gt; 8        p38_asiste</span></span>
+<span><span class="co">#&gt; 9            pea_13</span></span>
+<span><span class="co">#&gt; 10           pet_13</span></span>
+<span><span class="co">#&gt; 11         p50_semp</span></span>
+<span><span class="co">#&gt; 12   p32_pueblo_per</span></span>
+<span><span class="co">#&gt; 13 p341_idiomat_cod</span></span>
+<span><span class="co">#&gt; 14    p35j_deptocod</span></span>
+<span><span class="co">#&gt; 15    p37j_deptocod</span></span>
+<span><span class="co">#&gt; 16        p54_hvtot</span></span>
+<span><span class="co">#&gt; 17        p55_hstot</span></span>
+<span><span class="co">#&gt; 18             area</span></span>
+<span><span class="co">#&gt; 19             idep</span></span>
+<span><span class="co">#&gt; 20        v03_pared</span></span>
+<span><span class="co">#&gt; 21        v05_techo</span></span>
+<span><span class="co">#&gt; 22         v06_piso</span></span>
+<span><span class="co">#&gt; 23      v07_aguapro</span></span>
+<span><span class="co">#&gt; 24      v09_energia</span></span>
+<span><span class="co">#&gt; 25      v15_servsan</span></span>
+<span><span class="co">#&gt; 26     v17_tenencia</span></span>
+<span><span class="co">#&gt; 27      v13_habitac</span></span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Grupos temáticos predefinidos</span></span>
 <span><span class="fu"><a href="../reference/grupos_variables.html">grupos_variables</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -304,8 +259,8 @@ departamento. <code>NULL</code> = todo el país</td>
 <p>Incluye <code>sexo</code>, <code>edad</code>, <code>sabe_leer</code>,
 <code>nivel_edu</code>, <code>asistencia_escolar</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">edu</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_temporal.html">get_temporal</a></span><span class="op">(</span>grupo <span class="op">=</span> <span class="st">"educacion"</span>,</span>
-<span>                        anios <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1992</span>, <span class="fl">2001</span>, <span class="fl">2012</span>, <span class="fl">2024</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">edu</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_temporal.html">get_temporal</a></span><span class="op">(</span>grupo <span class="op">=</span> <span class="st">"educacion"</span>, anios <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1992</span>, <span class="fl">2001</span>, <span class="fl">2012</span>, <span class="fl">2024</span><span class="op">)</span>,</span>
+<span>                    departamento <span class="op">=</span> <span class="va">DEP</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Tasa de alfabetismo por año</span></span>
 <span><span class="va">edu</span> <span class="op">|&gt;</span></span>
@@ -320,10 +275,11 @@ departamento. <code>NULL</code> = todo el país</td>
 <span>  <span class="fu">geom_text</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>label <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/percent_format.html" class="external-link">percent</a></span><span class="op">(</span><span class="va">pct</span>, <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span>, vjust <span class="op">=</span> <span class="op">-</span><span class="fl">0.8</span>, size <span class="op">=</span> <span class="fl">3.5</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">scale_y_continuous</span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/percent_format.html" class="external-link">percent_format</a></span><span class="op">(</span><span class="op">)</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.6</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">scale_x_continuous</span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1992</span>, <span class="fl">2001</span>, <span class="fl">2012</span>, <span class="fl">2024</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Tasa de alfabetismo (15+ años) — Bolivia"</span>,</span>
+<span>  <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Tasa de alfabetismo (15+ años) — Cochabamba"</span>,</span>
 <span>       x <span class="op">=</span> <span class="st">"Año censal"</span>, y <span class="op">=</span> <span class="st">"% que sabe leer y escribir"</span>,</span>
 <span>       caption <span class="op">=</span> <span class="st">"Fuente: INE Bolivia, censos 1992–2024. Elaborado con censosbo."</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">theme_minimal</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="analisis-temporal_files/figure-html/grupo-educacion-1.png" class="r-plt" alt="" width="672"></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Asistencia escolar (5-24 años) por área urbana/rural</span></span>
 <span><span class="va">edu</span> <span class="op">|&gt;</span></span>
@@ -340,10 +296,39 @@ departamento. <code>NULL</code> = todo el país</td>
 <span>  <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Asistencia escolar (5-24 años) por área y censo"</span>,</span>
 <span>       x <span class="op">=</span> <span class="st">"Año censal"</span>, y <span class="op">=</span> <span class="st">"% que asiste"</span>, fill <span class="op">=</span> <span class="st">"Área"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">theme_minimal</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="analisis-temporal_files/figure-html/asistencia-area-1.png" class="r-plt" alt="" width="672"></p>
+<div class="section level3">
+<h3 id="el-universo-importa-nivel_edu-y-el-filtro-de-edad">El universo importa: <code>nivel_edu</code> y el filtro de edad<a class="anchor" aria-label="anchor" href="#el-universo-importa-nivel_edu-y-el-filtro-de-edad"></a>
+</h3>
+<p><code>nivel_edu</code> es la variable donde más se nota que armonizar
+los <strong>códigos</strong> no basta: hay que igualar también la
+<strong>población a la que se preguntó</strong>. En el CPV-2024 la
+variable derivada del INE solo cubre a los mayores de 18 años, mientras
+que en 1992–2012 cubre desde los 6. Sin filtrar por edad, 2024 sale
+comparativamente “más educado” solo porque los niños no están en la
+tabla:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Distribución del nivel educativo</span></span>
+<code class="sourceCode R"><span><span class="va">edu</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">anio</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span></span>
+<span>    n              <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    pct_na         <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fl">100</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">nivel_edu</span><span class="op">)</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>    pct_na_menor19 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fl">100</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">nivel_edu</span><span class="op">[</span><span class="va">edad</span> <span class="op">&lt;</span> <span class="fl">19</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>    .groups        <span class="op">=</span> <span class="st">"drop"</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 4 × 4</span></span></span>
+<span><span class="co">#&gt;    anio       n pct_na pct_na_menor19</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>  <span style="text-decoration: underline;">1</span>992 1<span style="text-decoration: underline;">110</span>205   22.9           37.9</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>  <span style="text-decoration: underline;">2</span>001 1<span style="text-decoration: underline;">455</span>711   11.9           23.6</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>  <span style="text-decoration: underline;">2</span>012 1<span style="text-decoration: underline;">762</span>761    9.7           22.6</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>  <span style="text-decoration: underline;">2</span>024 2<span style="text-decoration: underline;">016</span>357   34.6          100</span></span></code></pre></div>
+<p>Con <code>edad &gt;= 19</code> en todos los años la serie sí es
+comparable:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Distribución del nivel educativo, población de 19 años o más</span></span>
 <span><span class="va">edu</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">nivel_edu</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">nivel_edu</span><span class="op">)</span>, <span class="va">edad</span> <span class="op">&gt;=</span> <span class="fl">19</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">anio</span>, <span class="va">nivel_edu</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">anio</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>pct <span class="op">=</span> <span class="va">n</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -356,24 +341,33 @@ departamento. <code>NULL</code> = todo el país</td>
 <span>    name <span class="op">=</span> <span class="st">"Nivel"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">scale_y_continuous</span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/percent_format.html" class="external-link">percent_format</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Nivel educativo — Bolivia, 1992–2024"</span>,</span>
+<span>  <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Nivel educativo (19+ años) — Cochabamba, 1992–2024"</span>,</span>
 <span>       x <span class="op">=</span> <span class="st">"Año censal"</span>, y <span class="op">=</span> <span class="st">"Proporción"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">theme_minimal</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="analisis-temporal_files/figure-html/nivel-edu-1.png" class="r-plt" alt="" width="672"></p>
 <blockquote>
 <p><strong>Nota sobre asistencia escolar:</strong> En 2001 los códigos
 originales estaban invertidos (1=No asiste, 2/3=Sí asiste).
 <code>censosbo</code> aplica la corrección automáticamente.</p>
+<p><strong>Nota sobre <code>estado_civil</code>:</strong> el universo
+también cambia. En 1992 la pregunta se registró para toda la población y
+los menores quedan como “Soltero/a”; en 2001 y 2012 se aplica desde los
+15 años, y en 1976 y 2024 desde los 12. Filtra
+<code>edad &gt;= 15</code> antes de comparar.</p>
 </blockquote>
 <hr>
+</div>
 </div>
 <div class="section level2">
 <h2 id="grupo-economía">Grupo: Economía<a class="anchor" aria-label="anchor" href="#grupo-econom%C3%ADa"></a>
 </h2>
 <p>Incluye <code>sexo</code>, <code>edad</code>, <code>pea</code>,
 <code>pet</code>, <code>categoria_ocupacion</code>.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">eco</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_temporal.html">get_temporal</a></span><span class="op">(</span>grupo <span class="op">=</span> <span class="st">"economia"</span>,</span>
-<span>                        anios <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1976</span>, <span class="fl">1992</span>, <span class="fl">2001</span>, <span class="fl">2012</span>, <span class="fl">2024</span><span class="op">)</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">eco</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_temporal.html">get_temporal</a></span><span class="op">(</span>grupo <span class="op">=</span> <span class="st">"economia"</span>, anios <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1976</span>, <span class="fl">1992</span>, <span class="fl">2001</span>, <span class="fl">2012</span>, <span class="fl">2024</span><span class="op">)</span>,</span>
+<span>                    departamento <span class="op">=</span> <span class="va">DEP</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: <span style="color: #BBBB00;">!</span> Variables no disponibles en el censo 2001: <span style="color: #0000BB;">"pea"</span> and <span style="color: #0000BB;">"pet"</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Se incluirán como `NA`.</span></span>
 <span></span>
 <span><span class="co"># Categoría de ocupación entre la PEA</span></span>
 <span><span class="va">eco</span> <span class="op">|&gt;</span></span>
@@ -389,9 +383,10 @@ originales estaban invertidos (1=No asiste, 2/3=Sí asiste).
 <span>  <span class="fu">geom_col</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">scale_y_continuous</span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/percent_format.html" class="external-link">percent_format</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">scale_fill_brewer</span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Set2"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Categoría en el empleo por censo — Bolivia"</span>,</span>
+<span>  <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Categoría en el empleo por censo — Cochabamba"</span>,</span>
 <span>       x <span class="op">=</span> <span class="st">"Año censal"</span>, y <span class="op">=</span> <span class="st">"% de ocupados"</span>, fill <span class="op">=</span> <span class="st">"Categoría"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">theme_minimal</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="analisis-temporal_files/figure-html/grupo-economia-1.png" class="r-plt" alt="" width="672"></p>
 <blockquote>
 <p><strong>Nota:</strong> <code>pea</code> y <code>pet</code> no están
 disponibles directamente en el censo 2001. Se incluirán como
@@ -406,9 +401,9 @@ de actividad económica del censo.</p>
 <p>Incluye <code>sexo</code>, <code>edad</code>,
 <code>identidad_indigena</code>, <code>idioma_materno</code>. Solo
 disponible desde 2001.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">cult</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_temporal.html">get_temporal</a></span><span class="op">(</span>grupo <span class="op">=</span> <span class="st">"cultural"</span>,</span>
-<span>                         anios <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2001</span>, <span class="fl">2012</span>, <span class="fl">2024</span><span class="op">)</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">cult</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_temporal.html">get_temporal</a></span><span class="op">(</span>grupo <span class="op">=</span> <span class="st">"cultural"</span>, anios <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2001</span>, <span class="fl">2012</span>, <span class="fl">2024</span><span class="op">)</span>,</span>
+<span>                     departamento <span class="op">=</span> <span class="va">DEP</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Autoidentificación indígena</span></span>
 <span><span class="va">cult</span> <span class="op">|&gt;</span></span>
@@ -423,7 +418,8 @@ disponible desde 2001.</p>
 <span>  <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Autoidentificación indígena por año censal (2001-2024)"</span>,</span>
 <span>       x <span class="op">=</span> <span class="st">"Año censal"</span>, y <span class="op">=</span> <span class="st">"% que se identifica como indígena"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">theme_minimal</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<p><img src="analisis-temporal_files/figure-html/grupo-cultural-1.png" class="r-plt" alt="" width="672"></p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Distribución de idioma materno</span></span>
 <span><span class="va">cult</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">idioma_materno</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -439,6 +435,7 @@ disponible desde 2001.</p>
 <span>  <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Idioma materno por año censal"</span>,</span>
 <span>       x <span class="op">=</span> <span class="st">"Año censal"</span>, y <span class="op">=</span> <span class="st">"Proporción"</span>, fill <span class="op">=</span> <span class="st">"Idioma"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">theme_minimal</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="analisis-temporal_files/figure-html/idioma-materno-1.png" class="r-plt" alt="" width="672"></p>
 <blockquote>
 <p><strong>Limitaciones metodológicas:</strong> -
 <code>identidad_indigena</code> no disponible en 1976 ni 1992. -
@@ -457,9 +454,9 @@ idiomas <em>hablados</em> (no materno); se devuelve <code>NA</code>. -
 <p>Las variables de migración son <strong>derivadas</strong>: comparan
 el departamento de nacimiento (o de residencia hace 5 años) con el
 departamento de residencia actual.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mig</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_temporal.html">get_temporal</a></span><span class="op">(</span>grupo <span class="op">=</span> <span class="st">"migracion"</span>,</span>
-<span>                        anios <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1992</span>, <span class="fl">2001</span>, <span class="fl">2012</span>, <span class="fl">2024</span><span class="op">)</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mig</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_temporal.html">get_temporal</a></span><span class="op">(</span>grupo <span class="op">=</span> <span class="st">"migracion"</span>, anios <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1992</span>, <span class="fl">2001</span>, <span class="fl">2012</span>, <span class="fl">2024</span><span class="op">)</span>,</span>
+<span>                    departamento <span class="op">=</span> <span class="va">DEP</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Migración de nacimiento</span></span>
 <span><span class="va">mig</span> <span class="op">|&gt;</span></span>
@@ -478,6 +475,7 @@ departamento de residencia actual.</p>
 <span>  <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Lugar de nacimiento vs. departamento de residencia"</span>,</span>
 <span>       x <span class="op">=</span> <span class="st">"Año censal"</span>, y <span class="op">=</span> <span class="st">"Proporción"</span>, fill <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">theme_minimal</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="analisis-temporal_files/figure-html/grupo-migracion-1.png" class="r-plt" alt="" width="672"></p>
 <table class="table">
 <thead><tr class="header">
 <th>Código</th>
@@ -508,9 +506,9 @@ código 4 = “no había nacido hace 5 años”.</p>
 <p>Incluye <code>sexo</code>, <code>edad</code>,
 <code>hijos_nacidos_vivos</code>, <code>hijos_sobrevivientes</code>.
 Solo significativo para mujeres 12+.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fert</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_temporal.html">get_temporal</a></span><span class="op">(</span>grupo <span class="op">=</span> <span class="st">"fertilidad"</span>,</span>
-<span>                         anios <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1976</span>, <span class="fl">1992</span>, <span class="fl">2001</span>, <span class="fl">2012</span>, <span class="fl">2024</span><span class="op">)</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fert</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_temporal.html">get_temporal</a></span><span class="op">(</span>grupo <span class="op">=</span> <span class="st">"fertilidad"</span>, anios <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1976</span>, <span class="fl">1992</span>, <span class="fl">2001</span>, <span class="fl">2012</span>, <span class="fl">2024</span><span class="op">)</span>,</span>
+<span>                     departamento <span class="op">=</span> <span class="va">DEP</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Promedio de hijos nacidos vivos por grupo de edad</span></span>
 <span><span class="va">fert</span> <span class="op">|&gt;</span></span>
@@ -526,6 +524,7 @@ Solo significativo para mujeres 12+.</p>
 <span>  <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Promedio de hijos nacidos vivos por edad de la madre"</span>,</span>
 <span>       x <span class="op">=</span> <span class="st">"Grupo de edad"</span>, y <span class="op">=</span> <span class="st">"Promedio de hijos"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">theme_minimal</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="analisis-temporal_files/figure-html/grupo-fertilidad-1.png" class="r-plt" alt="" width="672"></p>
 <hr>
 </div>
 <div class="section level2">
@@ -533,61 +532,55 @@ Solo significativo para mujeres 12+.</p>
 </h2>
 <p>Para variables de la <strong>tabla vivienda</strong> existe una
 función equivalente:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">viv</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_temporal_vivienda.html">get_temporal_vivienda</a></span><span class="op">(</span></span>
 <span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"material_paredes"</span>, <span class="st">"fuente_agua"</span>, <span class="st">"energia_electrica"</span>,</span>
 <span>                <span class="st">"tenencia_vivienda"</span>, <span class="st">"habitaciones_total"</span><span class="op">)</span>,</span>
-<span>  anios     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1992</span>, <span class="fl">2001</span>, <span class="fl">2012</span>, <span class="fl">2024</span><span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<span>  anios     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1992</span>, <span class="fl">2001</span>, <span class="fl">2012</span>, <span class="fl">2024</span><span class="op">)</span>,</span>
+<span>  departamento <span class="op">=</span> <span class="va">DEP</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">viv</span>, <span class="va">anio</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 4 × 2</span></span></span>
+<span><span class="co">#&gt;    anio      n</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>  <span style="text-decoration: underline;">1</span>992 <span style="text-decoration: underline;">302</span>190</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>  <span style="text-decoration: underline;">2</span>001 <span style="text-decoration: underline;">419</span>082</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>  <span style="text-decoration: underline;">2</span>012 <span style="text-decoration: underline;">596</span>618</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>  <span style="text-decoration: underline;">2</span>024 <span style="text-decoration: underline;">843</span>762</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="variables-de-vivienda-disponibles">Variables de vivienda disponibles<a class="anchor" aria-label="anchor" href="#variables-de-vivienda-disponibles"></a>
 </h3>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/variables_armonizadas.html">variables_armonizadas</a></span><span class="op">(</span>tabla <span class="op">=</span> <span class="st">"vivienda"</span><span class="op">)</span></span>
-<span><span class="co">#&gt;              variable                                etiqueta</span></span>
-<span><span class="co">#&gt; 20   material_paredes Material de construcción de las paredes</span></span>
-<span><span class="co">#&gt; 21     material_techo      Material de construcción del techo</span></span>
-<span><span class="co">#&gt; 22      material_piso                       Material del piso</span></span>
-<span><span class="co">#&gt; 23        fuente_agua     Fuente de agua para beber y cocinar</span></span>
-<span><span class="co">#&gt; 24  energia_electrica     Disponibilidad de energía eléctrica</span></span>
-<span><span class="co">#&gt; 25 servicio_sanitario    Disponibilidad de servicio sanitario</span></span>
-<span><span class="co">#&gt; 26  tenencia_vivienda                 Tenencia de la vivienda</span></span>
-<span><span class="co">#&gt; 27 habitaciones_total         Total de habitaciones del hogar</span></span>
-<span><span class="co">#&gt;                                                                                                                                                        descripcion</span></span>
-<span><span class="co">#&gt; 20                     Material predominante de las paredes exteriores. 1=Ladrillo/Bloque/Hormigón, 2=Adobe/Tapial, 3=Madera/Tabique/Caña/Palma, 4=Piedra, 5=Otro.</span></span>
-<span><span class="co">#&gt; 21                                                  Material predominante del techo. 1=Calamina/Plancha/Teja, 2=Losa de hormigón, 3=Paja/Caña/Palma/Barro, 4=Otro.</span></span>
-<span><span class="co">#&gt; 22                                                                 Material predominante del piso. 1=Tierra, 2=Cemento/Ladrillo, 3=Mosaico/Parquet/Madera, 4=Otro.</span></span>
-<span><span class="co">#&gt; 23 Fuente principal de agua. 1=Cañería/red pública, 2=Otra fuente protegida (pozo con bomba, carro, pileta), 3=Fuente no protegida (río, acequia, pozo sin bomba).</span></span>
-<span><span class="co">#&gt; 24                                                                                        Si el hogar cuenta con energía eléctrica (cualquier fuente). 1=Sí, 2=No.</span></span>
-<span><span class="co">#&gt; 25                                                                                                Si el hogar tiene baño, water o letrina. 1=Sí tiene, 2=No tiene.</span></span>
-<span><span class="co">#&gt; 26                                                         Forma en que el hogar ocupa la vivienda. 1=Propia, 2=Alquilada, 3=Cedida/anticrético/servicios, 4=Otra.</span></span>
-<span><span class="co">#&gt; 27                                                                                           Número de habitaciones que ocupa el hogar (sin contar baño y cocina).</span></span>
-<span><span class="co">#&gt;       tabla armonizada v1976 v1992 v2001 v2012        v2024</span></span>
-<span><span class="co">#&gt; 20 vivienda       TRUE   v03   V03   V06   P03    v03_pared</span></span>
-<span><span class="co">#&gt; 21 vivienda       TRUE   v04   V04   V08   P05    v05_techo</span></span>
-<span><span class="co">#&gt; 22 vivienda       TRUE   v05   V05   V09   P06     v06_piso</span></span>
-<span><span class="co">#&gt; 23 vivienda       TRUE   v07   V07   V10   P07  v07_aguapro</span></span>
-<span><span class="co">#&gt; 24 vivienda       TRUE   v09   V09   V15   P11  v09_energia</span></span>
-<span><span class="co">#&gt; 25 vivienda       TRUE  v081   V08   V12   P09  v15_servsan</span></span>
-<span><span class="co">#&gt; 26 vivienda       TRUE   v14   V14   V21   P19 v17_tenencia</span></span>
-<span><span class="co">#&gt; 27 vivienda       TRUE   v10   V10   V18   P14  v13_habitac</span></span>
-<span><span class="co">#&gt;                                                                                                                                                                                                                                                                                                                                notas</span></span>
-<span><span class="co">#&gt; 20                                                                           1976/1992: 1=Adobe revocado→2, 2=Adobe/tapial→2, 3=Ladrillo/bloque/cemento→1, 4=Piedra→4, 5=Madera→3, 6=Caña/palma→3, 7=Otros→5. 2001/2012/2024: 1=Ladrillo→1, 2=Adobe/tapial→2, 3=Tabique/quinche→3, 4=Piedra→4, 5=Madera→3, 6=Caña/palma→3, 7=Otro→5.</span></span>
-<span><span class="co">#&gt; 21                                                                                                                                                                                       Códigos muy consistentes entre censos: 1=Calamina→1, 2=Tejas→1, 3=Losa hormigón→2, 4=Paja/caña/palma→3, 5=Otro→4. Idéntico en los 5 censos.</span></span>
-<span><span class="co">#&gt; 22                                                                                                                                                                              1976/1992: 1=Madera→3, 2=Mosaico→3, 3=Ladrillo→2, 4=Cemento→2, 5=Tierra→1, 6=Otros→4. 2001/2012/2024: 1=Tierra→1, y demás materiales mapeados a 2-4.</span></span>
-<span><span class="co">#&gt; 23 1976 usa v07 (procedencia), no v06 (distribución). 1976: 1/2=Red→1, 3/4=Pozo/aljibe→2, 5=Río/lago→3, 6=Carro→2, 7=Otra→2. 1992: 1=Red→1, 2=Pozo→2, 3=Río→3, 4=Carro→2, 5=Otra→2. 2001: 1=Cañería→1, 2=Pileta→1, 3=Carro→2, 4=Pozo bomba→2, 5=Pozo sin bomba→3, 6/7=Río/lago→3. 2024: 3=Cosecha lluvia→3, 6=Vertiente protegida→2.</span></span>
-<span><span class="co">#&gt; 24                                                                                                                                       1976/1992: 1=Sí, 2=No. 2001 V15: 5=Sí→1, 6=No→2 (codificación distinta). 2012 P11: 1-4=cualquier fuente (red/motor/solar/otra)→1, 5=No tiene→2. 2024: 1-4=cualquier fuente→1, 5=No tiene→2.</span></span>
-<span><span class="co">#&gt; 25                                                                                                                                1976: 1/2=Tiene→1, 3=No→2. 1992: 1/2=Tiene (con/sin descarga)→1, 3=No→2. 2001: 1=Tiene→1, 2=No→2. 2012 P09: 1/2=Tiene (privado/compartido)→1, 3=No→2. 2024: 1/2=Tiene (solo/compartido)→1, 3=No→2.</span></span>
-<span><span class="co">#&gt; 26                                                                                              Categorías muy consistentes entre censos. 1→1 (Propia), 2→2 (Alquiler), anticrético/cedida/servicios→3, otro→4. 2024: código 1/2=Propia pagada/pagando→1, código 4=Alquilada→2, códigos 3/5/6/7=Cedida/anticr/servicios→3, 8=Otra→4.</span></span>
-<span><span class="co">#&gt; 27                                                                                                                  Variable numérica en 1976/1992/2001. 2012 P14: valores 1-7 directos, 8='8 y más', 98/99=NA. 2024 v13_habitac codificada como categorías ordinales (1=Una, ..., 8=Ocho o más). Se recomienda tratar como ordinal.</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/variables_armonizadas.html">variables_armonizadas</a></span><span class="op">(</span>tabla <span class="op">=</span> <span class="st">"vivienda"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">variable</span>, <span class="va">etiqueta</span>, <span class="va">v1976</span>, <span class="va">v1992</span>, <span class="va">v2001</span>, <span class="va">v2012</span>, <span class="va">v2024</span><span class="op">)</span></span>
+<span><span class="co">#&gt;              variable                                etiqueta v1976 v1992 v2001</span></span>
+<span><span class="co">#&gt; 20   material_paredes Material de construcción de las paredes   v03   V03   V06</span></span>
+<span><span class="co">#&gt; 21     material_techo      Material de construcción del techo   v04   V04   V08</span></span>
+<span><span class="co">#&gt; 22      material_piso                       Material del piso   v05   V05   V09</span></span>
+<span><span class="co">#&gt; 23        fuente_agua     Fuente de agua para beber y cocinar   v07   V07   V10</span></span>
+<span><span class="co">#&gt; 24  energia_electrica     Disponibilidad de energía eléctrica   v09   V09   V15</span></span>
+<span><span class="co">#&gt; 25 servicio_sanitario    Disponibilidad de servicio sanitario  v081   V08   V12</span></span>
+<span><span class="co">#&gt; 26  tenencia_vivienda                 Tenencia de la vivienda   v14   V14   V21</span></span>
+<span><span class="co">#&gt; 27 habitaciones_total         Total de habitaciones del hogar   v10   V10   V18</span></span>
+<span><span class="co">#&gt;    v2012        v2024</span></span>
+<span><span class="co">#&gt; 20   P03    v03_pared</span></span>
+<span><span class="co">#&gt; 21   P05    v05_techo</span></span>
+<span><span class="co">#&gt; 22   P06     v06_piso</span></span>
+<span><span class="co">#&gt; 23   P07  v07_aguapro</span></span>
+<span><span class="co">#&gt; 24   P11  v09_energia</span></span>
+<span><span class="co">#&gt; 25   P09  v15_servsan</span></span>
+<span><span class="co">#&gt; 26   P19 v17_tenencia</span></span>
+<span><span class="co">#&gt; 27   P14  v13_habitac</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="ejemplo-evolución-del-acceso-a-servicios-básicos">Ejemplo: evolución del acceso a servicios básicos<a class="anchor" aria-label="anchor" href="#ejemplo-evoluci%C3%B3n-del-acceso-a-servicios-b%C3%A1sicos"></a>
 </h3>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">viv_basicos</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_temporal_vivienda.html">get_temporal_vivienda</a></span><span class="op">(</span></span>
 <span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fuente_agua"</span>, <span class="st">"energia_electrica"</span><span class="op">)</span>,</span>
-<span>  anios     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1992</span>, <span class="fl">2001</span>, <span class="fl">2012</span>, <span class="fl">2024</span><span class="op">)</span></span>
+<span>  anios     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1992</span>, <span class="fl">2001</span>, <span class="fl">2012</span>, <span class="fl">2024</span><span class="op">)</span>,</span>
+<span>  departamento <span class="op">=</span> <span class="va">DEP</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span></span>
@@ -607,14 +600,16 @@ función equivalente:</p>
 <span>       x <span class="op">=</span> <span class="st">"Año censal"</span>, y <span class="op">=</span> <span class="st">"Proporción de hogares"</span>, color <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>       caption <span class="op">=</span> <span class="st">"Fuente: INE Bolivia. Elaborado con censosbo."</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">theme_minimal</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="analisis-temporal_files/figure-html/servicios-basicos-1.png" class="r-plt" alt="" width="672"></p>
 </div>
 <div class="section level3">
 <h3 id="ejemplo-material-de-paredes-por-censo">Ejemplo: material de paredes por censo<a class="anchor" aria-label="anchor" href="#ejemplo-material-de-paredes-por-censo"></a>
 </h3>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">viv_mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_temporal_vivienda.html">get_temporal_vivienda</a></span><span class="op">(</span></span>
 <span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"material_paredes"</span><span class="op">)</span>,</span>
-<span>  anios     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1992</span>, <span class="fl">2001</span>, <span class="fl">2012</span>, <span class="fl">2024</span><span class="op">)</span></span>
+<span>  anios     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1992</span>, <span class="fl">2001</span>, <span class="fl">2012</span>, <span class="fl">2024</span><span class="op">)</span>,</span>
+<span>  departamento <span class="op">=</span> <span class="va">DEP</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">viv_mat</span> <span class="op">|&gt;</span></span>
@@ -631,6 +626,7 @@ función equivalente:</p>
 <span>  <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Material de paredes por año censal"</span>,</span>
 <span>       x <span class="op">=</span> <span class="st">"Año censal"</span>, y <span class="op">=</span> <span class="st">"Proporción de viviendas"</span>, fill <span class="op">=</span> <span class="st">"Material"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">theme_minimal</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="analisis-temporal_files/figure-html/material-paredes-1.png" class="r-plt" alt="" width="672"></p>
 <hr>
 </div>
 </div>
@@ -640,7 +636,7 @@ función equivalente:</p>
 <p>Tanto <code><a href="../reference/get_temporal.html">get_temporal()</a></code> como
 <code><a href="../reference/get_temporal_vivienda.html">get_temporal_vivienda()</a></code> aceptan un filtro por
 departamento:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Por nombre</span></span>
 <span><span class="va">edu_lp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_temporal.html">get_temporal</a></span><span class="op">(</span>grupo <span class="op">=</span> <span class="st">"educacion"</span>,</span>
 <span>                            anios <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2001</span>, <span class="fl">2012</span>, <span class="fl">2024</span><span class="op">)</span>,</span>
@@ -650,23 +646,23 @@ departamento:</p>
 <span><span class="va">viv_sc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_temporal_vivienda.html">get_temporal_vivienda</a></span><span class="op">(</span></span>
 <span>  variables    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fuente_agua"</span>, <span class="st">"energia_electrica"</span><span class="op">)</span>,</span>
 <span>  anios        <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2012</span>, <span class="fl">2024</span><span class="op">)</span>,</span>
-<span>  departamento <span class="op">=</span> <span class="st">"05"</span>   <span class="co"># Santa Cruz</span></span>
+<span>  departamento <span class="op">=</span> <span class="st">"07"</span>   <span class="co"># Santa Cruz</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <hr>
 </div>
 <div class="section level2">
 <h2 id="variables-con-limitaciones-conocidas">Variables con limitaciones conocidas<a class="anchor" aria-label="anchor" href="#variables-con-limitaciones-conocidas"></a>
 </h2>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/variables_armonizadas.html">variables_armonizadas</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">variable</span>, <span class="va">tabla</span>, <span class="va">notas</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">notas</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
-<col width="4%">
+<col width="2%">
 <col width="1%">
-<col width="94%">
+<col width="96%">
 </colgroup>
 <thead><tr class="header">
 <th align="left">variable</th>
@@ -714,7 +710,12 @@ conviviente ni separado). 1992: 1=Casado/conviviente→2, 2=Viudo→4,
 3=Separado/divorciado→3, 4=Soltero→1. 2001/2012: 1=Soltero→1,
 2=Casado→2, 3=Conviviente→2, 4=Separado→3, 5=Divorciado→3, 6=Viudo→4.
 2024: 1=Casado→2, 2=Conviviente→2, 3=Separado→3, 4=Divorciado→3,
-5=Viudo→4, 6=Soltero→1, 9=Sin especificar→NA.</td>
+5=Viudo→4, 6=Soltero→1, 9=Sin especificar→NA. ATENCIÓN — EL UNIVERSO
+CAMBIA ENTRE CENSOS: en 1992 la pregunta se registró para toda la
+población, incluidos los menores, que quedan como ‘Soltero’; en 2001 y
+2012 se aplica desde los 15 años y en 1976 y 2024 desde los 12. Comparar
+la distribución entre censos exige filtrar por edad (p.ej. edad &gt;=
+15).</td>
 </tr>
 <tr class="even">
 <td align="left">sabe_leer</td>
@@ -730,7 +731,12 @@ get_temporal() harmoniza a 1=Sí, 2=No.</td>
 con P11 en get_temporal(). 2001: P39NIV con códigos reales
 11=Ninguno,12=Preescolar,13=Básico,14=Intermedio,15=Medio,16=Primaria,17=Secundaria,18=Licenciatura,19=Técnico,20=Normal,21-23=Otros.
 2012: P37A_NIVELNUE usa códigos no secuenciales (1,2,3,9,10,11-18,99).
-La Ley Avelino Siñani (2010) cambió la nomenclatura en 2012.</td>
+La Ley Avelino Siñani (2010) cambió la nomenclatura en 2012. ATENCIÓN —
+EL UNIVERSO CAMBIA ENTRE CENSOS: la variable derivada ‘nivel_edu’ del
+CPV-2024 solo cubre a la población de 19 años o más residente en el
+país, mientras que en 1992, 2001 y 2012 cubre desde los 6 años. Por eso
+2024 tiene muchos más NA. Para comparar la distribución entre censos hay
+que filtrar edad &gt;= 19 en todos los años.</td>
 </tr>
 <tr class="even">
 <td align="left">asistencia_escolar</td>
@@ -930,14 +936,24 @@ ordinal.</td>
 materno</td>
 </tr>
 <tr class="even">
-<td><code>servicio_sanitario</code></td>
-<td>No disponible en 2012</td>
+<td><code>nivel_edu</code></td>
+<td>
+<strong>El universo cambia</strong>: 2024 solo cubre 19+ años;
+1992–2012 desde los 6. Filtrar <code>edad &gt;= 19</code>
+</td>
 </tr>
 <tr class="odd">
+<td><code>estado_civil</code></td>
+<td>
+<strong>El universo cambia</strong>: 1992 incluye menores como
+“Soltero/a”. Filtrar <code>edad &gt;= 15</code>
+</td>
+</tr>
+<tr class="even">
 <td><code>habitaciones_total</code></td>
 <td>2024: variable categórica (1=Una, 2=Dos, … 8=Ocho o más)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>migracion_nac_dpto</code></td>
 <td>Variable derivada; 1992 no tiene flag para exterior</td>
 </tr>
@@ -952,16 +968,26 @@ materno</td>
 </h2>
 <p>Si necesitas variables no armonizadas o mayor control, accede
 directamente a cada censo:</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Nivel educativo 2012 con códigos originales</span></span>
-<span><span class="va">edu_2012</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_censo.html">get_personas_2012</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span><span class="fu"><a href="../reference/get_censo.html">get_personas_2012</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="va">DEP</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span>nivel <span class="op">=</span> <span class="va">P37A_NIVELNUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>anio <span class="op">=</span> <span class="fl">2012L</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 2</span></span></span>
+<span><span class="co">#&gt;   nivel      n</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>    10 <span style="text-decoration: underline;">604</span>760</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     9 <span style="text-decoration: underline;">535</span>567</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     0 <span style="text-decoration: underline;">149</span>714</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>    12 <span style="text-decoration: underline;">127</span>724</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>     1  <span style="text-decoration: underline;">93</span>231</span></span>
 <span></span>
-<span><span class="co"># Ver qué variables existen en el censo 1976</span></span>
-<span><span class="fu"><a href="../reference/codebook.html">codebook_1976</a></span><span class="op">(</span>tabla <span class="op">=</span> <span class="st">"poblacion"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/codebook.html">codebook_2012</a></span><span class="op">(</span>buscar <span class="op">=</span> <span class="st">"nivel"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co"># Ver qué variables existen en cada censo</span></span>
+<span><span class="fu"><a href="../reference/codebook.html">codebook_2012</a></span><span class="op">(</span>buscar <span class="op">=</span> <span class="st">"nivel"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">variable</span>, <span class="va">etiqueta</span><span class="op">)</span></span>
+<span><span class="co">#&gt;        variable                                 etiqueta</span></span>
+<span><span class="co">#&gt; 1 P37A_NIVELNUE Nivel más alto de instrucción que aprobó</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

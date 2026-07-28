@@ -13,7 +13,7 @@ que identifica el censo de origen.'><meta property="og:image" content="https://l
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -127,6 +127,23 @@ nombre(s) de departamento. Si `NULL`, incluye todo el país.</p></dd>
    años puede ser engañoso.
 - `idioma_materno` en 1976: captura "idioma que habla", no el materno.</p>
 <p>Para variables de vivienda usa [get_temporal_vivienda()].</p>
+    </div>
+    <div class="section level2">
+    <h2 id="los-universos-poblacionales-no-siempre-coinciden">Los universos poblacionales no siempre coinciden<a class="anchor" aria-label="anchor" href="#los-universos-poblacionales-no-siempre-coinciden"></a></h2>
+
+
+<p>La armonización iguala los **códigos**, no la **población a la que se
+preguntó**. Dos variables cambian de universo entre censos y comparar sus
+distribuciones sin filtrar por edad produce conclusiones falsas:</p>
+<p>- `nivel_edu`: en el CPV-2024 la variable derivada del INE solo cubre a la
+  población de **19 años o más** residente en el país; en 1992, 2001 y 2012
+  cubre desde los 6 años. Por eso 2024 aparece con muchos más `NA`. Filtra
+  `edad &gt;= 19` en todos los años antes de comparar.
+- `estado_civil`: en 1992 se registró para **toda** la población, incluidos
+  los menores, que quedan como "Soltero/a"; en 2001 y 2012 se aplica desde
+  los 15 años, y en 1976 y 2024 desde los 12. Filtra `edad &gt;= 15`.</p>
+<p>La columna `notas` de [variables_armonizadas()] recoge estas advertencias
+variable por variable.</p>
     </div>
 
     <div class="section level2">

@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -106,13 +106,13 @@ para queries analíticas y JOINs entre tablas.</li>
 traduce los verbos a operaciones sobre el Parquet, y solo
 <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect()</a></code> materializa el resultado.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Dataset Arrow de Pando (el departamento más pequeño, ~7 MB)</span></span>
+<code class="sourceCode R"><span><span class="co"># Dataset Arrow de Pando (el departamento más pequeño, ~4 MB)</span></span>
 <span><span class="va">ds</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span></span>
 <span>  departamento <span class="op">=</span> <span class="st">"Pando"</span>,</span>
 <span>  as <span class="op">=</span> <span class="st">"arrow"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Descargando <span style="color: #0000BB;">persona_dep09.parquet</span> (~4 MB)...</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Descargado <span style="color: #0000BB;">persona_dep09.parquet</span> <span style="color: #B2B2B2;">[452ms]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Descargado <span style="color: #0000BB;">persona_dep09.parquet</span> <span style="color: #B2B2B2;">[487ms]</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">ds</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "FileSystemDataset" "Dataset"           "ArrowObject"      </span></span>
@@ -167,7 +167,7 @@ traduce los verbos a operaciones sobre el Parquet, y solo
 <span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Pando"</span>, as <span class="op">=</span> <span class="st">"duckdb"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Usando caché: <span style="color: #0000BB;">persona_dep09.parquet</span></span></span>
 <span><span class="co">#&gt; duckdb keeps downloaded extensions and secrets in a temporary directory:</span></span>
-<span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> /tmp/RtmpHaqlJR/duckdb</span></span>
+<span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> /tmp/RtmpJWyvwO/duckdb</span></span>
 <span><span class="co">#&gt; This is removed when the R session ends.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> Extensions are re-downloaded each session.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> Secrets are lost.</span></span>
@@ -221,7 +221,7 @@ traduce los verbos a operaciones sobre el Parquet, y solo
 <span><span class="st">  ORDER BY grupo_edad</span></span>
 <span><span class="st">"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/etiquetar_valores.html">etiquetar_valores</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span></span>
+<span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">con</span>, shutdown <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">ggplot</span><span class="op">(</span><span class="va">anos_edad</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">grupo_edad</span><span class="op">)</span>, y <span class="op">=</span> <span class="va">anios_edu</span>,</span>
 <span>                      color <span class="op">=</span> <span class="va">p25_sexo</span>, group <span class="op">=</span> <span class="va">p25_sexo</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
@@ -246,7 +246,7 @@ traduce los verbos a operaciones sobre el Parquet, y solo
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html" class="external-link">dbConnect</a></span><span class="op">(</span><span class="fu">duckdb</span><span class="fu">::</span><span class="fu"><a href="https://r.duckdb.org/reference/duckdb.html" class="external-link">duckdb</a></span><span class="op">(</span><span class="op">)</span>, dbdir <span class="op">=</span> <span class="st">":memory:"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; duckdb keeps downloaded extensions and secrets in a temporary directory:</span></span>
-<span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> /tmp/RtmpHaqlJR/duckdb</span></span>
+<span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> /tmp/RtmpJWyvwO/duckdb</span></span>
 <span><span class="co">#&gt; This is removed when the R session ends.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> Extensions are re-downloaded each session.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> Secrets are lost.</span></span>
@@ -266,7 +266,7 @@ traduce los verbos a operaciones sobre el Parquet, y solo
 <span>                variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"idep"</span>,<span class="st">"iprov"</span>,<span class="st">"imun"</span>,<span class="st">"i00"</span>,<span class="st">"urbrur"</span>,<span class="st">"v07_aguapro"</span>,<span class="st">"v09_energia"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Descargando <span style="color: #0000BB;">vivienda.parquet</span> (~55 MB)...</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Descargado <span style="color: #0000BB;">vivienda.parquet</span> <span style="color: #B2B2B2;">[999ms]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Descargado <span style="color: #0000BB;">vivienda.parquet</span> <span style="color: #B2B2B2;">[763ms]</span></span></span>
 <span></span>
 <span><span class="co"># Indicador: personas con educación superior en viviendas con servicios básicos</span></span>
 <span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbGetQuery.html" class="external-link">dbGetQuery</a></span><span class="op">(</span><span class="va">con</span>, <span class="st">"</span></span>
@@ -289,7 +289,7 @@ traduce los verbos a operaciones sobre el Parquet, y solo
 <span><span class="co">#&gt; 1 Urbana            10095      39.8</span></span>
 <span><span class="co">#&gt; 2  Rural              368      37.6</span></span>
 <span></span>
-<span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">con</span>, shutdown <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="análisis-nacional-sin-cargar-todo-en-ram">Análisis nacional sin cargar todo en RAM<a class="anchor" aria-label="anchor" href="#an%C3%A1lisis-nacional-sin-cargar-todo-en-ram"></a>
@@ -297,7 +297,7 @@ traduce los verbos a operaciones sobre el Parquet, y solo
 <p>Cuando necesitas estadísticas del país entero, Arrow agrega en el
 Parquet y solo trae el resumen a memoria.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Descargar todos los departamentos (~560 MB) y agregar sin cargar todo en RAM</span></span>
+<code class="sourceCode R"><span><span class="co"># Descargar los nueve departamentos (~282 MB) y agregar sin cargar todo en RAM</span></span>
 <span><span class="va">personas_full</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span>as <span class="op">=</span> <span class="st">"arrow"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">resumen_nacional</span> <span class="op">&lt;-</span> <span class="va">personas_full</span> <span class="op">|&gt;</span></span>

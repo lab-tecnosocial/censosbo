@@ -1,7 +1,7 @@
 # Geometrías de los municipios de Bolivia
 
-Objeto \`sf\` con 336 de los 343 municipios del CPV-2024 y sus
-geometrías poligonales. Los 7 municipios sin cobertura en la fuente
+Objeto \`sf\` con 339 de los 343 municipios del CPV-2024 y sus
+geometrías poligonales. Los 4 municipios sin cobertura en la fuente
 cartográfica no están incluidos.
 
 ## Usage
@@ -12,7 +12,7 @@ geo_municipios
 
 ## Format
 
-Un \`sf\` data.frame con 336 filas y 7 columnas (más geometría):
+Un \`sf\` data.frame con 339 filas y 7 columnas (más geometría):
 
 - idep:
 
@@ -49,8 +49,10 @@ cartografía electoral (2025).
 
 ## Note
 
-7 municipios del CPV-2024 no tienen cobertura cartográfica en la fuente
-y no aparecerán en los mapas generados con \[mapa_mun()\].
+4 municipios del CPV-2024 no tienen cobertura cartográfica en la fuente
+y no aparecerán en los mapas generados con \[mapa_mun()\]: los TIOC
+Raqaypampa (Cochabamba), Jatun Ayllu Yura (Potosí) y Territorio Indígena
+Multiétnico (Beni), más San Pedro de Macha (Potosí).
 
 ## See also
 

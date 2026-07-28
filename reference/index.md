@@ -68,7 +68,7 @@ Función principal para acceder a cualquier censo histórico (1976, 1992,
   [`get_emigracion_2012()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md)
   [`get_discapacidad_2012()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md)
   [`get_censo()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md)
-  : Accede a los microdatos de los censos históricos de Bolivia
+  : Accede a los microdatos de cualquier censo de Bolivia
 - [`get_temporal()`](https://lab-tecnosocial.github.io/censosbo/reference/get_temporal.md)
   : Obtiene datos temporales comparables de la tabla persona entre
   censos
@@ -96,7 +96,7 @@ Funciones cortas equivalentes a `get_censo(anio, tabla, ...)`.
   [`get_emigracion_2012()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md)
   [`get_discapacidad_2012()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md)
   [`get_censo()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md)
-  : Accede a los microdatos de los censos históricos de Bolivia
+  : Accede a los microdatos de cualquier censo de Bolivia
 
 ## Geografía y visualización en mapas
 

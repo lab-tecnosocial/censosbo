@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -108,8 +108,9 @@ Típicamente el resultado de una agregación con dplyr.</p></dd>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Compatible con todos los censos (1976–2024): los 9 departamentos son estables.
-Para el censo 1976, que usa la columna `dep` en lugar de `idep`, primero
-convierte: `datos$idep &lt;- sprintf("<!-- %02d", datos$dep)`. --></p>
+Para el censo 1976, que usa la columna `dep` en lugar de `idep`, renómbrala:
+`datos$idep &lt;- datos$dep` (los códigos se normalizan a 2 dígitos
+automáticamente, así que da igual que vengan como enteros).</p>
     </div>
 
     <div class="section level2">

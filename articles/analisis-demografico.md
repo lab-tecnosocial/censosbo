@@ -4,7 +4,7 @@
 
 Esta vignette muestra cómo usar `censosbo` para análisis demográficos
 con los datos reales del CPV-2024. Los ejemplos descargan datos del
-departamento de **Beni** (~24 MB), que se guarda en caché local tras la
+departamento de **Beni** (~12 MB), que se guarda en caché local tras la
 primera descarga.
 
 ``` r
@@ -18,7 +18,7 @@ personas <- get_personas_2024(
   collect() |>
   etiquetar_valores()
 #> ℹ Descargando persona_dep08.parquet (~12 MB)...
-#> ✔ Descargado persona_dep08.parquet [448ms]
+#> ✔ Descargado persona_dep08.parquet [680ms]
 #> 
 
 nrow(personas)
@@ -49,7 +49,9 @@ ggplot(piramide, aes(x = grupo_edad, y = n, fill = p25_sexo)) +
   geom_col(width = 0.8) +
   coord_flip() +
   scale_fill_manual(values = c("Mujer" = "#F4C430", "Hombre" = "#003087")) +
-  scale_y_continuous(labels = function(x) formatC(abs(x), format = "d", big.mark = ".")) +
+  scale_y_continuous(labels = function(x) {
+    formatC(abs(x), format = "d", big.mark = ".", decimal.mark = ",")
+  }) +
   labs(
     title    = "Pirámide poblacional — Beni, CPV-2024",
     subtitle = "Distribución por edad y sexo",
@@ -58,8 +60,6 @@ ggplot(piramide, aes(x = grupo_edad, y = n, fill = p25_sexo)) +
   ) +
   theme_minimal(base_size = 12) +
   theme(legend.position = "bottom")
-#> Warning in prettyNum(r, big.mark = big.mark, big.interval = big.interval, :
-#> 'big.mark' and 'decimal.mark' are both '.', which could be confusing
 ```
 
 ![](analisis-demografico_files/figure-html/piramide-1.png)
@@ -145,7 +145,7 @@ ggplot(ind, aes(x = reorder(p32_pueblo_per, pct), y = pct)) +
 
 ## Comparación nacional por departamento
 
-El siguiente ejemplo descarga todos los departamentos (~560 MB en
+El siguiente ejemplo descarga los nueve departamentos (~282 MB en
 total). Ejecuta en tu sesión de R cuando necesites datos nacionales.
 
 ``` r

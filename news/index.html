@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -49,6 +49,50 @@
       <small>Source: <a href="https://github.com/lab-tecnosocial/censosbo/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.4.0" id="censosbo-140">censosbo 1.4.0<a class="anchor" aria-label="anchor" href="#censosbo-140"></a></h2>
+<div class="section level3">
+<h3 id="get_censo-ahora-cubre-también-el-cpv-1-4-0">
+<code>get_censo()</code> ahora cubre también el CPV-2024<a class="anchor" aria-label="anchor" href="#get_censo-ahora-cubre-tambi%C3%A9n-el-cpv-1-4-0"></a></h3>
+<p><code><a href="../reference/get_censo.html">get_censo()</a></code> se presentaba como la API genérica por año, pero rechazaba <code>anio = 2024</code> — y la propia documentación de <code><a href="../reference/get_personas_2024.html">get_personas_2024()</a></code> ofrecía <code>get_censo(2024, "persona", ...)</code> como equivalente, un ejemplo que no funcionaba. Ahora acepta los cinco censos: con <code>anio = 2024</code> delega en <code><a href="../reference/get_personas_2024.html">get_personas_2024()</a></code>, <code><a href="../reference/get_viviendas_2024.html">get_viviendas_2024()</a></code>, <code><a href="../reference/get_emigracion_2024.html">get_emigracion_2024()</a></code> o <code><a href="../reference/get_mortalidad_2024.html">get_mortalidad_2024()</a></code> según <code>tabla</code>, con resultado idéntico al de esas funciones.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/get_censo.html">get_censo</a></span><span class="op">(</span><span class="fl">2024</span>, <span class="st">"persona"</span>, departamento <span class="op">=</span> <span class="st">"07"</span><span class="op">)</span>   <span class="co"># = get_personas_2024()</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="correcciones-1-4-0">Correcciones<a class="anchor" aria-label="anchor" href="#correcciones-1-4-0"></a></h3>
+<ul><li>
+<strong>Los mapas fallaban en una sesión limpia.</strong> <code>sf</code> estaba en <code>Imports:</code> del DESCRIPTION pero nada lo importaba en <code>NAMESPACE</code>, así que <code><a href="https://lab-tecnosocial.github.io/censosbo/">library(censosbo)</a></code> no cargaba su namespace ni registraba sus métodos S3. Sin ellos, filtrar un objeto <code>sf</code> caía en <code>[.data.frame</code>, que degrada la columna de geometría a una lista corriente, y <code>mapa_mun(..., departamento = ...)</code> abortaba con <code>attr(obj, "sf_column") does not point to a geometry column</code>. Afectaba también a <code>geo_municipios</code> y <code>geo_departamentos</code> manipulados por el usuario.</li>
+<li>
+<strong><code><a href="../reference/etiquetar_variables.html">etiquetar_variables()</a></code> dejaba columnas sin nombre.</strong> Las 11 variables derivadas del censo 1976 que no traen descripción en el diccionario del INE (<code>nivela</code>, <code>pea</code>, <code>pet</code>, <code>anioes1</code>, …) se renombraban a <code>""</code>. Ahora conservan su nombre original.</li>
+<li>
+<strong><code><a href="../reference/mapa_dep.html">mapa_dep()</a></code> y <code><a href="../reference/mapa_mun.html">mapa_mun()</a></code> ignoraban los códigos geográficos numéricos.</strong> Un <code>idep</code> entero (<code>1</code>, <code>2</code>, …) no emparejaba con <code>"01"</code>, <code>"02"</code>, … del catálogo y el mapa salía entero en gris, sin ningún aviso. Ahora se normalizan a 2 dígitos, igual que en <code><a href="../reference/etiquetar_geografia.html">etiquetar_geografia()</a></code>.</li>
+<li>
+<strong><code><a href="../reference/get_temporal.html">get_temporal()</a></code> perdía <code>nivel_edu</code> en 1992</strong> en las filas donde <code>P11</code> era <code>NA</code>: la condición del <code><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse()</a></code> propagaba el <code>NA</code> al resultado.</li>
+<li>
+<code><a href="../reference/censosbo_cache_clear.html">censosbo_cache_clear()</a></code> ya limpia también el subdirectorio <code>fichas/</code> cuando queda vacío (antes solo lo hacía con <code>historico/</code>).</li>
+<li>
+<code>mapa_dep(mostrar_nombres = TRUE)</code> y <code>mapa_mun(mostrar_nombres = TRUE)</code> ya no emiten los avisos de <code>sf</code> sobre centroides en coordenadas geográficas, que eran irrelevantes para posicionar una etiqueta.</li>
+<li>
+<code>citation("censosbo")</code> reportaba siempre la versión 1.0.0; ahora lee la versión y el año del paquete instalado.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="documentación-cifras-verificadas-y-ejemplos-que-se-ejecutan-1-4-0">Documentación: cifras verificadas y ejemplos que se ejecutan<a class="anchor" aria-label="anchor" href="#documentaci%C3%B3n-cifras-verificadas-y-ejemplos-que-se-ejecutan-1-4-0"></a></h3>
+<p>Se revisaron todas las cifras de la documentación contra los datos publicados y se corrigieron las que no cuadraban:</p>
+<ul><li>
+<strong><code>geo_municipios</code> tiene 339 municipios, no 336</strong>, y los que faltan son 4, no 7 (los TIOC Raqaypampa, Jatun Ayllu Yura y Territorio Indígena Multiétnico, más San Pedro de Macha).</li>
+<li>
+<strong>Tamaños en disco y RAM.</strong> Los tamaños de los censos históricos estaban desactualizados (1976 figuraba con 63 MB y son 46; 2012 persona con 165 MB y son 120), y las estimaciones de RAM eran entre 5 y 10 veces demasiado bajas: <code><a href="../reference/get_personas_2024.html">get_personas_2024()</a></code> completo ocupa ~5,6 GB al hacer <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect()</a></code>, no ~490 MB. El número de columnas de los censos históricos tampoco incluía las columnas geográficas denormalizadas.</li>
+<li>
+<strong>Variables mal citadas del censo 1976</strong>: la viñeta usaba <code>p02</code> como sexo y <code>p03</code> como edad, cuando <code>p02</code> es parentesco, <code>p03</code> sexo y <code>p04</code> edad.</li>
+<li>La viñeta de análisis temporal decía que <code>servicio_sanitario</code> no está disponible en 2012 (sí lo está, es <code>P09</code>) y usaba el código <code>"05"</code> para Santa Cruz (es <code>"07"</code>; <code>"05"</code> es Potosí). La de censos históricos daba 344 municipios para 2024 (son 343) y afirmaba que sin <code>departamento</code> no se añaden las columnas geográficas, cuando se añaden siempre.</li>
+<li>El README y la viñeta de introducción daban tablas de censos distintas entre sí, y la de introducción atribuía la conversión de los datos a un pipeline de Python que ya no se usa (es R: <code>haven</code>/<code>readr</code> + <code>arrow</code>).</li>
+<li>
+<strong>Universos poblacionales en el análisis temporal.</strong> <code>nivel_edu</code> y <code>estado_civil</code> cambian de población de referencia entre censos, así que sus distribuciones no son comparables sin filtrar por edad. Queda documentado en <code>variables_armonizadas()$notas</code>, en <code><a href="../reference/get_temporal.html">?get_temporal</a></code> y en la viñeta, que ahora aplica el filtro correcto en el gráfico de nivel educativo.</li>
+<li>
+<strong>Los ejemplos se ejecutan de verdad.</strong> El README y las viñetas de censos históricos y análisis temporal tenían los bloques con <code>eval = FALSE</code> y salidas escritas a mano. Ahora se ejecutan al construir la documentación (con departamentos pequeños, para que la descarga sea liviana), así que las salidas que se ven son reales.</li>
+<li>La viñeta del diccionario documenta ya las tablas <code>unidad</code> y <code>ficha</code> (los 194 indicadores por manzano y comunidad), que faltaban.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.3.0" id="censosbo-130">censosbo 1.3.0<a class="anchor" aria-label="anchor" href="#censosbo-130"></a></h2>
 <div class="section level3">

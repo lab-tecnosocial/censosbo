@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -101,7 +101,7 @@ coropléticos</strong> de Bolivia directamente desde R:</p>
 </tr>
 <tr class="even">
 <td><code><a href="../reference/mapa_mun.html">mapa_mun()</a></code></td>
-<td>336 municipios</td>
+<td>339 de 343 municipios</td>
 <td>Sí — <code>geo_municipios</code>
 </td>
 </tr>
@@ -127,7 +127,7 @@ necesidad de descargar nada:</p>
 <span><span class="co">#&gt; 2   02     La Paz MULTIPOLYGON (((-68.76707 -...</span></span>
 <span><span class="co">#&gt; 3   03 Cochabamba MULTIPOLYGON (((-66.79542 -...</span></span>
 <span></span>
-<span><span class="co"># 336 municipios del CPV-2024 (objeto sf)</span></span>
+<span><span class="co"># 339 de los 343 municipios del CPV-2024 (objeto sf)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_drop_geometry</a></span><span class="op">(</span><span class="va">geo_municipios</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   idep nombre_dep iprov nombre_prov imun nombre_mun</span></span>
 <span><span class="co">#&gt; 1   01 Chuquisaca    01     Oropeza   01      Sucre</span></span>
@@ -165,13 +165,10 @@ departamentos están incluidas en el paquete.</p>
 <span>  titulo          <span class="op">=</span> <span class="st">"Municipios por departamento — Bolivia"</span>,</span>
 <span>  etiqueta_fill   <span class="op">=</span> <span class="st">"Municipios"</span>,</span>
 <span>  mostrar_nombres <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: st_centroid assumes attributes are constant over geometries</span></span>
-<span><span class="co">#&gt; Warning in st_point_on_surface.sfc(sf::st_zm(x)): st_point_on_surface may not</span></span>
-<span><span class="co">#&gt; give correct results for longitude/latitude data</span></span></code></pre></div>
+<span><span class="op">)</span></span></code></pre></div>
 <p><img src="visualizacion-mapas_files/figure-html/mapa-dep-basico-1.png" class="r-plt" alt="" width="672"></p>
-<p>La Paz (80 municipios) y Santa Cruz (39) concentran casi la mitad de
-los municipios del país, reflejo de su extensión territorial y densidad
+<p>La Paz (87 municipios) y Santa Cruz (56) concentran el 42 % de los
+municipios del país, reflejo de su extensión territorial y densidad
 histórica de asentamientos.</p>
 </div>
 <div class="section level3">
@@ -225,10 +222,10 @@ departamento.</p>
 <div class="section level3">
 <h3 id="edad-promedio-por-municipio-beni-cpv-2024">Edad promedio por municipio — Beni (CPV-2024)<a class="anchor" aria-label="anchor" href="#edad-promedio-por-municipio-beni-cpv-2024"></a>
 </h3>
-<p>El departamento del Beni tiene datos pequeños (~24 MB). Con pocas
+<p>El departamento del Beni tiene datos pequeños (~12 MB). Con pocas
 líneas obtenemos un mapa municipal real con datos del CPV-2024:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Descargar personas del Beni (~24 MB, se guarda en caché)</span></span>
+<code class="sourceCode R"><span><span class="co"># Descargar personas del Beni (~12 MB, se guarda en caché)</span></span>
 <span><span class="va">personas_beni</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span></span>
 <span>  departamento <span class="op">=</span> <span class="st">"Beni"</span>,</span>
 <span>  variables    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"p26_edad"</span><span class="op">)</span></span>
@@ -248,14 +245,15 @@ líneas obtenemos un mapa municipal real con datos del CPV-2024:</p>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning: 1 municipio(s) en los datos no tienen geometría disponible.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Aparecerán como áreas grises en el mapa.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Son los 7 municipios del CPV-2024 sin cobertura cartográfica en la fuente.</span></span>
-<span><span class="co">#&gt; Warning: st_centroid assumes attributes are constant over geometries</span></span>
-<span><span class="co">#&gt; Warning in st_point_on_surface.sfc(sf::st_zm(x)): st_point_on_surface may not</span></span>
-<span><span class="co">#&gt; give correct results for longitude/latitude data</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Son los 4 municipios del CPV-2024 sin cobertura cartográfica en la fuente.</span></span></code></pre></div>
 <p><img src="visualizacion-mapas_files/figure-html/mapa-mun-beni-1.png" class="r-plt" alt="" width="672"></p>
-<p>Los municipios más jóvenes (como San Ignacio de Moxos y Loreto)
-contrastan con municipios con mayor proporción de adultos mayores en las
-capitales provinciales.</p>
+<p>Los municipios más jóvenes del Beni (San Borja, 25,8 años;
+Exaltación, Loreto y San Ignacio, 26) contrastan con Baures y Huacaraje,
+por encima de 30.</p>
+<p>El aviso que aparece al construir el mapa es esperado: el
+TIOC-Territorio Indígena Multiétnico —justamente el municipio más joven
+del departamento, con 24,5 años— es uno de los 4 municipios del CPV-2024
+sin cobertura en la fuente cartográfica, así que sale en gris.</p>
 </div>
 <div class="section level3">
 <h3 id="acceso-al-agua-por-cañería-santa-cruz">Acceso al agua por cañería — Santa Cruz<a class="anchor" aria-label="anchor" href="#acceso-al-agua-por-ca%C3%B1er%C3%ADa-santa-cruz"></a>

@@ -1,8 +1,9 @@
-# Accede a los microdatos de los censos históricos de Bolivia
+# Accede a los microdatos de cualquier censo de Bolivia
 
 Descarga y/o carga desde caché los microdatos de los censos de población
-de Bolivia de 1976, 1992, 2001 y 2012, con filtros geográficos
-opcionales.
+de Bolivia de 1976, 1992, 2001, 2012 y 2024, con filtros geográficos
+opcionales. Es la API genérica por año; para el CPV-2024 delega en
+\[get_personas_2024()\] y sus funciones hermanas.
 
 ## Usage
 
@@ -171,7 +172,8 @@ get_censo(
 
 - anio:
 
-  Entero. Año del censo: \`1976\`, \`1992\`, \`2001\` o \`2012\`.
+  Entero. Año del censo: \`1976\`, \`1992\`, \`2001\`, \`2012\` o
+  \`2024\`.
 
 - tabla:
 
@@ -180,7 +182,8 @@ get_censo(
   \`"vivienda"\` - \*\*1992\*\*: \`"persona"\`, \`"vivienda"\`,
   \`"mortalidad"\` - \*\*2001\*\*: \`"persona"\`, \`"vivienda"\` -
   \*\*2012\*\*: \`"persona"\`, \`"vivienda"\`, \`"emigracion"\`,
-  \`"discapacidad"\`
+  \`"discapacidad"\` - \*\*2024\*\*: \`"persona"\`, \`"vivienda"\`,
+  \`"emigracion"\`, \`"mortalidad"\`
 
 ## Value
 
@@ -203,6 +206,13 @@ El censo 1976 no tuvo municipios comparables (usó cantones), por lo que
 solo expone \`idep\` e \`iprov\`; el filtro de \`municipio\` se aplica
 sobre el cantón.
 
+Con \`anio = 2024\` la llamada se redirige a \[get_personas_2024()\],
+\[get_viviendas_2024()\], \[get_emigracion_2024()\] o
+\[get_mortalidad_2024()\] según \`tabla\`, así que el resultado es
+idéntico al de esas funciones — incluido el nombre con que se registra
+la tabla en DuckDB (\`"personas"\`, \`"viviendas"\`, en plural, a
+diferencia de los censos históricos).
+
 ## Advertencia sobre municipios
 
 El número de municipios cambió entre censos. Un código de municipio
@@ -219,8 +229,11 @@ get_censo(2012, "persona", departamento = "07")
 # Viviendas del censo 1992 en La Paz
 get_censo(1992, "vivienda", departamento = "La Paz")
 
-# Todas las personas del censo 1976 (descarga completa ~63 MB)
+# Todas las personas del censo 1976 (descarga completa ~46 MB)
 get_censo(1976, "poblacion")
+
+# El CPV-2024 también: equivale a get_personas_2024(departamento = "07")
+get_censo(2024, "persona", departamento = "07")
 
 # Consulta SQL sobre censo 2001
 con <- get_censo(2001, "persona", departamento = "03", as = "duckdb")

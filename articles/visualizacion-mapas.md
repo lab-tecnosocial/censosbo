@@ -6,7 +6,7 @@ Bolivia directamente desde R:
 | Función | Nivel | Geometrías incluidas |
 |----|----|----|
 | [`mapa_dep()`](https://lab-tecnosocial.github.io/censosbo/reference/mapa_dep.md) | 9 departamentos | Sí — `geo_departamentos` |
-| [`mapa_mun()`](https://lab-tecnosocial.github.io/censosbo/reference/mapa_mun.md) | 336 municipios | Sí — `geo_municipios` |
+| [`mapa_mun()`](https://lab-tecnosocial.github.io/censosbo/reference/mapa_mun.md) | 339 de 343 municipios | Sí — `geo_municipios` |
 
 Ambas devuelven un **objeto `ggplot`** que se puede personalizar con
 capas y temas adicionales.
@@ -30,7 +30,7 @@ head(geo_departamentos, 3)
 #> 2   02     La Paz MULTIPOLYGON (((-68.76707 -...
 #> 3   03 Cochabamba MULTIPOLYGON (((-66.79542 -...
 
-# 336 municipios del CPV-2024 (objeto sf)
+# 339 de los 343 municipios del CPV-2024 (objeto sf)
 head(sf::st_drop_geometry(geo_municipios), 3)
 #>   idep nombre_dep iprov nombre_prov imun nombre_mun
 #> 1   01 Chuquisaca    01     Oropeza   01      Sucre
@@ -73,14 +73,11 @@ mapa_dep(
   etiqueta_fill   = "Municipios",
   mostrar_nombres = TRUE
 )
-#> Warning: st_centroid assumes attributes are constant over geometries
-#> Warning in st_point_on_surface.sfc(sf::st_zm(x)): st_point_on_surface may not
-#> give correct results for longitude/latitude data
 ```
 
 ![](visualizacion-mapas_files/figure-html/mapa-dep-basico-1.png)
 
-La Paz (80 municipios) y Santa Cruz (39) concentran casi la mitad de los
+La Paz (87 municipios) y Santa Cruz (56) concentran el 42 % de los
 municipios del país, reflejo de su extensión territorial y densidad
 histórica de asentamientos.
 
@@ -134,12 +131,12 @@ departamento.
 
 ### Edad promedio por municipio — Beni (CPV-2024)
 
-El departamento del Beni tiene datos pequeños (~24 MB). Con pocas líneas
+El departamento del Beni tiene datos pequeños (~12 MB). Con pocas líneas
 obtenemos un mapa municipal real con datos del CPV-2024:
 
 ``` r
 
-# Descargar personas del Beni (~24 MB, se guarda en caché)
+# Descargar personas del Beni (~12 MB, se guarda en caché)
 personas_beni <- get_personas_2024(
   departamento = "Beni",
   variables    = c("p26_edad")
@@ -159,17 +156,19 @@ mapa_mun(
 )
 #> Warning: 1 municipio(s) en los datos no tienen geometría disponible.
 #> ℹ Aparecerán como áreas grises en el mapa.
-#> ℹ Son los 7 municipios del CPV-2024 sin cobertura cartográfica en la fuente.
-#> Warning: st_centroid assumes attributes are constant over geometries
-#> Warning in st_point_on_surface.sfc(sf::st_zm(x)): st_point_on_surface may not
-#> give correct results for longitude/latitude data
+#> ℹ Son los 4 municipios del CPV-2024 sin cobertura cartográfica en la fuente.
 ```
 
 ![](visualizacion-mapas_files/figure-html/mapa-mun-beni-1.png)
 
-Los municipios más jóvenes (como San Ignacio de Moxos y Loreto)
-contrastan con municipios con mayor proporción de adultos mayores en las
-capitales provinciales.
+Los municipios más jóvenes del Beni (San Borja, 25,8 años; Exaltación,
+Loreto y San Ignacio, 26) contrastan con Baures y Huacaraje, por encima
+de 30.
+
+El aviso que aparece al construir el mapa es esperado: el
+TIOC-Territorio Indígena Multiétnico —justamente el municipio más joven
+del departamento, con 24,5 años— es uno de los 4 municipios del CPV-2024
+sin cobertura en la fuente cartográfica, así que sale en gris.
 
 ### Acceso al agua por cañería — Santa Cruz
 

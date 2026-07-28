@@ -19,13 +19,13 @@ materializa el resultado.
 
 ``` r
 
-# Dataset Arrow de Pando (el departamento más pequeño, ~7 MB)
+# Dataset Arrow de Pando (el departamento más pequeño, ~4 MB)
 ds <- get_personas_2024(
   departamento = "Pando",
   as = "arrow"
 )
 #> ℹ Descargando persona_dep09.parquet (~4 MB)...
-#> ✔ Descargado persona_dep09.parquet [452ms]
+#> ✔ Descargado persona_dep09.parquet [487ms]
 #> 
 class(ds)
 #> [1] "FileSystemDataset" "Dataset"           "ArrowObject"      
@@ -88,7 +88,7 @@ library(DBI)
 con <- get_personas_2024(departamento = "Pando", as = "duckdb")
 #> ✔ Usando caché: persona_dep09.parquet
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpHaqlJR/duckdb
+#> ℹ /tmp/RtmpJWyvwO/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
@@ -148,7 +148,7 @@ anos_edad <- DBI::dbGetQuery(con, "
   ORDER BY grupo_edad
 ") |> etiquetar_valores()
 
-DBI::dbDisconnect(con)
+DBI::dbDisconnect(con, shutdown = TRUE)
 
 ggplot(anos_edad, aes(x = factor(grupo_edad), y = anios_edu,
                       color = p25_sexo, group = p25_sexo)) +
@@ -175,7 +175,7 @@ ggplot(anos_edad, aes(x = factor(grupo_edad), y = anios_edu,
 
 con <- DBI::dbConnect(duckdb::duckdb(), dbdir = ":memory:")
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpHaqlJR/duckdb
+#> ℹ /tmp/RtmpJWyvwO/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
@@ -195,7 +195,7 @@ duckdb::duckdb_register_arrow(
                 variables = c("idep","iprov","imun","i00","urbrur","v07_aguapro","v09_energia"))
 )
 #> ℹ Descargando vivienda.parquet (~55 MB)...
-#> ✔ Descargado vivienda.parquet [999ms]
+#> ✔ Descargado vivienda.parquet [763ms]
 
 # Indicador: personas con educación superior en viviendas con servicios básicos
 DBI::dbGetQuery(con, "
@@ -218,7 +218,7 @@ DBI::dbGetQuery(con, "
 #> 1 Urbana            10095      39.8
 #> 2  Rural              368      37.6
 
-DBI::dbDisconnect(con)
+DBI::dbDisconnect(con, shutdown = TRUE)
 ```
 
 ## Análisis nacional sin cargar todo en RAM
@@ -228,7 +228,7 @@ Parquet y solo trae el resumen a memoria.
 
 ``` r
 
-# Descargar todos los departamentos (~560 MB) y agregar sin cargar todo en RAM
+# Descargar los nueve departamentos (~282 MB) y agregar sin cargar todo en RAM
 personas_full <- get_personas_2024(as = "arrow")
 
 resumen_nacional <- personas_full |>
