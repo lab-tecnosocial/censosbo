@@ -1,3 +1,82 @@
+# censosbo 1.4.0
+
+## `get_censo()` ahora cubre también el CPV-2024
+
+`get_censo()` se presentaba como la API genérica por año, pero rechazaba
+`anio = 2024` — y la propia documentación de `get_personas_2024()` ofrecía
+`get_censo(2024, "persona", ...)` como equivalente, un ejemplo que no funcionaba.
+Ahora acepta los cinco censos: con `anio = 2024` delega en `get_personas_2024()`,
+`get_viviendas_2024()`, `get_emigracion_2024()` o `get_mortalidad_2024()` según
+`tabla`, con resultado idéntico al de esas funciones.
+
+```r
+get_censo(2024, "persona", departamento = "07")   # = get_personas_2024()
+```
+
+## Correcciones
+
+* **Los mapas fallaban en una sesión limpia.** `sf` estaba en `Imports:` del
+  DESCRIPTION pero nada lo importaba en `NAMESPACE`, así que `library(censosbo)`
+  no cargaba su namespace ni registraba sus métodos S3. Sin ellos, filtrar un
+  objeto `sf` caía en `[.data.frame`, que degrada la columna de geometría a una
+  lista corriente, y `mapa_mun(..., departamento = ...)` abortaba con
+  `attr(obj, "sf_column") does not point to a geometry column`. Afectaba también
+  a `geo_municipios` y `geo_departamentos` manipulados por el usuario.
+* **`etiquetar_variables()` dejaba columnas sin nombre.** Las 11 variables
+  derivadas del censo 1976 que no traen descripción en el diccionario del INE
+  (`nivela`, `pea`, `pet`, `anioes1`, …) se renombraban a `""`. Ahora conservan su
+  nombre original.
+* **`mapa_dep()` y `mapa_mun()` ignoraban los códigos geográficos numéricos.** Un
+  `idep` entero (`1`, `2`, …) no emparejaba con `"01"`, `"02"`, … del catálogo y el
+  mapa salía entero en gris, sin ningún aviso. Ahora se normalizan a 2 dígitos,
+  igual que en `etiquetar_geografia()`.
+* **`get_temporal()` perdía `nivel_edu` en 1992** en las filas donde `P11` era
+  `NA`: la condición del `ifelse()` propagaba el `NA` al resultado.
+* `censosbo_cache_clear()` ya limpia también el subdirectorio `fichas/` cuando
+  queda vacío (antes solo lo hacía con `historico/`).
+* `mapa_dep(mostrar_nombres = TRUE)` y `mapa_mun(mostrar_nombres = TRUE)` ya no
+  emiten los avisos de `sf` sobre centroides en coordenadas geográficas, que eran
+  irrelevantes para posicionar una etiqueta.
+* `citation("censosbo")` reportaba siempre la versión 1.0.0; ahora lee la versión y
+  el año del paquete instalado.
+
+## Documentación: cifras verificadas y ejemplos que se ejecutan
+
+Se revisaron todas las cifras de la documentación contra los datos publicados y
+se corrigieron las que no cuadraban:
+
+* **`geo_municipios` tiene 339 municipios, no 336**, y los que faltan son 4, no 7
+  (los TIOC Raqaypampa, Jatun Ayllu Yura y Territorio Indígena Multiétnico, más
+  San Pedro de Macha).
+* **Tamaños en disco y RAM.** Los tamaños de los censos históricos estaban
+  desactualizados (1976 figuraba con 63 MB y son 46; 2012 persona con 165 MB y son
+  120), y las estimaciones de RAM eran entre 5 y 10 veces demasiado bajas:
+  `get_personas_2024()` completo ocupa ~5,6 GB al hacer `collect()`, no ~490 MB.
+  El número de columnas de los censos históricos tampoco incluía las columnas
+  geográficas denormalizadas.
+* **Variables mal citadas del censo 1976**: la viñeta usaba `p02` como sexo y `p03`
+  como edad, cuando `p02` es parentesco, `p03` sexo y `p04` edad.
+* La viñeta de análisis temporal decía que `servicio_sanitario` no está disponible
+  en 2012 (sí lo está, es `P09`) y usaba el código `"05"` para Santa Cruz (es
+  `"07"`; `"05"` es Potosí). La de censos históricos daba 344 municipios para 2024
+  (son 343) y afirmaba que sin `departamento` no se añaden las columnas
+  geográficas, cuando se añaden siempre.
+* El README y la viñeta de introducción daban tablas de censos distintas entre sí,
+  y la de introducción atribuía la conversión de los datos a un pipeline de Python
+  que ya no se usa (es R: `haven`/`readr` + `arrow`).
+* **Universos poblacionales en el análisis temporal.** `nivel_edu` y
+  `estado_civil` cambian de población de referencia entre censos, así que sus
+  distribuciones no son comparables sin filtrar por edad. Queda documentado en
+  `variables_armonizadas()$notas`, en `?get_temporal` y en la viñeta, que ahora
+  aplica el filtro correcto en el gráfico de nivel educativo.
+* **Los ejemplos se ejecutan de verdad.** El README y las viñetas de censos
+  históricos y análisis temporal tenían los bloques con `eval = FALSE` y salidas
+  escritas a mano. Ahora se ejecutan al construir la documentación (con
+  departamentos pequeños, para que la descarga sea liviana), así que las salidas
+  que se ven son reales.
+* La viñeta del diccionario documenta ya las tablas `unidad` y `ficha` (los 194
+  indicadores por manzano y comunidad), que faltaban.
+
 # censosbo 1.3.0
 
 ## Datos por manzano y comunidad (CPV-2024)
