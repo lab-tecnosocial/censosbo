@@ -179,6 +179,14 @@ Dos notas sobre la fuente:
 - Los conteos corresponden a residentes habituales y **no incluyen a las
   personas que residen en el exterior**, por lo que difieren ligeramente
   de otros totales del censo.
+- La población agregada por municipio coincide exactamente con
+  [`get_personas_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_personas_2024.md).
+  Las **viviendas** dan un 0,23% menos que
+  [`get_viviendas_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_viviendas_2024.md),
+  con un déficit sistemático (323 municipios por debajo, ninguno por
+  encima): el INE las cuenta distinto en el geoportal y en los
+  microdatos. Para el total de viviendas de un territorio, usa
+  [`get_viviendas_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_viviendas_2024.md).
 - El INE cambió su geoportal durante 2026 y la versión nueva
   (`idg.ine.gob.bo`) exige captcha para estos endpoints. Los datos
   provienen del servicio que atiende a `geoportal.ine.gob.bo`.

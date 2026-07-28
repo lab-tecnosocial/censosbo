@@ -51,6 +51,17 @@ Notas sobre estos datos:
 `codebook(tabla = "unidad")` y `codebook(tabla = "ficha")` documentan
 las variables nuevas.
 
+Una advertencia sobre los totales: la población agregada por municipio
+coincide **exactamente** con
+[`get_personas_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_personas_2024.md)
+en los 343 municipios, pero las viviendas dan un 0,23% menos que
+[`get_viviendas_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_viviendas_2024.md).
+El déficit es sistemático (323 municipios por debajo, ninguno por
+encima) y viene del propio INE, que cuenta las viviendas de forma
+distinta en el geoportal y en los microdatos. Para el total de viviendas
+de un territorio, usa
+[`get_viviendas_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_viviendas_2024.md).
+
 ## censosbo 1.2.1
 
 ### Correcciones

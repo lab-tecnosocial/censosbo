@@ -70,6 +70,7 @@
 <code>area</code> reutiliza el dominio de los microdatos (1 = Urbana, 2 = Rural), así que <code><a href="../reference/etiquetar_valores.html">etiquetar_valores()</a></code> se comporta igual en ambas fuentes. Las funciones aceptan además <code>"urbano"</code> y <code>"rural"</code> por legibilidad.</li>
 <li>Los datos viven en su propio release (<code>data-fichas-v1.0.0</code>) y se cachean bajo <code>fichas/</code>, separados de los microdatos.</li>
 </ul><p><code>codebook(tabla = "unidad")</code> y <code>codebook(tabla = "ficha")</code> documentan las variables nuevas.</p>
+<p>Una advertencia sobre los totales: la población agregada por municipio coincide <strong>exactamente</strong> con <code><a href="../reference/get_personas_2024.html">get_personas_2024()</a></code> en los 343 municipios, pero las viviendas dan un 0,23% menos que <code><a href="../reference/get_viviendas_2024.html">get_viviendas_2024()</a></code>. El déficit es sistemático (323 municipios por debajo, ninguno por encima) y viene del propio INE, que cuenta las viviendas de forma distinta en el geoportal y en los microdatos. Para el total de viviendas de un territorio, usa <code><a href="../reference/get_viviendas_2024.html">get_viviendas_2024()</a></code>.</p>
 </div>
 </div>
     <div class="section level2">
