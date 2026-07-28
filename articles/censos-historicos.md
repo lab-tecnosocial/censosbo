@@ -213,12 +213,12 @@ pob_cbba_76 |>
 #> # A tibble: 6 × 5
 #>     dep   pro   can  sexo  edad
 #>   <int> <int> <int> <int> <int>
-#> 1     3    29     0     1    36
-#> 2     3    29     0     2    33
-#> 3     3    29     0     2    13
-#> 4     3    29     0     2     9
-#> 5     3    29     0     1     7
-#> 6     3    29     0     1     4
+#> 1     3    29     0     2    34
+#> 2     3    29     0     1    10
+#> 3     3    29     0     2     9
+#> 4     3    29     0     1     3
+#> 5     3    29     0     2    18
+#> 6     3    29     0     1    24
 ```
 
 ``` r
@@ -381,7 +381,7 @@ library(DBI)
 con <- get_censo(2012, "persona", departamento = "Pando", as = "duckdb",
                  verbose = FALSE)
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpxmziM1/duckdb
+#> ℹ /tmp/Rtmp9LkhhT/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.

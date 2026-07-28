@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -49,6 +49,11 @@
       <small>Source: <a href="https://github.com/lab-tecnosocial/censosbo/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.4.1" id="censosbo-141">censosbo 1.4.1<a class="anchor" aria-label="anchor" href="#censosbo-141"></a></h2>
+<ul><li>
+<strong>Las descargas reintentan ante fallos transitorios.</strong> GitHub Releases devuelve 500 o 503 esporádicamente, y un único fallo abortaba toda la operación — algo molesto cuando se piden los nueve archivos de persona o los nueve de manzanos. Ahora se reintenta tres veces con espera creciente y solo se aborta si fallan todos los intentos. De paso, los tres descargadores (<code><a href="../reference/dot-download_parquet.html">.download_parquet()</a></code>, <code><a href="../reference/dot-download_ficha.html">.download_ficha()</a></code> y <code><a href="../reference/dot-download_censo.html">.download_censo()</a></code>) comparten un solo helper en vez de repetir la misma lógica de descarga atómica.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.4.0" id="censosbo-140">censosbo 1.4.0<a class="anchor" aria-label="anchor" href="#censosbo-140"></a></h2>
 <div class="section level3">
