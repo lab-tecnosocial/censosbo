@@ -139,11 +139,11 @@ etiquetar_geografia <- function(df) {
 
 #' Geometrías de los municipios de Bolivia
 #'
-#' Objeto `sf` con 336 de los 343 municipios del CPV-2024 y sus geometrías
-#' poligonales. Los 7 municipios sin cobertura en la fuente cartográfica
+#' Objeto `sf` con 339 de los 343 municipios del CPV-2024 y sus geometrías
+#' poligonales. Los 4 municipios sin cobertura en la fuente cartográfica
 #' no están incluidos.
 #'
-#' @format Un `sf` data.frame con 336 filas y 7 columnas (más geometría):
+#' @format Un `sf` data.frame con 339 filas y 7 columnas (más geometría):
 #' \describe{
 #'   \item{idep}{Código de departamento}
 #'   \item{nombre_dep}{Nombre del departamento}
@@ -153,8 +153,10 @@ etiquetar_geografia <- function(df) {
 #'   \item{nombre_mun}{Nombre del municipio}
 #'   \item{geometry}{Geometría de polígono (CRS: WGS84 / EPSG:4326)}
 #' }
-#' @note 7 municipios del CPV-2024 no tienen cobertura cartográfica en la
-#'   fuente y no aparecerán en los mapas generados con [mapa_mun()].
+#' @note 4 municipios del CPV-2024 no tienen cobertura cartográfica en la
+#'   fuente y no aparecerán en los mapas generados con [mapa_mun()]: los TIOC
+#'   Raqaypampa (Cochabamba), Jatun Ayllu Yura (Potosí) y Territorio Indígena
+#'   Multiétnico (Beni), más San Pedro de Macha (Potosí).
 #' @source INE Bolivia. Límites administrativos de municipios,
 #'   derivados de cartografía electoral (2025).
 #' @seealso [geo_departamentos], [mapa_mun()]

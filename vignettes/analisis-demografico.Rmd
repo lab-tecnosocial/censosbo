@@ -22,7 +22,7 @@ library(ggplot2)
 
 ## Introducción
 
-Esta vignette muestra cómo usar `censosbo` para análisis demográficos con los datos reales del CPV-2024. Los ejemplos descargan datos del departamento de **Beni** (~24 MB), que se guarda en caché local tras la primera descarga.
+Esta vignette muestra cómo usar `censosbo` para análisis demográficos con los datos reales del CPV-2024. Los ejemplos descargan datos del departamento de **Beni** (~12 MB), que se guarda en caché local tras la primera descarga.
 
 ```{r descarga}
 # Descargar datos de Beni con las variables de interés
@@ -60,7 +60,9 @@ ggplot(piramide, aes(x = grupo_edad, y = n, fill = p25_sexo)) +
   geom_col(width = 0.8) +
   coord_flip() +
   scale_fill_manual(values = c("Mujer" = "#F4C430", "Hombre" = "#003087")) +
-  scale_y_continuous(labels = function(x) formatC(abs(x), format = "d", big.mark = ".")) +
+  scale_y_continuous(labels = function(x) {
+    formatC(abs(x), format = "d", big.mark = ".", decimal.mark = ",")
+  }) +
   labs(
     title    = "Pirámide poblacional — Beni, CPV-2024",
     subtitle = "Distribución por edad y sexo",
@@ -143,7 +145,7 @@ ggplot(ind, aes(x = reorder(p32_pueblo_per, pct), y = pct)) +
 
 ## Comparación nacional por departamento
 
-El siguiente ejemplo descarga todos los departamentos (~560 MB en total). Ejecuta en tu sesión de R cuando necesites datos nacionales.
+El siguiente ejemplo descarga los nueve departamentos (~282 MB en total). Ejecuta en tu sesión de R cuando necesites datos nacionales.
 
 ```{r comparacion-nacional, eval=FALSE}
 # Edad promedio por departamento (todos los datos del país)

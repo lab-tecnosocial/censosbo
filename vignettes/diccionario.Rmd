@@ -102,7 +102,9 @@ Esta clasificación está disponible también en la columna `tipo` de los
 
 ## Persona (`get_personas_2024`)
 
-Datos de cada persona empadronada: **`r nrow(codebook_meta[codebook_meta$tabla=="persona",])`** variables.
+Datos de cada persona empadronada: **`r nrow(codebook_meta[codebook_meta$tabla=="persona",])`** variables. La tabla trae una columna más, `i00`
+(identificador de vivienda/hogar), que no es una variable del cuestionario sino
+parte de la clave de unión — ver más abajo.
 
 ```{r tabla-2024-persona}
 hacer_datatable(prep_tabla_2024("persona"))
@@ -112,7 +114,7 @@ hacer_datatable(prep_tabla_2024("persona"))
 
 ## Vivienda (`get_viviendas_2024`)
 
-Características de cada vivienda: **`r nrow(codebook_meta[codebook_meta$tabla=="vivienda",])`** variables.
+Características de cada vivienda: **`r nrow(codebook_meta[codebook_meta$tabla=="vivienda",])`** variables, más `i00`.
 
 ```{r tabla-2024-vivienda}
 hacer_datatable(prep_tabla_2024("vivienda"))
@@ -140,6 +142,32 @@ hacer_datatable(prep_tabla_2024("mortalidad"))
 
 ---
 
+## Unidades censales: manzanos y comunidades (`get_unidades_2024`)
+
+Universo de las 268.604 unidades censales del CPV-2024 —manzanos urbanos y
+comunidades rurales— con su población y sus viviendas:
+**`r nrow(codebook_meta[codebook_meta$tabla=="unidad",])`** variables.
+
+```{r tabla-2024-unidad}
+hacer_datatable(prep_tabla_2024("unidad"))
+```
+
+---
+
+## Indicadores por manzano y comunidad (`get_fichas_2024`)
+
+Ficha resumen del geoportal del INE para las 150.744 unidades que la tienen
+publicada: **`r nrow(codebook_meta[codebook_meta$tabla=="ficha",])`** variables
+(194 indicadores más las 5 columnas de identificación). Todas son **conteos** de
+personas, viviendas u hogares; cada bloque temático trae su propio total, que es
+el denominador correcto. Ver `vignette("manzanos-comunidades")`.
+
+```{r tabla-2024-ficha}
+hacer_datatable(prep_tabla_2024("ficha"))
+```
+
+---
+
 ## Clave geográfica (CPV-2024)
 
 Todas las tablas del CPV-2024 comparten la **clave de hogar**:
@@ -161,8 +189,12 @@ DBI::dbGetQuery(con, "
   JOIN viviendas v ON p.idep=v.idep AND p.iprov=v.iprov
                   AND p.imun=v.imun AND p.i00=v.i00
 ")
-DBI::dbDisconnect(con)
+DBI::dbDisconnect(con, shutdown = TRUE)
 ```
+
+Las tablas `unidad` y `ficha` no usan esta clave: se identifican por su propia
+columna `codigo` de unidad censal, y traen `idep`/`iprov`/`imun` desnormalizados
+para poder agregar por territorio.
 
 ---
 

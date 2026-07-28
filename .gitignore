@@ -13,3 +13,6 @@ docs
 inst/doc
 
 dev-docs/
+
+# Figuras generadas al ejecutar knitr a mano sobre las viñetas
+figure/

@@ -34,26 +34,29 @@ remotes::install_github("lab-tecnosocial/censosbo")
 
 ## Censos disponibles
 
-| Año | Función | Registros | Variables | Disco (Parquet) | RAM (aprox.)¹ |
-|:---:|---------|----------:|----------:|----------------:|--------------:|
-| **1976** | `get_poblacion_1976()` | 4,613,419 | 46 | 63 MB | 83 MB |
-| **1976** | `get_viviendas_1976()` | 1,158,482 | 28 | 7 MB | 9 MB |
-| **1992** | `get_personas_1992()` | 6,420,792 | 54 | 135 MB | 238 MB |
-| **1992** | `get_viviendas_1992()` | 1,706,107 | 44 | 29 MB | 43 MB |
-| **1992** | `get_mortalidad_1992()` | 1,706,107 | 14 | 17 MB | 36 MB |
-| **2001** | `get_personas_2001()` | 8,274,325 | 66 | 136 MB | 316 MB |
-| **2001** | `get_viviendas_2001()` | 2,290,414 | 39 | 20 MB | 37 MB |
-| **2012** | `get_personas_2012()` | 10,059,856 | 33 | 146 MB | 279 MB |
-| **2012** | `get_viviendas_2012()` | 3,172,321 | 32 | 38 MB | 58 MB |
-| **2012** | `get_emigracion_2012()` | 489,559 | 6 | 5 MB | 11 MB |
-| **2012** | `get_discapacidad_2012()` | 342,929 | 8 | 4 MB | 8 MB |
-| **2024**² | `get_personas_2024()` | 11,365,333 | 119 | 283 MB | ~490 MB |
-| **2024**² | `get_viviendas_2024()` | 4,490,488 | 48 | 55 MB | ~111 MB |
-| **2024**² | `get_emigracion_2024()` | 500,914 | 8 | 2 MB | ~7 MB |
-| **2024**² | `get_mortalidad_2024()` | 382,731 | 10 | 2 MB | ~5 MB |
+| Año | Función | Registros | Columnas | Disco (Parquet) | RAM (aprox.)¹ |
+|:---:|---------|----------:|---------:|----------------:|--------------:|
+| **1976** | `get_poblacion_1976()` | 4,613,419 | 48 | 46 MB | ~890 MB |
+| **1976** | `get_viviendas_1976()` | 1,158,482 | 29 | 5 MB | ~135 MB |
+| **1992** | `get_personas_1992()` | 6,420,792 | 58 | 99 MB | ~1,5 GB |
+| **1992** | `get_viviendas_1992()` | 1,706,107 | 47 | 20 MB | ~330 MB |
+| **1992** | `get_mortalidad_1992()` | 1,706,107 | 17 | 11 MB | ~125 MB |
+| **2001** | `get_personas_2001()` | 8,274,325 | 70 | 135 MB | ~2,5 GB |
+| **2001** | `get_viviendas_2001()` | 2,290,414 | 42 | 21 MB | ~390 MB |
+| **2012** | `get_personas_2012()` | 10,059,856 | 41 | 120 MB | ~1,7 GB |
+| **2012** | `get_viviendas_2012()` | 3,172,321 | 35 | 26 MB | ~455 MB |
+| **2012** | `get_emigracion_2012()` | 489,559 | 9 | 4 MB | ~20 MB |
+| **2012** | `get_discapacidad_2012()` | 342,929 | 11 | 3 MB | ~17 MB |
+| **2024**² | `get_personas_2024()` | 11,365,333 | 119 | 282 MB | ~5,6 GB |
+| **2024**² | `get_viviendas_2024()` | 4,490,488 | 48 | 55 MB | ~1,0 GB |
+| **2024**² | `get_emigracion_2024()` | 500,914 | 8 | 2 MB | ~39 MB |
+| **2024**² | `get_mortalidad_2024()` | 382,731 | 10 | 2 MB | ~33 MB |
+| **2024**³ | `get_unidades_2024()` | 268,604 | 9 | 2 MB | ~16 MB |
+| **2024**³ | `get_fichas_2024()` | 150,744 | 199 | 15 MB | ~230 MB |
 
-¹ Tamaño al cargar la tabla completa con `collect()` sin filtros, medido desde metadatos Parquet.
+¹ Tamaño al cargar la tabla **completa** con `collect()` sin filtros. Por eso Arrow es el formato por defecto: `get_personas_2024()` para todo el país no cabe cómodamente en RAM, pero sí se puede filtrar y agregar sobre el Parquet.
 ² Persona 2024 está particionada en 9 archivos por departamento (4–77 MB cada uno). Disco y RAM muestran el total; en la práctica se descarga solo el/los departamentos necesarios.
+³ Datos **agregados** por manzano urbano y comunidad rural (no microdatos), del geoportal del INE. Ver `vignette("manzanos-comunidades")`.
 
 El formato **Arrow** (defecto) mantiene los datos en disco hasta que se llama `collect()`. Las tablas del CPV-2024 se unen con la clave compuesta `idep + iprov + imun + i00` (identificador de hogar).
 
@@ -69,8 +72,8 @@ codebook_meta |>
   geom_col() +
   coord_flip() +
   scale_fill_manual(
-    values = c(categorica = "#003087", numerica = "#F4C430"),
-    labels = c(categorica = "Categórica", numerica = "Numérica")
+    values = c(categorica = "#003087", numerica = "#F4C430", texto = "#9AA5B1"),
+    labels = c(categorica = "Categórica", numerica = "Numérica", texto = "Texto")
   ) +
   labs(
     title   = "Variables del CPV-2024 por tabla y tipo",
@@ -109,20 +112,23 @@ codebook_meta |>
 
 En los siguientes ejemplos se aplican después de `collect()`:
 
-```{r etiquetar-ejemplo, eval=FALSE}
+```{r etiquetar-ejemplo}
 # CPV-2024: detección automática
-get_personas_2024(departamento = "La Paz") |>
+get_personas_2024(departamento = "Pando", verbose = FALSE) |>
   count(p25_sexo, nivel_edu) |>
   collect() |>
-  etiquetar_valores()    # 1 → "Mujer", 2 → "Hombre"; 1 → "Ninguno", etc.
+  etiquetar_valores() |>    # 1 → "Mujer", 2 → "Hombre"; 1 → "Ninguno", etc.
+  head(4)
 
 # Para reportes: también renombrar columnas
-get_personas_2024(departamento = "La Paz") |>
+get_personas_2024(departamento = "Pando", verbose = FALSE) |>
   count(p25_sexo) |>
   collect() |>
   etiquetar_valores() |>
   etiquetar_variables()  # "p25_sexo" → "25. Es mujer u hombre"
+```
 
+```{r etiquetar-historico, eval=FALSE}
 # Censos históricos: mismo flujo, sin especificar año
 get_personas_1992(departamento = "07") |>
   count(P03) |>
@@ -163,8 +169,9 @@ codebook(tabla = "emigracion")
 ## Mapas coropléticos
 
 El paquete incluye geometrías sf para los 9 departamentos (`geo_departamentos`)
-y 336 municipios (`geo_municipios`) de Bolivia, disponibles sin descarga. La
-función `mapa_dep()` genera mapas coropléticos a nivel departamental:
+y 339 de los 343 municipios (`geo_municipios`) de Bolivia, disponibles sin
+descarga. La función `mapa_dep()` genera mapas coropléticos a nivel
+departamental:
 
 ```{r mapa-intro}
 # Número de municipios por departamento (solo usa datos incluidos en el paquete)
@@ -181,12 +188,10 @@ CPV-2024, ver la viñeta **[Visualización en mapas](visualizacion-mapas.html)**
 
 ## Primera descarga de microdatos (CPV-2024)
 
-```{r primera-descarga, eval=FALSE}
-# Descargar datos de Santa Cruz (~155 MB, se guarda en caché)
-personas_sc <- get_personas_2024(departamento = "Santa Cruz")
-personas_sc
-#> FileSystemDataset with 1 Parquet file
-#> 119 columns
+```{r primera-descarga}
+# Descargar datos de Pando, el departamento más pequeño (~4 MB, queda en caché)
+personas_pando <- get_personas_2024(departamento = "Pando")
+personas_pando
 ```
 
 El resultado por defecto es un **Arrow Dataset** — los datos quedan en disco, no en RAM.
@@ -222,12 +227,12 @@ Los microdatos traen solo códigos (`idep`, `iprov`, `imun`). `etiquetar_geograf
 agrega los nombres (`nombre_dep`, `nombre_prov`, `nombre_mun`) sin necesidad de
 un `left_join` manual con `municipios()`:
 
-```{r etiquetar-geo, eval=FALSE}
-get_personas_2024(departamento = "Cochabamba") |>
+```{r etiquetar-geo}
+get_personas_2024(departamento = "Pando", verbose = FALSE) |>
   count(idep, iprov, imun) |>
   collect() |>
-  etiquetar_geografia()
-#> # ... columnas nombre_dep, nombre_prov, nombre_mun añadidas
+  etiquetar_geografia() |>
+  head(5)
 ```
 
 ## Selección de variables
@@ -249,42 +254,41 @@ ds <- get_personas_2024(departamento = "Santa Cruz", as = "arrow")
 # tibble: trae a RAM (cuidado con departamentos grandes)
 df <- get_personas_2024(departamento = "Pando", as = "tibble")
 
-# DuckDB: conexión SQL
+# DuckDB: conexión SQL. Cerrar siempre con shutdown = TRUE para liberar
+# la instancia de DuckDB, no solo la conexión.
 con <- get_personas_2024(departamento = "Santa Cruz", as = "duckdb")
 DBI::dbGetQuery(con, "SELECT COUNT(*) FROM personas")
-DBI::dbDisconnect(con)
+DBI::dbDisconnect(con, shutdown = TRUE)
 ```
 
 ## Uso con dplyr
 
 Arrow es compatible con `dplyr`. Usa `etiquetar_valores()` después de `collect()`:
 
-```{r dplyr, eval=FALSE}
+```{r dplyr}
 # Distribución por sexo con etiquetas
-get_personas_2024(departamento = "Cochabamba") |>
+get_personas_2024(departamento = "Pando", verbose = FALSE) |>
   count(p25_sexo) |>
   collect() |>
   etiquetar_valores()
-#>   p25_sexo       n
-#>   <fct>      <int>
-#> 1 Hombre    993286
-#> 2 Mujer    1023071
 
 # Grupos quinquenales de edad (usar %/% — cut() no es compatible con Arrow)
-get_personas_2024(departamento = "Santa Cruz") |>
+get_personas_2024(departamento = "Pando", verbose = FALSE) |>
   filter(!is.na(p26_edad), !is.na(p25_sexo)) |>
   mutate(grupo_edad = (p26_edad %/% 5L) * 5L) |>
   count(grupo_edad, p25_sexo) |>
   collect() |>
-  etiquetar_valores()
+  etiquetar_valores() |>
+  arrange(grupo_edad) |>
+  head(6)
 ```
 
 ## Consultas SQL con DuckDB
 
-```{r duckdb, eval=FALSE}
+```{r duckdb}
 library(DBI)
 
-con <- get_personas_2024(departamento = "Santa Cruz", as = "duckdb")
+con <- get_personas_2024(departamento = "Pando", as = "duckdb", verbose = FALSE)
 
 DBI::dbGetQuery(con, "
   SELECT p25_sexo, COUNT(*) AS total, ROUND(AVG(p26_edad), 1) AS edad_prom
@@ -292,11 +296,8 @@ DBI::dbGetQuery(con, "
   GROUP BY p25_sexo
   ORDER BY p25_sexo
 ") |> etiquetar_valores()
-#>   p25_sexo   total edad_prom
-#> 1    Mujer 1540279      29.3
-#> 2   Hombre 1582326      29.0
 
-DBI::dbDisconnect(con)
+DBI::dbDisconnect(con, shutdown = TRUE)
 ```
 
 ## Censos históricos
@@ -304,9 +305,10 @@ DBI::dbDisconnect(con)
 Para acceder a censos anteriores al 2024, usa `get_censo()` o las funciones cortas por año:
 
 ```{r historicos, eval=FALSE}
-# API genérica
+# API genérica: el argumento `anio` cubre 1976, 1992, 2001, 2012 y 2024
 get_censo(2012, "persona", departamento = "07")
 get_censo(1992, "vivienda", departamento = "La Paz")
+get_censo(2024, "persona", departamento = "07")  # = get_personas_2024()
 
 # Funciones cortas equivalentes
 get_personas_2012(departamento = "07")
@@ -347,11 +349,11 @@ Los archivos originales se distribuyeron en formatos heterogéneos y fueron tran
 
 | Censo | Formato original | Conversión |
 |-------|-----------------|------------|
-| 1976 | SPSS (`.sav`) | `pyreadstat` + `pyarrow` |
-| 1992 | REDATAM (`.dic` binario + `.rbf`) | `open-redatam` CLI → CSV → Parquet |
-| 2001 | REDATAM (`.wxp` → `.dicX`) | script `.wxp`→`.dicX` + `open-redatam` → CSV → Parquet |
-| 2012 | REDATAM (`.dic` binario + `.ptr`) | `open-redatam` CLI → CSV → Parquet |
-| 2024 | CSV delimitado por `;` (~3.6 GB total) | `pandas` + `pyarrow`; persona particionada por departamento |
+| 1976 | SPSS (`.sav`) | `haven` + `arrow` (R) |
+| 1992 | REDATAM (`.dic` binario + `.rbf`) | `open-redatam` CLI → CSV → `arrow` (R) |
+| 2001 | REDATAM (`.wxp` → `.dicX`) | conversión `.wxp`→`.dicX` + `open-redatam` CLI → CSV → `arrow` (R) |
+| 2012 | REDATAM (`.dic` binario + `.ptr`) | `open-redatam` CLI → CSV → `arrow` (R) |
+| 2024 | CSV delimitado por `;` (~3.6 GB total) | `readr` + `arrow` (R); persona particionada por departamento |
 
 El formato Parquet conserva todos los registros y variables originales sin modificación de valores.
 
@@ -362,13 +364,12 @@ El formato Parquet conserva todos los registros y variables originales sin modif
 - **[Análisis temporal](analisis-temporal.html)**: comparar variables entre censos históricos.
 - **[Análisis demográfico](analisis-demografico.html)**: pirámide de edades, nivel educativo, alfabetismo.
 - **[Análisis de vivienda](analisis-vivienda.html)**: agua, energía, hacinamiento, joins personas-viviendas.
+- **[Manzanos y comunidades](manzanos-comunidades.html)**: el CPV-2024 por unidad censal, el nivel más fino disponible.
 - **[Análisis avanzado](analisis-avanzado.html)**: DuckDB, Arrow, datos más grandes que la RAM.
 - **[Visualización en mapas](visualizacion-mapas.html)**: mapas coropléticos por departamento y municipio.
 
 ## Cómo citar
 
-```{r citar, eval=FALSE}
+```{r citar}
 citation("censosbo")
 ```
-
-> Ojeda Copa, A. (2026). *censosbo: Acceso y análisis de los censos de Bolivia (1976–2024)*. R package version 1.0.0. <https://github.com/lab-tecnosocial/censosbo>

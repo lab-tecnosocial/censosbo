@@ -5,13 +5,17 @@ output: github_document
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, include = FALSE}
+# Los ejemplos se ejecutan de verdad al regenerar el README con
+# devtools::build_readme(): las salidas de abajo son reales, no ilustrativas.
+# Se usan departamentos pequeños (Pando, Beni) para que la descarga sea liviana.
 knitr::opts_chunk$set(
   collapse  = TRUE,
   comment   = "#>",
   fig.path  = "man/figures/README-",
   out.width = "100%",
-  eval      = FALSE
+  eval      = TRUE
 )
+library(censosbo)
 ```
 
 # censosbo <img src="man/figures/logo.png" align="right" height="139" alt="" />
@@ -26,7 +30,7 @@ knitr::opts_chunk$set(
 
 ## Instalación
 
-```{r install}
+```{r install, eval=FALSE}
 # install.packages("remotes")
 remotes::install_github("lab-tecnosocial/censosbo")
 ```
@@ -39,27 +43,27 @@ update_censosbo()
 
 ## Censos disponibles
 
-| Año | Función | Registros | Variables | Disco (Parquet) | RAM (aprox.)¹ |
-|:---:|---------|----------:|----------:|----------------:|--------------:|
-| **1976** | `get_poblacion_1976()` | 4,613,419 | 46 | 63 MB | 83 MB |
-| **1976** | `get_viviendas_1976()` | 1,158,482 | 28 | 7 MB | 9 MB |
-| **1992** | `get_personas_1992()` | 6,420,792 | 55 | 99 MB | ~200 MB |
-| **1992** | `get_viviendas_1992()` | 1,706,107 | 44 | 29 MB | 43 MB |
-| **1992** | `get_mortalidad_1992()` | 1,706,107 | 14 | 15 MB | ~30 MB |
-| **2001** | `get_personas_2001()` | 8,274,325 | 67 | 135 MB | ~320 MB |
-| **2001** | `get_viviendas_2001()` | 2,290,414 | 39 | 30 MB | 37 MB |
-| **2012** | `get_personas_2012()` | 10,059,856 | 38 | 165 MB | ~330 MB |
-| **2012** | `get_viviendas_2012()` | 3,172,321 | 32 | 37 MB | 58 MB |
-| **2012** | `get_emigracion_2012()` | 489,559 | 6 | 5 MB | 11 MB |
-| **2012** | `get_discapacidad_2012()` | 342,929 | 8 | 4 MB | ~10 MB |
-| **2024**² | `get_personas_2024()` | 11,365,333 | 119 | 282 MB | ~490 MB |
-| **2024**² | `get_viviendas_2024()` | 4,490,488 | 48 | 55 MB | ~111 MB |
-| **2024**² | `get_emigracion_2024()` | 500,914 | 8 | 2 MB | ~7 MB |
-| **2024**² | `get_mortalidad_2024()` | 382,731 | 10 | 2 MB | ~7 MB |
-| **2024**³ | `get_unidades_2024()` | 268,604 | 9 | 2 MB | ~25 MB |
-| **2024**³ | `get_fichas_2024()` | 150,744 | 199 | 15 MB | ~240 MB |
+| Año | Función | Registros | Columnas | Disco (Parquet) | RAM (aprox.)¹ |
+|:---:|---------|----------:|---------:|----------------:|--------------:|
+| **1976** | `get_poblacion_1976()` | 4,613,419 | 48 | 46 MB | ~890 MB |
+| **1976** | `get_viviendas_1976()` | 1,158,482 | 29 | 5 MB | ~135 MB |
+| **1992** | `get_personas_1992()` | 6,420,792 | 58 | 99 MB | ~1,5 GB |
+| **1992** | `get_viviendas_1992()` | 1,706,107 | 47 | 20 MB | ~330 MB |
+| **1992** | `get_mortalidad_1992()` | 1,706,107 | 17 | 11 MB | ~125 MB |
+| **2001** | `get_personas_2001()` | 8,274,325 | 70 | 135 MB | ~2,5 GB |
+| **2001** | `get_viviendas_2001()` | 2,290,414 | 42 | 21 MB | ~390 MB |
+| **2012** | `get_personas_2012()` | 10,059,856 | 41 | 120 MB | ~1,7 GB |
+| **2012** | `get_viviendas_2012()` | 3,172,321 | 35 | 26 MB | ~455 MB |
+| **2012** | `get_emigracion_2012()` | 489,559 | 9 | 4 MB | ~20 MB |
+| **2012** | `get_discapacidad_2012()` | 342,929 | 11 | 3 MB | ~17 MB |
+| **2024**² | `get_personas_2024()` | 11,365,333 | 119 | 282 MB | ~5,6 GB |
+| **2024**² | `get_viviendas_2024()` | 4,490,488 | 48 | 55 MB | ~1,0 GB |
+| **2024**² | `get_emigracion_2024()` | 500,914 | 8 | 2 MB | ~39 MB |
+| **2024**² | `get_mortalidad_2024()` | 382,731 | 10 | 2 MB | ~33 MB |
+| **2024**³ | `get_unidades_2024()` | 268,604 | 9 | 2 MB | ~16 MB |
+| **2024**³ | `get_fichas_2024()` | 150,744 | 199 | 15 MB | ~230 MB |
 
-¹ Tamaño al cargar la tabla completa con `collect()` sin filtros, medido desde metadatos Parquet.
+¹ Tamaño al cargar la tabla **completa** con `collect()` sin filtros. Por eso el formato Arrow es el predeterminado: para el país entero, `get_personas_2024()` no cabe cómodamente en RAM, pero sí se puede filtrar y agregar sobre el Parquet.
 ² Persona 2024 está particionada en 9 archivos por departamento (4–77 MB cada uno). Disco y RAM muestran el total; en la práctica se descarga solo el/los departamentos necesarios.
 ³ Datos **agregados** por manzano urbano y comunidad rural (no microdatos), del geoportal del INE. Ver la sección siguiente.
 
@@ -67,17 +71,19 @@ El formato **Arrow** (por defecto) mantiene los datos en el disco hasta que ejec
 
 ## Uso rápido — CPV-2024
 
-```{r ejemplo-basico}
-library(tidyverse)
+```{r ejemplo-basico, message=FALSE}
+library(dplyr)
 library(censosbo)
 
-# Grupos quinquenales de edad por sexo, Santa Cruz
-get_personas_2024(departamento = "Santa Cruz") |>
+# Grupos quinquenales de edad por sexo, Pando
+get_personas_2024(departamento = "Pando", verbose = FALSE) |>
   filter(!is.na(p26_edad), !is.na(p25_sexo)) |>
   mutate(grupo_edad = (p26_edad %/% 5) * 5) |>
   count(grupo_edad, p25_sexo) |>
   collect() |>
-  etiquetar_valores()
+  etiquetar_valores() |>
+  arrange(grupo_edad) |>
+  head(6)
 ```
 
 ## Manzanos y comunidades — el nivel más fino del CPV-2024
@@ -86,10 +92,14 @@ Los microdatos llegan hasta el municipio (343 unidades). El geoportal del INE
 publica además una **ficha resumen por unidad censal**: 268.604 manzanos urbanos
 y comunidades rurales, con 194 indicadores cada una.
 
-```{r manzanos, eval=FALSE}
+```{r manzanos}
 # Universo de unidades: población, viviendas y si tienen ficha
-get_unidades_2024(departamento = "Cochabamba", as = "tibble")
+get_unidades_2024(departamento = "Pando", as = "tibble", verbose = FALSE) |>
+  select(codigo, nombre, area, personas, viviendas, ficha) |>
+  head(4)
+```
 
+```{r manzanos-mapa, eval=FALSE}
 # Los 194 indicadores, y un mapa a nivel de manzano
 get_fichas_2024(municipio = "Sucre", as = "tibble") |>
   mutate(pct_internet = 100 * tic_internet / tic_total) |>
@@ -107,24 +117,24 @@ Detalles en `vignette("manzanos-comunidades")`.
 
 ```{r codebook-buscar}
 # Buscar variables del CPV-2024
-codebook(buscar = "educa")
-
-# Codebook para censos históricos
-codebook_2012(buscar = "instruccion")
-codebook_1992(buscar = "sexo")
+codebook(buscar = "educa") |> select(variable, tabla) |> as_tibble()
 
 # Ver códigos de una variable
 codebook_valores("p25_sexo")          # CPV-2024
 codebook_valores("P24", anio = 2012)  # Censo 2012
 ```
 
+```{r codebook-historico, eval=FALSE}
+# Codebook para censos históricos
+codebook_2012(buscar = "instruccion")
+codebook_1992(buscar = "sexo")
+```
+
 ## Etiquetas en los resultados
 
 ```{r etiquetar}
-library(dplyr)
-
-get_personas_2024(departamento = "Santa Cruz") |>
-  count(p25_sexo, nivel_edu) |>
+get_personas_2024(departamento = "Pando", verbose = FALSE) |>
+  count(p25_sexo, p40_lee) |>
   collect() |>
   etiquetar_valores() |>    # 1 → "Mujer", 2 → "Hombre"
   etiquetar_variables()     # "p25_sexo" → "25. Es mujer u hombre"
@@ -133,23 +143,34 @@ get_personas_2024(departamento = "Santa Cruz") |>
 ## Censos históricos
 
 ```{r ejemplo-historico}
-# Personas de Santa Cruz en el censo 2012
-get_personas_2012(departamento = "Santa Cruz")
+# Sexo en el censo 2012, Pando
+get_personas_2012(departamento = "Pando", verbose = FALSE) |>
+  count(P24) |>
+  collect() |>
+  etiquetar_valores()
+```
 
-# API genérica — equivalente
+```{r ejemplo-historico-2, eval=FALSE}
+# API genérica: el mismo argumento `anio` cubre 1976–2024
 get_censo(2012, "persona", departamento = "07")
+get_censo(2024, "persona", departamento = "07")  # = get_personas_2024()
 
-# Censo 1976 
-get_poblacion_1976(departamento = "Cochabamba") 
+# Censo 1976
+get_poblacion_1976(departamento = "Cochabamba")
 ```
 
 ## Análisis temporal
 
-```{r ejemplo-temporal}
+```{r ejemplo-temporal-tabla}
 # Variables comparables entre censos
-variables_armonizadas()
+variables_armonizadas() |>
+  select(variable, tabla, v1976, v1992, v2001, v2012, v2024) |>
+  as_tibble() |>
+  head(8)
+```
 
-# Nivel educativo en todo el país, 1976–2024
+```{r ejemplo-temporal, eval=FALSE}
+# Nivel educativo en todo el país, 1976–2024 (descarga ~400 MB)
 edu <- get_temporal(
   variables = c("sexo", "nivel_edu"),
   anios     = c(1976, 1992, 2001, 2012, 2024)
@@ -162,8 +183,8 @@ edu |> count(anio, nivel_edu)
 
 ```{r ejemplo-geo}
 departamentos()
-provincias("La Paz")
-municipios(departamento = "Santa Cruz") |> head(5)
+provincias("Pando")
+municipios(departamento = "Pando") |> head(5)
 ```
 
 `departamento`, `provincia` y `municipio` aceptan **código o nombre** en las
@@ -181,29 +202,27 @@ get_personas_2024(departamento = "Cochabamba") |>
   etiquetar_geografia()
 ```
 
-El paquete incluye geometrías sf para los 9 departamentos (`geo_departamentos`) y 336 municipios (`geo_municipios`) de Bolivia. Las funciones `mapa_dep()` y `mapa_mun()` generan mapas coropléticos a partir de cualquier agregación de datos del censo, y `mapa_man()` baja hasta el manzano y la comunidad dentro de un municipio (sus geometrías se descargan al caché la primera vez).
+El paquete incluye geometrías sf para los 9 departamentos (`geo_departamentos`) y 339 de los 343 municipios (`geo_municipios`) de Bolivia. Las funciones `mapa_dep()` y `mapa_mun()` generan mapas coropléticos a partir de cualquier agregación de datos del censo, y `mapa_man()` baja hasta el manzano y la comunidad dentro de un municipio (sus geometrías se descargan al caché la primera vez).
 
-```{r mapa-dep}
-library(dplyr)
-
-# mapa_dep(): nivel departamental — geometrías incluidas en el paquete
-n_mun <- geo_bolivia |>
-  count(idep, name = "n_municipios")
-mapa_dep(n_mun, "n_municipios", titulo = "Municipios por departamento")
-
+```{r mapa-mun, fig.height=5}
 # mapa_mun(): nivel municipal — geometrías incluidas en el paquete
-personas_beni <- get_personas_2024(departamento = "Beni", variables = "p26_edad") |>
+personas_beni <- get_personas_2024(departamento = "Beni", variables = "p26_edad",
+                                   verbose = FALSE) |>
   group_by(idep, iprov, imun) |>
   summarise(edad_prom = mean(p26_edad, na.rm = TRUE), .groups = "drop") |>
   collect()
+
 mapa_mun(personas_beni, "edad_prom", departamento = "Beni",
          titulo = "Edad promedio por municipio — Beni (CPV-2024)")
 ```
 
 ## Gestión del caché
 
-```{r cache}
+```{r cache-dir}
 censosbo_cache_dir()    # dónde está el caché
+```
+
+```{r cache, eval=FALSE}
 censosbo_cache_info()   # qué archivos están descargados
 censosbo_cache_clear()  # liberar espacio en disco
 update_censosbo()       # actualizar paquete y limpiar caché

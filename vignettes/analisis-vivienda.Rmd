@@ -22,7 +22,7 @@ library(ggplot2)
 
 ## Introducción
 
-Esta vignette analiza las condiciones habitacionales usando los datos de viviendas del CPV-2024. La tabla de viviendas se descarga como un único archivo (~100 MB) que incluye todos los departamentos.
+Esta vignette analiza las condiciones habitacionales usando los datos de viviendas del CPV-2024. La tabla de viviendas se descarga como un único archivo (~55 MB) que incluye todos los departamentos.
 
 ```{r descarga}
 # Descargar viviendas con variables de habitabilidad
@@ -179,7 +179,7 @@ resultado <- DBI::dbGetQuery(con, "
   ORDER BY personas DESC
 ")
 
-DBI::dbDisconnect(con)
+DBI::dbDisconnect(con, shutdown = TRUE)
 
 resultado |> etiquetar_valores()
 ```

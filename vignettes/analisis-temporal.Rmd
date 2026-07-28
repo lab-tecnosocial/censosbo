@@ -11,22 +11,35 @@ vignette: >
 knitr::opts_chunk$set(
   collapse  = TRUE,
   comment   = "#>",
-  eval      = FALSE,
+  eval      = TRUE,
   fig.width = 7,
   fig.height= 4.5
 )
 library(censosbo)
 library(dplyr)
 library(ggplot2)
+
+# Todos los ejemplos con datos se acotan a un departamento para que la viñeta
+# se compile con cifras reales sin traer a RAM los 36 millones de registros que
+# suman los cinco censos. Quitando `departamento` el resultado es nacional.
+DEP <- "Cochabamba"
 ```
 
 `censosbo` incluye funciones para comparar variables clave entre todos los censos bolivianos (1976, 1992, 2001, 2012 y 2024). Las variables originales son diferentes en cada censo; la librería aplica una armonización y devuelve un data.frame en formato largo ("tidy") con una columna `anio` que identifica el censo.
 
+> **Sobre los ejemplos de esta viñeta.** Las cifras que se muestran son reales,
+> pero están acotadas a **Cochabamba** (`departamento = DEP`, con
+> `DEP <- "Cochabamba"`): cargar los cinco censos completos del país en RAM
+> requiere varios GB. El mismo código sin el argumento `departamento` devuelve
+> las cifras nacionales. Nótese que la descarga es igual en ambos casos: los
+> censos históricos se publican en un único archivo por tabla.
+
 ## Variables y grupos disponibles
 
-```{r vars-armonizadas, eval=TRUE}
-# Lista completa de variables armonizadas
-variables_armonizadas()
+```{r vars-armonizadas}
+# Lista completa de variables armonizadas y su nombre en cada censo
+variables_armonizadas() |>
+  select(variable, tabla, armonizada, v1976, v1992, v2001, v2012, v2024)
 ```
 
 ```{r grupos, eval=TRUE}
@@ -40,7 +53,7 @@ Cada grupo combina variables complementarias para un análisis temático coheren
 
 La función acepta variables individuales o un grupo predefinido:
 
-```{r temporal-basic}
+```{r temporal-basic, eval=FALSE}
 # Por grupo temático
 datos <- get_temporal(
   grupo = "educacion",
@@ -72,8 +85,8 @@ El resultado siempre incluye las columnas `anio`, las variables solicitadas, má
 Incluye `sexo`, `edad`, `sabe_leer`, `nivel_edu`, `asistencia_escolar`.
 
 ```{r grupo-educacion}
-edu <- get_temporal(grupo = "educacion",
-                        anios = c(1992, 2001, 2012, 2024))
+edu <- get_temporal(grupo = "educacion", anios = c(1992, 2001, 2012, 2024),
+                    departamento = DEP, verbose = FALSE)
 
 # Tasa de alfabetismo por año
 edu |>
@@ -88,7 +101,7 @@ edu |>
   geom_text(aes(label = scales::percent(pct, 0.1)), vjust = -0.8, size = 3.5) +
   scale_y_continuous(labels = scales::percent_format(), limits = c(0.6, 1)) +
   scale_x_continuous(breaks = c(1992, 2001, 2012, 2024)) +
-  labs(title = "Tasa de alfabetismo (15+ años) — Bolivia",
+  labs(title = "Tasa de alfabetismo (15+ años) — Cochabamba",
        x = "Año censal", y = "% que sabe leer y escribir",
        caption = "Fuente: INE Bolivia, censos 1992–2024. Elaborado con censosbo.") +
   theme_minimal()
@@ -112,10 +125,31 @@ edu |>
   theme_minimal()
 ```
 
-```{r nivel-edu}
-# Distribución del nivel educativo
+### El universo importa: `nivel_edu` y el filtro de edad
+
+`nivel_edu` es la variable donde más se nota que armonizar los **códigos** no
+basta: hay que igualar también la **población a la que se preguntó**. En el
+CPV-2024 la variable derivada del INE solo cubre a los mayores de 18 años,
+mientras que en 1992–2012 cubre desde los 6. Sin filtrar por edad, 2024 sale
+comparativamente "más educado" solo porque los niños no están en la tabla:
+
+```{r nivel-edu-universo}
 edu |>
-  filter(!is.na(nivel_edu)) |>
+  group_by(anio) |>
+  summarise(
+    n              = n(),
+    pct_na         = round(100 * mean(is.na(nivel_edu)), 1),
+    pct_na_menor19 = round(100 * mean(is.na(nivel_edu[edad < 19])), 1),
+    .groups        = "drop"
+  )
+```
+
+Con `edad >= 19` en todos los años la serie sí es comparable:
+
+```{r nivel-edu}
+# Distribución del nivel educativo, población de 19 años o más
+edu |>
+  filter(!is.na(nivel_edu), edad >= 19) |>
   count(anio, nivel_edu) |>
   group_by(anio) |>
   mutate(pct = n / sum(n)) |>
@@ -128,12 +162,17 @@ edu |>
     name = "Nivel"
   ) +
   scale_y_continuous(labels = scales::percent_format()) +
-  labs(title = "Nivel educativo — Bolivia, 1992–2024",
+  labs(title = "Nivel educativo (19+ años) — Cochabamba, 1992–2024",
        x = "Año censal", y = "Proporción") +
   theme_minimal()
 ```
 
 > **Nota sobre asistencia escolar:** En 2001 los códigos originales estaban invertidos (1=No asiste, 2/3=Sí asiste). `censosbo` aplica la corrección automáticamente.
+>
+> **Nota sobre `estado_civil`:** el universo también cambia. En 1992 la pregunta
+> se registró para toda la población y los menores quedan como "Soltero/a"; en
+> 2001 y 2012 se aplica desde los 15 años, y en 1976 y 2024 desde los 12. Filtra
+> `edad >= 15` antes de comparar.
 
 ---
 
@@ -142,8 +181,8 @@ edu |>
 Incluye `sexo`, `edad`, `pea`, `pet`, `categoria_ocupacion`.
 
 ```{r grupo-economia}
-eco <- get_temporal(grupo = "economia",
-                        anios = c(1976, 1992, 2001, 2012, 2024))
+eco <- get_temporal(grupo = "economia", anios = c(1976, 1992, 2001, 2012, 2024),
+                    departamento = DEP, verbose = FALSE)
 
 # Categoría de ocupación entre la PEA
 eco |>
@@ -159,7 +198,7 @@ eco |>
   geom_col() +
   scale_y_continuous(labels = scales::percent_format()) +
   scale_fill_brewer(palette = "Set2") +
-  labs(title = "Categoría en el empleo por censo — Bolivia",
+  labs(title = "Categoría en el empleo por censo — Cochabamba",
        x = "Año censal", y = "% de ocupados", fill = "Categoría") +
   theme_minimal()
 ```
@@ -173,8 +212,8 @@ eco |>
 Incluye `sexo`, `edad`, `identidad_indigena`, `idioma_materno`. Solo disponible desde 2001.
 
 ```{r grupo-cultural}
-cult <- get_temporal(grupo = "cultural",
-                         anios = c(2001, 2012, 2024))
+cult <- get_temporal(grupo = "cultural", anios = c(2001, 2012, 2024),
+                     departamento = DEP, verbose = FALSE)
 
 # Autoidentificación indígena
 cult |>
@@ -223,8 +262,8 @@ Incluye `sexo`, `edad`, `migracion_nac_dpto`, `migracion_rec_dpto`.
 Las variables de migración son **derivadas**: comparan el departamento de nacimiento (o de residencia hace 5 años) con el departamento de residencia actual.
 
 ```{r grupo-migracion}
-mig <- get_temporal(grupo = "migracion",
-                        anios = c(1992, 2001, 2012, 2024))
+mig <- get_temporal(grupo = "migracion", anios = c(1992, 2001, 2012, 2024),
+                    departamento = DEP, verbose = FALSE)
 
 # Migración de nacimiento
 mig |>
@@ -260,8 +299,8 @@ Para `migracion_rec_dpto` (residencia hace 5 años), el código 4 = "no había n
 Incluye `sexo`, `edad`, `hijos_nacidos_vivos`, `hijos_sobrevivientes`. Solo significativo para mujeres 12+.
 
 ```{r grupo-fertilidad}
-fert <- get_temporal(grupo = "fertilidad",
-                         anios = c(1976, 1992, 2001, 2012, 2024))
+fert <- get_temporal(grupo = "fertilidad", anios = c(1976, 1992, 2001, 2012, 2024),
+                     departamento = DEP, verbose = FALSE)
 
 # Promedio de hijos nacidos vivos por grupo de edad
 fert |>
@@ -289,14 +328,18 @@ Para variables de la **tabla vivienda** existe una función equivalente:
 viv <- get_temporal_vivienda(
   variables = c("material_paredes", "fuente_agua", "energia_electrica",
                 "tenencia_vivienda", "habitaciones_total"),
-  anios     = c(1992, 2001, 2012, 2024)
+  anios     = c(1992, 2001, 2012, 2024),
+  departamento = DEP, verbose = FALSE
 )
+
+count(viv, anio)
 ```
 
 ### Variables de vivienda disponibles
 
-```{r vars-vivienda, eval=TRUE}
-variables_armonizadas(tabla = "vivienda")
+```{r vars-vivienda}
+variables_armonizadas(tabla = "vivienda") |>
+  select(variable, etiqueta, v1976, v1992, v2001, v2012, v2024)
 ```
 
 ### Ejemplo: evolución del acceso a servicios básicos
@@ -304,7 +347,8 @@ variables_armonizadas(tabla = "vivienda")
 ```{r servicios-basicos}
 viv_basicos <- get_temporal_vivienda(
   variables = c("fuente_agua", "energia_electrica"),
-  anios     = c(1992, 2001, 2012, 2024)
+  anios     = c(1992, 2001, 2012, 2024),
+  departamento = DEP, verbose = FALSE
 )
 
 bind_rows(
@@ -331,7 +375,8 @@ bind_rows(
 ```{r material-paredes}
 viv_mat <- get_temporal_vivienda(
   variables = c("material_paredes"),
-  anios     = c(1992, 2001, 2012, 2024)
+  anios     = c(1992, 2001, 2012, 2024),
+  departamento = DEP, verbose = FALSE
 )
 
 viv_mat |>
@@ -356,7 +401,7 @@ viv_mat |>
 
 Tanto `get_temporal()` como `get_temporal_vivienda()` aceptan un filtro por departamento:
 
-```{r por-departamento}
+```{r por-departamento, eval=FALSE}
 # Por nombre
 edu_lp <- get_temporal(grupo = "educacion",
                             anios = c(2001, 2012, 2024),
@@ -366,7 +411,7 @@ edu_lp <- get_temporal(grupo = "educacion",
 viv_sc <- get_temporal_vivienda(
   variables    = c("fuente_agua", "energia_electrica"),
   anios        = c(2012, 2024),
-  departamento = "05"   # Santa Cruz
+  departamento = "07"   # Santa Cruz
 )
 ```
 
@@ -374,7 +419,7 @@ viv_sc <- get_temporal_vivienda(
 
 ## Variables con limitaciones conocidas
 
-```{r limitaciones, eval=TRUE}
+```{r limitaciones}
 variables_armonizadas() |>
   select(variable, tabla, notas) |>
   filter(!is.na(notas)) |>
@@ -388,7 +433,8 @@ Resumen de limitaciones principales:
 | `pea`, `pet` | No disponibles en 2001 |
 | `identidad_indigena` | Solo 2001–2024 |
 | `idioma_materno` | 1992: solo flags de idioma hablado; 1976: idioma hablado, no materno |
-| `servicio_sanitario` | No disponible en 2012 |
+| `nivel_edu` | **El universo cambia**: 2024 solo cubre 19+ años; 1992–2012 desde los 6. Filtrar `edad >= 19` |
+| `estado_civil` | **El universo cambia**: 1992 incluye menores como "Soltero/a". Filtrar `edad >= 15` |
 | `habitaciones_total` | 2024: variable categórica (1=Una, 2=Dos, … 8=Ocho o más) |
 | `migracion_nac_dpto` | Variable derivada; 1992 no tiene flag para exterior |
 
@@ -402,12 +448,12 @@ Si necesitas variables no armonizadas o mayor control, accede directamente a cad
 
 ```{r manual}
 # Nivel educativo 2012 con códigos originales
-edu_2012 <- get_personas_2012() |>
+get_personas_2012(departamento = DEP, verbose = FALSE) |>
   count(nivel = P37A_NIVELNUE) |>
   collect() |>
-  mutate(anio = 2012L)
+  arrange(desc(n)) |>
+  head(5)
 
-# Ver qué variables existen en el censo 1976
-codebook_1976(tabla = "poblacion")
-codebook_2012(buscar = "nivel")
+# Ver qué variables existen en cada censo
+codebook_2012(buscar = "nivel") |> select(variable, etiqueta)
 ```

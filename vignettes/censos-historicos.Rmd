@@ -8,10 +8,12 @@ vignette: >
 ---
 
 ```{r setup, include=FALSE}
+# Los chunks se ejecutan de verdad: las salidas son reales. Los pocos que
+# descargarían archivos grandes o repiten una descarga van con eval = FALSE.
 knitr::opts_chunk$set(
   collapse  = TRUE,
   comment   = "#>",
-  eval      = FALSE
+  eval      = TRUE
 )
 library(censosbo)
 library(dplyr)
@@ -27,6 +29,11 @@ library(dplyr)
 | 1992 | `persona`, `vivienda`, `mortalidad` | ~6.4M | `idep`, `iprov`, `imun` |
 | 2001 | `persona`, `vivienda` | ~8.3M | `idep`, `iprov`, `imun` |
 | 2012 | `persona`, `vivienda`, `emigracion`, `discapacidad` | ~10M | `idep`, `iprov`, `imun` |
+| 2024 | `persona`, `vivienda`, `emigracion`, `mortalidad` | ~11.4M | `idep`, `iprov`, `imun`, `i00` |
+
+`get_censo()` acepta también `anio = 2024`: en ese caso delega en
+`get_personas_2024()` y sus funciones hermanas, así que la API es la misma para
+todos los censos. Esta viñeta se centra en los cuatro censos anteriores.
 
 Todas las tablas traen las columnas geográficas armonizadas `idep`/`iprov`/`imun`
 (mismo formato que el CPV-2024), por lo que se puede filtrar por geografía
@@ -38,8 +45,10 @@ La función principal es `get_censo(anio, tabla, ...)`. También hay funciones c
 
 ```{r api-basica}
 # API genérica — forma canónica
-get_censo(2012, "persona", departamento = "07")
+get_censo(2012, "persona", departamento = "Pando", verbose = FALSE)
+```
 
+```{r api-basica-cortas, eval=FALSE}
 # Funciones cortas equivalentes
 get_personas_2012(departamento = "07")
 get_personas_2001(departamento = "La Paz")
@@ -51,7 +60,7 @@ Los parámetros son los mismos que en `get_personas_2024()`:
 
 | Parámetro | Descripción |
 |-----------|-------------|
-| `anio` | Año del censo: 1976, 1992, 2001 o 2012 |
+| `anio` | Año del censo: 1976, 1992, 2001, 2012 o 2024 |
 | `tabla` | Nombre de la tabla (ver tabla arriba) |
 | `departamento` | Código `"01"`–`"09"` o nombre del departamento |
 | `provincia` | Código de provincia (no disponible en 1976) |
@@ -63,8 +72,8 @@ Los parámetros son los mismos que en `get_personas_2024()`:
 
 La primera llamada descarga el archivo Parquet desde GitHub Releases. Las siguientes usan el caché local:
 
-```{r descarga}
-# Primera vez: descarga ~135 MB
+```{r descarga, eval=FALSE}
+# Primera vez: descarga ~99 MB
 personas_1992 <- get_personas_1992(departamento = "07")
 
 # Siguiente vez: instantáneo (caché)
@@ -82,7 +91,7 @@ Los archivos históricos se guardan en subcarpetas por año:
 
 ## Filtros geográficos
 
-```{r filtros-geo}
+```{r filtros-geo, eval=FALSE}
 # Por departamento (nombre o código)
 get_personas_2012(departamento = "Santa Cruz")
 get_personas_2012(departamento = "07")
@@ -97,6 +106,17 @@ get_personas_2012(municipio = "Cotoca")
 get_personas_2012(departamento = "07", provincia = "01", municipio = "01")
 ```
 
+Un ejemplo real, contando personas por municipio de Pando en 2012:
+
+```{r filtros-geo-real}
+get_personas_2012(departamento = "Pando", verbose = FALSE) |>
+  count(idep, iprov, imun) |>
+  collect() |>
+  etiquetar_geografia() |>
+  arrange(desc(n)) |>
+  head(5)
+```
+
 Hay dos situaciones distintas cuando un municipio no aparece:
 
 - Si **no está en el catálogo geográfico** del paquete, es un error inmediato,
@@ -109,7 +129,7 @@ Hay dos situaciones distintas cuando un municipio no aparece:
 get_personas_1992(municipio = "100")
 ```
 
-> **Nota:** El número de municipios cambió entre censos (1992: 339, 2001: 343, 2012: 339, 2024: 344). Un código válido en un año puede no existir en otro.
+> **Nota:** El número de municipios cambió entre censos (1992: 339, 2001: 343, 2012: 339, 2024: 343). Un código válido en un año puede no existir en otro.
 
 ## Censo 1976: estructura diferente
 
@@ -124,14 +144,16 @@ expone las armonizadas `idep`/`iprov` (string `"01"`–`"09"`, como el resto):
 
 ```{r censo-1976}
 # Población del censo 1976 en el depto de Cochabamba (código 3)
-pob_cbba_76 <- get_poblacion_1976(departamento = "03")
+pob_cbba_76 <- get_poblacion_1976(departamento = "03", verbose = FALSE)
 
-# Ver las primeras columnas
+# Ver algunas columnas: p03 = sexo, p04 = edad (p02 es parentesco)
 pob_cbba_76 |>
-  select(dep, pro, can, p02_sexo = p02, p03_edad = p03) |>
+  select(dep, pro, can, sexo = p03, edad = p04) |>
   collect() |>
   head()
+```
 
+```{r censo-1976-viv, eval=FALSE}
 # Viviendas 1976
 get_viviendas_1976(departamento = "La Paz")
 ```
@@ -139,15 +161,18 @@ get_viviendas_1976(departamento = "La Paz")
 ## Consulta básica con dplyr
 
 ```{r dplyr-basico}
-# Distribución por sexo en el censo 2012, Santa Cruz
-get_personas_2012(departamento = "07") |>
+# Distribución por sexo en el censo 2012, Pando
+get_personas_2012(departamento = "Pando", verbose = FALSE) |>
   count(P24) |>   # P24 = sexo en 2012
-  collect()
+  collect() |>
+  etiquetar_valores()
 
-# Nivel educativo en el censo 2001, La Paz
-get_personas_2001(departamento = "02") |>
+# Nivel educativo en el censo 2001, Pando
+get_personas_2001(departamento = "Pando", verbose = FALSE) |>
   count(P39NIV) |>   # P39NIV = nivel de instrucción en 2001
-  collect()
+  collect() |>
+  arrange(desc(n)) |>
+  head(5)
 ```
 
 ## Codebook para censos históricos
@@ -155,46 +180,43 @@ get_personas_2001(departamento = "02") |>
 Cada censo tiene su propio diccionario. Usa `codebook(anio = ...)` o las funciones cortas:
 
 ```{r codebook-historico}
-# Ver todas las variables del censo 2012
-codebook_2012()
-
 # Buscar variables relacionadas con educación en 1992
-codebook_1992(buscar = "nivel")
+codebook_1992(buscar = "nivel") |> select(variable, etiqueta, tabla)
 
 # Variable específica en 2001
-codebook(variable = "P39NIV", anio = 2001)
+codebook(variable = "P39NIV", anio = 2001) |> select(variable, etiqueta, tipo)
 
 # Ver los códigos de una variable categórica
 codebook_valores("P24", anio = 2012)   # sexo en 2012
-codebook_valores("p02", anio = 1976)   # sexo en 1976
+codebook_valores("p03", anio = 1976)   # sexo en 1976
+```
+
+```{r codebook-historico-todo, eval=FALSE}
+# Ver todas las variables del censo 2012
+codebook_2012()
 ```
 
 ## Etiquetado de resultados
 
 `etiquetar_valores()` y `etiquetar_variables()` detectan automáticamente el censo a partir de los nombres de columna, por lo que funcionan igual para datos históricos que para el CPV-2024:
 
-```{r etiquetar-historico, eval=FALSE}
+```{r etiquetar-historico}
 # 1992: detección automática por el nombre de columna "P03"
-get_personas_1992(departamento = "07") |>
+get_personas_1992(departamento = "Pando", verbose = FALSE) |>
   count(P03) |>
   collect() |>
   etiquetar_valores() |>
   etiquetar_variables()
-#> # A tibble: 2 × 2
-#>   `Es hombre o mujer`       n
-#>   <fct>                 <int>
-#> 1 Hombre               686978
-#> 2 Mujer                677411
 
 # 2012: estado civil
-get_personas_2012(departamento = "02") |>
+get_personas_2012(departamento = "Pando", verbose = FALSE) |>
   count(P45) |>
   collect() |>
   etiquetar_valores() |>
   etiquetar_variables()
 
 # 1976: idioma que habla
-get_poblacion_1976(departamento = "03") |>
+get_poblacion_1976(departamento = "Pando", verbose = FALSE) |>
   count(p09) |>
   collect() |>
   etiquetar_valores() |>
@@ -214,7 +236,8 @@ df |> etiquetar_variables(anio = 2001)
 library(DBI)
 
 # Censo 2012 con DuckDB
-con <- get_censo(2012, "persona", departamento = "07", as = "duckdb")
+con <- get_censo(2012, "persona", departamento = "Pando", as = "duckdb",
+                 verbose = FALSE)
 
 DBI::dbGetQuery(con, "
   SELECT P24 AS sexo, COUNT(*) AS total,
@@ -223,51 +246,52 @@ DBI::dbGetQuery(con, "
   GROUP BY P24
   ORDER BY P24
 ")
-#>   sexo   total edad_prom
-#> 1    1 1311573      26.1
-#> 2    2 1346189      25.9
 
-DBI::dbDisconnect(con)
+DBI::dbDisconnect(con, shutdown = TRUE)
 ```
+
+Con `as = "duckdb"` la tabla se registra con el nombre que se pasó en `tabla`
+(`persona`, `vivienda`, …). En el CPV-2024 el nombre va en plural
+(`personas`, `viviendas`), porque `get_censo(2024, ...)` delega en
+`get_personas_2024()`.
 
 ## Selección de variables
 
+Con `variables` se piden solo las columnas necesarias. Las columnas geográficas
+que existan en la tabla (`idep`, `iprov`, `imun` y, en el CPV-2024, `i00`) se
+añaden **siempre**, haya o no filtro por departamento: son la clave para
+agregar por territorio y para unir tablas.
+
 ```{r vars}
-# Solo las variables que necesitas (más rápido)
-# Cuando se especifica departamento, idep/iprov/imun se agregan automáticamente
+# Censo 2012: solo sexo, edad y nivel educativo
 get_personas_2012(
-  departamento = "07",
-  variables    = c("P24", "P25", "P37A_NIVELNUE")
-)
-#> # idep  iprov  imun  P24  P25  P37A_NIVELNUE
+  departamento = "Pando",
+  variables    = c("P24", "P25", "P37A_NIVELNUE"),
+  verbose      = FALSE
+) |>
+  names()
 
-# Censo 2001: solo sexo, edad y nivel educativo
-# Sin departamento no se agregan columnas geográficas
-get_censo(2001, "persona",
-  variables = c("P28", "P29", "P39NIV")
-)
-#> # P28  P29  P39NIV   (sin idep/iprov/imun)
-
-# Con departamento sí se incluyen las columnas geográficas
-get_censo(2001, "persona",
-  departamento = "La Paz",
-  variables    = c("P28", "P29", "P39NIV")
-)
-#> # idep  iprov  imun  P28  P29  P39NIV
+# El censo 1976 no tiene imun (usó cantones): solo se añaden idep e iprov
+get_poblacion_1976(
+  departamento = "Pando",
+  variables    = c("p03", "p04"),
+  verbose      = FALSE
+) |>
+  names()
 ```
 
 ## Comparación entre dos censos (mismo año de referencia)
 
 ```{r comparacion-dos}
-# Distribución de sexo en 2012 y 2024 para Santa Cruz
-dep_sc <- "07"
+# Distribución de sexo en 2012 y 2024 para Pando
+dep <- "Pando"
 
-sexo_2012 <- get_personas_2012(departamento = dep_sc) |>
+sexo_2012 <- get_personas_2012(departamento = dep, verbose = FALSE) |>
   count(sexo = P24) |>
   collect() |>
   mutate(anio = 2012L)
 
-sexo_2024 <- get_personas_2024(departamento = dep_sc) |>
+sexo_2024 <- get_personas_2024(departamento = dep, verbose = FALSE) |>
   count(sexo = p25_sexo) |>
   collect() |>
   mutate(anio = 2024L)
@@ -276,6 +300,11 @@ bind_rows(sexo_2012, sexo_2024) |>
   arrange(anio, sexo)
 ```
 
+Los códigos de `sexo` coinciden por casualidad en 2012 y 2024 (1 = Mujer,
+2 = Hombre), pero en 1976, 1992 y 2001 están invertidos. Para comparar entre
+censos sin revisar los códigos año por año, usa `get_temporal()`
+(ver la viñeta **[Análisis temporal](analisis-temporal.html)**).
+
 Para comparaciones sistemáticas entre múltiples censos con variables armonizadas, ver la viñeta **[Análisis temporal](analisis-temporal.html)**.
 
 ## Tablas complementarias
@@ -283,18 +312,17 @@ Para comparaciones sistemáticas entre múltiples censos con variables armonizad
 Los censos 2012, 2001 y 1992 tienen tablas adicionales:
 
 ```{r tablas-extra}
-# Emigración internacional (2012)
-get_emigracion_2012(departamento = "07")
+# Emigración internacional (2012): registros por departamento de origen
+get_emigracion_2012(verbose = FALSE) |>
+  count(idep) |>
+  collect() |>
+  etiquetar_geografia() |>
+  arrange(desc(n)) |>
+  head(5)
 
-# Discapacidad (2012)
-get_discapacidad_2012()
-
-# Mortalidad (1992)
-get_mortalidad_1992(departamento = "02")
-
-# Emigración y discapacidad (2012)
-get_emigracion_2012(departamento = "07")
-get_discapacidad_2012(departamento = "07")
+# Discapacidad (2012) y mortalidad (1992), acotadas a un departamento
+get_discapacidad_2012(departamento = "Pando", verbose = FALSE) |> nrow()
+get_mortalidad_1992(departamento = "Pando", verbose = FALSE) |> nrow()
 ```
 
 
