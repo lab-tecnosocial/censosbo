@@ -1,3 +1,7 @@
+# La versión y el año se leen del DESCRIPTION instalado para que la cita nunca
+# se quede desfasada respecto al paquete (antes estaban fijos en "1.0.0").
+meta <- utils::packageDescription("censosbo")
+
 bibentry(
   bibtype  = "Manual",
   title    = "censosbo: Paquete de R para el acceso, análisis y visualización de datos censales en Bolivia (1976-2024)",
@@ -6,7 +10,7 @@ bibentry(
                     comment = c(organization = "Lab TecnoSocial")),
   organization = "Lab TecnoSocial",
   address  = "Cochabamba, Bolivia",
-  year     = "2026",
-  note     = "R package version 1.0.0",
+  year     = format(as.Date(meta$Date), "%Y"),
+  note     = paste("R package version", meta$Version),
   url      = "https://lab-tecnosocial.github.io/censosbo/"
 )

@@ -182,8 +182,9 @@ etiquetar_valores <- function(df, columnas = NULL, anio = NULL) {
 #'   de columna del data frame.
 #'
 #' @return El mismo `df` con los nombres de columnas reemplazados por sus
-#'   descripciones. Las columnas no encontradas en el diccionario conservan
-#'   su nombre original.
+#'   descripciones. Las columnas no encontradas en el diccionario —y las que
+#'   están pero sin descripción, como algunas variables derivadas del censo
+#'   1976— conservan su nombre original.
 #'
 #' @details
 #' Las descripciones pueden contener espacios y caracteres especiales.
@@ -224,7 +225,12 @@ etiquetar_variables <- function(df, anio = NULL) {
 
   names(df) <- vapply(names(df), function(col) {
     idx <- which(meta$variable == col)
-    if (length(idx) == 0) col else meta$etiqueta[idx[1]]
+    if (length(idx) == 0) return(col)
+    etq <- meta$etiqueta[idx[1]]
+    # Algunas variables derivadas del censo 1976 llegan sin etiqueta en el
+    # diccionario del INE. Renombrarlas a "" dejaría columnas sin nombre (y
+    # duplicadas entre sí), así que en ese caso se conserva el nombre original.
+    if (is.na(etq) || !nzchar(trimws(etq))) col else etq
   }, character(1))
   df
 }

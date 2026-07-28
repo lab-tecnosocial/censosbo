@@ -58,6 +58,24 @@ que identifica el censo de origen.
 
 Para variables de vivienda usa [get_temporal_vivienda()].
 }
+\section{Los universos poblacionales no siempre coinciden}{
+
+La armonización iguala los **códigos**, no la **población a la que se
+preguntó**. Dos variables cambian de universo entre censos y comparar sus
+distribuciones sin filtrar por edad produce conclusiones falsas:
+
+- `nivel_edu`: en el CPV-2024 la variable derivada del INE solo cubre a la
+  población de **19 años o más** residente en el país; en 1992, 2001 y 2012
+  cubre desde los 6 años. Por eso 2024 aparece con muchos más `NA`. Filtra
+  `edad >= 19` en todos los años antes de comparar.
+- `estado_civil`: en 1992 se registró para **toda** la población, incluidos
+  los menores, que quedan como "Soltero/a"; en 2001 y 2012 se aplica desde
+  los 15 años, y en 1976 y 2024 desde los 12. Filtra `edad >= 15`.
+
+La columna `notas` de [variables_armonizadas()] recoge estas advertencias
+variable por variable.
+}
+
 \examples{
 \dontrun{
 # Usando grupo temático

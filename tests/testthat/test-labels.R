@@ -72,3 +72,13 @@ test_that("las etiquetas armonizadas cubren las variables armonizadas categóric
   vtm <- get("variable_temporal_map", envir = e)
   expect_true(all(names(censosbo:::.HARMONIZED_VALUE_LABELS) %in% vtm$variable))
 })
+
+test_that("etiquetar_variables() conserva el nombre cuando la etiqueta está vacía", {
+  # 11 variables derivadas del censo 1976 no traen descripción en el diccionario
+  # del INE; renombrarlas a "" dejaría columnas sin nombre (y duplicadas).
+  df <- data.frame(nivela = 1:3, pea = c(1L, 2L, 3L), p03 = c(1L, 2L, 1L))
+  res <- etiquetar_variables(df, anio = 1976)
+  expect_true(all(nzchar(names(res))))
+  expect_equal(names(res)[1:2], c("nivela", "pea"))
+  expect_equal(names(res)[3], "SEXO")   # esta sí tiene etiqueta
+})

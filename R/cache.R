@@ -102,11 +102,14 @@ censosbo_cache_clear <- function(ask = TRUE) {
     }
   }
   fs::file_delete(parquets)
-  # Limpiar el subdirectorio de censos históricos si quedó vacío.
-  hist_dir <- fs::path(cache_dir, "historico")
-  if (fs::dir_exists(hist_dir) &&
-      length(fs::dir_ls(hist_dir, recurse = TRUE, type = "file")) == 0) {
-    fs::dir_delete(hist_dir)
+  # Limpiar los subdirectorios propios del paquete (censos históricos y fichas
+  # por manzano/comunidad) si quedaron vacíos.
+  for (sub in c("historico", "fichas")) {
+    sub_dir <- fs::path(cache_dir, sub)
+    if (fs::dir_exists(sub_dir) &&
+        length(fs::dir_ls(sub_dir, recurse = TRUE, type = "file")) == 0) {
+      fs::dir_delete(sub_dir)
+    }
   }
   cli::cli_alert_success(
     "Caché eliminado: {length(parquets)} archivo(s), {format(total_size, units = 'auto', standard = 'SI')}."

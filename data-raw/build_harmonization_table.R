@@ -63,7 +63,7 @@ add_var("parentesco", "Relación con el/la jefe/a del hogar",
 add_var("estado_civil", "Estado conyugal o civil",
         "Situación conyugal del individuo. Harmonizado a 4 categorías: 1=Soltero/a, 2=Casado/a o conviviente, 3=Separado/a o divorciado/a, 4=Viudo/a.",
         v1976 = "p05", v1992 = "P05", v2001 = "P48", v2012 = "P45", v2024 = "p53_ecivil",
-        notas = "Harmonizado al máximo nivel comparable (limitado por 1992, que agrupa casado/conviviente y separado/divorciado). 1976: 1=Soltero→1, 2=Casado→2, 3=Viudo→4, 4=Divorciado→3 (sin categoría conviviente ni separado). 1992: 1=Casado/conviviente→2, 2=Viudo→4, 3=Separado/divorciado→3, 4=Soltero→1. 2001/2012: 1=Soltero→1, 2=Casado→2, 3=Conviviente→2, 4=Separado→3, 5=Divorciado→3, 6=Viudo→4. 2024: 1=Casado→2, 2=Conviviente→2, 3=Separado→3, 4=Divorciado→3, 5=Viudo→4, 6=Soltero→1, 9=Sin especificar→NA.")
+        notas = "Harmonizado al máximo nivel comparable (limitado por 1992, que agrupa casado/conviviente y separado/divorciado). 1976: 1=Soltero→1, 2=Casado→2, 3=Viudo→4, 4=Divorciado→3 (sin categoría conviviente ni separado). 1992: 1=Casado/conviviente→2, 2=Viudo→4, 3=Separado/divorciado→3, 4=Soltero→1. 2001/2012: 1=Soltero→1, 2=Casado→2, 3=Conviviente→2, 4=Separado→3, 5=Divorciado→3, 6=Viudo→4. 2024: 1=Casado→2, 2=Conviviente→2, 3=Separado→3, 4=Divorciado→3, 5=Viudo→4, 6=Soltero→1, 9=Sin especificar→NA. ATENCIÓN — EL UNIVERSO CAMBIA ENTRE CENSOS: en 1992 la pregunta se registró para toda la población, incluidos los menores, que quedan como 'Soltero'; en 2001 y 2012 se aplica desde los 15 años y en 1976 y 2024 desde los 12. Comparar la distribución entre censos exige filtrar por edad (p.ej. edad >= 15).")
 
 # --- Educación ---
 add_var("sabe_leer", "Sabe leer y escribir",
@@ -74,7 +74,7 @@ add_var("sabe_leer", "Sabe leer y escribir",
 add_var("nivel_edu", "Nivel de instrucción",
         "Nivel educativo más alto alcanzado. Para comparación temporal se harmoniza a 4 categorías: 0=Sin instrucción, 1=Primaria, 2=Secundaria, 3=Superior",
         v1976 = "nivela", v1992 = "P12", v2001 = "P39NIV", v2012 = "P37A_NIVELNUE", v2024 = "nivel_edu",
-        notas = "1976: 'nivela' es var. derivada (1=Ninguno..5=Técnico). 1992: P12 solo cubre quienes asistieron; Ninguno se obtiene combinando con P11 en get_temporal(). 2001: P39NIV con códigos reales 11=Ninguno,12=Preescolar,13=Básico,14=Intermedio,15=Medio,16=Primaria,17=Secundaria,18=Licenciatura,19=Técnico,20=Normal,21-23=Otros. 2012: P37A_NIVELNUE usa códigos no secuenciales (1,2,3,9,10,11-18,99). La Ley Avelino Siñani (2010) cambió la nomenclatura en 2012.")
+        notas = "1976: 'nivela' es var. derivada (1=Ninguno..5=Técnico). 1992: P12 solo cubre quienes asistieron; Ninguno se obtiene combinando con P11 en get_temporal(). 2001: P39NIV con códigos reales 11=Ninguno,12=Preescolar,13=Básico,14=Intermedio,15=Medio,16=Primaria,17=Secundaria,18=Licenciatura,19=Técnico,20=Normal,21-23=Otros. 2012: P37A_NIVELNUE usa códigos no secuenciales (1,2,3,9,10,11-18,99). La Ley Avelino Siñani (2010) cambió la nomenclatura en 2012. ATENCIÓN — EL UNIVERSO CAMBIA ENTRE CENSOS: la variable derivada 'nivel_edu' del CPV-2024 solo cubre a la población de 19 años o más residente en el país, mientras que en 1992, 2001 y 2012 cubre desde los 6 años. Por eso 2024 tiene muchos más NA. Para comparar la distribución entre censos hay que filtrar edad >= 19 en todos los años.")
 
 add_var("asistencia_escolar", "Asistencia educativa actual",
         "Indica si el individuo asiste actualmente a un centro educativo. 1=Sí asiste, 2=No asiste.",

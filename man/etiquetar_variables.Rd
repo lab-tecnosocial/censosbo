@@ -15,8 +15,9 @@ de columna del data frame.}
 }
 \value{
 El mismo `df` con los nombres de columnas reemplazados por sus
-  descripciones. Las columnas no encontradas en el diccionario conservan
-  su nombre original.
+  descripciones. Las columnas no encontradas en el diccionario —y las que
+  están pero sin descripción, como algunas variables derivadas del censo
+  1976— conservan su nombre original.
 }
 \description{
 Reemplaza los nombres técnicos de las columnas (e.g., `p25_sexo`) por sus
