@@ -49,7 +49,7 @@ unidad_defs <- c(
   nombre    = "Nombre de la unidad censal",
   personas  = "Personas empadronadas en la unidad",
   viviendas = "Viviendas empadronadas en la unidad",
-  ficha     = "Si el INE libera la ficha de indicadores de esta unidad"
+  ficha     = "Lógico: si el INE libera la ficha de indicadores de esta unidad"
 )
 
 filas_unidad <- rbind(
@@ -91,13 +91,11 @@ for (i in which(nuevas$variable == "area")) {
     stringsAsFactors = FALSE
   )
 }
-for (i in which(nuevas$variable == "ficha")) {
-  nuevas$valores_codigos[[i]] <- data.frame(
-    codigo   = c("TRUE", "FALSE"),
-    etiqueta = c("Con ficha de indicadores", "Sin ficha (reserva estadística)"),
-    stringsAsFactors = FALSE
-  )
-}
+# `ficha` se deja SIN valores_codigos a propósito. Es una columna lógica y así
+# se usa: `sum(ficha)`, `personas[ficha]`, `filter(ficha)`. Si tuviera códigos,
+# `etiquetar_valores()` la convertiría en factor y todas esas operaciones
+# fallarían con "'sum' not meaningful for factors". La etiqueta ya explica qué
+# significa; traducir TRUE/FALSE no aporta nada y rompe el uso natural.
 
 # ── Patch idempotente ────────────────────────────────────────────────────────
 

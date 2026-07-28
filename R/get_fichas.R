@@ -58,6 +58,14 @@
 #' departamento ni el municipio. Por eso las columnas `idep`, `iprov` e `imun`
 #' vienen desnormalizadas, y se pueden etiquetar con [etiquetar_geografia()].
 #'
+#' La columna `personas` agregada por municipio coincide **exactamente** con
+#' [get_personas_2024()] en los 343 municipios. En cambio `viviendas` da un
+#' 0,23% menos que [get_viviendas_2024()] (4.480.201 frente a 4.490.488): el
+#' déficit es sistemático —323 municipios por debajo, ninguno por encima— y
+#' procede del propio INE, que cuenta las viviendas de forma distinta en el
+#' geoportal y en los microdatos. Para el total de viviendas de un territorio
+#' conviene usar [get_viviendas_2024()].
+#'
 #' @source
 #' Geoportal del INE Bolivia, <https://geoportal.ine.gob.bo/>.
 #'
