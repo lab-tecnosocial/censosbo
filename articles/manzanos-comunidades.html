@@ -89,8 +89,6 @@ para todo el país. Pero el INE también publica, en su <a href="https://geoport
 resumen</strong> por cada unidad censal —manzano urbano o comunidad
 rural—. Son <strong>268.604 unidades</strong>: casi mil veces más
 resolución espacial.</p>
-<p>Este artículo cubre las cuatro funciones que dan acceso a esos
-datos:</p>
 <table class="table">
 <colgroup>
 <col width="39%">
@@ -125,55 +123,84 @@ datos:</p>
 <div class="section level2">
 <h2 id="dos-tablas-no-una">Dos tablas, no una<a class="anchor" aria-label="anchor" href="#dos-tablas-no-una"></a>
 </h2>
-<p>La distinción entre las dos primeras funciones es importante y
-responde a cómo publica el INE.</p>
+<p>La distinción entre las dos primeras funciones responde a cómo
+publica el INE.</p>
 <p>De <strong>todas</strong> las unidades se conoce cuánta gente y
 cuántas viviendas hay. Pero el INE <strong>no libera la ficha detallada
 de las unidades con poca población</strong>, por reserva estadística: en
 un manzano de seis viviendas, publicar la desagregación por edad, sexo y
 nivel educativo permitiría identificar personas.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">unidades</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_unidades_2024.html">get_unidades_2024</a></span><span class="op">(</span>as <span class="op">=</span> <span class="st">"tibble"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">unidades</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_unidades_2024.html">get_unidades_2024</a></span><span class="op">(</span>as <span class="op">=</span> <span class="st">"tibble"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">unidades</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/etiquetar_valores.html">etiquetar_valores</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">area</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span></span>
-<span>    unidades <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>    con_ficha <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">ficha</span><span class="op">)</span>,</span>
-<span>    pct_unidades <span class="op">=</span> <span class="fl">100</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">ficha</span><span class="op">)</span>,</span>
-<span>    pct_poblacion <span class="op">=</span> <span class="fl">100</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">personas</span><span class="op">[</span><span class="va">ficha</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">personas</span><span class="op">)</span></span>
-<span>  <span class="op">)</span></span></code></pre></div>
-<p>El resultado es el punto clave: <strong>el 47% de los manzanos no
-tiene ficha, pero las que sí la tienen cubren el 92% de la
-población</strong>. Las unidades sin ficha son las pequeñas. Para casi
-cualquier análisis poblacional, la cobertura efectiva es alta.</p>
-<p><code>area</code> usa el mismo código que en los microdatos (1 =
-Urbana, 2 = Rural), así que <code><a href="../reference/etiquetar_valores.html">etiquetar_valores()</a></code> funciona
-igual en ambas fuentes:</p>
+<span>    unidades      <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    con_ficha     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">ficha</span><span class="op">)</span>,</span>
+<span>    pct_unidades  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fl">100</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">ficha</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>    pct_poblacion <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fl">100</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">personas</span><span class="op">[</span><span class="va">ficha</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">personas</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 5</span></span></span>
+<span><span class="co">#&gt;   area   unidades con_ficha pct_unidades pct_poblacion</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Urbana   <span style="text-decoration: underline;">247</span>429    <span style="text-decoration: underline;">131</span>801         53.3          89.5</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Rural     <span style="text-decoration: underline;">21</span>175     <span style="text-decoration: underline;">18</span>943         89.5          99.2</span></span></code></pre></div>
+<p>Ese es el punto clave para interpretar todo lo demás: <strong>se
+pierde casi la mitad de los manzanos, pero solo el 10% de la población
+urbana</strong>. Las unidades sin ficha son las pequeñas.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">unidades</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">codigo</span>, <span class="va">area</span>, <span class="va">personas</span>, <span class="va">viviendas</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/etiquetar_valores.html">etiquetar_valores</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">area</span> <span class="op">==</span> <span class="fl">1</span>, <span class="va">personas</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>tiene <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">ficha</span>, <span class="st">"Con ficha"</span>, <span class="st">"Sin ficha"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span><span class="va">personas</span>, fill <span class="op">=</span> <span class="va">tiene</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_histogram</span><span class="op">(</span>bins <span class="op">=</span> <span class="fl">55</span>, position <span class="op">=</span> <span class="st">"identity"</span>, alpha <span class="op">=</span> <span class="fl">0.75</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">scale_x_log10</span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va"><a href="https://scales.r-lib.org/reference/comma.html" class="external-link">comma</a></span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">scale_fill_manual</span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Con ficha"</span> <span class="op">=</span> <span class="st">"#2E5EA8"</span>, <span class="st">"Sin ficha"</span> <span class="op">=</span> <span class="st">"#C8CCD1"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"El corte de la reserva estadística es por tamaño"</span>,</span>
+<span>       subtitle <span class="op">=</span> <span class="st">"Manzanos urbanos, escala logarítmica"</span>,</span>
+<span>       x <span class="op">=</span> <span class="st">"Personas en el manzano"</span>, y <span class="op">=</span> <span class="st">"Manzanos"</span>, fill <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">theme_minimal</span><span class="op">(</span>base_size <span class="op">=</span> <span class="fl">11</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">theme</span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"top"</span>, panel.grid.minor <span class="op">=</span> <span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="manzanos-comunidades_files/figure-html/tamanos-1.png" class="r-plt" alt="" width="100%"></p>
+<p><code>area</code> usa el mismo código que en los microdatos (1 =
+Urbana, 2 = Rural), así que <code><a href="../reference/etiquetar_valores.html">etiquetar_valores()</a></code> se comporta
+igual en ambas fuentes.</p>
 </div>
 <div class="section level2">
 <h2 id="los-194-indicadores">Los 194 indicadores<a class="anchor" aria-label="anchor" href="#los-194-indicadores"></a>
 </h2>
-<p><code><a href="../reference/get_fichas_2024.html">get_fichas_2024()</a></code> devuelve conteos, no porcentajes ni
-microdatos. Cada bloque temático trae su propio <strong>total</strong>,
-que es el denominador correcto:</p>
+<p><code><a href="../reference/get_fichas_2024.html">get_fichas_2024()</a></code> devuelve <strong>conteos</strong>, no
+porcentajes. Cada bloque temático trae su propio total, que es el
+denominador correcto:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/codebook.html">codebook</a></span><span class="op">(</span>tabla <span class="op">=</span> <span class="st">"ficha"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"^serv_agua"</span>, <span class="va">variable</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">variable</span>, <span class="va">etiqueta</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">variable</span>, <span class="va">etiqueta</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span>
+<span><span class="co">#&gt;              variable                                    etiqueta</span></span>
+<span><span class="co">#&gt; 1     serv_agua_total Viviendas ocupadas por procedencia del agua</span></span>
+<span><span class="co">#&gt; 2   serv_agua_caneria                     Agua por cañería de red</span></span>
+<span><span class="co">#&gt; 3    serv_agua_pileta                      Agua de pileta pública</span></span>
+<span><span class="co">#&gt; 4     serv_agua_carro                    Agua de carro repartidor</span></span>
+<span><span class="co">#&gt; 5 serv_agua_pozobomba                      Agua de pozo con bomba</span></span></code></pre></div>
 <p>Con eso, calcular un porcentaje es directo:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sucre</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_fichas_2024.html">get_fichas_2024</a></span><span class="op">(</span>municipio <span class="op">=</span> <span class="st">"Sucre"</span>, as <span class="op">=</span> <span class="st">"tibble"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">sucre</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_fichas_2024.html">get_fichas_2024</a></span><span class="op">(</span>municipio <span class="op">=</span> <span class="st">"Sucre"</span>, as <span class="op">=</span> <span class="st">"tibble"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">sucre</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>pct_caneria <span class="op">=</span> <span class="fl">100</span> <span class="op">*</span> <span class="va">serv_agua_caneria</span> <span class="op">/</span> <span class="va">serv_agua_total</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>pct_caneria <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fl">100</span> <span class="op">*</span> <span class="va">serv_agua_caneria</span> <span class="op">/</span> <span class="va">serv_agua_total</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">codigo</span>, <span class="va">serv_agua_total</span>, <span class="va">serv_agua_caneria</span>, <span class="va">pct_caneria</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 4</span></span></span>
+<span><span class="co">#&gt;   codigo        serv_agua_total serv_agua_caneria pct_caneria</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 00414143787-A               9                 1        11.1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 00414466062-A               5                 0         0  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 00414475295-A              10                 1        10  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 00414483400-A              11                 6        54.5</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 00414514716-A               9                 2        22.2</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="cuidado-con-los-bloques-de-respuesta-múltiple">Cuidado con los bloques de respuesta múltiple<a class="anchor" aria-label="anchor" href="#cuidado-con-los-bloques-de-respuesta-m%C3%BAltiple"></a>
 </h3>
@@ -181,51 +208,231 @@ que es el denominador correcto:</p>
 <code>salud_lugar_*</code> (dónde acude una persona por problemas de
 salud) y <code>tic_*</code> (equipamiento del hogar). Una misma persona
 puede acudir a la farmacia y al centro público; un hogar puede tener
-radio y televisor. Sus categorías suman más que el total:</p>
+radio y televisor.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sucre</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span></span>
-<span>    total <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">salud_lugar_total_h</span> <span class="op">+</span> <span class="va">salud_lugar_total_m</span><span class="op">)</span>,</span>
-<span>    categorias <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">salud_lugar_centropublico_h</span> <span class="op">+</span> <span class="va">salud_lugar_centropublico_m</span> <span class="op">+</span></span>
-<span>      <span class="va">salud_lugar_farmacia_h</span> <span class="op">+</span> <span class="va">salud_lugar_farmacia_m</span> <span class="op">+</span></span>
-<span>      <span class="va">salud_lugar_casero_h</span> <span class="op">+</span> <span class="va">salud_lugar_casero_m</span><span class="op">)</span></span>
-<span>  <span class="op">)</span></span></code></pre></div>
-<p>En estos bloques el denominador es el total, nunca la suma de
-categorías.</p>
+<code class="sourceCode R"><span><span class="va">fichas</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_fichas_2024.html">get_fichas_2024</a></span><span class="op">(</span>as <span class="op">=</span> <span class="st">"tibble"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span>
+<span>  bloque <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"serv_agua_* (excluyente)"</span>, <span class="st">"tic_* (múltiple)"</span><span class="op">)</span>,</span>
+<span>  total  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">fichas</span><span class="op">$</span><span class="va">serv_agua_total</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">fichas</span><span class="op">$</span><span class="va">tic_total</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  suma_categorias <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">fichas</span><span class="op">$</span><span class="va">serv_agua_caneria</span> <span class="op">+</span> <span class="va">fichas</span><span class="op">$</span><span class="va">serv_agua_pileta</span> <span class="op">+</span> <span class="va">fichas</span><span class="op">$</span><span class="va">serv_agua_carro</span> <span class="op">+</span></span>
+<span>        <span class="va">fichas</span><span class="op">$</span><span class="va">serv_agua_pozobomba</span> <span class="op">+</span> <span class="va">fichas</span><span class="op">$</span><span class="va">serv_agua_pozosinbomba</span> <span class="op">+</span></span>
+<span>        <span class="va">fichas</span><span class="op">$</span><span class="va">serv_agua_vertienteno</span> <span class="op">+</span> <span class="va">fichas</span><span class="op">$</span><span class="va">serv_agua_vertientesi</span> <span class="op">+</span></span>
+<span>        <span class="va">fichas</span><span class="op">$</span><span class="va">serv_agua_lluvia</span> <span class="op">+</span> <span class="va">fichas</span><span class="op">$</span><span class="va">serv_agua_otra</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">fichas</span><span class="op">$</span><span class="va">tic_radio</span> <span class="op">+</span> <span class="va">fichas</span><span class="op">$</span><span class="va">tic_tv</span> <span class="op">+</span> <span class="va">fichas</span><span class="op">$</span><span class="va">tic_celular</span> <span class="op">+</span> <span class="va">fichas</span><span class="op">$</span><span class="va">tic_internet</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>razon <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">suma_categorias</span> <span class="op">/</span> <span class="va">total</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 4</span></span></span>
+<span><span class="co">#&gt;   bloque                     total suma_categorias razon</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> serv_agua_* (excluyente) 3<span style="text-decoration: underline;">322</span>402         3<span style="text-decoration: underline;">322</span>402  1   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> tic_* (múltiple)         3<span style="text-decoration: underline;">322</span>402         9<span style="text-decoration: underline;">785</span>275  2.95</span></span></code></pre></div>
+<p>En el primero la razón es exactamente 1; en el segundo es mucho
+mayor. Por eso el denominador correcto es siempre el total del bloque,
+nunca la suma de categorías.</p>
 </div>
+</div>
+<div class="section level2">
+<h2 id="para-qué-sirve-bajar-del-municipio-al-manzano">Para qué sirve bajar del municipio al manzano<a class="anchor" aria-label="anchor" href="#para-qu%C3%A9-sirve-bajar-del-municipio-al-manzano"></a>
+</h2>
+<p>Si la desigualdad en condiciones de vida ocurriera sobre todo
+<em>entre</em> municipios, el nivel municipal bastaría. Se puede medir:
+para cada indicador, qué fracción de la varianza entre unidades explica
+el municipio al que pertenecen, y qué fracción queda dentro.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">indicadores</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span></span>
+<span>  <span class="op">~</span><span class="va">nombre</span>,               <span class="op">~</span><span class="va">num</span>,                          <span class="op">~</span><span class="va">den</span>,</span>
+<span>  <span class="st">"Agua por cañería"</span>,    <span class="st">"serv_agua_caneria"</span>,           <span class="st">"serv_agua_total"</span>,</span>
+<span>  <span class="st">"Alcantarillado"</span>,      <span class="st">"serv_desague_alcantarillado"</span>, <span class="st">"serv_desague_total"</span>,</span>
+<span>  <span class="st">"Internet"</span>,            <span class="st">"tic_internet"</span>,                <span class="st">"tic_total"</span>,</span>
+<span>  <span class="st">"Piso de tierra"</span>,      <span class="st">"mat_piso_tierra"</span>,             <span class="st">"viv_tipo_presentes"</span>,</span>
+<span>  <span class="st">"Paredes de adobe"</span>,    <span class="st">"mat_pared_adobe"</span>,             <span class="st">"viv_tipo_presentes"</span>,</span>
+<span>  <span class="st">"Hacinamiento alto"</span>,   <span class="st">"hac_alto"</span>,                    <span class="st">"viv_tipo_presentes"</span>,</span>
+<span>  <span class="st">"Vivienda alquilada"</span>,  <span class="st">"viv_tenencia_alquilada"</span>,      <span class="st">"viv_tenencia_total"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">base</span> <span class="op">&lt;-</span> <span class="va">fichas</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>mun <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">idep</span>, <span class="va">iprov</span>, <span class="va">imun</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">viv_tipo_presentes</span> <span class="op">&gt;=</span> <span class="fl">10</span><span class="op">)</span>   <span class="co"># evita porcentajes inestables</span></span>
+<span></span>
+<span><span class="co"># R2 = SS_entre / SS_total, calculado directo para no armar una matriz de</span></span>
+<span><span class="co"># diseño de 150.000 x 343 con lm(y ~ mun).</span></span>
+<span><span class="va">r2_municipio</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">num</span>, <span class="va">den</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">d</span> <span class="op">&lt;-</span> <span class="va">base</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/transmute.html" class="external-link">transmute</a></span><span class="op">(</span><span class="va">mun</span>, y <span class="op">=</span> <span class="fl">100</span> <span class="op">*</span> <span class="va">.data</span><span class="op">[[</span><span class="va">num</span><span class="op">]</span><span class="op">]</span> <span class="op">/</span> <span class="va">.data</span><span class="op">[[</span><span class="va">den</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/is.finite.html" class="external-link">is.finite</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="va">gran_media</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">y</span><span class="op">)</span></span>
+<span>  <span class="va">ss_entre</span> <span class="op">&lt;-</span> <span class="va">d</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">mun</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span><span class="op">(</span><span class="op">)</span>, m <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>, .groups <span class="op">=</span> <span class="st">"drop"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>ss <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n</span> <span class="op">*</span> <span class="op">(</span><span class="va">m</span> <span class="op">-</span> <span class="va">gran_media</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="va">ss</span><span class="op">)</span></span>
+<span>  <span class="va">ss_entre</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">y</span> <span class="op">-</span> <span class="va">gran_media</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">varianza</span> <span class="op">&lt;-</span> <span class="va">indicadores</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rowwise.html" class="external-link">rowwise</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>entre <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fl">100</span> <span class="op">*</span> <span class="fu">r2_municipio</span><span class="op">(</span><span class="va">num</span>, <span class="va">den</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>dentro <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fl">100</span> <span class="op">-</span> <span class="va">entre</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">dentro</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">varianza</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">nombre</span>, <span class="va">entre</span>, <span class="va">dentro</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 7 × 3</span></span></span>
+<span><span class="co">#&gt;   nombre             entre dentro</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Paredes de adobe    67.5   32.5</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Piso de tierra      52.7   47.3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Alcantarillado      43.1   56.9</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Internet            39.5   60.5</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Agua por cañería    38.2   61.8</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Vivienda alquilada  24.5   75.5</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> Hacinamiento alto   17.1   82.9</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">varianza</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">nombre</span>, <span class="va">entre</span>, <span class="va">dentro</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">pivot_longer</span><span class="op">(</span><span class="op">-</span><span class="va">nombre</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">name</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"dentro"</span>, <span class="st">"entre"</span><span class="op">)</span>,</span>
+<span>                       <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Dentro del municipio"</span>, <span class="st">"Entre municipios"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>         nombre <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">nombre</span>, <span class="va">varianza</span><span class="op">$</span><span class="va">nombre</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span><span class="va">value</span>, <span class="va">nombre</span>, fill <span class="op">=</span> <span class="va">name</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_col</span><span class="op">(</span>width <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_vline</span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fl">50</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span>, color <span class="op">=</span> <span class="st">"grey30"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">scale_fill_manual</span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Dentro del municipio"</span> <span class="op">=</span> <span class="st">"#B4530F"</span>,</span>
+<span>                               <span class="st">"Entre municipios"</span> <span class="op">=</span> <span class="st">"#B8C4D4"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">scale_x_continuous</span><span class="op">(</span>labels <span class="op">=</span> \<span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"%"</span><span class="op">)</span>,</span>
+<span>                     expand <span class="op">=</span> <span class="fu">expansion</span><span class="op">(</span>mult <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.04</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Dónde está la desigualdad en condiciones de vida"</span>,</span>
+<span>       x <span class="op">=</span> <span class="st">"% de la varianza entre unidades censales"</span>, y <span class="op">=</span> <span class="cn">NULL</span>, fill <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">theme_minimal</span><span class="op">(</span>base_size <span class="op">=</span> <span class="fl">11</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">theme</span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"top"</span>, panel.grid.minor <span class="op">=</span> <span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="manzanos-comunidades_files/figure-html/descomposicion-plot-1.png" class="r-plt" alt="" width="100%"></p>
+<p>En la mayoría de los indicadores el municipio explica <strong>menos
+de la mitad</strong> de la varianza: un promedio municipal de “80% con
+agua por cañería” puede esconder manzanos al 100% y manzanos al 20%.</p>
+<p>La excepción va en la dirección esperable y es informativa: los
+<strong>materiales de construcción</strong> son regionales —el adobe
+responde al clima y a la tradición constructiva de cada zona—, mientras
+que el <strong>hacinamiento</strong> es casi enteramente intramunicipal.
+Para estudiar dónde se construye con adobe, el municipio basta; para
+estudiar quién vive hacinado, no.</p>
 </div>
 <div class="section level2">
 <h2 id="mapas-a-nivel-de-manzano">Mapas a nivel de manzano<a class="anchor" aria-label="anchor" href="#mapas-a-nivel-de-manzano"></a>
 </h2>
 <p><code><a href="../reference/mapa_man.html">mapa_man()</a></code> pide siempre un municipio: dibujar 268.604
-unidades del país entero no produce nada legible. Descarga las
-geometrías al caché la primera vez.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sucre</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>pct_internet <span class="op">=</span> <span class="fl">100</span> <span class="op">*</span> <span class="va">tic_internet</span> <span class="op">/</span> <span class="va">tic_total</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/mapa_man.html">mapa_man</a></span><span class="op">(</span><span class="st">"pct_internet"</span>,</span>
-<span>    municipio <span class="op">=</span> <span class="st">"Sucre"</span>,</span>
-<span>    titulo <span class="op">=</span> <span class="st">"Hogares con internet (%) — Sucre, 2024"</span></span>
-<span>  <span class="op">)</span></span></code></pre></div>
-<p>Los manzanos sin ficha aparecen en gris: no es un vacío de datos del
-paquete, es la reserva estadística del INE.</p>
-<p>Para trabajar con las geometrías directamente:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">manzanos</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_geo_manzanos.html">get_geo_manzanos</a></span><span class="op">(</span>municipio <span class="op">=</span> <span class="st">"Sucre"</span><span class="op">)</span></span>
-<span><span class="va">manzanos</span></span></code></pre></div>
-<p>Una advertencia sobre el área rural: el INE publica <strong>casi
-todas las comunidades como puntos</strong>, no como polígonos. No hay
-superficie que colorear, así que <code><a href="../reference/mapa_man.html">mapa_man()</a></code> las dibuja como
-puntos y para mapas rurales suele funcionar mejor graduar el tamaño:</p>
+unidades del país entero no produce nada legible. Las geometrías se
+descargan al caché la primera vez.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">rural</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_unidades_2024.html">get_unidades_2024</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Pando"</span>, area <span class="op">=</span> <span class="st">"rural"</span>, as <span class="op">=</span> <span class="st">"tibble"</span><span class="op">)</span></span>
-<span><span class="va">geo</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_geo_comunidades.html">get_geo_comunidades</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Pando"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/get_fichas_2024.html">get_fichas_2024</a></span><span class="op">(</span>municipio <span class="op">=</span> <span class="st">"Cochabamba"</span>, as <span class="op">=</span> <span class="st">"tibble"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>pct <span class="op">=</span> <span class="fl">100</span> <span class="op">*</span> <span class="va">tic_internet</span> <span class="op">/</span> <span class="va">tic_total</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/mapa_man.html">mapa_man</a></span><span class="op">(</span><span class="st">"pct"</span>, municipio <span class="op">=</span> <span class="st">"Cochabamba"</span>, area <span class="op">=</span> <span class="st">"urbano"</span>,</span>
+<span>           titulo <span class="op">=</span> <span class="st">"Hogares con internet (%) — Cochabamba, 2024"</span>,</span>
+<span>           etiqueta_fill <span class="op">=</span> <span class="st">"%"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="manzanos-comunidades_files/figure-html/mapa-internet-1.png" class="r-plt" alt="" width="100%"></p>
+<p>Los manzanos grises son los que no tienen ficha: no es un vacío del
+paquete, es la reserva estadística del INE.</p>
+<p>El mismo municipio con un indicador de materiales, que dibuja una
+ciudad distinta:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/get_fichas_2024.html">get_fichas_2024</a></span><span class="op">(</span>municipio <span class="op">=</span> <span class="st">"Cochabamba"</span>, as <span class="op">=</span> <span class="st">"tibble"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>pct <span class="op">=</span> <span class="fl">100</span> <span class="op">*</span> <span class="va">mat_pared_adobe</span> <span class="op">/</span> <span class="va">viv_tipo_presentes</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/mapa_man.html">mapa_man</a></span><span class="op">(</span><span class="st">"pct"</span>, municipio <span class="op">=</span> <span class="st">"Cochabamba"</span>, area <span class="op">=</span> <span class="st">"urbano"</span>,</span>
+<span>           titulo <span class="op">=</span> <span class="st">"Viviendas con paredes de adobe (%) — Cochabamba, 2024"</span>,</span>
+<span>           etiqueta_fill <span class="op">=</span> <span class="st">"%"</span>, paleta <span class="op">=</span> <span class="st">"Oranges"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="manzanos-comunidades_files/figure-html/mapa-adobe-1.png" class="r-plt" alt="" width="100%"></p>
+<p>Para trabajar con las geometrías directamente:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">manzanos</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_geo_manzanos.html">get_geo_manzanos</a></span><span class="op">(</span>municipio <span class="op">=</span> <span class="st">"Sucre"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">manzanos</span></span>
+<span><span class="co">#&gt; Simple feature collection with 7399 features and 5 fields</span></span>
+<span><span class="co">#&gt; Geometry type: MULTIPOLYGON</span></span>
+<span><span class="co">#&gt; Dimension:     XY</span></span>
+<span><span class="co">#&gt; Bounding box:  xmin: -65.54193 ymin: -19.13961 xmax: -65.10028 ymax: -18.70328</span></span>
+<span><span class="co">#&gt; Geodetic CRS:  WGS 84</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 7,399 × 6</span></span></span>
+<span><span class="co">#&gt;    codigo        nombre     idep  iprov imun                           geometria</span></span>
+<span><span class="co">#&gt;  <span style="color: #BCBCBC;">*</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;MULTIPOLYGON [°]&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 04144245560-A AZARI BAJA 01    01    01    (((-65.24162 -19.09746, -65.24247…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 04142703883-A AZARI BAJA 01    01    01    (((-65.23925 -19.10076, -65.2392 …</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 04139661122-A AZARI BAJA 01    01    01    (((-65.23175 -19.10594, -65.23118…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 04132568675-A AZARI BAJA 01    01    01    (((-65.23355 -19.11735, -65.23406…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 04141420362-A AZARI BAJA 01    01    01    (((-65.23171 -19.10406, -65.23187…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 04131919016-A AZARI BAJA 01    01    01    (((-65.23401 -19.11845, -65.23341…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 04143310533-A AZARI BAJA 01    01    01    (((-65.24107 -19.09722, -65.24032…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 04143788615-A AZARI BAJA 01    01    01    (((-65.24284 -19.09737, -65.24283…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 04138078691-A AZARI BAJA 01    01    01    (((-65.23221 -19.11033, -65.23214…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 04142930138-A AZARI BAJA 01    01    01    (((-65.23834 -19.09959, -65.23777…</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 7,389 more rows</span></span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="el-área-rural-puntos-no-polígonos">El área rural: puntos, no polígonos<a class="anchor" aria-label="anchor" href="#el-%C3%A1rea-rural-puntos-no-pol%C3%ADgonos"></a>
+</h2>
+<p>El INE publica <strong>casi todas las comunidades rurales como un
+punto</strong>, no como un polígono. No hay superficie que colorear, así
+que para mapas rurales suele funcionar mejor graduar el tamaño.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Linking to GEOS 3.12.1, GDAL 3.8.4, PROJ 9.4.0; sf_use_s2() is TRUE</span></span>
 <span></span>
-<span><span class="va">geo</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">rural</span>, by <span class="op">=</span> <span class="st">"codigo"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span><span class="va">geo_pando</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_geo_comunidades.html">get_geo_comunidades</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Pando"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">u_pando</span>   <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_unidades_2024.html">get_unidades_2024</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Pando"</span>, area <span class="op">=</span> <span class="st">"rural"</span>,</span>
+<span>                               as <span class="op">=</span> <span class="st">"tibble"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">geo_pando</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">u_pando</span>, by <span class="op">=</span> <span class="st">"codigo"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_sf</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>size <span class="op">=</span> <span class="va">personas</span><span class="op">)</span>, alpha <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">theme_void</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu">geom_sf</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>size <span class="op">=</span> <span class="va">personas</span>, color <span class="op">=</span> <span class="va">ficha</span><span class="op">)</span>, alpha <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">scale_size_continuous</span><span class="op">(</span>range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.4</span>, <span class="fl">5</span><span class="op">)</span>, labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va"><a href="https://scales.r-lib.org/reference/comma.html" class="external-link">comma</a></span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">scale_color_manual</span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"TRUE"</span> <span class="op">=</span> <span class="st">"#1F6F5C"</span>, <span class="st">"FALSE"</span> <span class="op">=</span> <span class="st">"#C8CCD1"</span><span class="op">)</span>,</span>
+<span>                     labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"TRUE"</span> <span class="op">=</span> <span class="st">"Con ficha"</span>, <span class="st">"FALSE"</span> <span class="op">=</span> <span class="st">"Sin ficha"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Comunidades rurales de Pando"</span>,</span>
+<span>       subtitle <span class="op">=</span> <span class="st">"El tamaño es la población empadronada"</span>,</span>
+<span>       size <span class="op">=</span> <span class="st">"Personas"</span>, color <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">theme_void</span><span class="op">(</span>base_size <span class="op">=</span> <span class="fl">11</span><span class="op">)</span></span></code></pre></div>
+<p><img src="manzanos-comunidades_files/figure-html/rural-1.png" class="r-plt" alt="" width="100%"></p>
+</div>
+<div class="section level2">
+<h2 id="el-gradiente-urbano-rural">El gradiente urbano-rural<a class="anchor" aria-label="anchor" href="#el-gradiente-urbano-rural"></a>
+</h2>
+<p>Como <code>area</code> comparte dominio con los microdatos, la
+comparación es directa.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">comparar</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">num</span>, <span class="va">den</span>, <span class="va">nombre</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">fichas</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">area</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>pct <span class="op">=</span> <span class="fl">100</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">.data</span><span class="op">[[</span><span class="va">num</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">.data</span><span class="op">[[</span><span class="va">den</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>, .groups <span class="op">=</span> <span class="st">"drop"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>indicador <span class="op">=</span> <span class="va">nombre</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span></span>
+<span>  <span class="fu">comparar</span><span class="op">(</span><span class="st">"serv_desague_alcantarillado"</span>, <span class="st">"serv_desague_total"</span>, <span class="st">"Alcantarillado"</span><span class="op">)</span>,</span>
+<span>  <span class="fu">comparar</span><span class="op">(</span><span class="st">"serv_agua_caneria"</span>, <span class="st">"serv_agua_total"</span>, <span class="st">"Agua por cañería"</span><span class="op">)</span>,</span>
+<span>  <span class="fu">comparar</span><span class="op">(</span><span class="st">"tic_internet"</span>, <span class="st">"tic_total"</span>, <span class="st">"Internet"</span><span class="op">)</span>,</span>
+<span>  <span class="fu">comparar</span><span class="op">(</span><span class="st">"serv_combustible_lena"</span>, <span class="st">"serv_combustible_total"</span>, <span class="st">"Cocina con leña"</span><span class="op">)</span>,</span>
+<span>  <span class="fu">comparar</span><span class="op">(</span><span class="st">"mat_piso_tierra"</span>, <span class="st">"viv_tipo_presentes"</span>, <span class="st">"Piso de tierra"</span><span class="op">)</span>,</span>
+<span>  <span class="fu">comparar</span><span class="op">(</span><span class="st">"edu_superior_m"</span>, <span class="st">"edu_total_m"</span>, <span class="st">"Educación superior (mujeres)"</span><span class="op">)</span>,</span>
+<span>  <span class="fu">comparar</span><span class="op">(</span><span class="st">"hac_alto"</span>, <span class="st">"viv_tipo_presentes"</span>, <span class="st">"Hacinamiento alto"</span><span class="op">)</span></span>
+<span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>area <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">area</span> <span class="op">==</span> <span class="fl">1</span>, <span class="st">"Urbana"</span>, <span class="st">"Rural"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">pivot_wider</span><span class="op">(</span>names_from <span class="op">=</span> <span class="va">area</span>, values_from <span class="op">=</span> <span class="va">pct</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>brecha <span class="op">=</span> <span class="va">Urbana</span> <span class="op">-</span> <span class="va">Rural</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html" class="external-link">across</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/where.html" class="external-link">where</a></span><span class="op">(</span><span class="va">is.numeric</span><span class="op">)</span>, \<span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">brecha</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 7 × 4</span></span></span>
+<span><span class="co">#&gt;   indicador                    Urbana Rural brecha</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Alcantarillado                 67     3.9   63.1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Cocina con leña                 2.3  59.2  -<span style="color: #BB0000;">56.9</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Piso de tierra                  7.5  61.5  -<span style="color: #BB0000;">54</span>  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Agua por cañería               85.3  36.2   49.1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Internet                       84    46.1   37.8</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Educación superior (mujeres)   41.4  10.1   31.3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> Hacinamiento alto              12.5  20.9   -<span style="color: #BB0000;">8.5</span></span></span></code></pre></div>
+<p>El alcantarillado rural es el dato más duro de la tabla. Y el
+hacinamiento va en dirección contraria a lo que suele suponerse de un
+problema urbano: es <strong>mayor en el área rural</strong>.</p>
 </div>
 <div class="section level2">
 <h2 id="cruzar-con-los-microdatos">Cruzar con los microdatos<a class="anchor" aria-label="anchor" href="#cruzar-con-los-microdatos"></a>
@@ -233,13 +440,40 @@ puntos y para mapas rurales suele funcionar mejor graduar el tamaño:</p>
 <p>Las unidades traen <code>idep</code>, <code>iprov</code> e
 <code>imun</code>, así que agregan y se cruzan con cualquier otra tabla
 del paquete:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">por_municipio</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_unidades_2024.html">get_unidades_2024</a></span><span class="op">(</span>as <span class="op">=</span> <span class="st">"tibble"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">por_municipio</span> <span class="op">&lt;-</span> <span class="va">unidades</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">idep</span>, <span class="va">iprov</span>, <span class="va">imun</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>manzanos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">area</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span>, .groups <span class="op">=</span> <span class="st">"drop"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/etiquetar_geografia.html">etiquetar_geografia</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>manzanos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">area</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span>, .groups <span class="op">=</span> <span class="st">"drop"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/mapa_mun.html">mapa_mun</a></span><span class="op">(</span><span class="va">por_municipio</span>, <span class="st">"manzanos"</span>, titulo <span class="op">=</span> <span class="st">"Manzanos urbanos por municipio"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/mapa_mun.html">mapa_mun</a></span><span class="op">(</span><span class="va">por_municipio</span>, <span class="st">"manzanos"</span>,</span>
+<span>         titulo <span class="op">=</span> <span class="st">"Manzanos urbanos por municipio (CPV-2024)"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: 4 municipio(s) en los datos no tienen geometría disponible.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Aparecerán como áreas grises en el mapa.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Son los 7 municipios del CPV-2024 sin cobertura cartográfica en la fuente.</span></span></code></pre></div>
+<p><img src="manzanos-comunidades_files/figure-html/cruce-1.png" class="r-plt" alt="" width="100%"></p>
+<p>Y sirve de comprobación: la población agregada por unidades debe
+coincidir con los microdatos. Aquí se hace con Pando para no descargar
+los 282 MB de la tabla de personas completa, pero el resultado es el
+mismo en los 343 municipios del país: <strong>11.365.333 personas,
+cuadrando uno a uno</strong>.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pob_micro</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Pando"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">idep</span>, <span class="va">iprov</span>, <span class="va">imun</span>, name <span class="op">=</span> <span class="st">"microdatos"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/get_unidades_2024.html">get_unidades_2024</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Pando"</span>, as <span class="op">=</span> <span class="st">"tibble"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">idep</span>, <span class="va">iprov</span>, <span class="va">imun</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>agregado <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">personas</span><span class="op">)</span>, .groups <span class="op">=</span> <span class="st">"drop"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">full_join</a></span><span class="op">(</span><span class="va">pob_micro</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"idep"</span>, <span class="st">"iprov"</span>, <span class="st">"imun"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span></span>
+<span>    municipios     <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    cuadran_exacto <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">agregado</span> <span class="op">==</span> <span class="va">microdatos</span><span class="op">)</span>,</span>
+<span>    poblacion      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">agregado</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 3</span></span></span>
+<span><span class="co">#&gt;   municipios cuadran_exacto poblacion</span></span>
+<span><span class="co">#&gt;        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>         15             15    <span style="text-decoration: underline;">134</span>194</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="de-dónde-salen-estos-datos">De dónde salen estos datos<a class="anchor" aria-label="anchor" href="#de-d%C3%B3nde-salen-estos-datos"></a>
@@ -247,23 +481,30 @@ del paquete:</p>
 <p>Del geoportal del INE, que genera una ficha por unidad censal a
 demanda. El paquete no consulta ese servicio: los datos se descargaron
 una vez, se consolidaron y se publican como Parquet en un release de
-GitHub. El proceso completo, reproducible, está en
-<code>data-raw/fichas/</code> del repositorio.</p>
-<p>Dos notas sobre la fuente:</p>
+GitHub. El proceso completo está en <code>data-raw/fichas/</code> del
+repositorio.</p>
+<p>Cuatro notas sobre la fuente:</p>
 <ul>
 <li>Los conteos corresponden a residentes habituales y <strong>no
 incluyen a las personas que residen en el exterior</strong>, por lo que
 difieren ligeramente de otros totales del censo.</li>
 <li>La población agregada por municipio coincide exactamente con
-<code><a href="../reference/get_personas_2024.html">get_personas_2024()</a></code>. Las <strong>viviendas</strong> dan un
-0,23% menos que <code><a href="../reference/get_viviendas_2024.html">get_viviendas_2024()</a></code>, con un déficit
-sistemático (323 municipios por debajo, ninguno por encima): el INE las
-cuenta distinto en el geoportal y en los microdatos. Para el total de
-viviendas de un territorio, usa <code><a href="../reference/get_viviendas_2024.html">get_viviendas_2024()</a></code>.</li>
+<code><a href="../reference/get_personas_2024.html">get_personas_2024()</a></code>, como se acaba de comprobar. Las
+<strong>viviendas</strong> dan un 0,23% menos que
+<code><a href="../reference/get_viviendas_2024.html">get_viviendas_2024()</a></code>, con un déficit sistemático (323
+municipios por debajo, ninguno por encima): el INE las cuenta distinto
+en el geoportal y en los microdatos. Para el total de viviendas de un
+territorio, usa <code><a href="../reference/get_viviendas_2024.html">get_viviendas_2024()</a></code>.</li>
 <li>El INE cambió su geoportal durante 2026 y la versión nueva
 (<code>idg.ine.gob.bo</code>) exige captcha para estos endpoints. Los
 datos provienen del servicio que atiende a
 <code>geoportal.ine.gob.bo</code>.</li>
+<li>Los 34 campos de materiales, hacinamiento y tipo de hogar
+(<code>mat_*</code>, <code>hac_*</code>, <code>hogar_*</code>) venían de
+una segunda ficha que ese servicio ya no entrega, y proceden de una
+captura de junio de 2026. Se validaron contra la ficha PDF oficial del
+INE y comprobando que sus seis bloques suman exactamente
+<code>viv_tipo_presentes</code> en las 150.744 fichas.</li>
 </ul>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
