@@ -1,14 +1,17 @@
-#' Accede a los microdatos de los censos históricos de Bolivia
+#' Accede a los microdatos de cualquier censo de Bolivia
 #'
 #' Descarga y/o carga desde caché los microdatos de los censos de población
-#' de Bolivia de 1976, 1992, 2001 y 2012, con filtros geográficos opcionales.
+#' de Bolivia de 1976, 1992, 2001, 2012 y 2024, con filtros geográficos
+#' opcionales. Es la API genérica por año; para el CPV-2024 delega en
+#' [get_personas_2024()] y sus funciones hermanas.
 #'
-#' @param anio Entero. Año del censo: `1976`, `1992`, `2001` o `2012`.
+#' @param anio Entero. Año del censo: `1976`, `1992`, `2001`, `2012` o `2024`.
 #' @param tabla Caracteres. Nombre de la tabla a consultar. Depende del año:
 #'   - **1976**: `"poblacion"` (o `"persona"` como alias), `"vivienda"`
 #'   - **1992**: `"persona"`, `"vivienda"`, `"mortalidad"`
 #'   - **2001**: `"persona"`, `"vivienda"`
 #'   - **2012**: `"persona"`, `"vivienda"`, `"emigracion"`, `"discapacidad"`
+#'   - **2024**: `"persona"`, `"vivienda"`, `"emigracion"`, `"mortalidad"`
 #' @param departamento Vector de caracteres. Código(s) `"01"`-`"09"` o nombre(s) del
 #'   departamento. Si `NULL`, incluye todos.
 #' @param provincia Vector de caracteres. Código(s) o nombre(s) de provincia.
@@ -43,6 +46,12 @@
 #' El censo 1976 no tuvo municipios comparables (usó cantones), por lo que solo
 #' expone `idep` e `iprov`; el filtro de `municipio` se aplica sobre el cantón.
 #'
+#' Con `anio = 2024` la llamada se redirige a [get_personas_2024()],
+#' [get_viviendas_2024()], [get_emigracion_2024()] o [get_mortalidad_2024()]
+#' según `tabla`, así que el resultado es idéntico al de esas funciones — incluido
+#' el nombre con que se registra la tabla en DuckDB (`"personas"`, `"viviendas"`,
+#' en plural, a diferencia de los censos históricos).
+#'
 #' @section Advertencia sobre municipios:
 #' El número de municipios cambió entre censos. Un código de municipio válido en
 #' 2012 puede no existir en 1992. En ese caso se emite una advertencia y se retorna
@@ -61,8 +70,11 @@
 #' # Viviendas del censo 1992 en La Paz
 #' get_censo(1992, "vivienda", departamento = "La Paz")
 #'
-#' # Todas las personas del censo 1976 (descarga completa ~63 MB)
+#' # Todas las personas del censo 1976 (descarga completa ~46 MB)
 #' get_censo(1976, "poblacion")
+#'
+#' # El CPV-2024 también: equivale a get_personas_2024(departamento = "07")
+#' get_censo(2024, "persona", departamento = "07")
 #'
 #' # Consulta SQL sobre censo 2001
 #' con <- get_censo(2001, "persona", departamento = "03", as = "duckdb")
@@ -93,7 +105,13 @@ get_censo <- function(
 
   .validate_censo_args(anio, tabla)
 
-  if (anio == 1976L) {
+  if (anio == 2024L) {
+    # El CPV-2024 no vive en los releases históricos: se delega en las funciones
+    # get_*_2024(), que ya conocen su particionado por departamento y el nombre
+    # con que registran la tabla en DuckDB.
+    .get_censo_2024(tabla, departamento, provincia, municipio,
+                    variables, as, overwrite, verbose)
+  } else if (anio == 1976L) {
     # 1976 usa geografía cantonal (columna `can`), no comparable con los
     # municipios del CPV-2024: provincia/municipio solo aceptan códigos.
     if (!is.null(provincia) && any(grepl("[^0-9]", as.character(provincia)))) {
@@ -117,6 +135,21 @@ get_censo <- function(
     geo <- .resolve_geo(departamento, provincia, municipio)
     .get_censo_redatam(anio, tabla, geo, variables, as, overwrite, verbose)
   }
+}
+
+# --- 2024: delega en las funciones específicas del CPV-2024 ---
+
+.get_censo_2024 <- function(tabla, departamento, provincia, municipio,
+                            variables, as, overwrite, verbose) {
+  fn <- switch(
+    tabla,
+    "persona"    = get_personas_2024,
+    "vivienda"   = get_viviendas_2024,
+    "emigracion" = get_emigracion_2024,
+    "mortalidad" = get_mortalidad_2024
+  )
+  fn(departamento = departamento, provincia = provincia, municipio = municipio,
+     variables = variables, as = as, overwrite = overwrite, verbose = verbose)
 }
 
 # --- 1976: columnas geográficas directas, sin REDATAM ---

@@ -13,7 +13,7 @@
 \alias{get_emigracion_2012}
 \alias{get_discapacidad_2012}
 \alias{get_censo}
-\title{Accede a los microdatos de los censos históricos de Bolivia}
+\title{Accede a los microdatos de cualquier censo de Bolivia}
 \usage{
 get_poblacion_1976(
   departamento = NULL,
@@ -161,13 +161,14 @@ Si `NULL`, devuelve todas las columnas.}
 
 \item{verbose}{Lógico. Mostrar mensajes de progreso. Por defecto `TRUE`.}
 
-\item{anio}{Entero. Año del censo: `1976`, `1992`, `2001` o `2012`.}
+\item{anio}{Entero. Año del censo: `1976`, `1992`, `2001`, `2012` o `2024`.}
 
 \item{tabla}{Caracteres. Nombre de la tabla a consultar. Depende del año:
 - **1976**: `"poblacion"` (o `"persona"` como alias), `"vivienda"`
 - **1992**: `"persona"`, `"vivienda"`, `"mortalidad"`
 - **2001**: `"persona"`, `"vivienda"`
-- **2012**: `"persona"`, `"vivienda"`, `"emigracion"`, `"discapacidad"`}
+- **2012**: `"persona"`, `"vivienda"`, `"emigracion"`, `"discapacidad"`
+- **2024**: `"persona"`, `"vivienda"`, `"emigracion"`, `"mortalidad"`}
 }
 \value{
 Según `as`:
@@ -179,7 +180,9 @@ Según `as`:
 }
 \description{
 Descarga y/o carga desde caché los microdatos de los censos de población
-de Bolivia de 1976, 1992, 2001 y 2012, con filtros geográficos opcionales.
+de Bolivia de 1976, 1992, 2001, 2012 y 2024, con filtros geográficos
+opcionales. Es la API genérica por año; para el CPV-2024 delega en
+[get_personas_2024()] y sus funciones hermanas.
 }
 \details{
 Todas las tablas exponen los códigos geográficos armonizados como columnas
@@ -190,6 +193,12 @@ directamente sobre estas columnas, igual que en el CPV-2024.
 
 El censo 1976 no tuvo municipios comparables (usó cantones), por lo que solo
 expone `idep` e `iprov`; el filtro de `municipio` se aplica sobre el cantón.
+
+Con `anio = 2024` la llamada se redirige a [get_personas_2024()],
+[get_viviendas_2024()], [get_emigracion_2024()] o [get_mortalidad_2024()]
+según `tabla`, así que el resultado es idéntico al de esas funciones — incluido
+el nombre con que se registra la tabla en DuckDB (`"personas"`, `"viviendas"`,
+en plural, a diferencia de los censos históricos).
 }
 \section{Advertencia sobre municipios}{
 
@@ -206,8 +215,11 @@ get_censo(2012, "persona", departamento = "07")
 # Viviendas del censo 1992 en La Paz
 get_censo(1992, "vivienda", departamento = "La Paz")
 
-# Todas las personas del censo 1976 (descarga completa ~63 MB)
+# Todas las personas del censo 1976 (descarga completa ~46 MB)
 get_censo(1976, "poblacion")
+
+# El CPV-2024 también: equivale a get_personas_2024(departamento = "07")
+get_censo(2024, "persona", departamento = "07")
 
 # Consulta SQL sobre censo 2001
 con <- get_censo(2001, "persona", departamento = "03", as = "duckdb")

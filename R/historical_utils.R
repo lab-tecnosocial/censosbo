@@ -1,30 +1,35 @@
 .CENSOS_HISTORICOS <- c(1976L, 1992L, 2001L, 2012L)
 
+# Todos los censos que acepta get_censo(). El CPV-2024 se sirve delegando a las
+# funciones get_*_2024() (ver .get_censo_2024), no desde los releases históricos.
+.CENSOS_DISPONIBLES <- c(.CENSOS_HISTORICOS, 2024L)
+
 .CENSO_TABLAS <- list(
   "1976" = c("poblacion", "vivienda"),
   "1992" = c("persona", "vivienda", "mortalidad"),
   "2001" = c("persona", "vivienda"),
-  "2012" = c("persona", "vivienda", "emigracion", "discapacidad")
+  "2012" = c("persona", "vivienda", "emigracion", "discapacidad"),
+  "2024" = c("persona", "vivienda", "emigracion", "mortalidad")
 )
 
-# Tamaños estimados en MB para mensajes de progreso
+# Tamaños en MiB para los mensajes de progreso, medidos sobre los archivos
+# publicados en los releases data-<anio>-v1.0.0.
 .CENSO_SIZE_MB <- list(
-  "1976" = list(poblacion = 64, vivienda = 8),
-  "1992" = list(persona = 135, vivienda = 30, mortalidad = 17,
+  "1976" = list(poblacion = 46, vivienda = 5),
+  "1992" = list(persona = 99, vivienda = 21, mortalidad = 11,
                 depto = 1, provin = 1, munic = 1),
-  "2001" = list(persona = 137, vivienda = 20,
+  "2001" = list(persona = 135, vivienda = 21,
                 depto = 1, provin = 1, munic = 1),
-  "2012" = list(persona = 147, vivienda = 39, emigracion = 6, discapacidad = 4,
+  "2012" = list(persona = 120, vivienda = 26, emigracion = 4, discapacidad = 3,
                 depto = 1, provin = 1, munic = 1)
 )
 
 .validate_censo_args <- function(anio, tabla) {
-  if (!anio %in% .CENSOS_HISTORICOS) {
-    disponibles <- .CENSOS_HISTORICOS
+  if (!anio %in% .CENSOS_DISPONIBLES) {
+    disponibles <- .CENSOS_DISPONIBLES
     cli::cli_abort(c(
       "Año de censo no válido: {.val {anio}}.",
-      "i" = "Los censos históricos disponibles son: {.val {disponibles}}.",
-      "i" = "Para el CPV-2024 usa {.fn get_personas_2024} o {.fn get_viviendas_2024}."
+      "i" = "Los censos disponibles son: {.val {disponibles}}."
     ))
   }
   validas <- .CENSO_TABLAS[[as.character(anio)]]
@@ -42,7 +47,7 @@
     cli::cli_warn(c(
       "!" = "No se encontraron datos para los filtros geográficos en el censo {anio}.",
       "i" = "Los códigos de provincia o municipio pueden no existir en ese año.",
-      "i" = "El número de municipios cambió entre censos: 1976 (cantones), 1992 (339), 2001 (343), 2012 (339)."
+      "i" = "El número de municipios cambió entre censos: 1976 (cantones), 1992 (339), 2001 (343), 2012 (339), 2024 (343)."
     ))
   }
 }
