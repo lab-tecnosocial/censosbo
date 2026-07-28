@@ -39,8 +39,9 @@ Genera un mapa coroplético de Bolivia a nivel de departamento.
 }
 \details{
 Compatible con todos los censos (1976–2024): los 9 departamentos son estables.
-Para el censo 1976, que usa la columna `dep` en lugar de `idep`, primero
-convierte: `datos$idep <- sprintf("%02d", datos$dep)`.
+Para el censo 1976, que usa la columna `dep` en lugar de `idep`, renómbrala:
+`datos$idep <- datos$dep` (los códigos se normalizan a 2 dígitos
+automáticamente, así que da igual que vengan como enteros).
 }
 \examples{
 \dontrun{

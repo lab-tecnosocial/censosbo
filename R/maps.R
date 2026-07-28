@@ -2,6 +2,11 @@
 
 # Une datos del usuario con geo_municipios, emite advertencia si faltan geometrías
 .geo_join_municipios <- function(datos) {
+  # Normaliza las claves a código de 2 dígitos: si llegan como enteros (p.ej.
+  # tras un as.integer() del usuario) el emparejamiento fallaría en silencio y
+  # el mapa saldría entero en gris.
+  for (k in c("idep", "iprov", "imun")) datos[[k]] <- .pad2(datos[[k]])
+
   geo_keys <- paste(geo_municipios$idep, geo_municipios$iprov, geo_municipios$imun)
   dat_keys <- paste(datos$idep,          datos$iprov,          datos$imun)
   sin_geo  <- sum(!dat_keys %in% geo_keys)
@@ -9,7 +14,7 @@
     cli::cli_warn(c(
       "{sin_geo} municipio(s) en los datos no tienen geometría disponible.",
       "i" = "Aparecerán como áreas grises en el mapa.",
-      "i" = "Son los 7 municipios del CPV-2024 sin cobertura cartográfica en la fuente."
+      "i" = "Son los 4 municipios del CPV-2024 sin cobertura cartográfica en la fuente."
     ))
   }
   idx    <- match(geo_keys, dat_keys)
@@ -20,6 +25,13 @@
   result
 }
 
+
+# Centroides para las etiquetas de nombres. sf avisa de que los atributos se
+# asumen constantes y de que el cálculo sobre lon/lat es aproximado; ambas cosas
+# son irrelevantes para colocar un texto, y el aviso solo alarmaría al usuario.
+.centroides <- function(x) {
+  suppressWarnings(sf::st_centroid(x))
+}
 
 # Elige escala de color según tipo de variable
 .scale_fill_auto <- function(es_categorica, paleta, na_color, etiqueta) {
@@ -51,8 +63,9 @@
 #'
 #' @details
 #' Compatible con todos los censos (1976–2024): los 9 departamentos son estables.
-#' Para el censo 1976, que usa la columna `dep` en lugar de `idep`, primero
-#' convierte: `datos$idep <- sprintf("%02d", datos$dep)`.
+#' Para el censo 1976, que usa la columna `dep` en lugar de `idep`, renómbrala:
+#' `datos$idep <- datos$dep` (los códigos se normalizan a 2 dígitos
+#' automáticamente, así que da igual que vengan como enteros).
 #'
 #' @importFrom rlang .data
 #' @export
@@ -77,6 +90,10 @@ mapa_dep <- function(datos, variable, titulo = NULL, etiqueta_fill = NULL,
     cli::cli_abort("La columna {.val {variable}} no existe en los datos.")
   }
 
+  # Igual que en mapa_mun(): `idep` puede llegar como entero (1..9) y sin
+  # normalizar no emparejaría con los códigos "01".."09" de la geografía.
+  datos$idep <- .pad2(datos$idep)
+
   idx <- match(geo_departamentos$idep, datos$idep)
   geo_datos <- geo_departamentos
   for (col in setdiff(names(datos), "idep")) geo_datos[[col]] <- datos[[col]][idx]
@@ -99,11 +116,14 @@ mapa_dep <- function(datos, variable, titulo = NULL, etiqueta_fill = NULL,
     )
 
   if (mostrar_nombres) {
-    centroides <- sf::st_centroid(geo_datos)
+    centroides <- .centroides(geo_datos)
     p <- p + ggplot2::geom_sf_text(
       data = centroides,
       ggplot2::aes(label = .data$nombre_dep),
-      size = 2.5, color = "black"
+      size = 2.5, color = "black",
+      # Las posiciones ya son puntos: sin esto ggplot2 vuelve a aplicarles
+      # st_point_on_surface y avisa de que el cálculo en lon/lat es aproximado.
+      fun.geometry = identity
     )
   }
 
@@ -130,9 +150,10 @@ mapa_dep <- function(datos, variable, titulo = NULL, etiqueta_fill = NULL,
 #' @return Un objeto `ggplot` modificable con capas adicionales de ggplot2.
 #'
 #' @details
-#' Los datos se unen con [geo_municipios] por la clave `idep + iprov + imun`.
-#' Los 7 municipios del CPV-2024 sin cobertura cartográfica generan una
-#' advertencia informativa y aparecen en gris (`na_color`).
+#' Los datos se unen con [geo_municipios] por la clave `idep + iprov + imun`;
+#' los códigos se normalizan a 2 dígitos, así que también funcionan si vienen
+#' como enteros. Los 4 municipios del CPV-2024 sin cobertura cartográfica
+#' generan una advertencia informativa y aparecen en gris (`na_color`).
 #'
 #' Para el censo 1976 (cantones), usar con precaución: los códigos de municipio
 #' pueden no corresponder a la división actual.
@@ -168,7 +189,11 @@ mapa_mun <- function(datos, variable, departamento = NULL,
     cli::cli_abort("La columna {.val {variable}} no existe en los datos.")
   }
 
+  # Normalizar antes de filtrar: `idep` puede llegar como entero y no
+  # emparejaría con los códigos "01".."09" del catálogo.
   dat <- datos
+  for (k in claves) dat[[k]] <- .pad2(dat[[k]])
+
   dep_codes <- NULL
   if (!is.null(departamento)) {
     dep_codes <- .resolve_dep_codes(departamento)
@@ -200,11 +225,12 @@ mapa_mun <- function(datos, variable, departamento = NULL,
 
   if (mostrar_nombres) {
     con_datos <- geo_datos[!is.na(geo_datos[[variable]]), ]
-    centroides <- sf::st_centroid(con_datos)
+    centroides <- .centroides(con_datos)
     p <- p + ggplot2::geom_sf_text(
       data = centroides,
       ggplot2::aes(label = .data$nombre_mun),
-      size = 1.8, color = "black"
+      size = 1.8, color = "black",
+      fun.geometry = identity   # ver mapa_dep(): evita el aviso de sf
     )
   }
 
