@@ -1,0 +1,20 @@
+topic_ine,anios,tema,nota
+Vivienda y Hogar,2024,vivienda_hogar,literal del vocabulario 2024
+Servicios Básicos del Hogar,"2024,2012,2001",servicios_basicos,literal idéntico en los dos vocabularios
+Equipamiento del Hogar,2024,equipamiento_hogar,solo en el vocabulario 2024
+Tecnologías de la información y comunicación,2024,tic,solo en el vocabulario 2024
+Población,2024,poblacion,solo en el vocabulario 2024
+Mortalidad,"2024,2012,2001",mortalidad,literal idéntico en los dos vocabularios
+Migración,"2024,2012,2001",migracion,literal idéntico en los dos vocabularios
+Emigración internacional,2024,emigracion_internacional,solo en el vocabulario 2024
+Movilidad cotidiana para trabajar,2024,movilidad_trabajo,solo en el vocabulario 2024
+Ciudadanía,2024,ciudadania,solo en el vocabulario 2024
+Salud y Seguridad Social,"2024,2012,2001",salud_seguridad_social,literal idéntico en los dos vocabularios
+Fecundidad,"2024,2012,2001",fecundidad,literal idéntico en los dos vocabularios
+Discapacidad,2024,discapacidad,solo en el vocabulario 2024
+Educación,"2024,2012,2001",educacion,literal idéntico en los dos vocabularios
+Idiomas,2024,idiomas,solo en el vocabulario 2024
+Autoidentificación,2024,autoidentificacion,solo en el vocabulario 2024
+Características económicas,2024,caracteristicas_economicas,literal del vocabulario 2024
+Hogar y/o Vivienda,"2012,2001",vivienda_hogar,renombrado a `Vivienda y Hogar` en 2024
+"Empleo, Ocupación y Actividad Económica","2012,2001",caracteristicas_economicas,renombrado a `Características económicas` en 2024

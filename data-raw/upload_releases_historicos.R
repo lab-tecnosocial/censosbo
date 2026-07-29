@@ -11,6 +11,8 @@
 library(piggyback)
 
 REPO <- "lab-tecnosocial/censosbo"
+# Los `diccionario_variables.parquet` de los cuatro censos llevan la taxonomía
+# temática desde la v1.5.0 (el ANDA publica DDI de los cinco estudios).
 BASE <- "original-data/r/censos-historicos"
 
 # Mapa: anio → tag del release + archivos a subir

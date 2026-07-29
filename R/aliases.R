@@ -135,30 +135,43 @@ get_discapacidad_2012 <- function(departamento = NULL, provincia = NULL,
 
 #' @rdname codebook
 #' @export
-codebook_1976 <- function(variable = NULL, tabla = NULL, buscar = NULL) {
-  codebook(variable = variable, tabla = tabla, buscar = buscar, anio = 1976L)
+codebook_1976 <- function(variable = NULL, tabla = NULL, buscar = NULL,
+                          tema = NULL, origen = NULL) {
+  codebook(variable = variable, tabla = tabla, buscar = buscar, anio = 1976L,
+           tema = tema, origen = origen)
 }
 
 #' @rdname codebook
 #' @export
-codebook_1992 <- function(variable = NULL, tabla = NULL, buscar = NULL) {
-  codebook(variable = variable, tabla = tabla, buscar = buscar, anio = 1992L)
+codebook_1992 <- function(variable = NULL, tabla = NULL, buscar = NULL,
+                          tema = NULL, origen = NULL) {
+  codebook(variable = variable, tabla = tabla, buscar = buscar, anio = 1992L,
+           tema = tema, origen = origen)
+}
+
+# Los cinco aceptan `tema` y `origen`. Solo el de 2024 acepta `capitulo`: los
+# capítulos son los de su cuestionario, y los anteriores tienen otra estructura.
+
+#' @rdname codebook
+#' @export
+codebook_2001 <- function(variable = NULL, tabla = NULL, buscar = NULL,
+                          tema = NULL, origen = NULL) {
+  codebook(variable = variable, tabla = tabla, buscar = buscar, anio = 2001L,
+           tema = tema, origen = origen)
 }
 
 #' @rdname codebook
 #' @export
-codebook_2001 <- function(variable = NULL, tabla = NULL, buscar = NULL) {
-  codebook(variable = variable, tabla = tabla, buscar = buscar, anio = 2001L)
+codebook_2012 <- function(variable = NULL, tabla = NULL, buscar = NULL,
+                          tema = NULL, origen = NULL) {
+  codebook(variable = variable, tabla = tabla, buscar = buscar, anio = 2012L,
+           tema = tema, origen = origen)
 }
 
 #' @rdname codebook
 #' @export
-codebook_2012 <- function(variable = NULL, tabla = NULL, buscar = NULL) {
-  codebook(variable = variable, tabla = tabla, buscar = buscar, anio = 2012L)
-}
-
-#' @rdname codebook
-#' @export
-codebook_2024 <- function(variable = NULL, tabla = NULL, buscar = NULL) {
-  codebook(variable = variable, tabla = tabla, buscar = buscar, anio = 2024L)
+codebook_2024 <- function(variable = NULL, tabla = NULL, buscar = NULL,
+                          tema = NULL, capitulo = NULL, origen = NULL) {
+  codebook(variable = variable, tabla = tabla, buscar = buscar, anio = 2024L,
+           tema = tema, capitulo = capitulo, origen = origen)
 }

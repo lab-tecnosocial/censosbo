@@ -1,0 +1,8 @@
+capitulo,etiqueta,descripcion,orden
+A,Ubicación e identificación,"Datos del mapa y la dirección de la vivienda. En el paquete aloja además las claves geográficas y los identificadores de registro, que no son preguntas del cuestionario.",1
+B,Tipo de vivienda,"Tipo de vivienda (particular, colectiva o sin vivienda) y condición de ocupación. Preguntas 1 y 2.",2
+C,Características de la vivienda,"Materiales, servicios básicos, espacios, tenencia, equipamiento del hogar y TIC. Solo se aplicó a viviendas con personas presentes. Preguntas 3 a 19.",3
+D,Emigración internacional,Bolivianas y bolivianos que vivían en el hogar y ahora residen en el exterior. Pregunta 20.,4
+E,Mortalidad,Personas fallecidas en los cinco años previos al censo. Pregunta 21.,5
+F,Listado de personas,"Enumeración de las personas que pasaron la noche anterior en la vivienda. Preguntas 22 y 23; no llegan a los microdatos publicados, así que ninguna variable cae en este capítulo.",6
+G,Características de cada persona,"Edad, sexo, educación, idiomas, autoidentificación, migración, salud, empleo y fecundidad. Preguntas 24 a 59.",7

@@ -159,12 +159,36 @@
   # Solo advertir sobre columnas explícitamente solicitadas por el usuario (no geo_always)
   missing_user <- setdiff(variables, available)
   if (length(missing_user) > 0) {
+    # Si la columna no está aquí pero sí en otra tabla, decirlo: es el error más
+    # probable al usar vars_tema(), porque muchos temas abarcan varias tablas y es
+    # fácil pasarle a get_personas_2024() una variable de vivienda.
+    otras <- .tablas_de_variables(missing_user)
     cli::cli_warn(c(
       "Columnas no encontradas: {.val {missing_user}}",
+      if (length(otras)) c("i" = "{otras}"),
       "i" = "Usa {.code codebook()} para ver las variables disponibles."
     ))
   }
   dplyr::select(ds, dplyr::all_of(intersect(cols, available)))
+}
+
+# Mensajes del tipo "v07_aguapro existe en la tabla vivienda; usa
+# get_viviendas_2024()", para las columnas que el usuario pidió y no están en la
+# tabla consultada pero sí en otra del mismo censo.
+.tablas_de_variables <- function(vars) {
+  hits <- codebook_meta[tolower(codebook_meta$variable) %in% tolower(vars), ]
+  if (nrow(hits) == 0) return(character())
+  getter <- c(persona = "get_personas_2024()", vivienda = "get_viviendas_2024()",
+              emigracion = "get_emigracion_2024()", mortalidad = "get_mortalidad_2024()",
+              unidad = "get_unidades_2024()", ficha = "get_fichas_2024()")
+  vapply(split(hits, tolower(hits$variable)), function(h) {
+    tablas <- unique(h$tabla)
+    fn <- stats::na.omit(unname(getter[tablas]))
+    sprintf("%s existe en %s%s", h$variable[1],
+            if (length(tablas) == 1) paste("la tabla", tablas) else
+              paste("las tablas", paste(tablas, collapse = ", ")),
+            if (length(fn) == 1) paste0("; usa ", fn) else "")
+  }, character(1), USE.NAMES = FALSE)
 }
 
 # ¿La consulta arrow no tiene filas? Se comprueba de forma barata trayendo solo

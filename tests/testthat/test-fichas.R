@@ -128,3 +128,71 @@ test_that("mapa_man valida sus argumentos antes de tocar la red", {
     "codigo"
   )
 })
+
+# ─── bloque y denominador (antes vivían fuera del paquete) ───────────────────
+# La agrupación por bloque y el denominador de cada indicador se mantenían a mano
+# en `dicc_fichas.csv`, byte-idéntico en censos-explorer y en q-censosbo. Ahora
+# se generan aquí desde data-raw/fichas/campos.csv. El fixture es ese CSV, usado
+# como referencia para comprobar que el port no cambió ni una celda.
+
+DICC_V1 <- utils::read.csv(
+  testthat::test_path("fixtures", "dicc_fichas_v1.csv"),
+  stringsAsFactors = FALSE, na.strings = ""
+)
+
+test_that("los 194 indicadores tienen bloque, y solo ellos", {
+  ficha <- codebook(tabla = "ficha")
+  unidad <- codebook(tabla = "unidad")
+  expect_false(anyNA(ficha$bloque))
+  expect_false(anyNA(unidad$bloque))
+  # Fuera de las fichas, la columna está vacía.
+  otras <- codebook_meta[!codebook_meta$tabla %in% c("ficha", "unidad"), ]
+  expect_true(all(is.na(otras$bloque)))
+})
+
+test_that("todo bloque está declarado en censo_bloques_meta", {
+  usados <- unique(c(codebook(tabla = "ficha")$bloque, codebook(tabla = "unidad")$bloque))
+  expect_identical(setdiff(usados, censo_bloques_meta$bloque), character(0))
+  expect_identical(setdiff(censo_bloques_meta$bloque, usados), character(0))
+})
+
+test_that("censo_bloques_meta apunta a temas que existen", {
+  expect_identical(setdiff(censo_bloques_meta$tema, censo_temas_meta$tema), character(0))
+  expect_equal(nrow(censo_bloques_meta), 15)
+})
+
+test_that("el bloque de cada indicador coincide con el que usaban los consumidores", {
+  ficha <- codebook(tabla = "ficha")
+  # El CSV incluye 55 filas derivadas de "ambos sexos" que no son columnas reales
+  # del parquet y por tanto no están (ni deben estar) en el codebook.
+  ref <- DICC_V1[DICC_V1$variable %in% ficha$variable, ]
+  expect_gt(nrow(ref), 100)
+  esperado <- ref$bloque
+  actual <- ficha$bloque[match(ref$variable, ficha$variable)]
+  expect_identical(actual, esperado)
+})
+
+test_that("el denominador reproduce exactamente el del CSV que se mantenía a mano", {
+  ficha <- codebook(tabla = "ficha")
+  ref <- DICC_V1[DICC_V1$variable %in% ficha$variable, ]
+  esperado <- ref$denominador                       # NA donde la variable es un total
+  actual <- ficha$denominador[match(ref$variable, ficha$variable)]
+  expect_identical(actual, esperado)
+})
+
+test_that("cada denominador apunta a una variable real de la misma tabla", {
+  ficha <- codebook(tabla = "ficha")
+  den <- stats::na.omit(ficha$denominador)
+  expect_identical(setdiff(den, ficha$variable), character(0))
+  # Los totales no tienen denominador: son la base de los demás.
+  totales <- grepl("_total", ficha$variable, fixed = TRUE)
+  expect_true(all(is.na(ficha$denominador[totales])))
+})
+
+test_that("los indicadores de ficha tienen tema y universo", {
+  ficha <- codebook(tabla = "ficha")
+  expect_false(anyNA(ficha$tema))
+  # Los identificadores no tienen universo analítico; el resto sí.
+  con_universo <- ficha$origen != "identificador"
+  expect_false(anyNA(ficha$universo[con_universo]))
+})

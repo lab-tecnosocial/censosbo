@@ -18,7 +18,12 @@ DIR_OUT <- "original-data/r/cpv-2024/parquets"
 PERSONA_DEPS <- sprintf("persona_dep%02d.parquet", 1:9)
 
 # Diccionarios generados desde el Excel del INE
-DICTS <- c("diccionario_variables.parquet", "diccionario_etiquetas.parquet")
+# El `_v2` añade la taxonomía temática y los metadatos de contexto. Se publica
+# JUNTO al v1, no en su lugar: la caché del plugin de QGIS no se invalida nunca, así
+# que sobrescribir el v1 dejaría a los usuarios existentes con un diccionario
+# congelado. Ver dev-docs/consumidores-taxonomia.md.
+DICTS <- c("diccionario_variables.parquet", "diccionario_variables_v2.parquet",
+           "diccionario_etiquetas.parquet")
 
 # vivienda, emigracion, mortalidad se leen del caché (no cambiaron)
 CACHE <- file.path(

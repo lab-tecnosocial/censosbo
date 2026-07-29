@@ -134,8 +134,15 @@ etiquetar_valores <- function(df, columnas = NULL, anio = NULL) {
     idx <- which(meta$variable == col & meta$tipo == "categorica")
     if (length(idx) == 0) next
 
-    vc <- meta$valores_codigos[[idx[1]]]
-    if (is.null(vc) || nrow(vc) == 0) next
+    # Cuando la variable existe en varias tablas (idep, iprov, imun, area...) no
+    # todas traen las categorías: en el censo 2001, `idep` las tiene en `persona`
+    # y no en `vivienda`. Hay que quedarse con la primera fila que sí las tenga, o
+    # se dejaría sin etiquetar una columna perfectamente etiquetable.
+    con_valores <- idx[vapply(meta$valores_codigos[idx],
+                              function(v) !is.null(v) && NROW(v) > 0, logical(1))]
+    if (length(con_valores) == 0) next
+
+    vc <- meta$valores_codigos[[con_valores[1]]]
 
     orig <- as.character(df[[col]])
     f <- factor(orig, levels = vc$codigo, labels = vc$etiqueta)

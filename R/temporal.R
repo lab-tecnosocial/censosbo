@@ -15,6 +15,9 @@
 #'     (no comparables, p.ej. `parentesco`)}
 #'   \item{v1976, v1992, v2001, v2012, v2024}{Nombre de la columna en cada censo (`NA` si no disponible)}
 #'   \item{notas}{Advertencias sobre diferencias metodológicas entre censos}
+#'   \item{tema}{Tema al que pertenece, con el vocabulario de
+#'     [censo_temas_meta]. Permite pasar de la vista armonizada a la
+#'     temática sin una tabla externa}
 #' }
 #' @source Elaboración propia a partir de los diccionarios oficiales del INE Bolivia.
 "variable_temporal_map"
@@ -114,19 +117,36 @@ grupos_variables <- function() {
 #'
 #' @section Los universos poblacionales no siempre coinciden:
 #' La armonización iguala los **códigos**, no la **población a la que se
-#' preguntó**. Dos variables cambian de universo entre censos y comparar sus
-#' distribuciones sin filtrar por edad produce conclusiones falsas:
+#' preguntó**. Comparar distribuciones sin igualar el universo produce
+#' conclusiones falsas, y el INE cambió el filtro de edad de varias preguntas
+#' entre censos.
 #'
-#' - `nivel_edu`: en el CPV-2024 la variable derivada del INE solo cubre a la
-#'   población de **19 años o más** residente en el país; en 1992, 2001 y 2012
-#'   cubre desde los 6 años. Por eso 2024 aparece con muchos más `NA`. Filtra
-#'   `edad >= 19` en todos los años antes de comparar.
-#' - `estado_civil`: en 1992 se registró para **toda** la población, incluidos
-#'   los menores, que quedan como "Soltero/a"; en 2001 y 2012 se aplica desde
-#'   los 15 años, y en 1976 y 2024 desde los 12. Filtra `edad >= 15`.
+#' **`get_temporal()` lo detecta y avisa**: si alguna variable pedida no se
+#' preguntó a la misma población en todos los años solicitados, emite un aviso con
+#' el universo de cada censo y la edad mínima que los iguala. El dato viene de los
+#' diccionarios DDI del catálogo ANDA, así que la advertencia es del INE, no una
+#' estimación del paquete.
 #'
-#' La columna `notas` de [variables_armonizadas()] recoge estas advertencias
-#' variable por variable.
+#' Siete de las variables armonizadas están afectadas. Los casos más marcados:
+#'
+#' - `nivel_edu`: **19 años o más** en el CPV-2024 (es una derivada del INE) frente
+#'   a 6 años en 1992 y 4 en 2001. Es la mayor divergencia de todas: sin filtrar,
+#'   2024 aparece con muchos más `NA` y da la impresión de estar "más educado".
+#' - `sabe_leer` y `asistencia_escolar`: el umbral se movió cuatro veces —
+#'   5 años (1976), 6 (1992), 4 (2001) y 5 (2024).
+#' - `estado_civil`: 12 años en 1976 y 2024, 15 en 2001.
+#' - `hijos_nacidos_vivos` y `hijos_sobrevivientes`: mujeres de 12 años o más en
+#'   1976, 1992 y 2024; personas de 15 años o más en 2001.
+#' - `idioma_materno`: 5 años (1976) frente a 4 (2001) y todas en 2024.
+#'
+#' La columna `notas` de [variables_armonizadas()] recoge, además, las
+#' advertencias sobre los **códigos** de cada variable.
+#'
+#' @section Los dos vocabularios temáticos:
+#' `grupo` acepta los seis grupos de [grupos_variables()], que agrupan nombres
+#' **armonizados**, y también los slugs de [censo_temas()], que agrupan las
+#' variables **crudas** de cada censo. Los seis originales son alias permanentes;
+#' pasar un slug de tema informa del grupo equivalente y devuelve lo mismo.
 #'
 #' @details
 #' **Variables con limitaciones conocidas:**
@@ -168,14 +188,7 @@ get_temporal <- function(
     verbose     = TRUE
 ) {
   if (!is.null(grupo)) {
-    grupos <- grupos_variables()
-    if (!grupo %in% names(grupos)) {
-      cli::cli_abort(c(
-        "Grupo no válido: {.val {grupo}}",
-        "i" = "Grupos disponibles: {.val {names(grupos)}}"
-      ))
-    }
-    variables <- grupos[[grupo]]
+    variables <- .resolver_grupo(grupo)
   }
   if (is.null(variables)) {
     cli::cli_abort("Especifica {.arg variables} o {.arg grupo}.")
@@ -202,6 +215,10 @@ get_temporal <- function(
   }
 
   .warn_no_armonizadas(mapa, variables, verbose)
+  # El aviso más importante de esta función: armonizar los códigos no iguala la
+  # población a la que se preguntó. Con el universo de cada censo en el codebook,
+  # se puede detectar en vez de dejarlo escrito solo en la documentación.
+  .avisar_universos(variables, anios)
 
   partes <- vector("list", length(anios))
   names(partes) <- as.character(anios)
@@ -423,6 +440,10 @@ get_temporal_vivienda <- function(
   }
 
   .warn_no_armonizadas(mapa, variables, verbose)
+  # El aviso más importante de esta función: armonizar los códigos no iguala la
+  # población a la que se preguntó. Con el universo de cada censo en el codebook,
+  # se puede detectar en vez de dejarlo escrito solo en la documentación.
+  .avisar_universos(variables, anios)
 
   partes <- vector("list", length(anios))
   names(partes) <- as.character(anios)
@@ -1121,4 +1142,140 @@ get_temporal_vivienda <- function(
   } else {
     NA_integer_
   }
+}
+
+# ==============================================================================
+# Universos divergentes entre censos
+# ==============================================================================
+
+# Los DDI del ANDA declaran, para cada censo, a qué población se le hizo cada
+# pregunta. Armonizar los códigos no basta: si `sabe_leer` se preguntó a los
+# mayores de 5 años en 1976, de 6 en 1992, de 4 en 2001 y de 5 en 2024, comparar
+# sus distribuciones sin filtrar por edad produce una serie que mide poblaciones
+# distintas en cada punto. Esta función lo detecta a partir del metadato en vez de
+# confiar en que el usuario haya leído la viñeta.
+
+# Texto legible de cada universo, para el aviso.
+.UNIVERSO_TEXTO <- c(
+  todas_personas = "todas las personas",
+  personas_4_mas = "personas de 4 años o más",
+  personas_5_mas = "personas de 5 años o más",
+  personas_6_mas = "personas de 6 años o más",
+  personas_7_mas = "personas de 7 años o más",
+  personas_12_mas = "personas de 12 años o más",
+  personas_15_mas = "personas de 15 años o más",
+  personas_19_mas = "personas de 19 años o más",
+  mujeres_12_mas = "mujeres de 12 años o más",
+  mujeres_15_49 = "mujeres de 15 a 49 años",
+  todas_viviendas = "todas las viviendas",
+  viviendas_particulares = "viviendas particulares",
+  viviendas_presentes = "viviendas con personas presentes",
+  hogares = "todos los hogares"
+)
+
+# Edad mínima que implica cada universo, para poder sugerir un filtro concreto.
+.UNIVERSO_EDAD_MIN <- c(
+  personas_4_mas = 4L, personas_5_mas = 5L, personas_6_mas = 6L,
+  personas_7_mas = 7L, personas_12_mas = 12L, personas_15_mas = 15L,
+  personas_19_mas = 19L, mujeres_12_mas = 12L, mujeres_15_49 = 15L
+)
+
+# Universo de una variable armonizada en un censo concreto, según el codebook.
+.universo_armonizada <- function(variable, anio) {
+  fila <- variable_temporal_map[variable_temporal_map$variable == variable, ]
+  if (nrow(fila) == 0) return(NA_character_)
+  v <- fila[[paste0("v", anio)]][1]
+  if (is.na(v) || !nzchar(v)) return(NA_character_)
+
+  cb <- .get_codebook_for_anio(anio)
+  if (is.null(cb) || !"universo" %in% names(cb)) return(NA_character_)
+  # En 1976 la tabla de personas se llama `poblacion`.
+  tabla <- fila$tabla[1]
+  if (anio == 1976L && identical(tabla, "persona")) tabla <- "poblacion"
+
+  j <- which(toupper(cb$variable) == toupper(v) & cb$tabla == tabla)
+  if (length(j) == 0) j <- which(toupper(cb$variable) == toupper(v))
+  u <- unique(stats::na.omit(cb$universo[j]))
+  if (length(u) == 0) NA_character_ else u[1]
+}
+
+#' Avisa de las variables cuyo universo cambia entre los censos pedidos
+#'
+#' @param variables nombres armonizados
+#' @param anios censos solicitados
+#' @return invisible(TRUE); emite un `cli_warn` por cada variable afectada
+.avisar_universos <- function(variables, anios) {
+  # Solo interesan los universos que restringen la población: los genéricos
+  # ("todas las personas") y los geográficos no indican una diferencia real.
+  for (v in variables) {
+    us <- vapply(anios, function(a) .universo_armonizada(v, a), character(1))
+    names(us) <- anios
+    us <- us[!is.na(us) & us %in% names(.UNIVERSO_EDAD_MIN)]
+    if (length(unique(us)) < 2) next
+
+    detalle <- sprintf("%s: %s", names(us),
+                       ifelse(us %in% names(.UNIVERSO_TEXTO),
+                              .UNIVERSO_TEXTO[us], us))
+    edad_max <- max(.UNIVERSO_EDAD_MIN[us], na.rm = TRUE)
+    cli::cli_warn(c(
+      "!" = "{.var {v}} no se preguntó a la misma población en todos los censos:",
+      stats::setNames(detalle, rep(" ", length(detalle))),
+      "i" = "Compararla sin igualar el universo mide poblaciones distintas en cada año.",
+      "i" = "Filtra {.code edad >= {edad_max}} en todos los años antes de comparar."
+    ))
+  }
+  invisible(TRUE)
+}
+
+# ==============================================================================
+# Puente entre los dos vocabularios temáticos
+# ==============================================================================
+
+# `grupos_variables()` agrupa los nombres ARMONIZADOS (6 grupos) y `censo_temas()`
+# los temas de las variables CRUDAS de cada censo (21 temas). Son dominios
+# distintos, pero obligar a recordar dos vocabularios es una fricción evitable:
+# `get_temporal(grupo = )` acepta los dos.
+#
+# Los seis nombres originales se mantienen como alias permanentes: son API pública
+# desde antes de que existiera la taxonomía.
+.GRUPO_A_TEMA <- c(
+  demografico = "poblacion",
+  educacion   = "educacion",
+  economia    = "caracteristicas_economicas",
+  cultural    = "autoidentificacion",   # + idiomas, ver .TEMA_A_GRUPO
+  migracion   = "migracion",
+  fertilidad  = "fecundidad"
+)
+
+# Slug de tema -> grupo armonizado. `cultural` cubre dos temas del vocabulario
+# nuevo, así que ambos apuntan a él.
+.TEMA_A_GRUPO <- c(
+  poblacion = "demografico",
+  educacion = "educacion",
+  caracteristicas_economicas = "economia",
+  autoidentificacion = "cultural",
+  idiomas = "cultural",
+  migracion = "migracion",
+  fecundidad = "fertilidad"
+)
+
+.resolver_grupo <- function(grupo) {
+  grupos <- grupos_variables()
+  if (grupo %in% names(grupos)) return(grupos[[grupo]])
+
+  # Aceptar también los slugs de censo_temas(), para no tener que recordar cuál
+  # de los dos vocabularios usa cada función.
+  slug <- tolower(trimws(grupo))
+  if (slug %in% names(.TEMA_A_GRUPO)) {
+    equivalente <- .TEMA_A_GRUPO[[slug]]
+    cli::cli_inform(c(
+      "i" = "{.val {slug}} es un tema de {.code censo_temas()}; en datos armonizados equivale al grupo {.val {equivalente}}."
+    ))
+    return(grupos[[equivalente]])
+  }
+  cli::cli_abort(c(
+    "Grupo no válido: {.val {grupo}}",
+    "i" = "Grupos armonizados: {.val {names(grupos)}}",
+    "i" = "También se aceptan estos temas de {.code censo_temas()}: {.val {names(.TEMA_A_GRUPO)}}"
+  ))
 }

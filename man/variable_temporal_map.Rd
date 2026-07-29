@@ -16,6 +16,9 @@ Un data.frame con columnas:
     (no comparables, p.ej. `parentesco`)}
   \item{v1976, v1992, v2001, v2012, v2024}{Nombre de la columna en cada censo (`NA` si no disponible)}
   \item{notas}{Advertencias sobre diferencias metodológicas entre censos}
+  \item{tema}{Tema al que pertenece, con el vocabulario de
+    [censo_temas_meta]. Permite pasar de la vista armonizada a la
+    temática sin una tabla externa}
 }
 }
 \source{

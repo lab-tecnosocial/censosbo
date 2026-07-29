@@ -1,0 +1,3294 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<codeBook version="1.2.2" ID="BOL-INE-CNPV-1976" xml-lang="es" xmlns="http://www.icpsr.umich.edu/DDI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.icpsr.umich.edu/DDI http://www.icpsr.umich.edu/DDI/Version1-2-2.xsd">
+  <docDscr>
+    <citation>
+      <titlStmt>
+        <titl>
+          CNPV1992
+        </titl>
+        <IDNo>
+          BOL-INE-CNPV-1976-V3
+        </IDNo>
+      </titlStmt>
+      <rspStmt>
+        <othId>
+          <p>
+            Censos
+          </p>
+        </othId>
+      </rspStmt>
+      <prodStmt>
+        <producer abbr="INE" affiliation="Ministerio de Planificación del Desarrollo" role="Protocolos de acceso a la base de datos">
+          Instituto Nacional de Estadística
+        </producer>
+        <producer abbr="DICIE" affiliation="Instituto Nacional de Estadística" role="Publicaciones de Archivos en el Catálogo ANDA">
+          Dirección de Informática, Cartografía e Infraestructura Espacial
+        </producer>
+        <producer abbr="DEIES" affiliation="Instituto Nacional de Estadística" role="Validación Técnica">
+          Dirección de Estadísticas e Indicadores Económicos y Sociales
+        </producer>
+        <producer affiliation="Instituto Nacional de Estadística" role="Validación de difusión bajo estándares internacionales">
+          Responsables de Validación del Catálogo ANDA
+        </producer>
+        <producer abbr="UEIS" affiliation="Dirección de Estadísticas e Indicadores Económicos y Sociales" role="Documentación">
+          Unidad de Estadísticas e Indicadores Sociales
+        </producer>
+        <producer abbr="UDC" affiliation="Dirección Ejecutiva" role="validación editorial">
+          Unidad de Difusión y Comunicación
+        </producer>
+        <prodDate date="2018-06-06">
+          2018-06-06
+        </prodDate>
+        <software version="4.0.9" date="2013-04-23">
+          Nesstar Publisher
+        </software>
+      </prodStmt>
+      <verStmt>
+        <version type="Versión 3 (6 de junio 2018) esta versión reemplaza a la versión 2 (25 de abril) por la validación editorial."/>
+      </verStmt>
+    </citation>
+  </docDscr>
+  <stdyDscr>
+    <citation>
+      <titlStmt>
+        <titl>
+          CENSO NACIONAL DE POBLACIÓN Y VIVIENDA 1976
+        </titl>
+        <altTitl>
+          CNPV 1976
+        </altTitl>
+        <parTitl>
+          National Census of Population and Housing 1976
+        </parTitl>
+        <IDNo>
+          BOL-INE-CNPV-1976
+        </IDNo>
+      </titlStmt>
+      <rspStmt>
+        <AuthEnty affiliation="Ministerio de Planificación del Desarrollo">
+          Instituto Nacional de Estadística
+        </AuthEnty>
+        <othId role="Colaboración apoyo técnico" affiliation="Gobierno Nacional">
+          <p>
+            Autoridades de Gobierno
+          </p>
+        </othId>
+        <othId role="Colaboración apoyo técnico" affiliation="Gobierno Nacional">
+          <p>
+            Autoridades Departamentales
+          </p>
+        </othId>
+        <othId role="Colaboración apoyo técnico" affiliation="Gobierno Nacional">
+          <p>
+            Autoridades Provinciales
+          </p>
+        </othId>
+        <othId role="Colaboración apoyo técnico" affiliation="Gobierno Nacional">
+          <p>
+            Cantonales
+          </p>
+        </othId>
+      </rspStmt>
+      <prodStmt>
+        <producer abbr="MN" affiliation="Ministerio de Educación" role="Levantamiento de la información">
+          Magisterio Nacional
+        </producer>
+        <producer abbr="OCT" affiliation="Naciones Unidas" role="Colaboración Técnica">
+          Oficina de Cooperación Técnica
+        </producer>
+        <producer abbr="PD" affiliation="Naciones Unidas" role="Colaboración Técnica">
+          Programa para el Desarrollo
+        </producer>
+        <producer abbr="ESTUD" affiliation="Varios Colegios, Institutos, Centros Educativos" role="Levantamiento de la información">
+          Estudiantes
+        </producer>
+        <producer abbr="EP" affiliation="Gobierno Nacional" role="Levantamiento de la información">
+          Empleados Públicos
+        </producer>
+        <copyright>
+          Instituto Nacional de Estadística (INE)
+        </copyright>
+        <software version="4.0.9" date="2013-04-23">
+          Nesstar Publisher
+        </software>
+        <fundAg abbr="FAP" role="Co - financiamiento de la operación estadística">
+          Fondo para Actividades de la Población (Naciones Unidas )
+        </fundAg>
+        <fundAg abbr="PNUD" role="Co - financiamiento de la operación estadística">
+          Programa para el Desarrollo de las Naciones Unidas
+        </fundAg>
+        <fundAg abbr="TGN" role="Co - financiamiento de la operación estadística">
+          Tesoro General de la Nación
+        </fundAg>
+      </prodStmt>
+      <distStmt>
+        <contact affiliation="Instituto Nacional de Estadística" URI="www.ine.gob.bo" email="ceninf@ine.gob.bo">
+          Atención al cliente
+        </contact>
+      </distStmt>
+      <serStmt>
+        <serName>
+          Censo de Población y Vivienda [soc/cpv]
+        </serName>
+        <serInfo>
+          <![CDATA[Los censos se constituyen en la base para la construcción de marcos muestrales, necesarios para la ejecución de encuestas que se realizan con el fin de actualizar la información y suministrar datos detallados sobre temas de interés que apoyen la formulación de políticas y programas de desarrollo.
+
+La historia de los censos en Bolivia comienza con el Censo de 1831, realizado en el Gobierno del Mariscal Andrés de Santa Cruz, después se realizaron los censos de Población: 1835, 1845, 1854 y 1882.
+
+En 1900 se llevó a cabo el sexto censo de Población en el Gobierno de José Manuel Pando.
+
+El último Censo de esta naturaleza fue realizado en 1950, lo cual obligaba a extremar esfuerzos que permitieran superar la falta de tradición estadística en la materia.
+
+En sí, el objetivo fundamental del Censo de Población y Vivienda, es recoger y compilar datos sobre los principales aspectos demográficos, sociales y habitacionales de la población de un país, constituyendo tradicionalmente la fuente básica de suministro de dicha información.
+
+Teniendo presente el enorme significado de obtener esa base estadística para Bolivia, se elaboró un plan para el levantamiento en nuestro país del Censo Nacional de Población y Vivienda de 1976.
+
+El 4 de julio de 1975 se dictó el Decreto Supremo N° 12661, que dispuso la organización y dirección por parte del INE de la programación, ejecución, procesamiento y publicación del Censo en todo el territorio nacional, EI levantamiento fue universal, utilizándose el método de la entrevista directa en el que, mediante un cuestionario, el empadronador obtiene y registra la información correspondiente a cada persona. Las tareas de empadronamiento se efectuaron a través de la infraestructura escolar y los entrevistadores participaron en forma gratuita.]]>
+        </serInfo>
+      </serStmt>
+    </citation>
+    <stdyInfo>
+      <subject>
+        <keyword vocab="Población urbana">
+          Población censada en localidades con 2.000 habitantes y más.
+        </keyword>
+        <keyword vocab="Población rural">
+          Fue definida como la población censada en localidades con menos de 2.000 habitantes.
+        </keyword>
+        <keyword vocab="Características de la vivienda">
+          Detalles específicos de la vivienda
+        </keyword>
+        <keyword vocab="Población">
+          Conjunto de habitantes en un mismo lugar o territorio
+        </keyword>
+        <keyword vocab="Vivienda ">
+          Todo local o morada estructuralmente separado e independiente, que ha sido convertido o dispuesto para fines de alojamiento permanente o temporal de personas.
+        </keyword>
+        <keyword vocab="Vivienda Particular">
+          Aquella que está destinada a albergar uno o más hogares particulares bajo un régimen familiar.
+        </keyword>
+        <keyword vocab="Vivienda Colectiva">
+          Es aquella que está destinada a alojar un hogar colectivo, es decir, grupos de personas que por razones de salud, religión, etc. viven bajo un régimen no familiar.
+        </keyword>
+        <topcClas vocab="Demografía y Estadísticas Sociales">
+          Hogar y/o Vivienda
+        </topcClas>
+        <topcClas vocab="Demografía y Estadísticas Sociales">
+          Salud y Seguridad Social
+        </topcClas>
+        <topcClas vocab="Demografía y Estadísticas Sociales">
+          Empleo, Ocupación y Actividad Económica
+        </topcClas>
+        <topcClas vocab="Demografía y Estadísticas Sociales">
+          Educación
+        </topcClas>
+        <topcClas vocab="Demografía y Estadísticas Sociales">
+          Fecundidad
+        </topcClas>
+        <topcClas vocab="Demografía y Estadísticas Sociales">
+          Migración
+        </topcClas>
+        <topcClas vocab="Demografía y Estadísticas Sociales">
+          Servicios Básicos del Hogar
+        </topcClas>
+      </subject>
+      <abstract>
+        <![CDATA[EMPADRONAMIENTO
+
+El empadronamiento se llevó a cabo el 29 de septiembre de 1976, decretándose feriado nacional obligatorio y fijándose el momento censal a las cero horas. El Censo fue "de hecho" y se programó realizar el levantamiento en una sola jornada en áreas urbanas y en un período de 3 a 5 días en áreas de población dispersa.
+
+La organización censal en cada departamento quedó determinada por medio de una línea única de autoridad dependiente del INE, a través de las respectivas oficinas departamentales, provinciales y cantonales. El personal del INE tomó a su cargo la conducción directa del levantamiento del Censo en la ciudad de La Paz.
+
+PREPARACIÓN DEL MATERIAL CARTOGRÁFICO
+
+Desde tempranas horas de la mañana del día 29, los empadronadores (en su mayoría maestros y funcionarios públicos) se dedicaron a recorrer las áreas de empadronamiento (segmentos) que les habían sido asignadas con anterioridad, entrevistando a las familias presentes en ellas.
+
+En las áreas urbanas cada empadronador tuvo que entrevistar y llenar los formularios con los datos de unos veinte hogares en promedio, bajo la supervisión de un Jefe de Sector, que controló el trabajo de un grupo de 6 empadronadores. A su vez, los jefes de cada una de las zonas censales controlaron el trabajo de unos 10 Jefes de Sector, estando bajo las órdenes del respectivo Jefe Provincial o Jefe de Área, urbana en el caso de las capitales departamentales.
+
+En las áreas rurales los empadronadores tuvieron que entrevistar unos cincuenta hogares, en promedio, bajo la supervisión de un Jefe de Sector que controló el trabajo de aproximadamente 6 empadronadores. Los jefes de Sector dependieron de los Delegados Cantonales y estos, a su vez, de los jefes Provinciales.
+
+De acuerdo con lo previsto en el programa censal y las medidas legales adoptadas. El empadronamiento se desarrolló sin mayores inconvenientes en todo el territorio nacional y las entrevistas pudieron completarse dentro de los plazos dentro el cronograma. En el día del Censo, la totalidad de las áreas urbanas fueron cubiertas por los empadronadores, mientras que en las áreas rurales el trabajo de estos se extendió desde 3 días, en aquellas más accesibles, hasta 5 días en las alejadas o con grandes dificultades en su comunicación interna.
+
+Se debe destacar que todo el empadronamiento contó con la total colaboración de la población del país, presente en los diferentes departamentos y provincias.
+
+RECEPCIÓN, ORDENAMIENTO Y CONTROL CARTOGRÁFICO DEL MATERIAL CENSAL
+
+A medida que el material censal era enviado al INE por parte del personal de empadronamiento, se desarrollaron las tareas referentes a recepción, ordenamiento y control cartográfico. Efectuada la apertura de los paquetes, se extrajo la documentación auxiliar para su revisión y archivo. En esta etapa se controló que el material hubiese sido entregado en su totalidad, para la elaboración de los Resultados Provisionales.
+
+Posteriormente se procedió a verificar si todas las boletas censales tenían registrados los datos correspondientes a Ubicación Geográfica, los que deberán ser coincidentes con los que figuraban en los rótulos de las carpetas.
+
+Este material fue archivado, respetando el orden sucesivo de segmentos y sectores por ubicación geográfica, correspondientes a cada una de las divisiones político administrativas.
+
+RESULTADOS PROVISIONALES
+
+A pocos meses de culminado el empadronamiento en todo el país, el INE procedió a publicar los resultados provisionales de población por sexo para cada uno de los departamentos y un resumen nacional. Estos resultados contienen el desglose por provincias, cantones, centros poblados y población dispersa, que permitieron conocer la distribución de la población en el territorio, a la fecha del Censo.
+
+Las cifras publicadas en dicha oportunidad difieren de los resultados definitivos, por cuanto fueron el producto del conteo manual de empadronadoras y jefes de sector y, además, porque los datos de los formularios no pasaron el proceso de análisis, crítica y codificación que se desarrolló posteriormente. Esta situación se registra en todo Censo y, por ello, el carácter provisional de los primeros resultados.
+
+RESULTADOS ANTICIPADOS POR MUESTREO
+
+En atención a la importancia y necesidad de conocer los resultados del Censo en el menor lapso de tiempo posible, para planificar y formular programas adecuados de política demográfica, económica, educacional, sanitaria, etc. y teniendo en cuenta que el procesamiento de la información total demanda un lapso prolongado, se decidió elaborar una muestra para anticipar resultados.
+
+La metodología y contenido de este programa deberá seleccionarse de acuerdo con las necesidades más inmediatas de información, las limitaciones que el muestreo impone y la posibilidad de obtener resultados en un tiempo y costo razonables.
+
+Se tomó como unidad de muestreo el segmento censal, o sea el área de trabajo que cubrió cada empadronador. La información obtenida de las boletas censales pertenecientes a los segmentos seleccionados permitió efectuar tabulaciones de población, hogares y viviendas a nivel nacional.
+
+Estos resultados anticipados por muestreo, fueron publicados por el INE en el mes de julio de 1977.
+
+CRÍTICA, CODIFICACIÓN Y PROCESAMIENTO DE DATOS
+
+Sobre la base de experiencias realizadas, se diagramó la constitución de líneas de codificación divididas en equipos de trabajo, cada uno de los cuales tuvo a su cargo la crítica y codificación de una parte de la boleta censal, incluyéndose en esta etapa el análisis de la relación vivienda-hogar y la numeración correlativa de las boletas del segmento.
+
+Esta tarea se realizó conforme a las instrucciones contenidas en el manual de crítica y codificación preparado para el efecto. Dicho manual consta de cinco partes. En su introducción se proporciona las instrucciones generales; las cuatro partes restantes refieren las instrucciones de análisis, depuración de la información y codificación específica de cada terna y respuesta.
+
+Una vez criticadas y codificadas las boletas se realizó el proceso de transcripción de los datos y grabación de cintas magnéticas, para obtener posteriormente las tabulaciones mediante el equipo de procesamiento electrónico de datos.
+
+Antes de tabularse los cuadros programados, la información contenida en las cintas fue depurada mediante programas especiales de análisis de consistencia y repaso de información.
+
+Todas las tareas relativas al análisis crítico de los formularios, codificación de las respuestas, transcripción de la información y elaboración de los programas de computación estuvieron a cargo del personal del INE. El procesamiento electrónico de los datos se realizó a través del Centro Nacional de computación.
+
+PRESENTACIÓN DE LOS RESULTADOS DEFINITIVOS
+
+Los resultados definitivos del Censo de Población y Vivienda de 1976 fueron presentados en volúmenes separados para cada uno de los nueve Departamentos y dos resúmenes generales para todo el país.
+
+Se programaron 22 cuadros estadísticos correspondientes a los datos de población y 16, de vivienda. Estos 38 cuadros, fueron tabulados para cada una de las siguientes áreas: a) Total País; b) Total Urbano y c) Total Rural.]]>
+      </abstract>
+      <sumDscr>
+        <timePrd date="1976-09-29" event="start" cycle="Captura de datos de datos del mismo día, en el área urbana"/>
+        <timePrd date="1976-09-29" event="end" cycle="Captura de datos de datos del mismo día, en el área urbana"/>
+        <timePrd date="1976-09-29" event="start" cycle="Captura de datos de datos del mismo día, en el área rural"/>
+        <timePrd date="1976-10-03" event="end" cycle="Captura de datos de datos del mismo día, en el área rural"/>
+        <collDate date="1976-09-29" event="start" cycle="Empadronamiento censal en el área urbana"/>
+        <collDate date="1976-09-29" event="end" cycle="Empadronamiento censal en el área urbana"/>
+        <collDate date="1976-09-29" event="start" cycle="Empadronamiento censal en el área rural"/>
+        <collDate date="1976-10-03" event="end" cycle="Empadronamiento censal en el área rural"/>
+        <nation abbr="BOL">
+          Bolivia
+        </nation>
+        <geogCover>
+          El censo se realiza en todos los departamentos, provincias y municipios del país, de manera simultánea en un día en las áreas amanzanadas y entre tres y cinco días en las áreas dispersas. Permite conocer la información desde nivel País hasta localidades; en las ciudades capitales y centros urbanos y poblados a nivel de zonas censales.
+        </geogCover>
+        <geogUnit>
+          El nivel de desagregación que se puede llegar en el área urbano es la manzana y en el área rural es la localidad.
+        </geogUnit>
+        <anlyUnit>
+          Todas las personas que durmieron la noche anterior al día del Censo en una vivienda particular o colectiva, además de hogares y viviendas donde residen las personas.
+        </anlyUnit>
+        <universe>
+          Abarca a todas las viviendas particulares y colectivas, hogares particulares y personas que residen en el país.
+        </universe>
+        <dataKind>
+          Censos (cen)
+        </dataKind>
+      </sumDscr>
+      <notes>
+        <![CDATA[Los temas principales que abarca la Boleta del CNPV 1976 son:
+
+I.- UBICACIÓN GEOGRÁFICA: Ubicación geográfica exacta de la vivienda.
+     
+II. VIVIENDA: Características principales de la vivienda.
+     
+III. POBLACIÓN: Características generales de la población.]]>
+      </notes>
+    </stdyInfo>
+    <method>
+      <dataColl>
+        <dataCollector abbr="INE" affiliation="Ministerio de Planificación del Desarrollo">
+          Instituto Nacional de Estadística
+        </dataCollector>
+        <collMode>
+          Face-to-face [f2f]
+        </collMode>
+        <resInstru>
+          <![CDATA[CUESTIONARIO CENSAL
+
+El contenido de la boleta la boleta censal tiene las siguientes partes: 
+
+I.- UBICACIÓN GEOGRÁFICA
+
+1. Departamento
+2. Provincia
+3. Cantón
+4. Ciudad - Localidad
+5. Zona
+6. Sector
+7. Segmento
+8. Manzana
+9. Dirección
+
+II. VIVIENDA
+
+1. Tipo de vivienda
+2. Condiciones de ocupación
+3. Materiales predominantes de ocupación
+4. Disponibilidad de servicios de agua
+5. Disponibilidad de servicio higiénico
+6. Sistema de eliminación de aguas servidas
+7. Ducha o tina de baño
+8. Energía eléctrica
+9. Número de cuartos o habitaciones en el hogar
+10. Cuarto de cocina
+11. Tenencia
+12. Idioma que se habla frecuentemente en su familia
+
+III. POBLACIÓN 
+
+A. Datos Generales: Nombre, Apellido, parentesco, sexo, edad, nacimiento, residencia, idioma
+B. Datos de educación: Lectura, escritura, asistencia a centro educativo, nivel de enseñanza
+C. Datos Económicos: Trabajo, Ocupación
+D. Datos de fecundidad: Número de Hijos, Nacimiento, etc.
+E. Datos de estado civil: Estado civil actual
+         
+FUNCIONALIDAD DEL CUESTIONARIO
+
+La funcionalidad del cuestionario es mixta, porque contiene preguntas pre-codificadas y preguntas abiertas.]]>
+        </resInstru>
+        <sources/>
+        <cleanOps>
+          <![CDATA[RECEPCIÓN, ORDENAMIENTO Y CONTROL CARTOGRÁFICO DEL MATERIAL CENSAL
+
+A medida que el material censal era enviado al INE por parte del personal de empadronamiento, se desarrollaron las tareas referentes a recepción, ordenamiento y control cartográfico. Efectuada la apertura de los paquetes, se extrajo la documentación auxiliar para su revisión y archivo. En esta etapa se controló que el material hubiese sido entregado en su totalidad para la elaboración de los Resultados Provisionales.
+
+Posteriormente se procedió a verificar si todas las boletas censales tenían registrados los datos correspondientes a Ubicación Geográfica, los que deberán ser coincidentes con los que figuraban en los rótulos de las carpetas.
+
+Este material se archivó respetando el orden sucesivo de segmentos y sectores por ubicación geográfica, correspondientes a cada una de las divisiones político administrativas.
+
+RESULTADOS PROVISIONALES
+
+A pocos meses de culminado el empadronamiento en todo el país, el INE procedió a publicar los resultados provisionales de población por sexo para cada uno de los departamentos y un resumen nacional. Estos resultados contienen el desglose por provincias, cantones, centros poblados y población  dispersa, que permitieron conocer la distribución de la población en el territorio, a la fecha del Censo.
+
+Las cifras publicadas en dicha oportunidad difieren de los resultados definitivos, por cuanto fueron el producto del conteo manual de empadronadoras y jefes de sector y además porque los datos de los formularios no pasaron el proceso de análisis, crítica y codificación que se desarrollo posteriormente. Esta situación se registra en todo censo y, por ello, el carácter provisional de los primeros resultados.
+
+RESULTADOS ANTICIPADOS POR MUESTREO
+
+En atención a la importancia y necesidad de conocer los resultados del Censo en el menor lapso de tiempo posible, para planificar y formular programas adecuados de política demográfica, económica, educacional, sanitaria, etc. y teniendo en cuenta que el procesamiento de la información total demanda un lapso prolongado, se decidió elaborar una muestra para anticipar resultados.
+
+La metodología y contenido de este programa deberá seleccionarse de acuerdo con las necesidades más inmediatas de información, las limitaciones que el muestreo impone y la posibilidad de obtener resultados en un tiempo y costo razonables.
+
+Se tomó como unidad de muestreo el segmento censal, o sea el área de trabajo que cubrió cada empadronador. La información obtenida de las boletas censales pertenecientes a los segmentos seleccionados permitió efectuar tabulaciones de población, hogares y viviendas a nivel nacional.
+
+Estos resultados anticipados por muestreo fueron publicados por el INE en el mes de julio de 1977.
+
+CRÍTICA, CODIFICACIÓN Y PROCESAMIENTO DE DATOS
+
+Sobre la base de experiencias realizadas, se diagramó la constitución de líneas de codificación divididas en equipos de trabajo, cada uno de los cuales tuvo a su cargo la crítica y codificación de una parte de la boleta censal, incluyéndose en esta etapa el análisis de la relación vivienda-hogar y la numeración correlativa de las boletas del segmento.
+
+Esta tarea se realizó de acuerdo con las instrucciones contenidas en el manual de crítica y codificación preparado para el efecto. Dicho manual consta de cinco partes. En su introducción se proporcionan las instrucciones generales; las cuatro partes restantes refieren las instrucciones de análisis, depuración de la información y codificación específica de cada terna y respuesta.
+
+Una vez criticadas y codificadas las boletas se realizó el proceso de transcripción de los datos y grabación de cintas magnéticas, para obtener posteriormente las tabulaciones mediante el equipo de procesamiento electrónico de datos.
+
+Antes de tabularse los cuadros programados, la información contenida en las cintas fue depurada mediante programas especiales de análisis de consistencia y repaso de información.
+
+Todas las tareas relativas al análisis crítico de los formularios, codificación de las respuestas, transcripción de la información y elaboración de los programas de computación estuvieron a cargo del personal del INE. El procesamiento electrónico de los datos se realizó a través del Centro Nacional de computación.
+
+PRESENTACIÓN DE LOS RESULTADOS DEFINITIVOS
+
+Los resultados definitivos del Censo de Población y Vivienda de 1976 se presentaron en volúmenes separados para cada uno de los nueve Departamentos y dos resúmenes generales para todo el país.
+
+Se programaron 22 cuadros estadísticos correspondientes a los datos de población y 16, de vivienda. Estos 38 cuadros fueron tabulados para cada una de las siguientes áreas: a) Total País; b) Total Urbano y c) Total Rural.]]>
+        </cleanOps>
+      </dataColl>
+      <notes>
+        <![CDATA[El Instituto Nacional de Estadística (INE), desde comienzos de 1975, inició el proceso de preparación del material cartográfico a ser suministrado al personal de empadronamiento que levantaría el Censo. Dicho proceso se dividió en 4 etapas principales de trabajo:
+
+a.- Inventario cartográfico y construcción de mapas y planos base; 
+b.- Pre-Censo de viviendas (trabajos de campo para actualizar la cartografía existente, efectuar un listado de viviendas por áreas y proyectar las subdivisiones con fines censales en las diferentes unidades político administrativas).
+c.- Elaboración de los mapas y planos definitivos. 
+d.- Preparación de carpetas censales.
+
+Teniendo en cuenta las características topográficas del territorio de Bolivia y las dificultades de transporte y comunicaciones en muchas áreas, los trabajos de campo constituyeron una ardua empresa. Así mismo la carencia de cartografía actualizada para varias provincias exigió un gran esfuerzo para la compilación de los antecedentes disponibles y de la información proveniente del Pre-Censo.
+
+Finalmente, las dificultades lograron vencerse y como resultado de estos trabajos preparatorios, el personal de empadronamiento pudo contar con mapas y planos que le permitieron controlar la cobertura de todo el territorio del país.
+
+ESTUDIO DEL FORMULARIO CENSAL
+
+Mediante resolución del Supremo Gobierno se dispuso la constitución de una comisión asesora, con el objeto de asistir al INE en la selección de temas y características a ser investigadas por el Censo. Con el asesoramiento de dicha Comisión y la participación de técnicos del INE e internacionales se llegó a definir el formulario censal (boleta) que fue posteriormente utilizado por el personal de empadronamiento para el levantamiento de la información.
+
+Se diseñó, asimismo, el correspondiente plan de tabulaciones principales, incluyéndose en el mismo los cruces de variables más relevantes de las características investigadas con el desglose geográfico más amplio que era posible publicar.
+
+PUBLICACIÓN DE LA DOCUMENTACIÓN
+
+Con excepción de la impresión de los formularios censales y de los afiches publicitarios, que por su gran cantidad exigió la contratación de imprentas, toda la documentación preparada para las diferentes etapas del operativo (manuales, formularios de campo y de uso interno, folletos de divulgación, etc.) fue publicada por la imprenta del INE.
+
+INSTRUCCIÓN AUDIOVISUAL
+
+La capacitación del elevado número de empadronadores necesarios (aproximadamente 36.000 en todo el país) exigió introducir moderna tecnología educativa en el programa de instrucción correspondiente. Los objetivos propuestos se basaron en lograr transmitir homogéneamente las normas y directivas contenidas en el manual del empadronador, en el plazo perentorio de las 4 semanas anteriores al Censo, capacitando a gran número de personas para recopilar la información de habitantes y viviendas con criterios uniformes. Teniendo presente que los métodos convencionales para este tipo de programas, en cuanto a la calidad de instrucción, la misma que puede variar según la persona que dicta los cursos, se decidió utilizar métodos audiovisuales que homogeneizarán la misma. En tal sentido, se prepararon y grabaron textos cuidadosamente estudiados, se elaboraron dibujos a ser presentados mediante diapositivas y esquemas gráficos a proyectarse, constituyendo todas las partes de un sistema sincronizado de imágenes y sonido que reportó excelentes resultados en todas las áreas del país. La utilización de estas metodologías permitió garantizar el logro de los objetivos propuestos.
+
+TRANSPORTES Y COMUNICACIONES
+
+El INE contó tanto con vehículos propios, de Naciones Unidas y de diversas entidades públicas, como con transportes aéreos, ferroviarios y fluviales regulares para realizar todas las tareas de envíos y recepciones de material censal. Asimismo, dispuso de una red de radio que cubrió todo el país y facilitó la celeridad de las comunicaciones con las Oficinas departamentales y provinciales.]]>
+      </notes>
+    </method>
+    <dataAccs>
+      <useStmt>
+        <confDec required="yes">
+          Conforme a lo previsto por el artículo 21 del Decreto Ley 14100 de 8 de noviembre de 1976, los datos son absolutamente confidenciales y serán utilizados solamente para fines estadísticos. Por ello los datos no podrán ser revelados bajo ninguna circunstancia en forma individualizada, manteniéndose por lo tanto el anonimato tanto de los datos como de los informantes y los resultados sólo podrán ser divulgados o publicados en forma innominada.
+        </confDec>
+        <contact affiliation="Ministerio de Planificación de Desarrollo" URI="www.ine.gob.bo" email="ceninf@ine.gob.bo">
+          Instituto Nacional de Estadística
+        </contact>
+        <citReq>
+          <![CDATA[La declaración sobre propiedad de la información estipula que: "La Información a la que el usuario tiene acceso es de autoría y propiedad exclusiva del Instituto Nacional de Estadística (INE); por lo que, en ningún caso podrá entenderse que el acceso que se le otorga al usuario suponga una cesión o licencia de derechos sobre la misma, así como la posibilidad de reproducirla sin citar la fuente, o modificarla o alterarla".
+
+En caso que el usuario fuere autorizado por el Instituto Nacional de Estadística (INE) a reproducir total o parcialmente la información proporcionada, todas las reproducciones, sean totales o parciales y cualquiera sea el formato en que se registren, deberán hacer expresa mención a la propiedad intelectual del Instituto Nacional de Estadística (INE) sobre la información contenida en ellas, contando con anuncios de confidencialidad, considerando la nota sobre la calidad estadística para las estimaciones propias y manteniendo las leyendas que contenga la Información original, salvo que el Instituto Nacional de Estadística (INE) disponga otra cosa expresamente por escrito.
+
+Los cálculos que sean elaborados a partir de las bases publicadas en el catálogo, y presentados en tablas, gráficos, mapas u otro tipo de formato, son de exclusiva responsabilidad de los usuarios como autores, y no compromete al INE en sus resultados o interpretaciones. 
+No obstante, siempre se debe citar correctamente la fuente utilizando la siguiente estructura: 
+
+1) Citar la fuente de origen de obtención de los datos. Mencionar la Entidad productora, el Producto Estadístico y el año de referencia al que corresponden los datos.
+2) Proporcionar el enlace o la URL respectiva de acceso a los datos. 
+3) Citar la fecha de publicación del acceso o consulta a los datos utilizados. 
+4) Mantener las mismas condiciones y protocolo de acceso a los datos procesados, fruto del conjunto de datos entregados. 
+5) En caso de hacer uso de más de una fuente de datos, de deberá mencionar todas las utilizadas.
+
+Ejemplo
+
+Fuente: Instituto Nacional de Estadística, Estadísticas Básicas de Exportaciones (2017) - <http://web2.ine.gob.bo:8081/IneComex/BasesComex.aspx>
+Fecha de acceso a los datos: 07-05-2019
+Condición de Uso - Archivos de Uso Público]]>
+        </citReq>
+        <conditions>
+          <![CDATA[Los Archivos de Uso Público son archivos de microdatos y metadatos, los cuales se entregan para que el público en general pueda utilizarlos y aprovecharlos para fines estadísticos y contribuir a la ampliación de la cultura estadística del país y los sus aplicaciones para toma decisiones, la investigación, entre otros. Los archivos que se ponen a disposición fueron anonimizados y liberados a través de las aplicaciones disponibles en página web institucional. Sin perjuicio de lo anterior, los microdatos y metadatos pueden ser solicitados en la oficina central o en las direcciones departamentales a partir de los mecanismos previstos en Atención al Cliente. La descarga de los microdatos se realizará una vez el usuario registre una cuenta con su usuario y correo electrónico, con el fin de poder contactarlo en un futuro para encuestas y medición de satisfacción de usuarios. 
+
+El término anonimizado implica, además de haber retirado los identificadores directos del informante, como ser los nombres, carnets de identidad, teléfono, direcciones, entre otros, requiere ejecutar otras acciones para controlar identificadores indirectos (por ejemplo, la agregación de los detalles geográficos, ocupaciones poco frecuentes, etc.), para reducir al mínimo el riesgo de re-identificar a los informantes, ya que por la ley vigente se debe garantizar la confidencialidad y el secreto estadístico. Los procedimientos seguidos para asegurar que los datos sean anónimos, serán divulgados en la página web del INE en el marco de la política de difusión institucional.]]>
+        </conditions>
+        <disclaimer>
+          <![CDATA[DESCARGO DE RESPONSABILIDAD
+El Instituto Nacional de Estadística (INE) no será responsable del procesamiento que el usuario efectúe sobre los datos, ni tampoco de los daños sufridos o pérdidas económicas que se generen de forma directa o indirecta por su uso. 
+El resultado del procesamiento de los datos y su interpretación es de exclusiva responsabilidad del usuario y no así del Instituto Nacional de Estadística. El usuario deberá tomar en cuenta criterios de integridad y actualidad de la información publicada y la documentación de respaldo de la fuente de datos cuando ésta esté disponible. 
+El procesamiento de los datos no implica el aval o patrocinio del Instituto Nacional de Estadística, a través del uso de logotipos, isotipos, y otros, que pretendan demostrar el auspicio del INE sobre los datos procesados por el usuario. 
+Los resultados producto del procesamiento de los datos por parte de los usuarios no se considerarán como datos oficiales del Instituto Nacional de Estadística.
+
+RECOMENDACIÓN SOBRE LA CALIDAD ESTADÍSTICA DE ESTIMACIONES QUE REALICE EL USUARIO: 
+Un censo es como un conjunto de actividades destinadas a recoger, recopilar, el padrón o lista de la población de una nación o pueblo en un momento determinado, la información demográfica social y económica, para luego evaluar, analizar y publicar o divulgar. 
+ES DE RESPONSABILIDAD DEL USUARIO CONSIDERAR AMBOS ELEMENTOS A LA HORA DE REALIZAR TABULACIONES
+
+NOTAS LEGALES
+La garantía de uso de la información y la información proporcionada está bajo el amparo de lo dispuesto por el artículo 363 del Código Penal boliviano que refiere a la: "Alteración, Acceso y Uso Indebido de Datos Informáticos", por lo que cualquier modificación, supresión, alteración o inutilización de los mismos, dará lugar a la persecución penal correspondiente, además de la reparación del daño civil que se pudiese ocasionar con dichas acciones.]]>
+        </disclaimer>
+      </useStmt>
+    </dataAccs>
+  </stdyDscr>
+  <fileDscr ID="F1" URI="BOL-INE-CNPV-1976-V3.Nesstar?Index=0&amp;Name=BOLPOB1976">
+    <fileTxt>
+      <fileName>
+        BOLPOB1976.NSDstat
+      </fileName>
+      <fileCont>
+        <![CDATA[Base de Datos  de las principales características de las personas censadas.]]>
+      </fileCont>
+      <dimensns>
+        <caseQnty>
+          0
+        </caseQnty>
+        <varQnty>
+          28
+        </varQnty>
+      </dimensns>
+      <fileType>
+        Nesstar 200801
+      </fileType>
+      <filePlac>
+        Instituto Nacional de Estadística
+      </filePlac>
+      <dataChck>
+        Se realiza un análisis de la información con diferentes metodologías que garantiza la calidad y confiabilidad.
+      </dataChck>
+      <verStmt>
+        <version>
+          Versión final
+        </version>
+      </verStmt>
+    </fileTxt>
+  </fileDscr>
+  <fileDscr ID="F2" URI="BOL-INE-CNPV-1976-V3.Nesstar?Index=1&amp;Name=BOLIVIV1976">
+    <fileTxt>
+      <fileName>
+        BOLIVIV1976.NSDstat
+      </fileName>
+      <fileCont>
+        <![CDATA[Base de datos  de las principales característica de los hogares y viviendas censadas.]]>
+      </fileCont>
+      <dimensns>
+        <caseQnty>
+          0
+        </caseQnty>
+        <varQnty>
+          25
+        </varQnty>
+      </dimensns>
+      <fileType>
+        Nesstar 200801
+      </fileType>
+      <filePlac>
+        Instituto Nacional de Estadística
+      </filePlac>
+      <dataChck>
+        Se realiza un análisis de la información condiferentes metodologías que garantiza la calidad y confiabilidad.
+      </dataChck>
+      <verStmt>
+        <version>
+          Versión final
+        </version>
+      </verStmt>
+    </fileTxt>
+  </fileDscr>
+  <dataDscr>
+    <varGrp ID="VG6" type="subject" var="V39 V40 V41 V42 V43">
+      <labl>
+        Características de la Vivienda
+      </labl>
+      <txt>
+        Características de la vivienda en lo que se refiere a: Tipo de vivienda, materiales de construcción predominates en la viviendas, tenencia de la vivienda. Estos aspectos permitirán el cálculo de indicadores de pobreza y realizar un análisis de la calidad de la vivienda.
+      </txt>
+      <universe clusion="I">
+        El universo de estudio de este grupo de variables está conformado por todas las viviendas particulares, ocupadas, con habitantes presentes, que existen en el país.
+      </universe>
+    </varGrp>
+    <varGrp ID="VG7" type="subject" var="V44 V45 V46 V47 V48 V49 V50 V51 V52">
+      <labl>
+        Servicios Básicos
+      </labl>
+      <txt>
+        Servicios Básicos se refiere a: Sistema de abastecimiento de agua, procedencia del agua, servicio sanitario, energía eléctrica, número de cuartos o habitacionaes, combustible para cocinar. Estos aspectos permitirán elaborar indicadores de pobreza y realizar análisis de la calidad de la vivienda.
+      </txt>
+      <universe clusion="I">
+        El universo de estudio de este grupo de variables está conformado por todas las viviendas particulares, ocupadas, con habitantes presentes, que existen en el país.
+      </universe>
+    </varGrp>
+    <varGrp ID="VG1" type="subject" var="V8 V9 V10">
+      <labl>
+        Características Demográficas
+      </labl>
+      <txt>
+        Este grupo de variables estudian las características demográficas de las personas empadronadas, para determinar la estructura de la población por sexo, edad, parentesco y estado civil o conyugal.
+      </txt>
+      <universe clusion="I">
+        El universo de esta variable está conformado por todas las personas entrevistadas en las viviendas empadronadas.
+      </universe>
+    </varGrp>
+    <varGrp ID="VG2" type="subject" var="V11 V60 V61">
+      <labl>
+        Migración
+      </labl>
+      <txt>
+        <![CDATA[Este grupo de variables investiga acerca de la migración reciente (en los últimos cinco  años) de la pobalción.]]>
+      </txt>
+      <universe clusion="I">
+        El universo de estudio de este grupo de variables está conformado por las personas que tienen 4 años o más.
+      </universe>
+    </varGrp>
+    <varGrp ID="VG3" type="subject" var="V15 V16 V17">
+      <labl>
+        Educación
+      </labl>
+      <txt>
+        Este grupo de variables investiga las características educativas de la población como ser: alfabetismo y analfabetismo, años de escolaridad.
+      </txt>
+      <universe clusion="I">
+        El universo de estudio de este grupo de variables está conformado por las personas que tienen 4 años o más.
+      </universe>
+    </varGrp>
+    <varGrp ID="VG4" type="subject" var="V18 V65 V63 V64">
+      <labl>
+        Actividad Económica
+      </labl>
+      <txt>
+        A través de este grupo de variables se puede determinar la actividad económica de la población. Según su condición de actividad se consideran tres categorías básicas: Población ocupada, Población desocupada y Población económicamente inactiva.
+      </txt>
+      <universe clusion="I">
+        El universo de estudio de este grupo de variables está conformado por las personas que tienen 7 años o más.
+      </universe>
+    </varGrp>
+    <varGrp ID="VG5" type="subject" var="V22 V23 V66 V68">
+      <labl>
+        Fecundidad
+      </labl>
+      <txt>
+        Con este grupo de variables se investiga sobre los hijos e hijas que tiene o tuvo la mujer, indagando el número de nacidos vivos, cuántos viven actualmente, mes y año de nacimiento del último(a) hijo(a) nacido(a) vivo(a).
+      </txt>
+      <universe clusion="I">
+        El universo de estudio de este grupo de variables está conformado por las personas que tienen 15 años o más.
+      </universe>
+    </varGrp>
+    <var ID="V1" name="dep" files="F1" intrvl="discrete">
+      <location StartPos="1" EndPos="1" width="1" RecSegNo="1"/>
+      <labl>
+        departamento
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <respUnit>
+        <![CDATA[El encuestador, debe  copiar los datos de la carpeta que se le entregarán con el material de trabajo.]]>
+      </respUnit>
+      <qstn>
+        <qstnLit>
+          Departamento
+        </qstnLit>
+        <ivuInstr>
+          En el rectángulo destinado a Ubicación Geográfica, copie los datos de la carpeta que se le entregarán con el material de trabajo.
+        </ivuInstr>
+      </qstn>
+      <universe clusion="I">
+        Todos los departamentos de la República de Bolivia
+      </universe>
+      <txt>
+        En Bolivia, los departamentos son las entidades subnacionales mayores del país en las que se subdivide el territorio del Estado. Desde el 4 de abril de 2010, cuentan con autonomía reconocida por la constitución a nivel ejecutivo y legislativo pero no judicial.
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Chuquisaca
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          La Paz
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Chochabamba
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Oruro
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Potosí
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          6
+        </catValu>
+        <labl>
+          Tarija
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          7
+        </catValu>
+        <labl>
+          Santa Cruz
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          8
+        </catValu>
+        <labl>
+          Beni
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          9
+        </catValu>
+        <labl>
+          Pando
+        </labl>
+      </catgry>
+      <varFormat type="character" schema="other"/>
+    </var>
+    <var ID="V58" name="pro" files="F1" intrvl="discrete">
+      <location StartPos="2" EndPos="2" width="1" RecSegNo="1"/>
+      <labl>
+        provincia
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <respUnit>
+        <![CDATA[El encuestador, debe  copiar los datos de la carpeta que se le entregarán con el material de trabajo.]]>
+      </respUnit>
+      <qstn>
+        <qstnLit>
+          Provincia
+        </qstnLit>
+        <ivuInstr>
+          En el rectángulo destinado a Ubicación Geográfica, copie los datos de la carpeta que se le entregarán con el material de trabajo.
+        </ivuInstr>
+      </qstn>
+      <universe clusion="I">
+        Todas las provincias del territorio nacional (República de Bolivia).
+      </universe>
+      <txt>
+        Las provincias de Bolivia son las subdivisiones territoriales intermedias del país, inferiores a los departamentos y superiores a los municipios.
+      </txt>
+      <varFormat type="character" schema="other"/>
+    </var>
+    <var ID="V59" name="can" files="F1" intrvl="discrete">
+      <location StartPos="3" EndPos="3" width="1" RecSegNo="1"/>
+      <labl>
+        canton
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <respUnit>
+        <![CDATA[El encuestador, debe  copiar los datos de la carpeta que se le entregarán con el material de trabajo.]]>
+      </respUnit>
+      <qstn>
+        <qstnLit>
+          Canton
+        </qstnLit>
+        <ivuInstr>
+          En el rectángulo destinado a Ubicación Geográfica, copie los datos de la carpeta que se le entregarán con el material de trabajo.
+        </ivuInstr>
+      </qstn>
+      <universe clusion="I">
+        Todos los cantones de las provincias de la república de Bolivia.
+      </universe>
+      <txt>
+        Cantón de la provincia en el que está situada la vivienda.
+      </txt>
+      <varFormat type="character" schema="other"/>
+    </var>
+    <var ID="V4" name="ciu" files="F1" dcml="0" intrvl="contin">
+      <location StartPos="4" EndPos="4" width="1" RecSegNo="1"/>
+      <labl>
+        ciudad
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <respUnit>
+        <![CDATA[El encuestador, debe  copiar los datos de la carpeta que se le entregarán con el material de trabajo.]]>
+      </respUnit>
+      <qstn>
+        <qstnLit>
+          Ciudad o localidad
+        </qstnLit>
+        <ivuInstr>
+          En el rectángulo destinado a Ubicación Geográfica, copie los datos de la carpeta que se le entregarán con el material de trabajo.
+        </ivuInstr>
+      </qstn>
+      <universe clusion="I">
+        Todas las ciudades de la república de Bolivia
+      </universe>
+      <txt>
+        Ciudad donde está ubicada la vivienda.
+      </txt>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V5" name="area" files="F1" dcml="0" intrvl="discrete">
+      <location StartPos="5" EndPos="5" width="1" RecSegNo="1"/>
+      <labl>
+        area geografica
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <respUnit>
+        <![CDATA[El encuestador, debe  copiar los datos de la carpeta que se le entregarán con el material de trabajo.]]>
+      </respUnit>
+      <valrng>
+        <range UNITS="REAL" min="1" max="2"/>
+      </valrng>
+      <universe clusion="I">
+        Todas las áreas geográficas abarcadas por el censo.
+      </universe>
+      <txt>
+        Desde el Censo realizado en 1950, se ha considerado área urbana a todos los centros poblados en los que habitan 2000 o más personas y por lo tanto área rural, a todo centro poblado o área dospersa en la que habitan menos de 2000 personas, definiciones que en su momento fueron adoptadas. Sin embargo, el INE seguirá utilizando las definiciones adoptadas desde 1950, a la espera que las instituciones que tiene que ver con el ordenamiento territorial y temas a fines "redefinan" lo que debemos entender por área urbana y área rural.
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          URBANA
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          RURAL
+        </labl>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V57" name="zona" files="F1" intrvl="discrete">
+      <location StartPos="6" EndPos="6" width="1" RecSegNo="1"/>
+      <labl>
+        zona
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <respUnit>
+        <![CDATA[El encuestador, debe  copiar los datos de la carpeta que se le entregarán con el material de trabajo.]]>
+      </respUnit>
+      <qstn>
+        <qstnLit>
+          Zona
+        </qstnLit>
+        <ivuInstr>
+          En el rectángulo destinado a Ubicación Geográfica, copie los datos de la carpeta que se le entregarán con el material de trabajo.
+        </ivuInstr>
+      </qstn>
+      <universe clusion="I">
+        Todas las Zonas abarcadas por el censo.
+      </universe>
+      <txt>
+        Distribución de porciones de áreas geográficas es decir zonas para el censador.
+      </txt>
+      <varFormat type="character" schema="other"/>
+    </var>
+    <var ID="V7" name="p00" files="F1" dcml="0" intrvl="contin">
+      <location StartPos="7" EndPos="7" width="1" RecSegNo="1"/>
+      <labl>
+        1.orden de la persona
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <respUnit>
+        Todos los miembros del hogar. Si son personas adultas, cada uno debe proporcionar sus datos. En el cso de menores, lo hará el jefe del hogar.
+      </respUnit>
+      <universe clusion="I">
+        Los integrantes del hogar
+      </universe>
+      <txt>
+        Número de orden de secuencia de la persona censada.
+      </txt>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V8" name="p02" files="F1" intrvl="discrete">
+      <location StartPos="8" EndPos="8" width="1" RecSegNo="1"/>
+      <labl>
+        2.relacion de parentesco con el jefe de hogar
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <respUnit>
+        Todos los miembros del hogar. Si son personas adultas, cada uno debe proporcionar sus datos. En el cso de menores, lo hará el jefe del hogar.
+      </respUnit>
+      <qstn>
+        <qstnLit>
+          <![CDATA[Qué parentesco o relación tiene con el jefe del hogar?
+escoger uno de la lista .
+1. Jefe(a), 2. Esposa o conviviente, 3. Hijo(a) o entenado, 4. Yerno o Nuera, 5. Nieto (a), 6. Padre o Suegro, 7. Otro pariente, 8. Empleados, 9. No familiar]]>
+        </qstnLit>
+        <ivuInstr>
+          <![CDATA[Las siguientes columnas marque la X en la casilla correspondiente a la relación o parentesco que cada una de las personas tiene con el jefe del hogar
+Si la esposa o conviviente ponga X en la casilla 2, si es hijo marcará X en la casilla 3, etc.
+En caso de viviendas colectivas, anule la primera columna correspondiente al jefe del Hogar, mediante una línea vertical, y no llene la pregunta 2 que se refiere a parentesco]]>
+        </ivuInstr>
+      </qstn>
+      <universe clusion="I">
+        Los integrantes del hogar
+      </universe>
+      <txt>
+        Relación de parentesco con el jefa o jefe de familia.
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Jefe (a)
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Esposa o Conviviente
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Hijo (a) o Entenado
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Yerno o nuera
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Nieto (a)
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          6
+        </catValu>
+        <labl>
+          Padre o Suegro
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          7
+        </catValu>
+        <labl>
+          Otro Pariente
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          8
+        </catValu>
+        <labl>
+          Empleados (Cama adentro)
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          9
+        </catValu>
+        <labl>
+          No familiar
+        </labl>
+      </catgry>
+      <varFormat type="character" schema="other"/>
+    </var>
+    <var ID="V9" name="p03" files="F1" intrvl="discrete">
+      <location StartPos="9" EndPos="9" width="1" RecSegNo="1"/>
+      <labl>
+        3.es hombre o mujer
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <respUnit>
+        Todos los miembros del hogar. Si son personas adultas, cada uno debe proporcionar sus datos. En el cso de menores, lo hará el jefe del hogar.
+      </respUnit>
+      <qstn>
+        <qstnLit>
+          <![CDATA[Es hombre o mujer?
+1. Hombre, 2. Mujer]]>
+        </qstnLit>
+        <ivuInstr>
+          Marque con una X la casilla correspondiente al sexo se la persona que entrevista.
+        </ivuInstr>
+      </qstn>
+      <universe clusion="I">
+        Los integrantes del hogar
+      </universe>
+      <txt>
+        Sexo de la persona censada no tendencia ni como se identifica.
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Hombre
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Mujer
+        </labl>
+      </catgry>
+      <varFormat type="character" schema="other"/>
+    </var>
+    <var ID="V10" name="p04" files="F1" dcml="0" intrvl="contin">
+      <location StartPos="10" EndPos="10" width="1" RecSegNo="1"/>
+      <labl>
+        4.cuantos años cumplidos tiene
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <respUnit>
+        Todos los miembros del hogar. Si son personas adultas, cada uno debe proporcionar sus datos. En el cso de menores, lo hará el jefe del hogar.
+      </respUnit>
+      <qstn>
+        <qstnLit>
+          Cuantos años cumplidos tiene?
+        </qstnLit>
+        <ivuInstr>
+          <![CDATA[Anote sobre la línea correspondiente el número de años cumplidos, y no los que va a cumplir.
+Para los menores de un año, anote 00]]>
+        </ivuInstr>
+      </qstn>
+      <universe clusion="I">
+        Los integrantes del hogar
+      </universe>
+      <txt>
+        Edad exacta de la persona censada.
+      </txt>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V11" name="p07" files="F1" dcml="0" intrvl="contin">
+      <location StartPos="11" EndPos="11" width="1" RecSegNo="1"/>
+      <labl>
+        5.donde nacio
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <respUnit>
+        Todos los miembros del hogar. Si son personas adultas, cada uno debe proporcionar sus datos. En el cso de menores, lo hará el jefe del hogar.
+      </respUnit>
+      <qstn>
+        <qstnLit>
+          <![CDATA[Dónde Nació?
+1.Aquí, 2. Otra localidad, 3.Provincia, 4 Depratamento u otro país]]>
+        </qstnLit>
+        <postQTxt>
+          Si nació en esta misma localidad marque AQUI, si nació en otro lugar anote primero la localidad lo más concretamente posible y luego la provincia y el departamento. Si nació fuera de Bolivia anote solo el país.
+        </postQTxt>
+        <ivuInstr>
+          <![CDATA[Marque aquí si la persona nació en la localidad donde es censada.
+En caso contrario escriba el nombre de la localidad, provincia y departamento donde nació.
+Si nació en el extranjero anote solo el nombre del país]]>
+        </ivuInstr>
+      </qstn>
+      <universe clusion="I">
+        Los integrantes del hogar
+      </universe>
+      <txt>
+        Fecha de nacimiento.
+      </txt>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V60" name="p06" files="F1" intrvl="discrete">
+      <location StartPos="12" EndPos="12" width="1" RecSegNo="1"/>
+      <labl>
+        6.residencia habitual
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <respUnit>
+        Todos los miembros del hogar. Si son personas adultas, cada uno debe proporcionar sus datos. En el cso de menores, lo hará el jefe del hogar.
+      </respUnit>
+      <qstn>
+        <qstnLit>
+          Dónde reside habitualmente?
+        </qstnLit>
+        <postQTxt>
+          <![CDATA[Si reside habitualmente  en esta misma localidad marque AQUI, si reside habitualmente en otro lugar anote primero la localidad lo más concretamente posible y luego la provincia y el departamento. Si reside habitualmente fuera de Bolivia anote solo el país.]]>
+        </postQTxt>
+        <ivuInstr>
+          <![CDATA[Marque la casilla “Aquí” si reside habitualmente en la localidad donde es censado.
+En caso contrario, anote el nombre de la localidad, provincia y departamento donde vive.
+Si vive en el extranjero, anote solo el país.]]>
+        </ivuInstr>
+      </qstn>
+      <universe clusion="I">
+        Los integrantes del hogar
+      </universe>
+      <txt>
+        Donde reside actualmente.
+      </txt>
+      <varFormat type="character" schema="other"/>
+    </var>
+    <var ID="V61" name="p08" files="F1" intrvl="discrete">
+      <location StartPos="13" EndPos="13" width="1" RecSegNo="1"/>
+      <labl>
+        7.donde vivia habitualmente hace cinco años
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <respUnit>
+        Todos los miembros del hogar. Si son personas adultas, cada uno debe proporcionar sus datos. En el cso de menores, lo hará el jefe del hogar.
+      </respUnit>
+      <qstn>
+        <qstnLit>
+          Dónde residía habitualmente hace 5 años? (1971)
+        </qstnLit>
+        <postQTxt>
+          <![CDATA[Si residía habitualmente  en esta misma localidad marque AQUI, si residía habitualmente en otro lugar anote primero la localidad lo más concretamente posible y luego la provincia y el departamento. Si residía habitualmente fuera de Bolivia anote solo el país.]]>
+        </postQTxt>
+        <ivuInstr>
+          <![CDATA[Si residía habitualmente en otro lugar, anote primero la localidad lo más concretamente posible, y luego la provincia y el departamento.
+Si residía habitualmente fuera de Bolivia, anote sólo el país
+Esta pregunta no se aplica a las personas]]>
+        </ivuInstr>
+      </qstn>
+      <universe clusion="I">
+        Los integrantes del hogar
+      </universe>
+      <txt>
+        Donde residía hace 5 años
+      </txt>
+      <varFormat type="character" schema="other"/>
+    </var>
+    <var ID="V62" name="p09" files="F1" intrvl="discrete">
+      <location StartPos="14" EndPos="14" width="1" RecSegNo="1"/>
+      <labl>
+        8.idioma que habla
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <respUnit>
+        Todos los miembros del hogar. Si son personas adultas, cada uno debe proporcionar sus datos. En el cso de menores, lo hará el jefe del hogar.
+      </respUnit>
+      <qstn>
+        <qstnLit>
+          Qué idiomas bolivianos sabe hablar?
+        </qstnLit>
+        <ivuInstr>
+          <![CDATA[Lea ordenadamente las diferentes alternativas y marque solamente una de las casillas.
+Si aún no habla o habla solo idioma extranjero, marque la casilla 0 (aun no habla o ninguno)]]>
+        </ivuInstr>
+      </qstn>
+      <universe clusion="I">
+        Persomas de 5 años y más edad
+      </universe>
+      <txt>
+        Idiomas que habla la persona censada.
+      </txt>
+      <varFormat type="character" schema="other"/>
+    </var>
+    <var ID="V15" name="p10" files="F1" dcml="0" intrvl="discrete">
+      <location StartPos="15" EndPos="15" width="1" RecSegNo="1"/>
+      <labl>
+        <![CDATA[9.sabe leer y  escribir]]>
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <respUnit>
+        Todos los miembros del hogar. Si son personas adultas, cada uno debe proporcionar sus datos. En el cso de menores, lo hará el jefe del hogar.
+      </respUnit>
+      <qstn>
+        <qstnLit>
+          Sabe leer y escribir?
+        </qstnLit>
+        <ivuInstr>
+          Si sabe leer y escribir marque la casilla “Si”. Si solo lee o solo escribe marque “No”
+        </ivuInstr>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="2"/>
+      </valrng>
+      <universe clusion="I">
+        Persomas de 5 años y más edad
+      </universe>
+      <txt>
+        La persona censada sabe leer y escribir (ambos),
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Si
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          No
+        </labl>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V16" name="p11" files="F1" dcml="0" intrvl="discrete">
+      <location StartPos="16" EndPos="16" width="1" RecSegNo="1"/>
+      <labl>
+        10.asiste a escuela u otro centro educativo
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <respUnit>
+        Todos los miembros del hogar. Si son personas adultas, cada uno debe proporcionar sus datos. En el cso de menores, lo hará el jefe del hogar.
+      </respUnit>
+      <qstn>
+        <qstnLit>
+          <![CDATA[Asiste a la escuela u otro centro educativo?
+1. Si, 2. No]]>
+        </qstnLit>
+        <ivuInstr>
+          <![CDATA[Marque la casilla correspondiente a la respuesta que el informante.
+No tome en cuenta cursos rápidos y por correspondencia.]]>
+        </ivuInstr>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="2"/>
+      </valrng>
+      <universe clusion="I">
+        Persomas de 5 años y más edad
+      </universe>
+      <txt>
+        La persona asiste o no a algún centro educativo o de enseñanza.
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Si
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          No
+        </labl>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V17" name="p14" files="F1" dcml="0" intrvl="discrete">
+      <location StartPos="17" EndPos="17" width="1" RecSegNo="1"/>
+      <labl>
+        11.ultimo nivel y curso aprobado
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <respUnit>
+        Todos los miembros del hogar. Si son personas adultas, cada uno debe proporcionar sus datos. En el cso de menores, lo hará el jefe del hogar.
+      </respUnit>
+      <qstn>
+        <qstnLit>
+          <![CDATA[Cual es el último curso aprobado y en que ciclo?
+0.Ninguno, 1.Básico, 2.Intermedio, 3.Medio, 4.Primaria, 5.Secundaria, 6.Normal, 7.Universitario, 8.Otro]]>
+        </qstnLit>
+        <ivuInstr>
+          <![CDATA[En la línea correspondiente al nivel, anote el número del curso o año más alto que aprobó y ni el que este cursando.
+La categoría “otro” se refiere a la instrucción pre-escolar, técnica, vocacional.
+No tome en cuenta los cursos rápidos y por correspondencia.]]>
+        </ivuInstr>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="0" max="8"/>
+      </valrng>
+      <universe clusion="I">
+        Persomas de 5 años y más edad
+      </universe>
+      <txt>
+        Que nivel de estudios tieme la persona censada.
+      </txt>
+      <catgry>
+        <catValu>
+          0
+        </catValu>
+        <labl>
+          Ninguno
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Básico
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Intermedio
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Medio
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Primaria
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Secundaria
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          6
+        </catValu>
+        <labl>
+          Normal
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          7
+        </catValu>
+        <labl>
+          Universitario
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          8
+        </catValu>
+        <labl>
+          Otro
+        </labl>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V18" name="p15" files="F1" dcml="0" intrvl="discrete">
+      <location StartPos="18" EndPos="18" width="1" RecSegNo="1"/>
+      <labl>
+        12.trabajo la semana pasada
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <respUnit>
+        Todos los miembros del hogar. Si son personas adultas, cada uno debe proporcionar sus datos. En el cso de menores, lo hará el jefe del hogar.
+      </respUnit>
+      <qstn>
+        <qstnLit>
+          <![CDATA[A qué dedicó la mayor parte de su tiempo la semana anterior (al día del Censo) ?
+1.Trabajó, 2.No trabajo, pero tenía trabajo?, 3.Desocupado?, 4.Buscó trabajo por primera vez?, 5.Sólo labores de casa?, 6.Sólo estudiante?, 7.Jubilado y o rentista?, 8.Otros?..]]>
+        </qstnLit>
+        <postQTxt>
+          <![CDATA[Para los que respondieron alguna de las opciones de los códigos de 4 a 8, deben pasar a la pregunta 16:
+
+En total cuántos hijos nacidos vivos ha tenido?]]>
+        </postQTxt>
+        <ivuInstr>
+          Al hacer la pregunta, lea las alternativas en el orden indicado: Trabajo? , No trabajo pero tenía trabajo? Y así sucesivamente, hasta obtener una respuesta; entonces, marque la casilla respectiva. Si marca la casilla 1, 2 o 3, haga las preguntas 13,14 y 15.Si marca una de las casillas restantes (4 a 8), pase directamente a la pregunta 16
+        </ivuInstr>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="8"/>
+      </valrng>
+      <universe clusion="I">
+        Personas de 7 años y más edad
+      </universe>
+      <txt>
+        Esta pregunta se refiere a si la persona trabajó o no.
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Trabajó
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          No trabajo, pero tenía trabajo?
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Desocupado?
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Buscó trabajo por primera vez?
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Sólo labores de casa?
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          6
+        </catValu>
+        <labl>
+          Sólo estudiante?
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          7
+        </catValu>
+        <labl>
+          Jubilado y o rentista?
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          8
+        </catValu>
+        <labl>
+          Otros?..
+        </labl>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V65" name="p16" files="F1" intrvl="discrete">
+      <location StartPos="19" EndPos="19" width="1" RecSegNo="1"/>
+      <labl>
+        13. ocupacion principal
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <respUnit>
+        Todos los miembros del hogar. Si son personas adultas, cada uno debe proporcionar sus datos. En el cso de menores, lo hará el jefe del hogar.
+      </respUnit>
+      <qstn>
+        <preQTxt>
+          <![CDATA[Solo para personas de 7 años y más de edad.
+A qué dedicó la mayor parte de su tiempo la semana anterior (al día del Censo) ?]]>
+        </preQTxt>
+        <qstnLit>
+          Cuál fue la principal ocupación o trabajo que realizó durante la semana anterior o su último trabajo si estuvo desocupado?
+        </qstnLit>
+        <postQTxt>
+          Anote por ejemplo Agricultor, zafrero, comerciante minorista, perforista de minas, médico, empleada doméstica, etc.
+        </postQTxt>
+        <ivuInstr>
+          <![CDATA[Esta pregunta debe hacerla sólo a las personas que contestaron 1, 2 ó 3 en la pregunta12
+Si la respuesta que da el informante es ambigua o poco clara, pida que describa con algún detalle  el trabajo y anote textualmente lo declarado]]>
+        </ivuInstr>
+      </qstn>
+      <universe clusion="I">
+        Personas de 7 años y más edad
+      </universe>
+      <txt>
+        Ocupación que tiene la persona censada.
+      </txt>
+      <varFormat type="character" schema="other"/>
+    </var>
+    <var ID="V63" name="p17" files="F1" intrvl="discrete">
+      <location StartPos="20" EndPos="20" width="1" RecSegNo="1"/>
+      <labl>
+        14.rama de actividad
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <respUnit>
+        Todos los miembros del hogar. Si son personas adultas, cada uno debe proporcionar sus datos. En el cso de menores, lo hará el jefe del hogar.
+      </respUnit>
+      <qstn>
+        <qstnLit>
+          Qué produce o a qué se dedica principalmente el lugar, establecimiento o negocio donde desempeño la ocupación indicada?
+        </qstnLit>
+        <postQTxt>
+          Ej. Especifique. Explotación minera de estaño, cultivos agrícolas, lechería, fabricación de zapatos, reparación de radios, transporte de pasajeros, comercio al por menor, función pública, etc.
+        </postQTxt>
+        <ivuInstr>
+          <![CDATA[Si la respuesta está en términos vagos o imprecisos, insista en que el informante le dé un mayor detalle. Por ejemplo no acepte el dato de fábrica, taller; debe indicar exactamente el tipo de actividad que se desarrolla en ese establecimiento.
+Ejemplos de anotación: explotación minera de estaño, almacén de calzado, compañía de seguros, etc.]]>
+        </ivuInstr>
+      </qstn>
+      <universe clusion="I">
+        Personas de 7 años y más edad
+      </universe>
+      <txt>
+        Actividad económica que desarrolla la persona censada.
+      </txt>
+      <varFormat type="character" schema="other"/>
+    </var>
+    <var ID="V64" name="p18" files="F1" intrvl="discrete">
+      <location StartPos="21" EndPos="21" width="1" RecSegNo="1"/>
+      <labl>
+        15.categoria de la ocupacion
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <respUnit>
+        Todos los miembros del hogar. Si son personas adultas, cada uno debe proporcionar sus datos. En el cso de menores, lo hará el jefe del hogar.
+      </respUnit>
+      <qstn>
+        <qstnLit>
+          Cual fue la categoría o posición en la ocupación que indica?
+        </qstnLit>
+        <ivuInstr>
+          Después de hacer la pregunta, lea con claridad cada una de las alternativas en el orden que consta y al recibir una respuesta, marque la casilla correspondiente.
+        </ivuInstr>
+      </qstn>
+      <universe clusion="I">
+        Personas de 7 años y más edad
+      </universe>
+      <txt>
+        Categoría específica de la actividad que desarrolla la persona Censada.
+      </txt>
+      <varFormat type="character" schema="other"/>
+    </var>
+    <var ID="V22" name="p20" files="F1" dcml="0" intrvl="contin">
+      <location StartPos="22" EndPos="22" width="1" RecSegNo="1"/>
+      <labl>
+        16a.total de hijos nacidos vivos
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <respUnit>
+        Todos los miembros del hogar. Si son personas adultas, cada uno debe proporcionar sus datos. En el cso de menores, lo hará el jefe del hogar.
+      </respUnit>
+      <qstn>
+        <preQTxt>
+          <![CDATA[Para los que respondieron alguna de las siguientes opciones de la pregunta 12:
+4.Buscó trabajo por primera vez?, 5.Sólo labores de casa?, 6.Sólo estudiante?, 7.Jubilado y o rentista?, 8.Otros?..]]>
+        </preQTxt>
+        <qstnLit>
+          En total cuántos hijos nacidos vivos ha tenido?
+        </qstnLit>
+        <ivuInstr>
+          <![CDATA[a) Es indispensable enfatizar la pregunta en el sentido de que se refiere a todos los hijos nacidos vivos en la actualidad. Tenga en cuenta que los informantes tienen tendencia a omitir aquellos hijos que murieron al poco tiempo de nacer.
+Si la respuesta es NINGUNO, pase a la pregunta 17]]>
+        </ivuInstr>
+      </qstn>
+      <universe clusion="I">
+        Mujeres de 12 años y más de edad
+      </universe>
+      <txt>
+        Cantidad de hijos nacidos vivos.
+      </txt>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V23" name="p21" files="F1" dcml="0" intrvl="contin">
+      <location StartPos="23" EndPos="23" width="1" RecSegNo="1"/>
+      <labl>
+        16b.cuantos estan actualmente vivos
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <respUnit>
+        Todos los miembros del hogar. Si son personas adultas, cada uno debe proporcionar sus datos. En el cso de menores, lo hará el jefe del hogar.
+      </respUnit>
+      <qstn>
+        <qstnLit>
+          De ellos cuántos están actualmente vivos.?
+        </qstnLit>
+        <ivuInstr>
+          b) De ellos, cuantos están actualmente vivos? -en esta pregunta se anotara el número de hijos vivos que tiene la informante, incluyendo los que no viven en el hogar.
+        </ivuInstr>
+      </qstn>
+      <universe clusion="I">
+        Mujeres de 12 años y más de edad
+      </universe>
+      <txt>
+        Cantidad de hijos vivos actualmente.
+      </txt>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V66" name="p23m" files="F1" intrvl="discrete">
+      <location StartPos="24" EndPos="24" width="1" RecSegNo="1"/>
+      <labl>
+        16c1.mes de nacimiento ultimo hijo nacido vivo
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <respUnit>
+        Todos los miembros del hogar. Si son personas adultas, cada uno debe proporcionar sus datos. En el cso de menores, lo hará el jefe del hogar.
+      </respUnit>
+      <qstn>
+        <qstnLit>
+          Qué mes y año nació su último hijo nacido vivo?
+        </qstnLit>
+        <ivuInstr>
+          <![CDATA[c) Que mes y año nació su ultimo hijo nacido vivo?
+Anote el mes y año en que nació el último hijo de la entrevista.]]>
+        </ivuInstr>
+      </qstn>
+      <universe clusion="I">
+        Mujeres de 12 años y más de edad
+      </universe>
+      <txt>
+        Mes de ultimo hijo nacido vivo.
+      </txt>
+      <varFormat type="character" schema="other"/>
+    </var>
+    <var ID="V68" name="p23a" files="F1" dcml="0" intrvl="discrete">
+      <location StartPos="25" EndPos="25" width="1" RecSegNo="1"/>
+      <labl>
+        16c2.año de nacimiento ultimo hijo nacido vivo
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <respUnit>
+        Todos los miembros del hogar. Si son personas adultas, cada uno debe proporcionar sus datos. En el cso de menores, lo hará el jefe del hogar.
+      </respUnit>
+      <qstn>
+        <qstnLit>
+          Qué mes y año nació su último hijo nacido vivo?
+        </qstnLit>
+        <ivuInstr>
+          <![CDATA[c) Que mes y año nació su ultimo hijo nacido vivo?
+Anote el mes y año en que nació el último hijo de la entrevista.]]>
+        </ivuInstr>
+      </qstn>
+      <universe clusion="I">
+        Mujeres de 12 años y más de edad
+      </universe>
+      <txt>
+        Año de ultimo hijo nacido vivo.
+      </txt>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V26" name="p05" files="F1" dcml="0" intrvl="discrete">
+      <location StartPos="26" EndPos="26" width="1" RecSegNo="1"/>
+      <labl>
+        17.estado civil
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <respUnit>
+        Todos los miembros del hogar. Si son personas adultas, cada uno debe proporcionar sus datos. En el cso de menores, lo hará el jefe del hogar.
+      </respUnit>
+      <qstn>
+        <qstnLit>
+          <![CDATA[Cuál es su estado civil actual?
+1. Soltero, 2. Casado(a) o conviviente, 3.Viudo (a), 4. Divorciado(a) o separado]]>
+        </qstnLit>
+        <ivuInstr>
+          Marque la casilla correspondiente a la respuesta dada
+        </ivuInstr>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="4"/>
+      </valrng>
+      <universe clusion="I">
+        Personas de 12 años y más edad
+      </universe>
+      <txt>
+        Estado civil de la persona censada
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Soltero (a)
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Casado (a) o conviviente
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Viudo (a)
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Divorciado (a) o Separado (a)
+        </labl>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V27" name="i10p" files="F1" dcml="0" intrvl="contin">
+      <location StartPos="27" EndPos="27" width="1" RecSegNo="1"/>
+      <labl>
+        nro vivienda
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <universe clusion="I">
+        Todas los hogares que se realizó el censo.
+      </universe>
+      <txt>
+        Número de vivienda donde se realizo el censo.
+      </txt>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V28" name="i13p" files="F1" dcml="0" intrvl="contin">
+      <location StartPos="28" EndPos="28" width="1" RecSegNo="1"/>
+      <labl>
+        nro hogar
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <universe clusion="I">
+        Todas las personas en el territorio nacional, que pasaron la noche anterior al día del censo.
+      </universe>
+      <txt>
+        Número de Hogares dentro de la vivienda donde se realizo el censo.
+      </txt>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V32" name="idep" files="F2" dcml="0" intrvl="discrete">
+      <location StartPos="1" EndPos="1" width="1" RecSegNo="1"/>
+      <labl>
+        departamento
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <qstn>
+        <qstnLit>
+          Departamento
+        </qstnLit>
+        <ivuInstr>
+          En el rectángulo destinado a Ubicación Geográfica, copie los datos de la carpeta que se le entregarán con el material de trabajo.
+        </ivuInstr>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="9"/>
+      </valrng>
+      <universe clusion="I">
+        Todos los departamentos de la República de Bolivia
+      </universe>
+      <sumStat type="vald">
+        0
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        En Bolivia, los departamentos son las entidades subnacionales mayores del país en las que se subdivide el territorio del Estado. Desde el 4 de abril de 2010, cuentan con autonomía reconocida por la constitución a nivel ejecutivo y legislativo pero no judicial.
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Chuquisaca
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          La Paz
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Cochabamba
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Oruro
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Potosí
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          6
+        </catValu>
+        <labl>
+          Tarija
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          7
+        </catValu>
+        <labl>
+          Santa Cruz
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          8
+        </catValu>
+        <labl>
+          Beni
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          9
+        </catValu>
+        <labl>
+          Pando
+        </labl>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V69" name="pro" files="F2" intrvl="discrete">
+      <location StartPos="2" EndPos="2" width="1" RecSegNo="1"/>
+      <labl>
+        provincia
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <qstn>
+        <qstnLit>
+          Provincia
+        </qstnLit>
+        <ivuInstr>
+          En el rectángulo destinado a Ubicación Geográfica, copie los datos de la carpeta que se le entregarán con el material de trabajo.
+        </ivuInstr>
+      </qstn>
+      <universe clusion="I">
+        Todas las provincias del territorio nacional (República de Bolivia).
+      </universe>
+      <sumStat type="vald">
+        0
+      </sumStat>
+      <txt>
+        Las provincias de Bolivia son las subdivisiones territoriales intermedias del país, inferiores a los departamentos y superiores a los municipios.
+      </txt>
+      <varFormat type="character" schema="other"/>
+    </var>
+    <var ID="V70" name="can" files="F2" intrvl="discrete">
+      <location StartPos="3" EndPos="3" width="1" RecSegNo="1"/>
+      <labl>
+        canton
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <qstn>
+        <qstnLit>
+          Canton o localidad
+        </qstnLit>
+        <ivuInstr>
+          En el rectángulo destinado a Ubicación Geográfica, copie los datos de la carpeta que se le entregarán con el material de trabajo.
+        </ivuInstr>
+      </qstn>
+      <universe clusion="I">
+        Todos los cantones de las provincias de la república de Bolivia.
+      </universe>
+      <sumStat type="vald">
+        0
+      </sumStat>
+      <txt>
+        Cantón de la provincia en el que está situada la vivienda.
+      </txt>
+      <varFormat type="character" schema="other"/>
+    </var>
+    <var ID="V71" name="ciu" files="F2" intrvl="discrete">
+      <location StartPos="4" EndPos="4" width="1" RecSegNo="1"/>
+      <labl>
+        ciudad
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <qstn>
+        <ivuInstr>
+          En el rectángulo destinado a Ubicación Geográfica, copie los datos de la carpeta que se le entregarán con el material de trabajo.
+        </ivuInstr>
+      </qstn>
+      <universe clusion="I">
+        Todas las ciudades de la república de Bolivia
+      </universe>
+      <sumStat type="vald">
+        0
+      </sumStat>
+      <txt>
+        Ciudad donde está ubicada la vivienda.
+      </txt>
+      <varFormat type="character" schema="other"/>
+    </var>
+    <var ID="V72" name="turrur" files="F2" intrvl="discrete">
+      <location StartPos="5" EndPos="5" width="1" RecSegNo="1"/>
+      <labl>
+        urbrur
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <qstn>
+        <ivuInstr>
+          En el rectángulo destinado a Ubicación Geográfica, copie los datos de la carpeta que se le entregarán con el material de trabajo.
+        </ivuInstr>
+      </qstn>
+      <universe clusion="I">
+        Todas las areas abarcadas por el censo.
+      </universe>
+      <sumStat type="vald">
+        0
+      </sumStat>
+      <txt>
+        Desde el Censo realizado en 1950, se ha considerado área urbana a todos los centros poblados en los que habitan 2000 o más personas y por lo tanto área rural, a todo centro poblado o área dospersa en la que habitan menos de 2000 personas, definiciones que en su momento fueron adoptadas. Sin embargo, el INE seguirá utilizando las definiciones adoptadas desde 1950, a la espera que las instituciones que tiene que ver con el ordenamiento territorial y temas a fines "redefinan" lo que debemos entender por área urbana y área rural.
+      </txt>
+      <varFormat type="character" schema="other"/>
+    </var>
+    <var ID="V73" name="zon" files="F2" intrvl="discrete">
+      <location StartPos="6" EndPos="6" width="1" RecSegNo="1"/>
+      <labl>
+        zona
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <qstn>
+        <qstnLit>
+          Zona
+        </qstnLit>
+        <ivuInstr>
+          En el rectángulo destinado a Ubicación Geográfica, copie los datos de la carpeta que se le entregarán con el material de trabajo.
+        </ivuInstr>
+      </qstn>
+      <universe clusion="I">
+        Todas las Zonas abarcadas por el censo.
+      </universe>
+      <sumStat type="vald">
+        0
+      </sumStat>
+      <txt>
+        Distribución de porciones de áreas geográficas es decir zonas para el cansador.
+      </txt>
+      <varFormat type="character" schema="other"/>
+    </var>
+    <var ID="V38" name="v00" files="F2" dcml="0" intrvl="contin">
+      <location StartPos="7" EndPos="7" width="1" RecSegNo="1"/>
+      <labl>
+        v00-manzana
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <qstn>
+        <qstnLit>
+          Manzana N°
+        </qstnLit>
+      </qstn>
+      <universe clusion="I">
+        Todas las manzanas enmarcadas en las zonas de censo.
+      </universe>
+      <sumStat type="vald">
+        0
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Código de manzana en la distribución para el área censal.
+      </txt>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V39" name="v01" files="F2" dcml="0" intrvl="discrete">
+      <location StartPos="8" EndPos="9" width="2" RecSegNo="1"/>
+      <labl>
+        v01-tipo de vivienda
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <respUnit>
+        Jefe de hogar
+      </respUnit>
+      <qstn>
+        <qstnLit>
+          <![CDATA[Tipo de vivienda
+11.Casa Independiente, 12.Departamento, 13.habitación (es) sueltas (s) en casa de vecindad, 14.Choza, pahuichi, 15.Vivienda improvisada, 16.Local no destinado a vivienda, 17.Otra, 21.Hotel, residencial, 22.Cuartel, establecimiento militar o policial, 23.Hospital, Sanatorio, Clínica, 24.Cárcel , establecimiento correccional, 25.Convento, institución correccional, 26.Internado educacional, 27.Otra]]>
+        </qstnLit>
+        <ivuInstr>
+          <![CDATA[Usted deberá identificar el tipo de vivienda y marcar con una X la casilla que corresponda
+Marcar la X en la “Otra”, cuando se trate de viviendas tales como: toldos, carpas, vagones de ferrocarril, etc.
+Marcará en “Locales no destinados para la vivienda” aquellos lugares que están habitados y que no han sido construidos para vivienda como: graneros, depósitos, etc.
+Si se trata de Vivienda Colectiva, marqué la X en la casilla que corresponda u pase directamente a las preguntas de Población. En estos casos no interesa las características de la edificación, sino exclusivamente los datos de las personas que habitan en estas viviendas]]>
+        </ivuInstr>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="11" max="27"/>
+      </valrng>
+      <universe clusion="I">
+        Las viviendas
+      </universe>
+      <sumStat type="vald">
+        0
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Es el tipo de vivienda que corresponda dentro de las categorías que se tiene de viviendas particulares o colectivas.
+      </txt>
+      <catgry>
+        <catValu>
+          11
+        </catValu>
+        <labl>
+          Casa Independiente
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          12
+        </catValu>
+        <labl>
+          Departamento
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          13
+        </catValu>
+        <labl>
+          habitación (es) sueltas (s) en casa de vecindad
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          14
+        </catValu>
+        <labl>
+          Choza, pahuichi
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          15
+        </catValu>
+        <labl>
+          Vivienda improvisada
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          16
+        </catValu>
+        <labl>
+          Local no destinado a vivienda
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          17
+        </catValu>
+        <labl>
+          Otra
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          21
+        </catValu>
+        <labl>
+          Hotel, residencial
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          22
+        </catValu>
+        <labl>
+          Cuartel, establecimiento militar o policial
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          23
+        </catValu>
+        <labl>
+          Hospital, Sanatorio, Clínica
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          24
+        </catValu>
+        <labl>
+          Cárcel , establecimiento correccional
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          25
+        </catValu>
+        <labl>
+          Convento, institución correccional
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          26
+        </catValu>
+        <labl>
+          Internado educacional
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          27
+        </catValu>
+        <labl>
+          Otra
+        </labl>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V40" name="v02" files="F2" dcml="0" intrvl="discrete">
+      <location StartPos="10" EndPos="10" width="1" RecSegNo="1"/>
+      <labl>
+        v02-condicion de ocupacion
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <respUnit>
+        Jefe de hogar
+      </respUnit>
+      <qstn>
+        <qstnLit>
+          <![CDATA[Condición de ocupación
+1.Con ocupantes presentes, 2.Con ocupantes ausentes, 3.Desocupada]]>
+        </qstnLit>
+        <ivuInstr>
+          <![CDATA[Marque la X en la casilla 1, si los miembros del hogar se encuentran en la vivienda. Si solo hay menores de edad, vuelva cuando esté una persona adulta.
+Marque la X en la casilla 2, si observa que la vivienda está habitada pero sus ocupantes no se encuentran presentes. Si averigua que la ausencia es temporal, vuelva a esta vivienda para tomar la información.
+Marque la casilla 3 en caso de viviendas que por estar en alquiler, reparación, recién construidas, etc. Se encuentran deshabitadas. En este caso no tome más datos en esta boleta.
+Las preguntas que corresponden a Tipo de Vivienda y Ocupación de la Vivienda, puede llenarlas el empadronador por observación.]]>
+        </ivuInstr>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="3"/>
+      </valrng>
+      <universe clusion="I">
+        Las viviendas
+      </universe>
+      <sumStat type="vald">
+        0
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        <![CDATA[Es la condición de acupación  de la vivienda, si la vivienda esta ocupada con personas presentes o no, o bien si está desocupada.]]>
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Con ocupantes presentes
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Con ocupantes ausentes
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Desocupada
+        </labl>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V41" name="v03" files="F2" dcml="0" intrvl="discrete">
+      <location StartPos="11" EndPos="11" width="1" RecSegNo="1"/>
+      <labl>
+        v03-paredes
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <respUnit>
+        Jefe de hogar
+      </respUnit>
+      <qstn>
+        <qstnLit>
+          <![CDATA[Materiales predominantes en la vivienda, Paredes exteriores
+1 Adobe revocado, 2 Adobe sin revocar y tapial, 3 Ladrillo, bloque de cemento, etc., 4 Piedra, 5 Madera, 6 Caña, palma ,trocos, 7 Otros]]>
+        </qstnLit>
+        <ivuInstr>
+          <![CDATA[Anote con que material están construidos:
+El techo del edificio (donde se encuentra la vivienda)
+Las paredes exteriores y el piso de la vivienda]]>
+        </ivuInstr>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="7"/>
+      </valrng>
+      <universe clusion="I">
+        Las viviendas
+      </universe>
+      <sumStat type="vald">
+        0
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Detalles de acabado de paredes exteriores.
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Adobe revocado
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Adobe sin revocar y tapial
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Ladrillo, bloque de cemento, etc.
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Piedra
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Madera
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          6
+        </catValu>
+        <labl>
+          Caña, palma ,trocos
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          7
+        </catValu>
+        <labl>
+          Otros
+        </labl>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V42" name="v04" files="F2" dcml="0" intrvl="discrete">
+      <location StartPos="12" EndPos="12" width="1" RecSegNo="1"/>
+      <labl>
+        v04-techos
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <respUnit>
+        Jefe de hogar
+      </respUnit>
+      <qstn>
+        <qstnLit>
+          <![CDATA[Materiales predominantes en la vivienda, Techo
+1 Calamina, 2 Tejas (Cemento, arcilla, fibrocemento, etc.), 3 Losa de hormigón, 4 Paja, caña, palma, 5 Otros]]>
+        </qstnLit>
+        <ivuInstr>
+          <![CDATA[Anote con que material están construidos:
+El techo del edificio (donde se encuentra la vivienda)
+Las paredes exteriores y el piso de la vivienda]]>
+        </ivuInstr>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="5"/>
+      </valrng>
+      <universe clusion="I">
+        Las viviendas
+      </universe>
+      <sumStat type="vald">
+        0
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Tipo de techo con el que cuenta la vivienda.
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Calamina
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Tejas (Cemento, arcilla, fibrocemento, etc.)
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Losa de hormigón
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Paja, caña, palma
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Otros
+        </labl>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V43" name="v05" files="F2" dcml="0" intrvl="discrete">
+      <location StartPos="13" EndPos="13" width="1" RecSegNo="1"/>
+      <labl>
+        v05-pisos
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <respUnit>
+        Jefe de hogar
+      </respUnit>
+      <qstn>
+        <qstnLit>
+          <![CDATA[Materiales predominantes en la vivienda, Pisos
+1 Madera, 2 Mosaico o baldosas, 3 Ladrillo, 4 Cemento, 5 Tierra, 6 Otros]]>
+        </qstnLit>
+        <ivuInstr>
+          <![CDATA[Anote con que material están construidos:
+El techo del edificio (donde se encuentra la vivienda)
+Las paredes exteriores y el piso de la vivienda]]>
+        </ivuInstr>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="6"/>
+      </valrng>
+      <universe clusion="I">
+        Las viviendas
+      </universe>
+      <sumStat type="vald">
+        0
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Acabado de pisos que posee la vivienda.
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Madera
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Mosaico o baldosas
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Ladrillo
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Cemento
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Tierra
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          6
+        </catValu>
+        <labl>
+          Otros
+        </labl>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V44" name="v06" files="F2" dcml="0" intrvl="discrete">
+      <location StartPos="14" EndPos="14" width="1" RecSegNo="1"/>
+      <labl>
+        v06-sistema de abastecimiento de agua
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <respUnit>
+        Jefe de hogar
+      </respUnit>
+      <qstn>
+        <qstnLit>
+          <![CDATA[Diponibilidad se servicio de agua-Sistema de abastecimiento de agua
+1.Por cañería dentro de la vivienda, 2.Por cañería fuera de la vivienda, pero dentro del edificio, 3.Por cañería fuera del lote o terreno, 4.No recibe agua por cañería]]>
+        </qstnLit>
+        <ivuInstr>
+          <![CDATA[Esta pregunta consta de dos partes: El Sistema de Abastecimiento y la procedencia del Agua
+Sistema de abastecimiento de Agua: Este tema investiga si el hogar dispone o no de instalación de cañerías de agua. Marque una de las alternativas que corresponde al lugar donde se encuentra dichas cañerías
+Procedencia del agua: Anote si el agua proviene de una red pública, de una red provada, pozo o noria, etc.]]>
+        </ivuInstr>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="4"/>
+      </valrng>
+      <universe clusion="I">
+        Las viviendas
+      </universe>
+      <sumStat type="vald">
+        0
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Disponibilidad de servicio de agua, el sistema de abastecimiento de agua.
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Por cañería dentro de la vivienda
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Por cañería fuera de la vivienda, pero dentro del edificio,
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Por cañería fuera del lote o terreno
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          No recibe agua por cañería
+        </labl>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V45" name="v07" files="F2" dcml="0" intrvl="discrete">
+      <location StartPos="15" EndPos="15" width="1" RecSegNo="1"/>
+      <labl>
+        v07-procedencia del agua
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <respUnit>
+        Jefe de hogar
+      </respUnit>
+      <qstn>
+        <qstnLit>
+          <![CDATA[Diponibilidad se servicio de agua - Procedencia del agua
+1. Red pública, 2. Red privada, 3. Pozo o noria, 4. Aljibe, 5. Rio, lago, vertiente o acequia, 6. Carro repartidor,7. Otra]]>
+        </qstnLit>
+        <ivuInstr>
+          <![CDATA[Esta pregunta consta de dos partes: El Sistema de Abastecimiento y la procedencia del Agua
+Sistema de abastecimiento de Agua: Este tema investiga si el hogar dispone o no de instalación de cañerías de agua. Marque una de las alternativas que corresponde al lugar donde se encuentra dichas cañerías
+Procedencia del agua: Anote si el agua proviene de una red pública, de una red provada, pozo o noria, etc.]]>
+        </ivuInstr>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="7"/>
+      </valrng>
+      <universe clusion="I">
+        Las viviendas
+      </universe>
+      <sumStat type="vald">
+        0
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Disponibilidad de servicio de agua, procedencia del agua.
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Red pública
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Red privada
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Pozo o noria
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Aljibe
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Rio, lago, vertiente o acequia
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          6
+        </catValu>
+        <labl>
+          Carro repartidor
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          7
+        </catValu>
+        <labl>
+          Otra
+        </labl>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V46" name="v081" files="F2" dcml="0" intrvl="discrete">
+      <location StartPos="16" EndPos="16" width="1" RecSegNo="1"/>
+      <labl>
+        v081-disponibilidad de servicio higienico
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <respUnit>
+        Jefe de hogar
+      </respUnit>
+      <qstn>
+        <qstnLit>
+          <![CDATA[Disponibilidad de servicio higiénico (excusado, letrina)
+1. Tiene de uso privado o exclusivo, 2. Tiene de uso común o compartido, 3. No tiene]]>
+        </qstnLit>
+        <ivuInstr>
+          Es de uso privado, si lo utilizan solo las personas del hogar que se investiga. Es de uso común o compartido, si lo utilizan dos o más hogares.
+        </ivuInstr>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="3"/>
+      </valrng>
+      <universe clusion="I">
+        Las viviendas
+      </universe>
+      <sumStat type="vald">
+        0
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Disponibilidad de servicios higiénicos (excusado, letrina).
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Tiene de uso privado o exclusivo
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Tiene de uso común o compartido
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          No tiene
+        </labl>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V47" name="v082" files="F2" dcml="0" intrvl="discrete">
+      <location StartPos="17" EndPos="17" width="1" RecSegNo="1"/>
+      <labl>
+        v082-sistema de eliminacion de aguas servidas
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <respUnit>
+        Jefe de hogar
+      </respUnit>
+      <qstn>
+        <qstnLit>
+          <![CDATA[Sistema de eliminación de aguas servidas
+1.Alcantarillado público, 2. Cámara séptica, 3. Letrina o pozo ciego, 4. No tiene]]>
+        </qstnLit>
+        <ivuInstr>
+          <![CDATA[1. Alcantarillado público: cuando la eliminación se efectúa a través de una red de tubería exterior, comúnmente conocida como canalización o alcantarillado
+2. Cámara séptica: es un depósito impermeable para aguas servidas generalmente construido de cemento armado
+3. Letrina o pozo ciego, es una excavación en el suelo para la eliminación de aguas servidas]]>
+        </ivuInstr>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="4"/>
+      </valrng>
+      <universe clusion="I">
+        Las viviendas
+      </universe>
+      <sumStat type="vald">
+        0
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Sistema de eliminación de aguas servidas.
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Alcantarillado público
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Cámara séptica
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Letrina o pozo ciego
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          No tiene
+        </labl>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V48" name="v083" files="F2" dcml="0" intrvl="discrete">
+      <location StartPos="18" EndPos="18" width="1" RecSegNo="1"/>
+      <labl>
+        v083-ducha o tina de baño
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <respUnit>
+        Jefe de hogar
+      </respUnit>
+      <qstn>
+        <qstnLit>
+          <![CDATA[Ducha o tina de baño
+1 Tiene de uso privado o exclusivo, 2 Tiene de uso común o compartido, 3 No tiene]]>
+        </qstnLit>
+        <ivuInstr>
+          <![CDATA[Marque la casilla 1, si la ducha o tina de baño es solo para uso de las personas que integran el hogar que se investiga
+Marque la casilla 2, si la ducha o tina de baño es utilizada por dos o más hogares.]]>
+        </ivuInstr>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="3"/>
+      </valrng>
+      <universe clusion="I">
+        Las viviendas
+      </universe>
+      <sumStat type="vald">
+        0
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Existencia de ducha o tina de baño.
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Tiene de uso privado o exclusivo
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Tiene de uso común o compartido
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          No tiene
+        </labl>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V49" name="v09" files="F2" dcml="0" intrvl="discrete">
+      <location StartPos="19" EndPos="19" width="1" RecSegNo="1"/>
+      <labl>
+        v09-energia electrica
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <respUnit>
+        Jefe de hogar
+      </respUnit>
+      <qstn>
+        <qstnLit>
+          <![CDATA[Tiene electricidad?
+1. Si, 2. No]]>
+        </qstnLit>
+        <ivuInstr>
+          Si el hogar dispone de electricidad, provenga de una red pública o de una planta privada, marque la casilla 1.
+        </ivuInstr>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="2"/>
+      </valrng>
+      <universe clusion="I">
+        Las viviendas
+      </universe>
+      <sumStat type="vald">
+        0
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Existencia de energía eléctrica en la vivienda.
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Si
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          No
+        </labl>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V50" name="v10" files="F2" dcml="0" intrvl="contin">
+      <location StartPos="20" EndPos="20" width="1" RecSegNo="1"/>
+      <labl>
+        v10-numero de habitaciones en el hogar
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <respUnit>
+        Jefe de hogar
+      </respUnit>
+      <qstn>
+        <qstnLit>
+          Cuantos cuartos o habitaciones tiene Ud. en su hogar?
+        </qstnLit>
+      </qstn>
+      <universe clusion="I">
+        Las viviendas
+      </universe>
+      <sumStat type="vald">
+        0
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Número de habitaciones en la vivienda.
+      </txt>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V51" name="v11" files="F2" dcml="0" intrvl="contin">
+      <location StartPos="21" EndPos="21" width="1" RecSegNo="1"/>
+      <labl>
+        v11-de estos cuantos se utilizan para dormir
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <respUnit>
+        Jefe de hogar
+      </respUnit>
+      <qstn>
+        <qstnLit>
+          De éstos, cuántos se utilizan sólo para dormir? (Dormitorio)
+        </qstnLit>
+        <ivuInstr>
+          <![CDATA[Se considera cuarto a todo ambiente que tenga capacidad para una cama de adulto.
+9.1Cuantos cuartos o habitaciones tiene usted en su lugar?
+Anote el número de cuartos del hogar, sin contar cocina ni baño. Tampoco incluya pasillos, vestíbulos ni depósitos
+9.2 De esta, cuantos se utilizan solo para dormir (dormitorios)
+En la línea correspondiente anote el número de cuartos que se utilizan exclusivamente como dormitorios]]>
+        </ivuInstr>
+      </qstn>
+      <universe clusion="I">
+        Las viviendas
+      </universe>
+      <sumStat type="vald">
+        0
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Número de habitaciones para dormir.
+      </txt>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V52" name="v12" files="F2" dcml="0" intrvl="discrete">
+      <location StartPos="22" EndPos="22" width="1" RecSegNo="1"/>
+      <labl>
+        v12-cuarto de cocina
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <respUnit>
+        Jefe de hogar
+      </respUnit>
+      <qstn>
+        <qstnLit>
+          Tiene cuarto especial para cocinar?
+        </qstnLit>
+        <postQTxt>
+          <![CDATA[1 Si
+2 No]]>
+        </postQTxt>
+        <ivuInstr>
+          <![CDATA[Se considera cuarto a todo ambiente que tenga capacidad para una cama de adulto.
+9.1Cuantos cuartos o habitaciones tiene usted en su lugar?
+Anote el número de cuartos del hogar, sin contar cocina ni baño. Tampoco incluya pasillos, vestíbulos ni depósitos
+9.2 De esta, cuantos se utilizan solo para dormir (dormitorios)
+En la línea correspondiente anote el número de cuartos que se utilizan exclusivamente como dormitorios]]>
+        </ivuInstr>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="2"/>
+      </valrng>
+      <universe clusion="I">
+        Las viviendas
+      </universe>
+      <sumStat type="vald">
+        0
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Cuarto de cocina.
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Si
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          No
+        </labl>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V53" name="v14" files="F2" dcml="0" intrvl="discrete">
+      <location StartPos="23" EndPos="23" width="1" RecSegNo="1"/>
+      <labl>
+        v14-tenencia
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <respUnit>
+        Jefe de hogar
+      </respUnit>
+      <qstn>
+        <qstnLit>
+          <![CDATA[Tenencia
+1 Propia, 2. Alquiler, 3. Contrato Alquiler, 4. Contrato mixto (Alquiler anticrético), 5. Cedida por servicio, 6. Otra Forma]]>
+        </qstnLit>
+        <ivuInstr>
+          <![CDATA[Pregunte si la vivienda que investiga es: propia, alquilada, etc.
+- Propia: si pertenece a las personas que la habitan. También se considera propia si está en proceso se pagó.
+- Alquilada, cuando el ocupante paga al dueño de casa una cantidad de dinero quincenal, mensual, etc.
+- Contrato anticrético, si habita la vivienda con cargo al interés por una cantidad de dinero entregada al dueño en calidad de préstamo
+- Contrató mixto, sistema de contrato anticrítico y alquileres
+- Cedida por servicios, cuando se ocupa la vivienda a cambio de algún tipo de servicios que se presta al dueño de la misma]]>
+        </ivuInstr>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="6"/>
+      </valrng>
+      <universe clusion="I">
+        Las viviendas
+      </universe>
+      <sumStat type="vald">
+        0
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Modalidad de tenencia de la vivienda
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Propia
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Alquiler
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Contrato Alquiler
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Contrato mixto (Alquiler anticrético)
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Cedida por servicios
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          6
+        </catValu>
+        <labl>
+          Otra Forma
+        </labl>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V54" name="v15" files="F2" dcml="0" intrvl="discrete">
+      <location StartPos="24" EndPos="24" width="1" RecSegNo="1"/>
+      <labl>
+        v15-idioma que se habla mas frecuentemente en su familia
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <respUnit>
+        Jefe de hogar
+      </respUnit>
+      <qstn>
+        <qstnLit>
+          <![CDATA[Idiomas que se habla con más frecuentemente en su familia.
+1 Quechua, 2. Aymara, 3. Castellano, 4. Otro idioma nacional, 5. Idioma extranjero]]>
+        </qstnLit>
+        <ivuInstr>
+          Esta pregunta se hará sólo al jefe del hogar, o al infórmate principal
+        </ivuInstr>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="5"/>
+      </valrng>
+      <universe clusion="I">
+        Las viviendas
+      </universe>
+      <sumStat type="vald">
+        0
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Idioma que se habla en su familia.
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Quechua
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Aymara
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Castellano
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Otro idioma nacional
+        </labl>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Idioma extranjero
+        </labl>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V55" name="i10v" files="F2" dcml="0" intrvl="contin">
+      <location StartPos="25" EndPos="25" width="1" RecSegNo="1"/>
+      <labl>
+        nropers en vivienda
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <respUnit>
+        Jefe de hogar
+      </respUnit>
+      <qstn>
+        <qstnLit>
+          Resumen de población- Número de hombres
+        </qstnLit>
+        <ivuInstr>
+          <![CDATA[-Complete este cuadro una vez terminada la investigación tanto de vivienda, como de población
+- Anote el número de hombres, el de mujeres y la suma de estos e los espacios respectivos, (personas que pasaron la noche anterior al día del Censo en la Vivienda)]]>
+        </ivuInstr>
+      </qstn>
+      <universe clusion="I">
+        Las viviendas
+      </universe>
+      <sumStat type="vald">
+        0
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Número de personas en la vivienda.
+      </txt>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V56" name="i13v" files="F2" dcml="0" intrvl="contin">
+      <location StartPos="26" EndPos="26" width="1" RecSegNo="1"/>
+      <labl>
+        numhog en vivienda
+      </labl>
+      <security>
+        Uso público
+      </security>
+      <respUnit>
+        Jefe de hogar
+      </respUnit>
+      <qstn>
+        <qstnLit>
+          Resumen de población- Número de mujeres
+        </qstnLit>
+        <ivuInstr>
+          <![CDATA[-Complete este cuadro una vez terminada la investigación tanto de vivienda, como de población
+- Anote el número de hombres, el de mujeres y la suma de estos e los espacios respectivos, (personas que pasaron la noche anterior al día del Censo en la Vivienda)]]>
+        </ivuInstr>
+      </qstn>
+      <universe clusion="I">
+        Las viviendas
+      </universe>
+      <sumStat type="vald">
+        0
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Número de hogares en la vivienda.
+      </txt>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+  </dataDscr>
+</codeBook>

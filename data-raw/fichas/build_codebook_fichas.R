@@ -9,6 +9,7 @@
 ##   Rscript data-raw/fichas/build_codebook_fichas.R
 
 source("data-raw/clasificar_tipos.R")
+source("data-raw/fichas/denominadores.R")
 
 load("data/codebook_meta.rda")
 
@@ -20,13 +21,23 @@ stopifnot(nrow(campos) == 160, !anyDuplicated(campos$variable))
 campos_viv <- utils::read.csv("data-raw/fichas/campos_vivienda.csv",
                               stringsAsFactors = FALSE, encoding = "UTF-8")
 stopifnot(nrow(campos_viv) == 34, !anyDuplicated(campos_viv$variable))
-campos <- rbind(campos[, c("variable", "etiqueta")],
-                campos_viv[, c("variable", "etiqueta")])
+
+# `bloque` se CONSERVA. Antes se descartaba aquí, y por eso la agrupación
+# temática de las fichas acabó duplicada a mano en censos-explorer y en
+# q-censosbo. Ahora viaja con el codebook y es su única fuente.
+campos <- rbind(campos[, c("variable", "etiqueta", "bloque")],
+                campos_viv[, c("variable", "etiqueta", "bloque")])
 stopifnot(nrow(campos) == 194, !anyDuplicated(campos$variable))
 
-fila <- function(variable, etiqueta, tabla) {
+bloques_ref <- utils::read.csv("data-raw/taxonomia/bloque_tema.csv",
+                               stringsAsFactors = FALSE, na.strings = c("", "NA"))
+stopifnot(all(campos$bloque %in% bloques_ref$bloque))
+
+fila <- function(variable, etiqueta, tabla, bloque = NA_character_,
+                 denominador = NA_character_) {
   data.frame(variable = variable, etiqueta = etiqueta, tabla = tabla,
-             tipo = NA_character_, stringsAsFactors = FALSE)
+             tipo = NA_character_, bloque = bloque, denominador = denominador,
+             stringsAsFactors = FALSE)
 }
 
 # ── Variables comunes a ambas tablas ─────────────────────────────────────────
@@ -39,8 +50,11 @@ geo_defs <- c(
   imun   = "Código de municipio dentro de la provincia"
 )
 
+# Las comunes llevan bloque `unidad`, que es el grupo con el que los selectores
+# de los consumidores muestran las claves de la unidad censal.
 comunes <- function(tabla) {
-  do.call(rbind, Map(fila, names(geo_defs), unname(geo_defs), tabla))
+  do.call(rbind, Map(fila, names(geo_defs), unname(geo_defs), tabla,
+                     MoreArgs = list(bloque = "unidad")))
 }
 
 # ── Tabla `unidad`: el universo de unidades ──────────────────────────────────
@@ -54,15 +68,20 @@ unidad_defs <- c(
 
 filas_unidad <- rbind(
   comunes("unidad"),
-  do.call(rbind, Map(fila, names(unidad_defs), unname(unidad_defs), "unidad"))
+  do.call(rbind, Map(fila, names(unidad_defs), unname(unidad_defs), "unidad",
+                     MoreArgs = list(bloque = "unidad")))
 )
 
-# ── Tabla `ficha`: los 160 indicadores ───────────────────────────────────────
+# ── Tabla `ficha`: los 194 indicadores ───────────────────────────────────────
 
 filas_ficha <- rbind(
   comunes("ficha"),
-  fila(campos$variable, campos$etiqueta, "ficha")
+  fila(campos$variable, campos$etiqueta, "ficha", campos$bloque,
+       .denominador_ficha(campos$bloque, campos$variable))
 )
+# `""` significa "es un total, no tiene denominador". En el codebook se guarda
+# como NA, que es lo que R entiende por ausencia.
+filas_ficha$denominador[!nzchar(filas_ficha$denominador)] <- NA_character_
 
 nuevas <- rbind(filas_unidad, filas_ficha)
 
@@ -98,6 +117,32 @@ for (i in which(nuevas$variable == "area")) {
 # significa; traducir TRUE/FALSE no aporta nada y rompe el uso natural.
 
 # ── Patch idempotente ────────────────────────────────────────────────────────
+
+# Cada denominador debe apuntar a una variable real de la misma tabla: si el port
+# de la regla se desalinea con los campos del INE, queremos saberlo aquí.
+den <- stats::na.omit(filas_ficha$denominador)
+faltan <- setdiff(den, filas_ficha$variable)
+stopifnot(length(faltan) == 0)
+
+# Alinear columnas en AMBAS direcciones antes del rbind. Hacen falta las dos
+# porque este script puede correr sobre dos estados distintos del codebook:
+#
+#   - recién reconstruido por build_codebook.R  -> solo las 5 columnas originales,
+#     y hay que añadirle `bloque` y `denominador`, que aporta este script;
+#   - ya enriquecido por add_taxonomia_to_codebook.R -> trae las de taxonomía, y
+#     hay que añadírselas a `nuevas` vacías (las rellena el patch después).
+#
+# Alinear en una sola dirección rompía el pipeline completo desde el xlsx del INE.
+rellenar <- function(df, cols) {
+  for (col in setdiff(cols, names(df))) {
+    df[[col]] <- if (col == "valores_codigos") vector("list", nrow(df))
+                 else if (col == "pregunta_num") NA_integer_
+                 else NA_character_
+  }
+  df
+}
+nuevas <- rellenar(nuevas, names(codebook_meta))
+codebook_meta <- rellenar(codebook_meta, names(nuevas))
 
 stopifnot(identical(sort(names(nuevas)), sort(names(codebook_meta))))
 nuevas <- nuevas[, names(codebook_meta)]

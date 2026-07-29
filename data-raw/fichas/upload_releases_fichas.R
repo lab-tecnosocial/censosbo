@@ -14,6 +14,13 @@ RELEASE <- "data-raw/fichas/release"
 ARCHIVOS <- c(
   "unidad.parquet",
   "ficha.parquet",
+  # El diccionario de las fichas: hasta ahora este release no publicaba ninguno, y
+  # por eso el mapeo bloque/denominador acabó copiado a mano en q-censosbo y en
+  # censos-explorer. Lo genera data-raw/fichas/build_dicc_fichas_release.R desde
+  # codebook_meta. Ver dev-docs/consumidores-taxonomia.md.
+  # Solo el parquet: el script verifica cada asset leyéndolo con arrow. El `.csv`
+  # gemelo se genera igual en release/ para inspección rápida, pero no se sube.
+  "diccionario_fichas_v1.parquet",
   sprintf("geo_manzano_dep%02d.parquet", 1:9),
   "geo_comunidad.parquet"
 )
@@ -27,6 +34,7 @@ NOTAS <- paste(
   "|---|---|",
   "| `unidad.parquet` | 268.604 unidades censales con población, viviendas y si tienen ficha |",
   "| `ficha.parquet` | 194 indicadores para las 150.744 unidades cuya ficha libera el INE |",
+  "| `diccionario_fichas_v1.parquet` | Diccionario de los 208 campos: etiqueta, tipo, bloque temático, tema y **denominador** de cada indicador |",
   "| `geo_manzano_dep01..09.parquet` | Polígonos de manzanos por departamento (WKB, EPSG:4326) |",
   "| `geo_comunidad.parquet` | Geometrías de comunidades rurales (en su mayoría puntos) |",
   "",

@@ -9,17 +9,56 @@
 \alias{codebook}
 \title{Consulta el diccionario de variables de un censo de Bolivia}
 \usage{
-codebook_1976(variable = NULL, tabla = NULL, buscar = NULL)
+codebook_1976(
+  variable = NULL,
+  tabla = NULL,
+  buscar = NULL,
+  tema = NULL,
+  origen = NULL
+)
 
-codebook_1992(variable = NULL, tabla = NULL, buscar = NULL)
+codebook_1992(
+  variable = NULL,
+  tabla = NULL,
+  buscar = NULL,
+  tema = NULL,
+  origen = NULL
+)
 
-codebook_2001(variable = NULL, tabla = NULL, buscar = NULL)
+codebook_2001(
+  variable = NULL,
+  tabla = NULL,
+  buscar = NULL,
+  tema = NULL,
+  origen = NULL
+)
 
-codebook_2012(variable = NULL, tabla = NULL, buscar = NULL)
+codebook_2012(
+  variable = NULL,
+  tabla = NULL,
+  buscar = NULL,
+  tema = NULL,
+  origen = NULL
+)
 
-codebook_2024(variable = NULL, tabla = NULL, buscar = NULL)
+codebook_2024(
+  variable = NULL,
+  tabla = NULL,
+  buscar = NULL,
+  tema = NULL,
+  capitulo = NULL,
+  origen = NULL
+)
 
-codebook(variable = NULL, tabla = NULL, buscar = NULL, anio = 2024)
+codebook(
+  variable = NULL,
+  tabla = NULL,
+  buscar = NULL,
+  anio = 2024,
+  tema = NULL,
+  capitulo = NULL,
+  origen = NULL
+)
 }
 \arguments{
 \item{variable}{Vector de caracteres. Nombre(s) de variable a consultar.
@@ -29,13 +68,29 @@ Si `NULL`, devuelve todas.}
 Si `NULL`, devuelve todas las tablas.}
 
 \item{buscar}{Caracteres. Texto libre para buscar en las etiquetas y nombres
-de variables (no distingue mayúsculas/minúsculas).}
+de variables, y también en el tema y el capítulo (no distingue
+mayúsculas/minúsculas). Se interpreta como expresión regular.}
+
+\item{tema}{Caracteres. Filtra por tema, con los slugs de [censo_temas_meta]
+(e.g. `"educacion"`, `"servicios_basicos"`). Acepta varios. Disponible en los
+cinco censos; ver [censo_temas()].}
+
+\item{origen}{Caracteres. Filtra por procedencia de la variable:
+`"cuestionario"` (pregunta directa), `"derivada"` (construida por el INE),
+`"geografia"`, `"identificador"` o `"indicador"` (agregados de las fichas de
+manzano y comunidad).}
+
+\item{capitulo}{Caracteres. Filtra por capítulo del cuestionario del CPV-2024:
+la letra (`"C"`) o parte de su nombre (`"vivienda"`). Solo aplica a 2024: los
+cuestionarios anteriores tienen otra estructura y varios numeran las secciones
+de vivienda y de persona en paralelo. El eje comparable entre censos es `tema`.}
 
 \item{anio}{Entero. Año del censo: `2024` (defecto), `1976`, `1992`, `2001`
 o `2012`.}
 }
 \value{
-Un data.frame con las variables que coinciden con los filtros.
+Un data.frame con las variables que coinciden con los filtros. Las
+  columnas son siempre las mismas para los cinco censos.
 }
 \description{
 Permite buscar variables del censo por nombre, tabla o texto libre en
@@ -50,4 +105,16 @@ codebook(buscar = "sexo", anio = 2012)
 
 # Todas las variables de vivienda del censo 1992
 codebook(tabla = "vivienda", anio = 1992)
+
+# Por tema, y comparando entre censos
+codebook(tema = "educacion", tabla = "persona")
+codebook(tema = "educacion", tabla = "persona", anio = 2012)
+
+# Por capítulo del cuestionario, solo las preguntas directas
+codebook(capitulo = "C", origen = "cuestionario")
+}
+\seealso{
+[censo_temas()] para el catálogo de temas, [vars_tema()] para obtener
+  los nombres de variable de un tema, y [codebook_docs()] para la definición
+  conceptual y la pregunta literal de cada variable.
 }

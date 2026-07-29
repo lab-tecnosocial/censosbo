@@ -1,3 +1,146 @@
+# censosbo 1.5.0
+
+## Un vocabulario temático para las variables censales
+
+Los cinco censos tienen 809 variables entre todos, y el diccionario solo decía
+nombre, etiqueta, tabla y tipo. No había forma de preguntar «¿qué variables hay de
+educación?» ni —lo que más importa— **a quién se le preguntó cada cosa**. Esta
+versión añade las dos cosas, a partir de dos fuentes oficiales del INE: los
+cuestionarios censales y los diccionarios DDI del catálogo ANDA (estudios 132, 8,
+10, 47 y 46, es decir **los cinco censos**).
+
+### Nuevas columnas en el codebook
+
+`codebook()` devuelve diez columnas más. Van **al final**, después de las cinco
+originales, cuyo nombre y orden se conservan:
+
+* `tema` — uno de 21 temas. Diecisiete son los que el propio INE declara en su
+  catálogo; los otros cuatro los añade el paquete (`ubicacion_geografica`,
+  `identificacion`, `materiales_construccion` y `religion`, esta última porque solo
+  el censo de 1992 preguntó por pertenencia religiosa).
+* `universo` — a quién se aplicó la pregunta: `personas_5_mas`, `mujeres_12_mas`,
+  `viviendas_presentes`… **Es la columna que evita el error más frecuente en
+  análisis censal**: calcular un porcentaje sobre el denominador equivocado. Por
+  ejemplo, `nivel_edu` está construida sobre personas de 19 años o más, no sobre
+  toda la población.
+* `capitulo` — los siete capítulos (A–G) del cuestionario del CPV-2024.
+* `pregunta` y `pregunta_num` — el número de pregunta del formulario, para recorrer
+  el censo en el mismo orden en que se aplicó.
+* `origen` — distingue una pregunta directa (`cuestionario`) de una variable que el
+  INE o REDATAM construyeron (`derivada`), de las claves geográficas y los
+  identificadores.
+* `grupo_ine` — la agrupación oficial de cada censo anterior, que 2024 no trae.
+* `bloque` y `denominador` — para los 194 indicadores de manzano y comunidad.
+* `valores_fuente` — si las etiquetas de valor vienen de REDATAM o del DDI.
+
+Los 21 temas se aplican a los cinco censos, así que
+`codebook(tema = "educacion", anio = ...)` es comparable entre ellos. Los capítulos
+son solo de 2024: los cuestionarios anteriores tienen otra estructura y varios
+numeran las secciones de vivienda y de persona en paralelo.
+
+### Funciones nuevas
+
+* `censo_temas()` — el catálogo de temas con el número de variables de cada uno,
+  contado en vivo y filtrable por tabla y año.
+* `vars_tema()` — los nombres de las variables de un tema, en el orden del
+  cuestionario, listos para pasar a `variables`:
+
+  ```r
+  get_personas_2024(
+    departamento = "Cochabamba",
+    variables = vars_tema("educacion", tabla = "persona")
+  )
+  ```
+
+* `codebook_docs()` — la documentación conceptual oficial del INE: qué mide la
+  variable, la pregunta tal como se leyó en campo, las instrucciones al censista y,
+  para las derivadas, la regla con que se calcularon. Cubre 445 variables de los
+  cinco censos.
+
+`codebook()` acepta `tema`, `capitulo` y `origen`, añadidos **después** de `anio`
+para no romper las llamadas posicionales.
+
+### `get_temporal()` avisa cuando el universo cambia entre censos
+
+Armonizar los códigos no iguala la población a la que se preguntó, y el INE movió
+el filtro de edad de varias preguntas entre censos. Ahora **el paquete lo detecta y
+avisa**:
+
+```
+! `sabe_leer` no se preguntó a la misma población en todos los censos:
+    1992: personas de 6 años o más
+    2001: personas de 4 años o más
+    2024: personas de 5 años o más
+  i Filtra `edad >= 6` en todos los años antes de comparar.
+```
+
+Siete variables armonizadas están afectadas. `nivel_edu` es la más extrema: 6 años
+en 1992, 4 en 2001 y **19** en 2024. Antes esto estaba escrito en la documentación
+para dos variables; ahora salta en el punto de uso para todas, con el dato del
+propio INE.
+
+`get_temporal(grupo = )` también acepta ya los slugs de `censo_temas()`, para no
+tener que recordar cuál de los dos vocabularios usa cada función. Los seis grupos
+originales siguen siendo válidos.
+
+### Datasets nuevos
+
+`censo_temas_meta` (21 temas), `censo_bloques_meta` (los 15 bloques de las fichas) y
+`codebook_docs_meta` (445 filas de documentación conceptual, con la procedencia de
+los cinco DDI en el atributo `"ddi"`). `variable_temporal_map` gana una columna
+`tema` que conecta los nombres armonizados con la taxonomía.
+
+### Salida más legible
+
+Con quince columnas, imprimir el codebook en consola se había vuelto ilegible.
+Ahora `print()` oculta las columnas que no aplican al subconjunto consultado —y
+dice cuáles son— y resume `valores_codigos` por su número de categorías en vez de
+volcar todas. El objeto sigue siendo un `data.frame` con todas las columnas.
+
+### Correcciones
+
+* **`etiquetar_valores()` elegía la tabla equivocada.** Cuando una variable existe
+  en varias tablas y solo algunas traen las categorías —`idep` en el censo 2001 las
+  tiene en `persona` y no en `vivienda`—, se cogía la primera fila del diccionario
+  y la columna se quedaba sin etiquetar. Ahora se usa la primera que sí las tiene.
+
+* **`i00` ya está documentada.** El número de vivienda dentro del predio se
+  devolvía en todas las consultas pero no estaba en el diccionario, así que
+  `etiquetar_variables()` no la etiquetaba.
+
+* Cuando se piden columnas que no existen en la tabla consultada pero sí en otra,
+  el aviso ahora lo dice: `"v07_aguapro existe en la tabla vivienda; usa
+  get_viviendas_2024()"`.
+
+* Dos gráficos de las viñetas declaraban un universo que no era el que mostraban.
+  El de nivel educativo decía «15+ años» cuando en realidad era 19+, y el mapa de
+  alfabetismo no aclaraba su umbral; ahora usa 15+, el de las tasas oficiales.
+
+### Cambios de comportamiento
+
+* `codebook(buscar = )` ahora busca también en el tema, así que
+  `codebook(buscar = "salud")` devuelve el tema completo y puede dar más filas que
+  antes.
+* En los censos 2001 y 1976, un par de variables pasaron a tener etiquetas de
+  valor tomadas del DDI del INE. `etiquetar_valores()` devolverá un factor donde
+  antes devolvía el código: puede afectar a gráficos o tablas ya hechos.
+
+### Nota sobre las etiquetas de valor
+
+Los DDI de los cuatro censos anteriores traen categorías que el diccionario de
+microdatos no tiene, y se usaron para rellenar los huecos. **No se sobrescribió
+nada preexistente**, y con razón: el contraste reveló que el DDI del INE tiene
+errores puntuales — en el CPV-2012, la variable de estado civil viene con las
+categorías de otra pregunta. Las discrepancias quedan registradas para revisión en
+`data-raw/ddi/reporte_valores.md`, clasificadas por severidad.
+
+### Para quien consuma el paquete
+
+Las columnas nuevas también viajan a los `diccionario_variables.parquet` publicados
+en los GitHub Releases. Los consumidores que cacheen ese archivo por nombre —el
+plugin de QGIS lo hace— tienen que vaciar la caché una vez para verlas. Ver
+`dev-docs/consumidores-taxonomia.md`.
+
 # censosbo 1.4.1
 
 * **Las descargas reintentan ante fallos transitorios.** GitHub Releases devuelve

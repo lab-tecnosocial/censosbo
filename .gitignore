@@ -16,3 +16,6 @@ dev-docs/
 
 # Figuras generadas al ejecutar knitr a mano sobre las viñetas
 figure/
+
+# Propuestas generadas por data-raw/taxonomia/semilla_variable_tema.R
+data-raw/taxonomia/semilla_propuesta_*.csv

@@ -76,8 +76,11 @@ ggplot(piramide, aes(x = grupo_edad, y = n, fill = p25_sexo)) +
 ## Nivel educativo por sexo
 
 ```{r educacion}
+# `nivel_edu` es una derivada del INE calculada sobre la población de 19 años o
+# más (ver codebook("nivel_edu")$universo), así que ese es el universo real del
+# gráfico aunque se filtre por una edad menor.
 edu_sexo <- personas |>
-  filter(!is.na(nivel_edu), !is.na(p25_sexo), p26_edad >= 15) |>
+  filter(!is.na(nivel_edu), !is.na(p25_sexo), p26_edad >= 19) |>
   count(nivel_edu, p25_sexo) |>
   group_by(p25_sexo) |>
   mutate(pct = n / sum(n) * 100)
@@ -86,7 +89,7 @@ ggplot(edu_sexo, aes(x = nivel_edu, y = pct, fill = p25_sexo)) +
   geom_col(position = "dodge") +
   scale_fill_manual(values = c("Mujer" = "#F4C430", "Hombre" = "#003087")) +
   labs(
-    title   = "Nivel educativo por sexo (15+ años) — Beni, CPV-2024",
+    title   = "Nivel educativo por sexo (19+ años) — Beni, CPV-2024",
     x       = "Nivel educativo",
     y       = "Porcentaje (%)",
     fill    = NULL,
@@ -99,6 +102,9 @@ ggplot(edu_sexo, aes(x = nivel_edu, y = pct, fill = p25_sexo)) +
 ## Alfabetismo por sexo
 
 ```{r alfabetismo}
+# `p40_lee` se preguntó a las personas de 5 años o más
+# (codebook("p40_lee")$universo). Aquí se usa 15+, el umbral con el que se publican
+# las tasas oficiales de alfabetismo, para que la cifra sea comparable con ellas.
 alfa <- personas |>
   filter(!is.na(p40_lee), !is.na(p25_sexo), p26_edad >= 15) |>
   count(p25_sexo, p40_lee) |>

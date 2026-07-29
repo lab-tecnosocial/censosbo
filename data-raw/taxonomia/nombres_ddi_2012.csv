@@ -1,0 +1,114 @@
+"variable_ddi","tabla","variable_cb","labl_ddi","etiqueta_cb","nota"
+"I_BC_VIV","discapacidad",,"Id_BoletaCensalVivienda",,"no se empareja: identificador"
+"I00_FOLIO","discapacidad",,"Número de Folio",,"no se empareja: identificador"
+"I02_DEPTO","discapacidad",,"Departamento",,"no se empareja: geografia"
+"I03_PROV","discapacidad",,"Provincia",,"no se empareja: geografia"
+"ID_BC_DISC","discapacidad",,"ID Boleta Censal Dificultad",,"no se empareja: identificador"
+"P22A_NRO","discapacidad",,"Numero de la Persona",,"no se empareja: identificador"
+"P22D_EDAD","discapacidad","P22D","Edad","Edad",
+"P22E_SEXO","discapacidad","P22E","Sexo","Sexo",
+"P22F1_VER","discapacidad","P22F1","Dificultad de ver","Dificultad para ver",
+"P22F2_OIR","discapacidad",,"Dificultad de oir",,"sin candidato"
+"P22F3_HABLAR","discapacidad","P22F3","Dificultad de hablar","Dificultad de hablar",
+"P22F4_CAMINAR","discapacidad","P22F4","Dificultad de caminar","Dificultad de caminar",
+"P22F5_RECORDAR","discapacidad","P22F5","Dificultad de recordar","Dificultad de recordar",
+"I_BC_VIV","emigracion",,"Id_Boleta Censal Vivienda",,"no se empareja: identificador"
+"I00_FOLIO","emigracion",,"Número de Folio",,"no se empareja: identificador"
+"I02_DEPTO","emigracion",,"Departamento",,"no se empareja: geografia"
+"I03_PROV","emigracion",,"Provincia",,"no se empareja: geografia"
+"ID_BC_EMIG","emigracion",,"Id_Boleta Censa lEmigracion",,"no se empareja: identificador"
+"P20A_NRO","emigracion",,"Numero de la Persona",,"no se empareja: identificador"
+"P20E_SEXO","emigracion","P20E","Sexo","Sexo",
+"P20F_ANO","emigracion","P20F","Año de salida del pais","Año de salida del pais",
+"P20G_EDAD","emigracion","P20G","A que edad se fue","A que edad se fue",
+"P20H_PAIS","emigracion","P20J","País donde vive actualmente",,"mismo dato, sufijo distinto en REDATAM"
+"I_BC_VIV","mortalidad",,"Id_BoletaCensalVivienda",,"no se empareja: identificador"
+"I00_FOLIO","mortalidad",,"Número de Folio",,"no se empareja: identificador"
+"I02_DEPTO","mortalidad",,"Departamento",,"no se empareja: geografia"
+"I03_PROV","mortalidad",,"Provincia",,"no se empareja: geografia"
+"I04_SECC","mortalidad",,"Seccion",,"no se empareja: geografia"
+"ID_BC_MORT","mortalidad",,"Id Boleta Censal Mortalidad",,"no se empareja: identificador"
+"P21A_NRO","mortalidad",,"NumeroPersona",,"no se empareja: identificador"
+"P21E_EDAD","mortalidad",,"Edad de la Persona al morir",,"sin candidato"
+"P21F_SEXO","mortalidad",,"Sexo",,"sin candidato"
+"P21G_CAUSA","mortalidad",,"Causa de la muerte",,"sin candidato"
+"I_BC_VIV","persona",,"Id_BoletaCensalVivienda",,"no se empareja: identificador"
+"I00_FOLIO","persona",,"Número de Folio",,"no se empareja: identificador"
+"I02_DEPTO","persona",,"Departamento",,"no se empareja: geografia"
+"I03_PROV","persona",,"Provincia",,"no se empareja: geografia"
+"I21_NROVIV","persona",,"Número de orden de la vivienda",,"no se empareja: identificador"
+"ID_BC_PERS","persona",,"Id_BoletaCensalPersona",,"no se empareja: identificador"
+"P23_NUEVO_NROPER","persona",,"Nuevo numero de persona",,"no se empareja: identificador"
+"P23_PARENTES","persona","P23","23. Relación de parentesco con jefa o jefe del hogar","Relación de parentesco con jefa o jefe del hogar",
+"P24_SEXO","persona","P24","24. Es mujer u hombre","¿Es mujer u hombre?",
+"P25_EDAD","persona","P25","25. Cuantos años cumplidos tiene","Cuantos años cumplidos tiene",
+"P26_REGIS","persona","P26","26.inscrición al registro civil","Su nacimiento está inscrito en el registro civil o cívico","etiquetas distintas, mismo dato: inscripcion en registro civil"
+"P27_CARNET","persona","P27","27. ¿Tiene carnet o cédula de identidad?","Tiene carnet o cédula de identidad",
+"P28A_CAJA","persona","P28A","28.A. Problemas de salud acude a: Caja de salud (CNS, COSSMIL, Otras)","Problemas de salud acude a: Caja de salud (CNS, COSSMIL, Otras)",
+"P28B_SEGPRIV","persona","P28B","28.B. Problemas de salud acude a: Seguro de salud Privado","Problemas de salud acude a: Seguro de salud Privado",
+"P28C_PUBLIC","persona","P28C","28.C. Problemas de salud acude a: Establecimiento de salud Público","Problemas de salud acude a: Establecimiento de salud Público",
+"P28D_PRIVAD","persona","P28D","28.D. Problemas de salud acude a: Establecimiento de salud Privado","Problemas de salud acude a: Establecimiento de salud Privado",
+"P28E_TRADIC","persona","P28E","28.E. Problemas de salud acude a: Médico tradicional","Problemas de salud acude a: Médico tradicional",
+"P28F_CASERA","persona","P28F","28.F. Problemas de salud acude a: Soluciones caseras","Problemas de salud acude a: Soluciones caseras",
+"P28G_AUTOME","persona","P28G","28.G. Problemas de salud acude a: La farmacia o se automedica","Problemas de salud acude a: La farmacia o se automedica",
+"P30_IDIOMA","persona","P30B","30. Cuál es el primer idioma que aprendió a hablar","Idioma que aprendió a hablar en su niñez","el codebook usa sufijo B"
+"P31_IDIOMA","persona","P31B1","31. Qué idiomas habla","Idiomas que habla 1","el codebook usa sufijo B1"
+"P32A_DONDEUTOME","persona","P32A","32A. Donde nació","Donde nació",
+"P32B_CUIDAD","persona",,"32B. Ciudad o comunidad donde nació",,"sin candidato"
+"P32C_MUNICIPIO","persona",,"32C. Municipio donde nació",,"sin candidato"
+"P32D_DEPTO","persona","P32J","32D.Departamento donde nació",,"el codebook fusiona depto y pais de nacimiento"
+"P33A_VIVE","persona","P33A","33.A. Donde vive habitualmente","Donde vive habitualmente",
+"P33H_DEPTOCOD","persona","P33H","33.H. Departamento donde vive habitualmente","Departamento donde vive habitualmente",
+"P34A_VIVIA","persona","P34A","34.A. Donde vivía hace 5 años","Donde vivía hace 5 años",
+"P34F_CIUCOMCOD","persona",,"34.F. Ciudad o comunidad donde vivía hace 5 años",,"sin candidato"
+"P34G_MUNICIPCOD","persona",,"34.G. Municipio donde vivía hace 5 años",,"sin candidato"
+"P34H_DEPTOCOD","persona","P34H","34.H. Departamento donde vivía hace 5 años","Departamento donde vivía hace 5 años",
+"P35_LEER","persona","P35","35. Sabe leer y escribir","Sabe leer y escribir",
+"P36_ASISTE","persona","P36","36. Asiste a una escuela o colegio","Asiste a una escuela o colegio",
+"P37A_NIVEL","persona","P37A_NIVELNUE","37.A. Nivel más alto de instrucción que aprobó","Nivel más alto de instrucción que aprobó",
+"P37B_CURSO","persona",,"37.B. Curso más alto de instrucción que aprobó",,"sin candidato"
+"P38A_NIVEL","persona",,"38.A. Para ingresar al nivel No universitario que nivel aprobó",,"sin candidato"
+"P38B_CURSO","persona",,"38.B. Para ingresar al nivel No universitario que curso aprobó",,"sin candidato"
+"P39_TRABAJO","persona",,"39. Trabajó la semana pasada",,"sin candidato"
+"P40_QUEHIZO","persona",,"40. Si no trabajó, qué hizo",,"sin candidato"
+"P41_BUSCO","persona",,"41. Buscó trabajo",,"sin candidato"
+"P42B_OCUPCOD","persona","P42","42.B. Ocupación","Grupo ocupacional (1 dígito)","etiquetas distintas, mismo dato: grupo ocupacional"
+"P43_CATEGOR","persona","P43","43. En esa ocupación, usted como trabajó","Categoria en el empleo","etiquetas distintas, mismo dato: categoria ocupacional"
+"P44B1_LETRACOD","persona","P44","44.B1 A que actividad económica se dedica el lugar donde trabaja - Letra codigo","Actividad económica del establecimiento donde trabaja","etiquetas distintas, mismo dato: actividad economica"
+"P45_ESTADOCIVIL","persona","P45","45. ¿Cuál es su estado civil o conjugal","Estado Civil","etiquetas distintas, mismo dato: estado civil"
+"I_BC_VIV","vivienda",,"Id_BoletaCensalVivienda",,"no se empareja: identificador"
+"I00_FOLIO","vivienda",,"Número de Folio",,"no se empareja: identificador"
+"I02_DEPTO","vivienda",,"Departamento",,"no se empareja: geografia"
+"I03_PROV","vivienda",,"Provincia",,"no se empareja: geografia"
+"MUN","vivienda",,"Municipio",,"no se empareja: geografia"
+"P01_TIPOVIV","vivienda","P01","1. Tipo de vivienda","Tipo de vivienda",
+"P02_CONDOCUPA","vivienda","P02","2. Condición de ocupación de la vivienda","Condición de Ocupación de la vivienda",
+"P03_PARED","vivienda","P03","3. Material de construcción más utilizado en las paredes exteriores","Material de construcción más utilizado en las Paredes Exteriores",
+"P04_REVOQ","vivienda","P04","4. Tiene revoque las paredes interiores","Tiene Revoque las paredes interiores",
+"P05_TECHO","vivienda","P05","5. Material de construcción más utilizado en los techos","Material de construcción más utilizado en los Techos",
+"P06_PISOS","vivienda","P06","6. Material de construcción más utilizado en los pisos","Material de construcción más utilizado en los Pisos",
+"P07_AGUAPRO","vivienda","P07","7. Principalmente, de donde proviene el agua que utilizan","Principalmente, de donde proviene el agua que utilizan",
+"P08_AGUADIST","vivienda","P08","8. Como se distribuye el agua que utilizan","Como se distribuye el agua que utilizan",
+"P09_SERVSANIT","vivienda","P09","9. Tiene servicio santitario, baño o letrina","Tiene servicio santitario, baño o letrina",
+"P10_DESAGUE","vivienda","P10","10. El servicio sanitario, baño o letrina tiene desague","El servicio sanitario, baño o letrina tiene desague",
+"P11_ENERGIA","vivienda","P11","11. De donde proviene la energía eléctrica","De donde proviene la energía eléctrica",
+"P12_COMBUS","vivienda","P12","12. Principal combustible o energía que utilizan para cocinar","Principal combustible o energía que utilizan para cocinar",
+"P13_COCINA","vivienda","P13","13. Tiene un cuarto sólo para cocinar","Tiene un cuarto sólo para cocinar",
+"P14_HABITAC","vivienda","P14","14. Cuantas habitaciones ocupa el hogar, sin contar cuartos de baño y cocina","Cuantas habitaciones ocupa el hogar, sin contar cuartos de baño y cocina",
+"P15_DORMIT","vivienda","P15","15. Del total de habitaciones en el hogar, cuantos se utilizan sólo para dormir","Del total de habitaciones en el hogar, cuantos se utilizan sólo para dormir",
+"P16_BASURA","vivienda","P16","16. Principalmente como eliminan la basura","Principalmente como eliminan la basura",
+"P17A_RADIO","vivienda","P17A","17.A. El hogar tiene Radio","El hogar tiene Radio",
+"P17B_TV","vivienda","P17B","17.B. El hogar tiene Televisor","El hogar tiene Televisor",
+"P17C_COMPUT","vivienda","P17C","17.C. El hogar tiene Computadora","El hogar tiene Computadora",
+"P17D_INTERNET","vivienda","P17D","17.D. El hogar tiene Servicio de internet","El hogar tiene Servicio de internet",
+"P17E_TELEF","vivienda","P17E","17.E. El hogar tiene Servico de telefonía fija o celular","El hogar tiene Servico de telefonía fija o celular",
+"P18A_VEHIC","vivienda","P18A","18.A. El hogar tiene Vehículo automotor","El hogar tiene Vehículo automotor",
+"P18B_BICIC","vivienda","P18B","18.B. El hogar tiene Bicicleta","El hogar tiene Bicicleta",
+"P18C_MOTO","vivienda","P18C","18.C. El hogar tiene Motocicleta o cuadratrac","El hogar tiene Motocicleta o cuadratrac",
+"P18D_CARRETA","vivienda","P18D","18.D. El hogar tiene Carreta o Carretón","El hogar tiene Carreta o Carretón",
+"P18E_BOTE","vivienda","P18E","18.E. El hogar tiene Deslizador, Balsa, Canoa o Bote","El hogar tiene Deslizador, Balsa, Canoa o Bote",
+"P19_TENENCIA","vivienda","P19","19. Tenencia de la vivienda","Condición de tenencia de la vivienda",
+"PROV","vivienda",,"Provincia_cod",,"no se empareja: geografia"
+"TOT_HOMBRES_VIV","vivienda",,"Total de personas de sexo masculino en la vivienda.",,"sin candidato"
+"TOT_MUJERES_VIV","vivienda",,"Total de personas de sexo femenino en la vivienda.",,"sin candidato"
+"TOTPERS_VIV","vivienda",,"Total de personas en la vivienda.",,"sin candidato"

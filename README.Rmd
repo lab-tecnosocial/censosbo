@@ -130,6 +130,49 @@ codebook_2012(buscar = "instruccion")
 codebook_1992(buscar = "sexo")
 ```
 
+### Buscar por tema
+
+Las 809 variables de los cinco censos están agrupadas en 21 temas, tomados del
+catálogo oficial del INE. `vars_tema()` devuelve los nombres listos para descargar:
+
+```{r temas}
+censo_temas(tabla = "persona") |> select(tema, etiqueta, n_variables) |> head(5)
+
+vars_tema("educacion", tabla = "persona")
+```
+
+```{r temas-uso, eval=FALSE}
+get_personas_2024(
+  departamento = "Cochabamba",
+  variables = vars_tema("educacion", tabla = "persona")
+)
+```
+
+### A quién se le preguntó cada cosa
+
+La columna `universo` evita el error más común en análisis censal: usar el
+denominador equivocado. `nivel_edu`, por ejemplo, está construida sobre las personas
+de 19 años o más, no sobre toda la población.
+
+```{r universo}
+codebook(c("p40_lee", "p54_hvtot", "nivel_edu"), tabla = "persona") |>
+  select(variable, universo) |> as_tibble()
+```
+
+Y como está en los cinco censos, `get_temporal()` avisa cuando una variable
+armonizada no se preguntó a la misma población en todos los años pedidos:
+
+```{r universo-temporal, eval=FALSE}
+get_temporal(variables = "sabe_leer", anios = c(1992, 2001, 2024))
+#> ! `sabe_leer` no se preguntó a la misma población en todos los censos:
+#>     1992: personas de 6 años o más
+#>     2001: personas de 4 años o más
+#>     2024: personas de 5 años o más
+#>   i Filtra `edad >= 6` en todos los años antes de comparar.
+```
+
+Más en `vignette("temas")`.
+
 ## Etiquetas en los resultados
 
 ```{r etiquetar}

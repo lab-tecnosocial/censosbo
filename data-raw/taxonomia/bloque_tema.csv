@@ -1,0 +1,16 @@
+bloque,etiqueta_bloque,tema,capitulo,orden,nota
+unidad,Unidad censal,identificacion,A,1,identificadores y totales de la unidad censal (manzano o comunidad)
+poblacion,Población,poblacion,G,2,
+educacion,Educación,educacion,G,3,
+salud_lugar,Salud · dónde se atienden,salud_seguridad_social,G,4,"etiqueta unificada: censos-explorer decía 'Salud · dónde se atienden' y q-censosbo 'Salud · atención'"
+salud_seguro,Salud · seguro,salud_seguridad_social,G,5,
+nacimiento,Lugar de nacimiento,migracion,G,6,
+residencia,Residencia habitual,migracion,G,7,
+ocupacion,Ocupación,caracteristicas_economicas,G,8,
+actividad,Actividad económica,caracteristicas_economicas,G,9,
+vivienda,Vivienda,vivienda_hogar,B,10,
+servicios,Servicios básicos,servicios_basicos,C,11,
+tic,TIC,tic,C,12,
+material,Materiales de la vivienda,materiales_construccion,C,13,"etiqueta unificada: censos-explorer decía 'Materiales de la vivienda' y q-censosbo 'Materiales'"
+hacinamiento,Hacinamiento,vivienda_hogar,C,14,
+hogar,Tipo de hogar,vivienda_hogar,C,15,

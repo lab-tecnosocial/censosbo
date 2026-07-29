@@ -48,6 +48,8 @@ navbar:
     articles:
       text: Artículos
       menu:
+      - text: "Explorar el censo por tema"
+        href: articles/temas.html
       - text: "Diccionario de datos (1976–2024)"
         href: articles/diccionario.html
       - text: "---"
@@ -85,6 +87,9 @@ reference:
     contents:
       - codebook
       - codebook_valores
+      - codebook_docs
+      - censo_temas
+      - vars_tema
       - codebook_1976
       - codebook_1992
       - codebook_2001
@@ -171,6 +176,9 @@ reference:
     contents:
       - codebook_meta
       - codebook_historico_meta
+      - codebook_docs_meta
+      - censo_temas_meta
+      - censo_bloques_meta
       - variable_temporal_map
       - geo_bolivia
       - geo_departamentos
@@ -185,6 +193,7 @@ articles:
     navbar: ~
     contents:
       - introduccion
+      - temas
       - diccionario
   - title: "CPV-2024"
     navbar: Tutoriales

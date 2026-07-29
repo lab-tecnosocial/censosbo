@@ -18,4 +18,6 @@ NULL
 # Silenciar notas de R CMD check sobre datos del paquete accedidos por nombre
 utils::globalVariables(c("codebook_meta", "geo_bolivia",
                           "codebook_historico_meta", "variable_temporal_map",
-                          "geo_departamentos", "geo_municipios"))
+                          "geo_departamentos", "geo_municipios",
+                          "censo_temas_meta", "censo_bloques_meta",
+                          "codebook_docs_meta"))

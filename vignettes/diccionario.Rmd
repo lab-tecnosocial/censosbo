@@ -16,6 +16,7 @@ opciones_dt <- list(
   pageLength  = 20,
   lengthMenu  = c(10, 20, 50, 100),
   autoWidth   = FALSE,
+  scrollX     = TRUE,   # las columnas Tema y Universo ensanchan la tabla
   language    = list(
     search      = "Buscar:",
     lengthMenu  = "Mostrar _MENU_ variables",
@@ -31,29 +32,35 @@ opciones_dt <- list(
   )
 )
 
-# Convierte una lista de data.frames de codebook en tabla DT
-prep_tabla_hist <- function(meta_anio, tabla_nombre) {
-  meta <- meta_anio[meta_anio$tabla == tabla_nombre, ]
+# Convierte un data.frame de codebook en tabla DT. `Tema` y `Universo` solo se
+# muestran si el censo las tiene: en 1976 y 1992 están vacías porque el INE no
+# publica un diccionario estructurado de esos años.
+prep_tabla <- function(meta, tabla_nombre) {
+  meta <- meta[meta$tabla == tabla_nombre, ]
   meta$categorias <- sapply(meta$valores_codigos, function(vc) {
     if (is.null(vc) || nrow(vc) == 0) return("")
     paste(paste0(vc$codigo, " = ", vc$etiqueta), collapse = " | ")
   })
-  df <- meta[, c("variable", "etiqueta", "tipo", "categorias")]
-  names(df) <- c("Variable", "Etiqueta", "Tipo", "Categorías")
+  cols <- c("variable", "etiqueta", "tipo", "categorias")
+  nombres <- c("Variable", "Etiqueta", "Tipo", "Categorías")
+
+  if (any(!is.na(meta$tema))) {
+    meta$tema_txt <- censo_temas_meta$etiqueta[match(meta$tema, censo_temas_meta$tema)]
+    cols <- c(cols, "tema_txt")
+    nombres <- c(nombres, "Tema")
+  }
+  if (any(!is.na(meta$universo))) {
+    cols <- c(cols, "universo")
+    nombres <- c(nombres, "Universo")
+  }
+  df <- meta[, cols]
+  names(df) <- nombres
   df
 }
 
-# Para el CPV-2024 (usa codebook_meta global)
-prep_tabla_2024 <- function(tabla_nombre) {
-  meta <- codebook_meta[codebook_meta$tabla == tabla_nombre, ]
-  meta$categorias <- sapply(meta$valores_codigos, function(vc) {
-    if (is.null(vc) || nrow(vc) == 0) return("")
-    paste(paste0(vc$codigo, " = ", vc$etiqueta), collapse = " | ")
-  })
-  df <- meta[, c("variable", "etiqueta", "tipo", "categorias")]
-  names(df) <- c("Variable", "Etiqueta", "Tipo", "Categorías")
-  df
-}
+# Compatibilidad con las llamadas del resto del artículo.
+prep_tabla_hist <- function(meta_anio, tabla_nombre) prep_tabla(meta_anio, tabla_nombre)
+prep_tabla_2024 <- function(tabla_nombre) prep_tabla(codebook_meta, tabla_nombre)
 
 hacer_datatable <- function(df) {
   DT::datatable(
@@ -95,6 +102,41 @@ La columna **Tipo** clasifica cada variable como:
 
 Esta clasificación está disponible también en la columna `tipo` de los
 `diccionario_variables.parquet` publicados.
+
+Además de **Tipo**, el codebook trae dos columnas que este artículo muestra en las
+tablas de 2024, 2012 y 2001:
+
+- **Tema** — uno de los 20 temas de `censo_temas_meta`, tomados en su mayoría del
+  catálogo oficial del INE. Sirve para acotar la búsqueda: `codebook(tema = "educacion")`.
+- **Universo** — a quién se le aplicó la pregunta. Es lo que evita calcular
+  porcentajes sobre el denominador equivocado: `nivel_edu`, por ejemplo, está
+  construida sobre las personas de 19 años o más, no sobre toda la población.
+
+Para 1976 y 1992 esas columnas están vacías: el INE no publica un diccionario
+estructurado de esos censos.
+
+---
+
+# Índice temático
+
+Los 20 temas con los que se agrupan las variables, y cuántas tiene cada uno en cada
+censo. La descripción explica qué incluye el tema y, cuando la asignación es
+discutible, por qué se decidió así.
+
+```{r indice-tematico}
+idx <- censo_temas()[, c("tema", "etiqueta", "capitulo_etiqueta", "fuente", "n_variables")]
+for (anio in c(2012, 2001)) {
+  ct <- censo_temas(anio = anio)
+  idx[[paste0("n_", anio)]] <- ct$n_variables[match(idx$tema, ct$tema)]
+}
+names(idx) <- c("Tema", "Nombre", "Capítulo", "Fuente", "n 2024", "n 2012", "n 2001")
+hacer_datatable(idx)
+```
+
+`Fuente` distingue los 17 temas que declara el propio INE en su catálogo ANDA de las
+3 extensiones que añade el paquete. Los capítulos son los del cuestionario del
+CPV-2024; en 2012 y 2001 la estructura oficial de cada época está en la columna
+`grupo_ine` del codebook.
 
 ---
 
