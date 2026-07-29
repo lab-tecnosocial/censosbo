@@ -31,7 +31,7 @@ LazyDataCompression: xz
 URL: https://lab-tecnosocial.github.io/censosbo/, https://github.com/lab-tecnosocial/censosbo
 BugReports: https://github.com/lab-tecnosocial/censosbo/issues
 Depends:
-    R (>= 4.1.0)
+    R (>= 4.2)
 Imports:
     arrow (>= 14.0.0),
     curl,
