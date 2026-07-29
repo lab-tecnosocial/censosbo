@@ -158,14 +158,15 @@ censosbo_cache_clear <- function(ask = TRUE) {
   ruta_elegida  <- !is.null(getOption("censosbo.cache_dir", default = NULL))
   ya_autorizado <- isTRUE(getOption("censosbo.consent")) || fs::dir_exists(raiz)
 
-  if (!ruta_elegida && !ya_autorizado) {
+  # La condicion incluye is_interactive() para no llegar siquiera a informar ni a
+  # preguntar en una sesion sin tty: un "\u00bfquieres crearlo?" impreso en el log de un
+  # contenedor, seguido de la creacion igual, es ruido que confunde.
+  if (!ruta_elegida && !ya_autorizado && rlang::is_interactive()) {
     cli::cli_inform(c(
       "i" = "censosbo guarda los datos descargados en {.path {raiz}} para no volver a bajarlos.",
       " " = "Se pueden borrar en cualquier momento con {.code censosbo_cache_clear()}."
     ))
     ok <- .preguntar_si_no("\u00bfCrear ese directorio de cach\u00e9? [s/N] ")
-    # NA = sesion no interactiva: se procede. De esto dependen los consumidores
-    # headless; ver el comentario de arriba y test-consentimiento.R.
     if (isFALSE(ok)) {
       cli::cli_abort(c(
         "Descarga cancelada: sin cach\u00e9 no se pueden servir los datos.",
