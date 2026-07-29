@@ -1,3 +1,89 @@
+# censosbo 1.7.0
+
+> ⚠️ **Esta versión cambia el número de filas que devuelven las funciones
+> `get_viviendas_*()`**, así que rompe cualquier código que dependiera del conteo
+> anterior. Si necesitas el comportamiento de la 1.6.0, pasa `universo = "todos"`.
+> Los consumidores que leen `vivienda.parquet` directamente (sin pasar por las
+> funciones de R) **no** heredan la corrección y hay que arreglarlos aparte:
+> `censos-explorer` y `q-censosbo` están en ese caso.
+
+## El universo de vivienda: `get_viviendas_2024()` ya cuenta como el INE
+
+**Cambio de comportamiento.** `get_viviendas_2024()` devolvía 4.490.488 filas y las
+llamaba viviendas. 10.287 de ellas no lo son: son personas censadas fuera de una
+vivienda, marcadas en `v01_tipoviv` como *persona que vive en la calle* (código 15,
+3.311 registros) o *en tránsito: terminal, aeropuerto, puerto u otro* (código 16,
+6.976). El INE no las cuenta como viviendas en ningún tabulado.
+
+Ahora el defecto es el universo oficial: **4.480.201 viviendas**, la cifra de los
+tabulados del CPV-2024. También cuadra por área (2.898.140 urbanas, 1.582.061
+rurales) y, agregando por municipio, coincide al registro con las viviendas del
+geoportal en **los 343 municipios** —con la entidad cruda solo coincidían 20.
+
+* **Argumento `universo` nuevo** en `get_viviendas_2024()`, `get_censo(anio, "vivienda")`
+  y los atajos `get_viviendas_1976()`/`_1992()`/`_2001()`/`_2012()`:
+
+  | `universo`       | 2024      | Qué es                                            |
+  |------------------|----------:|---------------------------------------------------|
+  | `"viviendas"`    | 4.480.201 | El universo oficial del INE (defecto)             |
+  | `"particulares"` | 4.463.773 | Casas, departamentos, chozas, cuartos sueltos…    |
+  | `"colectivas"`   | 16.428    | Hoteles, hospitales, cuarteles, penitenciarías…   |
+  | `"todos"`        | 4.490.488 | La entidad cruda de REDATAM, como antes           |
+
+  **Si necesitas el comportamiento anterior, usa `universo = "todos"`.**
+
+* **Los censos anteriores tienen el mismo problema y el mismo arreglo.** Cada uno
+  nombra la categoría a su manera: 1992 *Ambulante* (4.939 registros), 2001
+  *Transeúntes* (9.392), 2012 *En tránsito* y *Persona que vive en la calle*
+  (12.971). Los totales por defecto pasan a 1.701.168, 2.281.022 y 3.159.350.
+  El censo 1976 no preguntó por calle ni tránsito: ahí no cambia nada.
+
+* **`tipos_vivienda()`**, función nueva: los códigos de tipo de vivienda de un
+  censo con su etiqueta, su grupo (`particular`, `colectiva`, `no_vivienda`,
+  `sin_clasificar`) y si entran en el universo oficial. Sirve para auditar qué
+  descarta cada valor de `universo` en vez de tener que confiar en la documentación.
+
+* Los códigos que aparecen en los microdatos pero no en el diccionario del censo
+  (el 88 de 1976, el 0 de 1992) **se conservan** en `"viviendas"`: no consta que
+  sean calle ni tránsito, así que descartarlos sería una decisión sin respaldo.
+  `tipos_vivienda()` los muestra como `sin_clasificar` en vez de esconderlos.
+
+## Documentación corregida
+
+* **`get_unidades_2024()` decía algo falso.** Afirmaba que la diferencia del 0,23%
+  entre las viviendas del geoportal y las de los microdatos «procede del propio
+  INE, que cuenta las viviendas de forma distinta en el geoportal y en los
+  microdatos», y recomendaba `get_viviendas_2024()` para el total de un territorio
+  —justo la cifra inflada. No eran dos formas de contar: eran los registros de
+  calle y tránsito. Con el universo oficial las dos fuentes cuadran exactamente.
+  Lo mismo estaba escrito en `dev-docs/fuentes-ine-geoportal.md`.
+
+* **El universo `todas_viviendas` del diccionario induce a error** y ahora se
+  describe como lo que es: todos los registros de la entidad `vivienda`, incluidas
+  las personas en la calle o en tránsito.
+
+* **Una tasa oficial no es dividir una categoría entre todas las filas.** La viñeta
+  de análisis demográfico calculaba el alfabetismo de 15+ años sobre toda la
+  población de esa edad y daba 94,94%; el tabulado oficial publica 95,8633%. La
+  diferencia son los 80.297 registros con `p40_lee = 9` (*Sin especificar*), que el
+  INE deja fuera del denominador: excluirlos da 95,8630% y explica la brecha salvo
+  0,0003 puntos. La viñeta ahora enseña la receta y por qué hace falta.
+
+## Tests de reconciliación con el INE
+
+`tests/testthat/test-reconciliacion-oficial.R`, suite nueva. Que la suite pasara
+demostraba consistencia interna, no que las cifras coincidieran con lo publicado
+—que es lo que se cita. Ahora quedan fijadas: población total y por sexo, los
+cuatro universos de vivienda, viviendas por área, el cuadre municipio a municipio
+con el geoportal, los totales de los censos históricos y el denominador del
+alfabetismo.
+
+Necesita los microdatos completos en caché (~1 GB), así que se salta por defecto:
+
+```bash
+CENSOSBO_TEST_RECONCILIACION=true Rscript -e 'devtools::test(filter = "reconciliacion")'
+```
+
 # censosbo 1.6.0
 
 ## Cartografía municipal completa y sin huecos

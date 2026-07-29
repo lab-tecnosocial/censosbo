@@ -24,6 +24,10 @@
 #'   se emite una advertencia y se retorna `NULL`.
 #' @param variables Vector de caracteres. Nombres de columnas a seleccionar.
 #'   Si `NULL`, devuelve todas las columnas.
+#' @param universo Solo para `tabla = "vivienda"`. Qué registros de la entidad
+#'   devolver: `"viviendas"` (por defecto, el universo oficial del INE),
+#'   `"particulares"`, `"colectivas"` o `"todos"` (la entidad cruda de REDATAM).
+#'   Ver [get_viviendas_2024()] y [tipos_vivienda()].
 #' @param as Formato de retorno: `"arrow"` (lazy, por defecto), `"tibble"` o
 #'   `"duckdb"`.
 #' @param overwrite Lógico. Si `TRUE`, re-descarga aunque exista en caché.
@@ -57,6 +61,25 @@
 #' 2012 puede no existir en 1992. En ese caso se emite una advertencia y se retorna
 #' `NULL` sin error.
 #'
+#' @section El universo de vivienda:
+#' Con `tabla = "vivienda"`, todos los censos desde 1992 traen en la entidad de
+#' REDATAM registros que **no son viviendas**: personas censadas en la calle o en
+#' tránsito. El defecto `universo = "viviendas"` los descuenta, que es cómo
+#' cuenta el INE. Los códigos afectados de cada censo están en
+#' [tipos_vivienda()]:
+#'
+#' | Censo | Variable      | Códigos que no son vivienda                        | Registros |
+#' |------:|---------------|----------------------------------------------------|----------:|
+#' | 1976  | `v01`         | (no se preguntó)                                   |         0 |
+#' | 1992  | `V01`         | 13 Ambulante                                       |     4.939 |
+#' | 2001  | `V04`         | 24 Transeúntes                                     |     9.392 |
+#' | 2012  | `P01`         | 7 En tránsito, 8 Persona que vive en la calle      |    12.971 |
+#' | 2024  | `v01_tipoviv` | 15 Persona vive en la calle, 16 En tránsito        |    10.287 |
+#'
+#' La reconciliación con los tabulados oficiales está comprobada para el
+#' CPV-2024 (ver [get_viviendas_2024()]). Para los censos anteriores el criterio
+#' es el mismo, tomado del diccionario de cada año.
+#'
 #' @importFrom stats setNames
 #' @importFrom DBI dbConnect dbExecute dbGetQuery dbDisconnect
 #' @importFrom duckdb duckdb
@@ -69,6 +92,9 @@
 #'
 #' # Viviendas del censo 1992 en La Paz
 #' get_censo(1992, "vivienda", departamento = "La Paz")
+#'
+#' # La entidad cruda de vivienda del censo 2012, con calle y tránsito
+#' get_censo(2012, "vivienda", universo = "todos")
 #'
 #' # Todas las personas del censo 1976 (descarga completa ~46 MB)
 #' get_censo(1976, "poblacion")
@@ -88,12 +114,21 @@ get_censo <- function(
     provincia   = NULL,
     municipio   = NULL,
     variables   = NULL,
+    universo    = c("viviendas", "particulares", "colectivas", "todos"),
     as          = c("arrow", "tibble", "duckdb"),
     overwrite   = FALSE,
     verbose     = TRUE
 ) {
-  as   <- match.arg(as)
-  anio <- as.integer(anio)
+  # `universo` tiene defecto para poder documentarlo con match.arg(), pero solo
+  # significa algo en la tabla de vivienda: en las demás no se aplica, y solo se
+  # aborta si el usuario lo pidió explícitamente (de lo contrario el defecto
+  # rompería get_censo(2012, "persona")).
+  # Se consulta ANTES de match.arg(): evaluar el argumento fuerza su defecto y a
+  # partir de ahí missing() devuelve FALSE.
+  universo_explicito <- !missing(universo)
+  as       <- match.arg(as)
+  universo <- match.arg(universo)
+  anio     <- as.integer(anio)
 
   # "persona" es alias de "poblacion" en el censo 1976
   if (anio == 1976L && tabla == "persona") {
@@ -105,12 +140,15 @@ get_censo <- function(
 
   .validate_censo_args(anio, tabla)
 
+  if (universo_explicito) .check_universo_tabla(universo, tabla)
+  if (!identical(tabla, "vivienda")) universo <- "todos"
+
   if (anio == 2024L) {
     # El CPV-2024 no vive en los releases históricos: se delega en las funciones
     # get_*_2024(), que ya conocen su particionado por departamento y el nombre
     # con que registran la tabla en DuckDB.
     .get_censo_2024(tabla, departamento, provincia, municipio,
-                    variables, as, overwrite, verbose)
+                    variables, universo, as, overwrite, verbose)
   } else if (anio == 1976L) {
     # 1976 usa geografía cantonal (columna `can`), no comparable con los
     # municipios del CPV-2024: provincia/municipio solo aceptan códigos.
@@ -126,25 +164,32 @@ get_censo <- function(
     dep_codes  <- .resolve_dep_codes(departamento)
     prov_codes <- if (!is.null(provincia)) sprintf("%02d", as.integer(provincia)) else NULL
     mun_codes  <- if (!is.null(municipio)) sprintf("%02d", as.integer(municipio)) else NULL
-    .get_censo_1976(tabla, dep_codes, prov_codes, mun_codes, variables, as, overwrite, verbose)
+    .get_censo_1976(tabla, dep_codes, prov_codes, mun_codes, variables, universo,
+                    as, overwrite, verbose)
   } else {
     # 1992/2001/2012 exponen idep/iprov/imun consistentes con el CPV-2024, así
     # que se reutiliza el mismo resolver (acepta códigos o nombres, valida y
     # filtra por la tupla completa). Un municipio válido en 2024 que no existía
     # en el año pedido simplemente no traerá filas (aviso de resultado vacío).
     geo <- .resolve_geo(departamento, provincia, municipio)
-    .get_censo_redatam(anio, tabla, geo, variables, as, overwrite, verbose)
+    .get_censo_redatam(anio, tabla, geo, variables, universo, as, overwrite, verbose)
   }
 }
 
 # --- 2024: delega en las funciones específicas del CPV-2024 ---
 
 .get_censo_2024 <- function(tabla, departamento, provincia, municipio,
-                            variables, as, overwrite, verbose) {
+                            variables, universo, as, overwrite, verbose) {
+  if (identical(tabla, "vivienda")) {
+    return(get_viviendas_2024(
+      departamento = departamento, provincia = provincia, municipio = municipio,
+      variables = variables, universo = universo, as = as,
+      overwrite = overwrite, verbose = verbose
+    ))
+  }
   fn <- switch(
     tabla,
     "persona"    = get_personas_2024,
-    "vivienda"   = get_viviendas_2024,
     "emigracion" = get_emigracion_2024,
     "mortalidad" = get_mortalidad_2024
   )
@@ -155,7 +200,7 @@ get_censo <- function(
 # --- 1976: columnas geográficas directas, sin REDATAM ---
 
 .get_censo_1976 <- function(tabla, dep_codes, prov_codes, mun_codes,
-                             variables, as, overwrite, verbose) {
+                             variables, universo = "todos", as, overwrite, verbose) {
   filename <- paste0(tabla, ".parquet")
   main_path <- .download_censo(1976L, filename, overwrite, verbose)
   ds <- arrow::open_dataset(main_path)
@@ -167,7 +212,9 @@ get_censo <- function(
   if (!is.null(prov_codes)) ds <- dplyr::filter(ds, .data$iprov %in% prov_codes)
   if (!is.null(mun_codes))  ds <- dplyr::filter(ds, .data$can %in% as.integer(mun_codes))
 
+  variables <- .con_columna_universo(variables, 1976L, universo)
   ds <- .apply_variable_selection(ds, variables)
+  ds <- .filtrar_universo_vivienda(ds, 1976L, universo, verbose = verbose)
 
   # Contrato uniforme: si el filtro geográfico no deja filas, avisar y devolver
   # NULL sea cual sea `as` (antes solo se comprobaba con as = "tibble").
@@ -182,7 +229,8 @@ get_censo <- function(
 
 # --- 1992/2001/2012: idep/iprov/imun denormalizados como columnas directas ---
 
-.get_censo_redatam <- function(anio, tabla, geo, variables, as, overwrite, verbose) {
+.get_censo_redatam <- function(anio, tabla, geo, variables, universo = "todos",
+                               as, overwrite, verbose) {
   filename  <- paste0(tabla, ".parquet")
   main_path <- .download_censo(anio, filename, overwrite, verbose)
   ds <- arrow::open_dataset(main_path)
@@ -192,7 +240,11 @@ get_censo <- function(
   # columnas string (por departamento y, si aplica, por la tupla completa).
   ds <- .apply_geo(ds, geo)
 
+  variables <- .con_columna_universo(variables, anio, universo)
   ds <- .apply_variable_selection(ds, variables)
+  if (identical(tabla, "vivienda")) {
+    ds <- .filtrar_universo_vivienda(ds, anio, universo, verbose = verbose)
+  }
 
   # Contrato uniforme de resultado vacío (ver .get_censo_1976).
   if (!is.null(geo$dep_codes) || !is.null(geo$rows)) {
