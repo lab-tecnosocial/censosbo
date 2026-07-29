@@ -13,8 +13,10 @@
   if (sin_geo > 0) {
     cli::cli_warn(c(
       "{sin_geo} municipio(s) en los datos no tienen geometría disponible.",
-      "i" = "Aparecerán como áreas grises en el mapa.",
-      "i" = "Son los 4 municipios del CPV-2024 sin cobertura cartográfica en la fuente."
+      "i" = "No se dibujarán en el mapa.",
+      "i" = paste("{.var geo_municipios} cubre los 343 municipios del CPV-2024;",
+                  "revisa que los códigos {.field idep}/{.field iprov}/{.field imun}",
+                  "correspondan a la división político-administrativa actual.")
     ))
   }
   idx    <- match(geo_keys, dat_keys)
@@ -152,11 +154,13 @@ mapa_dep <- function(datos, variable, titulo = NULL, etiqueta_fill = NULL,
 #' @details
 #' Los datos se unen con [geo_municipios] por la clave `idep + iprov + imun`;
 #' los códigos se normalizan a 2 dígitos, así que también funcionan si vienen
-#' como enteros. Los 4 municipios del CPV-2024 sin cobertura cartográfica
-#' generan una advertencia informativa y aparecen en gris (`na_color`).
+#' como enteros. La capa cubre los 343 municipios del CPV-2024, incluidos los
+#' cuatro GAIOC creados entre 2016 y 2023. Los municipios de `datos` que no
+#' emparejen generan una advertencia y los que no tengan dato salen en gris
+#' (`na_color`).
 #'
-#' Para el censo 1976 (cantones), usar con precaución: los códigos de municipio
-#' pueden no corresponder a la división actual.
+#' Para censos anteriores a 2012, usar con precaución: los códigos de municipio
+#' pueden no corresponder a la división actual (en 1976 son cantones).
 #'
 #' @importFrom rlang .data
 #' @export

@@ -132,18 +132,18 @@ etiquetar_geografia <- function(df) {
 #'   \item{nombre_dep}{Nombre del departamento}
 #'   \item{geometry}{Geometría de polígono (CRS: WGS84 / EPSG:4326)}
 #' }
-#' @source INE Bolivia. Límites administrativos de departamentos,
-#'   derivados de cartografía electoral (2025).
+#' @source Derivado por disolución de [geo_municipios], de modo que los bordes
+#'   departamentales coinciden exactamente con los municipales.
 #' @seealso [geo_municipios], [mapa_dep()]
 "geo_departamentos"
 
 #' Geometrías de los municipios de Bolivia
 #'
-#' Objeto `sf` con 339 de los 343 municipios del CPV-2024 y sus geometrías
-#' poligonales. Los 4 municipios sin cobertura en la fuente cartográfica
-#' no están incluidos.
+#' Objeto `sf` con los 343 municipios del CPV-2024 y sus geometrías poligonales,
+#' incluidos los cuatro Gobiernos Autónomos Indígena Originario Campesinos
+#' (GAIOC) creados entre 2016 y 2023.
 #'
-#' @format Un `sf` data.frame con 339 filas y 7 columnas (más geometría):
+#' @format Un `sf` data.frame con 343 filas y 8 columnas (más geometría):
 #' \describe{
 #'   \item{idep}{Código de departamento}
 #'   \item{nombre_dep}{Nombre del departamento}
@@ -151,13 +151,24 @@ etiquetar_geografia <- function(df) {
 #'   \item{nombre_prov}{Nombre de la provincia}
 #'   \item{imun}{Código de municipio}
 #'   \item{nombre_mun}{Nombre del municipio}
+#'   \item{capital}{Capital del municipio}
+#'   \item{superficie_km2}{Superficie en kilómetros cuadrados}
 #'   \item{geometry}{Geometría de polígono (CRS: WGS84 / EPSG:4326)}
 #' }
-#' @note 4 municipios del CPV-2024 no tienen cobertura cartográfica en la
-#'   fuente y no aparecerán en los mapas generados con [mapa_mun()]: los TIOC
-#'   Raqaypampa (Cochabamba), Jatun Ayllu Yura (Potosí) y Territorio Indígena
-#'   Multiétnico (Beni), más San Pedro de Macha (Potosí).
-#' @source INE Bolivia. Límites administrativos de municipios,
-#'   derivados de cartografía electoral (2025).
-#' @seealso [geo_departamentos], [mapa_mun()]
+#' @details
+#' Las geometrías están simplificadas preservando la topología, así que los
+#' bordes entre municipios vecinos son idénticos y no quedan franjas vacías
+#' entre ellos. Los únicos huecos interiores del país son cuerpos de agua
+#' excluidos de la división municipal: el Salar de Uyuni y los lagos Poopó y
+#' Uru Uru.
+#'
+#' Los códigos `idep`/`iprov`/`imun` se verificaron uno a uno contra los puntos
+#' de comunidades del CPV-2024 ([get_geo_comunidades()]) y contra la población
+#' municipal de los microdatos, que coincide exactamente en los 343 municipios.
+#'
+#' @source Varias fuentes, detalladas en la viñeta *Mapas coropléticos*.
+#'   Límites, capital y superficie: SDSN Bolivia (2025), *Límites Municipales
+#'   Bolivia 2025* \[Archivo shapefile\], <https://sdsnbolivia.org/datos-espaciales/>.
+#'   Códigos y nombres: INE Bolivia (Redatam, CPV-2024).
+#' @seealso [geo_departamentos], [mapa_mun()], [geo_bolivia]
 "geo_municipios"

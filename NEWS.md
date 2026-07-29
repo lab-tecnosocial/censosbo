@@ -1,3 +1,43 @@
+# censosbo 1.6.0
+
+## Cartografía municipal completa y sin huecos
+
+`geo_municipios` pasa a los **343 municipios del CPV-2024**, sobre límites nuevos
+de SDSN Bolivia cruzados con los códigos y nombres del INE. Antes eran 339
+polígonos de cartografía electoral. La procedencia de cada columna está en la
+viñeta *Mapas coropléticos*.
+
+* **Los cuatro GAIOC creados desde 2016 ya se dibujan**: TIOC-Raqaypampa
+  (Cochabamba), San Pedro de Macha y TIOC-Jatun Ayllu Yura (Potosí), y
+  TIOC-Territorio Indígena Multiétnico (Beni). No eran huecos en el mapa: su
+  territorio aparecía dentro del municipio madre —Mizque, Colquechaca, Tomave,
+  San Ignacio y Santa Ana—, así que sus datos salían mal atribuidos sin que se
+  notara. Son 7.599 km² que estaban asignados al municipio equivocado.
+
+* **Desaparecen las franjas blancas entre municipios.** La capa anterior se
+  simplificó sin preservar la topología y quedaban 1.126 huecos espurios
+  (461 km²) entre vecinos, visibles en cualquier zoom. La nueva se simplifica con
+  `rmapshaper::ms_simplify()`, que respeta los arcos compartidos: los únicos
+  huecos que quedan son reales (Salar de Uyuni, lagos Poopó y Uru Uru).
+
+* **Dos columnas nuevas**: `capital` (capital municipal) y `superficie_km2`, con
+  la que se calculan densidades sin recalcular áreas.
+
+* `geo_departamentos` ahora se deriva por disolución de `geo_municipios`, de modo
+  que los bordes departamentales caen exactamente sobre los municipales.
+
+* Los códigos `idep`/`iprov`/`imun` de cada polígono **no se leen de la fuente
+  cartográfica**, que los trae desalineados en 7 municipios de Omasuyos (La Paz) y
+  Ñuflo de Chávez (Santa Cruz). Se deducen por voto espacial mayoritario contra
+  los ~21.000 puntos de comunidades del CPV-2024, que llevan el código usado en
+  los microdatos. Con eso, la población municipal de la fuente coincide exacta en los
+  343 municipios con el conteo de los microdatos, y el 97,3% de los puntos del
+  CPV-2024 cae en su municipio (antes, 95,9%).
+
+`mapa_mun()` ya no avisa de «municipios sin cobertura cartográfica»: la
+advertencia queda solo para códigos que no existen en la división actual, lo
+típico al mapear censos anteriores a 2012.
+
 # censosbo 1.5.1
 
 ## Correcciones

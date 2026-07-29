@@ -169,8 +169,7 @@ codebook(tabla = "emigracion")
 ## Mapas coropléticos
 
 El paquete incluye geometrías sf para los 9 departamentos (`geo_departamentos`)
-y 339 de los 343 municipios (`geo_municipios`) de Bolivia, disponibles sin
-descarga. La función `mapa_dep()` genera mapas coropléticos a nivel
+y los 343 municipios (`geo_municipios`) de Bolivia, disponibles sin descarga. La función `mapa_dep()` genera mapas coropléticos a nivel
 departamental:
 
 ```{r mapa-intro}

@@ -251,7 +251,7 @@ get_personas_2024(departamento = "Cochabamba") |>
   etiquetar_geografia()
 ```
 
-El paquete incluye geometrías sf para los 9 departamentos (`geo_departamentos`) y 339 de los 343 municipios (`geo_municipios`) de Bolivia. Las funciones `mapa_dep()` y `mapa_mun()` generan mapas coropléticos a partir de cualquier agregación de datos del censo, y `mapa_man()` baja hasta el manzano y la comunidad dentro de un municipio (sus geometrías se descargan al caché la primera vez).
+El paquete incluye geometrías sf para los 9 departamentos (`geo_departamentos`) y los 343 municipios (`geo_municipios`) de Bolivia, con su capital y superficie. Las funciones `mapa_dep()` y `mapa_mun()` generan mapas coropléticos a partir de cualquier agregación de datos del censo, y `mapa_man()` baja hasta el manzano y la comunidad dentro de un municipio (sus geometrías se descargan al caché la primera vez).
 
 ```{r mapa-mun, fig.height=5}
 # mapa_mun(): nivel municipal — geometrías incluidas en el paquete

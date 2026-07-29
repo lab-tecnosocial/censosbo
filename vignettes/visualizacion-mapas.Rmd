@@ -27,7 +27,7 @@ directamente desde R:
 | Función | Nivel | Geometrías incluidas |
 |---------|-------|----------------------|
 | `mapa_dep()` | 9 departamentos | Sí — `geo_departamentos` |
-| `mapa_mun()` | 339 de 343 municipios | Sí — `geo_municipios` |
+| `mapa_mun()` | 343 municipios | Sí — `geo_municipios` |
 
 Ambas devuelven un **objeto `ggplot`** que se puede personalizar con capas y
 temas adicionales.
@@ -41,16 +41,47 @@ descargar nada:
 # 9 departamentos (objeto sf)
 head(geo_departamentos, 3)
 
-# 339 de los 343 municipios del CPV-2024 (objeto sf)
+# Los 343 municipios del CPV-2024 (objeto sf)
 head(sf::st_drop_geometry(geo_municipios), 3)
 ```
 
-La tabla `geo_bolivia` (sin geometrías) tiene los 343 municipios con nombres
-y códigos oficiales:
+La tabla `geo_bolivia` (sin geometrías) tiene los mismos 343 municipios con
+sus nombres y códigos oficiales, y es más ligera cuando no hace falta dibujar:
 
 ```{r geo-bolivia}
 head(geo_bolivia)
 ```
+
+`geo_municipios` trae además la `capital` y la `superficie_km2` de cada
+municipio, así que las densidades salen sin recalcular áreas:
+
+```{r geo-densidad}
+library(dplyr)
+
+sf::st_drop_geometry(geo_municipios) |>
+  slice_max(superficie_km2, n = 5) |>
+  select(nombre_mun, nombre_dep, capital, superficie_km2)
+```
+
+### Procedencia de las geometrías
+
+`geo_municipios` cruza varias fuentes, porque ninguna tiene a la vez la geometría
+de las 343 unidades y la codificación que usan los microdatos:
+
+- **Límites, capital y superficie** — SDSN Bolivia, capa del Atlas Municipal de
+  los ODS, la única pública que cubre las 343 unidades del CPV-2024 (los 339
+  municipios más los cuatro GAIOC creados entre 2016 y 2023).
+- **Códigos `idep`/`iprov`/`imun` y nombres** — INE Bolivia (Redatam, CPV-2024),
+  para que coincidan exactamente con los de `get_personas_2024()` y compañía.
+- **Emparejamiento entre ambos** — los puntos de comunidades del CPV-2024
+  (`get_geo_comunidades()`), que llevan el código del INE y sirven de árbitro para
+  asignarle a cada polígono el suyo.
+
+`geo_departamentos` se deriva de `geo_municipios`, de modo que los bordes
+departamentales caen exactamente sobre los municipales.
+
+> SDSN Bolivia (2025). *Límites Municipales Bolivia 2025* [Archivo shapefile].
+> <https://sdsnbolivia.org/datos-espaciales/>
 
 ## `mapa_dep()` — nivel departamental
 
@@ -149,10 +180,10 @@ mapa_mun(
 Los municipios más jóvenes del Beni (San Borja, 25,8 años; Exaltación, Loreto y
 San Ignacio, 26) contrastan con Baures y Huacaraje, por encima de 30.
 
-El aviso que aparece al construir el mapa es esperado: el TIOC-Territorio
-Indígena Multiétnico —justamente el municipio más joven del departamento, con
-24,5 años— es uno de los 4 municipios del CPV-2024 sin cobertura en la fuente
-cartográfica, así que sale en gris.
+El municipio más joven del departamento es el TIOC-Territorio Indígena
+Multiétnico, con 24,5 años. Es uno de los cuatro GAIOC creados desde 2016 que
+faltaban en la cartografía anterior del paquete y que desde la versión 1.6.0 ya
+se dibujan.
 
 ### Acceso al agua por cañería — Santa Cruz
 

@@ -46,10 +46,40 @@ test_that("mapa_dep() y mapa_mun() producen un ggplot que se puede construir", {
 
 test_that("mapa_mun() avisa de los municipios sin geometría", {
   skip_if_not_installed("ggplot2")
-  # TIOC-Raqaypampa (03/13/04) es uno de los 4 municipios sin cartografía.
-  datos <- data.frame(idep = c("03", "03"), iprov = c("13", "01"),
-                      imun = c("04", "01"), valor = c(1, 2))
+  # Un código que no existe en la división actual: es lo que puede pasar al
+  # mapear censos anteriores a 2012.
+  datos <- data.frame(idep = c("03", "03"), iprov = c("99", "01"),
+                      imun = c("99", "01"), valor = c(1, 2))
   expect_warning(mapa_mun(datos, "valor", departamento = "03"), "no tienen geometr")
+})
+
+test_that("geo_municipios cubre los 343 municipios del CPV-2024", {
+  e <- new.env()
+  utils::data("geo_municipios", package = "censosbo", envir = e)
+  utils::data("geo_bolivia",    package = "censosbo", envir = e)
+  gm <- get("geo_municipios", envir = e)
+  gb <- get("geo_bolivia",    envir = e)
+
+  expect_equal(nrow(gm), 343L)
+  expect_setequal(paste0(gm$idep, gm$iprov, gm$imun),
+                  paste0(gb$idep, gb$iprov, gb$imun))
+  expect_false(any(is.na(gm$nombre_mun)))
+  expect_false(any(is.na(gm$superficie_km2)))
+})
+
+test_that("los cuatro GAIOC creados desde 2016 se dibujan", {
+  skip_if_not_installed("ggplot2")
+  # Raqaypampa, San Pedro de Macha, Jatun Ayllu Yura y el TIM faltaban en la
+  # cartografía electoral que se usaba antes.
+  datos <- data.frame(
+    idep  = c("03", "05", "05", "08"),
+    iprov = c("13", "04", "12", "09"),
+    imun  = c("04", "05", "04", "01"),
+    valor = 1:4 * 1.0
+  )
+  p <- mapa_mun(datos, "valor")
+  expect_equal(sum(!is.na(p$data$valor)), 4L)
+  expect_no_warning(mapa_mun(datos, "valor"))
 })
 
 test_that("mapa_dep() y mapa_mun() aceptan códigos geográficos numéricos", {

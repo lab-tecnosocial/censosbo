@@ -13,8 +13,8 @@ Un `sf` data.frame con 9 filas y 3 columnas (más geometría):
 }
 }
 \source{
-INE Bolivia. Límites administrativos de departamentos,
-  derivados de cartografía electoral (2025).
+Derivado por disolución de [geo_municipios], de modo que los bordes
+  departamentales coinciden exactamente con los municipales.
 }
 \usage{
 geo_departamentos
