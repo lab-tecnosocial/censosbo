@@ -36,9 +36,9 @@
     }
     if (!any(m)) {
       cli::cli_abort(c(
-        "{nivel} no encontrado en el catálogo: {.val {v}}",
-        "i" = "Acepta código (p.ej. {.val 01}) o nombre (p.ej. {.val Cochabamba}).",
-        "i" = "Consulta los valores válidos con {.code {sugerencia}}."
+        "{nivel} no encontrado en el cat\u00e1logo: {.val {v}}",
+        "i" = "Acepta c\u00f3digo (p.ej. {.val 01}) o nombre (p.ej. {.val Cochabamba}).",
+        "i" = "Consulta los valores v\u00e1lidos con {.code {sugerencia}}."
       ))
     }
     # Ambigüedad entre departamentos (sin `departamento` fijado, el subconjunto
@@ -59,7 +59,7 @@
         provs_nom <- unique(geo$nombre_prov[geo$iprov %in% provs_match &
                                               geo$idep %in% deps_match])
         cli::cli_abort(c(
-          "El {nivel} {.val {v}} existe en varias provincias (el código de municipio se repite entre provincias).",
+          "El {nivel} {.val {v}} existe en varias provincias (el c\u00f3digo de municipio se repite entre provincias).",
           "i" = "Especifica {.arg provincia} para desambiguar.",
           "i" = "Provincias con ese {nivel}: {.val {provs_nom}}"
         ))
@@ -211,6 +211,10 @@
       dplyr::collect(ds)
     },
     "duckdb" = {
+      # duckdb y DBI son opcionales: solo hacen falta para este backend, y
+      # arrastrarlos como dependencia obligatoria encarecia la instalacion a
+      # todo el mundo por una via de salida que no todos usan.
+      rlang::check_installed(c("duckdb", "DBI"), reason = "para el backend SQL ({.code as = \"duckdb\"})")
       con <- DBI::dbConnect(duckdb::duckdb(), dbdir = ":memory:")
       # duckdb_register_arrow acepta tanto Datasets como consultas arrow
       # (p.ej. tras un semi_join de filtrado geográfico).

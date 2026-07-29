@@ -50,23 +50,22 @@ as.character(df$p25_sexo) # → "Mujer", "Hombre"
 ```
 }
 \examples{
-# Censo 2024 — detección automática
+# El diccionario viene en el paquete, así que etiquetar no descarga nada: basta
+# que las columnas se llamen como en el censo correspondiente.
+conteo <- data.frame(p25_sexo = c(1, 2), n = c(2894112, 2762418))
+etiquetar_valores(conteo)
+
+# Censo 1992: los nombres de sus variables identifican el año por sí solos
+etiquetar_valores(data.frame(P25 = c(1, 2), n = c(3199490, 3221302)))
+
+# Año explícito, cuando los nombres son ambiguos entre censos
+etiquetar_valores(data.frame(P25 = c(1, 2), n = c(10, 12)), anio = 1992)
+
+# Sobre datos reales (requiere descarga)
 \dontrun{
 get_personas_2024(departamento = "Pando", as = "tibble") |>
   etiquetar_valores() |>
   head(3)
-}
-
-# Censo 1992 — detección automática
-\dontrun{
-get_personas_1992(departamento = "07", as = "tibble") |>
-  dplyr::count(P25) |>
-  etiquetar_valores()
-}
-
-# Año explícito como escape hatch
-\dontrun{
-df |> etiquetar_valores(anio = 1992)
 }
 }
 \seealso{

@@ -83,8 +83,8 @@ grupos_variables <- function() {
   if (length(no_arm) > 0) {
     cli::cli_warn(c(
       "!" = "Variable(s) no armonizada(s): {.val {no_arm}}.",
-      "i" = "Se devuelven los códigos crudos de cada censo, que NO son comparables entre años.",
-      "i" = "Consulta {.code codebook_1976()}/{.code codebook_1992()}/... para interpretarlos por año."
+      "i" = "Se devuelven los c\u00f3digos crudos de cada censo, que NO son comparables entre a\u00f1os.",
+      "i" = "Consulta {.code codebook_1976()}/{.code codebook_1992()}/... para interpretarlos por a\u00f1o."
     ))
   }
   invisible()
@@ -198,8 +198,8 @@ get_temporal <- function(
   anios_validos <- c(1976L, 1992L, 2001L, 2012L, 2024L)
   if (any(!anios %in% anios_validos)) {
     cli::cli_abort(c(
-      "Año(s) no válido(s): {.val {anios[!anios %in% anios_validos]}}",
-      "i" = "Los años disponibles son: {.val {anios_validos}}"
+      "A\u00f1o(s) no v\u00e1lido(s): {.val {anios[!anios %in% anios_validos]}}",
+      "i" = "Los a\u00f1os disponibles son: {.val {anios_validos}}"
     ))
   }
 
@@ -226,7 +226,7 @@ get_temporal <- function(
   for (a in anios) {
     key <- paste0("v", a)
     if (!key %in% names(mapa)) {
-      cli::cli_warn("Columna de mapeo no encontrada para el año {a}. Se omite.")
+      cli::cli_warn("Columna de mapeo no encontrada para el a\u00f1o {a}. Se omite.")
       next
     }
 
@@ -237,7 +237,7 @@ get_temporal <- function(
     if (length(vars_ausentes) > 0) {
       cli::cli_warn(c(
         "!" = "Variables no disponibles en el censo {a}: {.val {vars_ausentes}}",
-        "i" = "Se incluirán como {.code NA}."
+        "i" = "Se incluir\u00e1n como {.code NA}."
       ))
     }
 
@@ -346,7 +346,7 @@ get_temporal <- function(
 
   partes_validas <- Filter(Negate(is.null), partes)
   if (length(partes_validas) == 0) {
-    cli::cli_abort("No se obtuvieron datos de ningún censo.")
+    cli::cli_abort("No se obtuvieron datos de ning\u00fan censo.")
   }
 
   result <- do.call(rbind, partes_validas)
@@ -425,8 +425,8 @@ get_temporal_vivienda <- function(
   anios_validos <- c(1976L, 1992L, 2001L, 2012L, 2024L)
   if (any(!anios %in% anios_validos)) {
     cli::cli_abort(c(
-      "Año(s) no válido(s): {.val {anios[!anios %in% anios_validos]}}",
-      "i" = "Los años disponibles son: {.val {anios_validos}}"
+      "A\u00f1o(s) no v\u00e1lido(s): {.val {anios[!anios %in% anios_validos]}}",
+      "i" = "Los a\u00f1os disponibles son: {.val {anios_validos}}"
     ))
   }
 
@@ -458,7 +458,7 @@ get_temporal_vivienda <- function(
     if (length(vars_ausentes) > 0) {
       cli::cli_warn(c(
         "!" = "Variables de vivienda no disponibles en censo {a}: {.val {vars_ausentes}}",
-        "i" = "Se incluirán como {.code NA}."
+        "i" = "Se incluir\u00e1n como {.code NA}."
       ))
     }
 
@@ -504,7 +504,7 @@ get_temporal_vivienda <- function(
 
   partes_validas <- Filter(Negate(is.null), partes)
   if (length(partes_validas) == 0) {
-    cli::cli_abort("No se obtuvieron datos de vivienda de ningún censo.")
+    cli::cli_abort("No se obtuvieron datos de vivienda de ning\u00fan censo.")
   }
 
   result <- do.call(rbind, partes_validas)
@@ -517,48 +517,10 @@ get_temporal_vivienda <- function(
 # Funciones internas de armonización — tabla PERSONA
 # ===========================================================================
 
-# Etiquetas de los códigos armonizados que produce get_temporal()/get_temporal_vivienda().
-# Fuente única de verdad: debe coincidir con los códigos destino de las funciones
-# .harmonize_*() de abajo. Solo incluye variables efectivamente armonizadas (códigos
-# comparables entre censos). Las variables passthrough (solo `parentesco`) NO se
-# etiquetan porque sus códigos varían entre censos.
-.HARMONIZED_VALUE_LABELS <- list(
-  # tabla persona
-  sexo                = c("1" = "Mujer", "2" = "Hombre"),
-  area                = c("1" = "Urbana", "2" = "Rural"),
-  estado_civil        = c("1" = "Soltero/a", "2" = "Casado/a o conviviente",
-                          "3" = "Separado/a o divorciado/a", "4" = "Viudo/a"),
-  pea                 = c("1" = "Ocupado", "2" = "Cesante", "3" = "Aspirante"),
-  pet                 = c("1" = "Sí", "2" = "No"),
-  sabe_leer           = c("1" = "Sí", "2" = "No"),
-  nivel_edu           = c("0" = "Sin instrucción", "1" = "Primaria",
-                          "2" = "Secundaria", "3" = "Superior"),
-  asistencia_escolar  = c("1" = "Sí asiste", "2" = "No asiste"),
-  categoria_ocupacion = c("1" = "Empleado/Obrero", "2" = "Cuenta propia",
-                          "3" = "Empleador/Patrón", "4" = "Familiar no remunerado",
-                          "5" = "Otro"),
-  identidad_indigena  = c("1" = "Sí", "2" = "No"),
-  idioma_materno      = c("1" = "Castellano", "2" = "Quechua", "3" = "Aymara",
-                          "4" = "Guaraní", "5" = "Otro nativo boliviano",
-                          "6" = "Otro idioma (extranjero)"),
-  migracion_nac_dpto  = c("1" = "Mismo departamento", "2" = "Otro departamento",
-                          "3" = "Exterior", "4" = "No había nacido"),
-  migracion_rec_dpto  = c("1" = "Mismo departamento", "2" = "Otro departamento",
-                          "3" = "Exterior", "4" = "No había nacido"),
-  # tabla vivienda
-  material_paredes    = c("1" = "Ladrillo/Bloque/Hormigón", "2" = "Adobe/Tapial",
-                          "3" = "Madera/Tabique/Caña/Palma", "4" = "Piedra", "5" = "Otro"),
-  material_techo      = c("1" = "Calamina/Plancha/Teja", "2" = "Losa de hormigón",
-                          "3" = "Paja/Caña/Palma", "4" = "Otro"),
-  material_piso       = c("1" = "Tierra", "2" = "Cemento/Ladrillo",
-                          "3" = "Mosaico/Parquet/Madera", "4" = "Otro"),
-  fuente_agua         = c("1" = "Cañería/Red pública", "2" = "Otra fuente protegida",
-                          "3" = "Fuente no protegida"),
-  energia_electrica   = c("1" = "Sí", "2" = "No"),
-  servicio_sanitario  = c("1" = "Sí tiene", "2" = "No tiene"),
-  tenencia_vivienda   = c("1" = "Propia", "2" = "Alquilada",
-                          "3" = "Cedida/Anticrético/Servicios", "4" = "Otra")
-)
+# Las etiquetas de los códigos armonizados (.HARMONIZED_VALUE_LABELS) viven en
+# R/sysdata.rda, no aquí: llevan tildes y CRAN exige código ASCII. Se editan en
+# data-raw/build_sysdata.R, que documenta el porqué y valida el resultado.
+# Deben coincidir con los códigos destino de las funciones .harmonize_*() de abajo.
 
 # Despacha a la función de armonización correcta según variable y año
 .harmonize_col <- function(x, variable, anio) {
@@ -1155,30 +1117,11 @@ get_temporal_vivienda <- function(
 # distintas en cada punto. Esta función lo detecta a partir del metadato en vez de
 # confiar en que el usuario haya leído la viñeta.
 
-# Texto legible de cada universo, para el aviso.
-.UNIVERSO_TEXTO <- c(
-  todas_personas = "todas las personas",
-  personas_4_mas = "personas de 4 años o más",
-  personas_5_mas = "personas de 5 años o más",
-  personas_6_mas = "personas de 6 años o más",
-  personas_7_mas = "personas de 7 años o más",
-  personas_12_mas = "personas de 12 años o más",
-  personas_15_mas = "personas de 15 años o más",
-  personas_19_mas = "personas de 19 años o más",
-  mujeres_12_mas = "mujeres de 12 años o más",
-  mujeres_15_49 = "mujeres de 15 a 49 años",
-  todas_viviendas = "todas las viviendas",
-  viviendas_particulares = "viviendas particulares",
-  viviendas_presentes = "viviendas con personas presentes",
-  hogares = "todos los hogares"
-)
+# El texto legible de cada universo (.UNIVERSO_TEXTO) y la edad mínima que implica
+# (.UNIVERSO_EDAD_MIN) están en R/sysdata.rda por la misma razón que las etiquetas
+# armonizadas: llevan tildes. Se editan juntos en data-raw/build_sysdata.R, que
+# comprueba que sus claves no se desincronicen.
 
-# Edad mínima que implica cada universo, para poder sugerir un filtro concreto.
-.UNIVERSO_EDAD_MIN <- c(
-  personas_4_mas = 4L, personas_5_mas = 5L, personas_6_mas = 6L,
-  personas_7_mas = 7L, personas_12_mas = 12L, personas_15_mas = 15L,
-  personas_19_mas = 19L, mujeres_12_mas = 12L, mujeres_15_49 = 15L
-)
 
 # Universo de una variable armonizada en un censo concreto, según el codebook.
 .universo_armonizada <- function(variable, anio) {
@@ -1225,14 +1168,14 @@ get_temporal_vivienda <- function(
                               .UNIVERSO_TEXTO[us], us))
     edad_max <- max(.UNIVERSO_EDAD_MIN[us], na.rm = TRUE)
     como <- if (tiene_edad) {
-      "Filtra {.code edad >= {edad_max}} en todos los años antes de comparar."
+      "Filtra {.code edad >= {edad_max}} en todos los a\u00f1os antes de comparar."
     } else {
-      "Añade {.val edad} a {.arg variables} y filtra {.code edad >= {edad_max}} antes de comparar."
+      "A\u00f1ade {.val edad} a {.arg variables} y filtra {.code edad >= {edad_max}} antes de comparar."
     }
     cli::cli_warn(c(
-      "!" = "{.var {v}} no se preguntó a la misma población en todos los censos:",
+      "!" = "{.var {v}} no se pregunt\u00f3 a la misma poblaci\u00f3n en todos los censos:",
       stats::setNames(detalle, rep(" ", length(detalle))),
-      "i" = "Compararla sin igualar el universo mide poblaciones distintas en cada año.",
+      "i" = "Compararla sin igualar el universo mide poblaciones distintas en cada a\u00f1o.",
       "i" = como
     ))
   }
@@ -1286,8 +1229,8 @@ get_temporal_vivienda <- function(
     return(grupos[[equivalente]])
   }
   cli::cli_abort(c(
-    "Grupo no válido: {.val {grupo}}",
+    "Grupo no v\u00e1lido: {.val {grupo}}",
     "i" = "Grupos armonizados: {.val {names(grupos)}}",
-    "i" = "También se aceptan estos temas de {.code censo_temas()}: {.val {names(.TEMA_A_GRUPO)}}"
+    "i" = "Tambi\u00e9n se aceptan estos temas de {.code censo_temas()}: {.val {names(.TEMA_A_GRUPO)}}"
   ))
 }

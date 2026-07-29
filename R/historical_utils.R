@@ -28,7 +28,7 @@
   if (!anio %in% .CENSOS_DISPONIBLES) {
     disponibles <- .CENSOS_DISPONIBLES
     cli::cli_abort(c(
-      "Año de censo no válido: {.val {anio}}.",
+      "A\u00f1o de censo no v\u00e1lido: {.val {anio}}.",
       "i" = "Los censos disponibles son: {.val {disponibles}}."
     ))
   }
@@ -45,9 +45,9 @@
 .warn_if_empty_geo <- function(nrow_result, anio, dep_codes, prov_codes, mun_codes) {
   if (nrow_result == 0) {
     cli::cli_warn(c(
-      "!" = "No se encontraron datos para los filtros geográficos en el censo {anio}.",
-      "i" = "Los códigos de provincia o municipio pueden no existir en ese año.",
-      "i" = "El número de municipios cambió entre censos: 1976 (cantones), 1992 (339), 2001 (343), 2012 (339), 2024 (343)."
+      "!" = "No se encontraron datos para los filtros geogr\u00e1ficos en el censo {anio}.",
+      "i" = "Los c\u00f3digos de provincia o municipio pueden no existir en ese a\u00f1o.",
+      "i" = "El n\u00famero de municipios cambi\u00f3 entre censos: 1976 (cantones), 1992 (339), 2001 (343), 2012 (339), 2024 (343)."
     ))
   }
 }

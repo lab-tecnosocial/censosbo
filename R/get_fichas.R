@@ -16,7 +16,7 @@
   if (anyNA(codigos)) {
     cli::cli_abort(c(
       "Valor de {.arg area} no reconocido: {.val {area[is.na(codigos)]}}",
-      "i" = "Usa {.val urbano} o {.val rural} (o los códigos {.val 1} y {.val 2})."
+      "i" = "Usa {.val urbano} o {.val rural} (o los c\u00f3digos {.val 1} y {.val 2})."
     ))
   }
   codigos <- unique(codigos)
@@ -188,7 +188,7 @@ get_fichas_2024 <- function(
 # Lee uno o más Parquet de geometrías y los convierte en un objeto sf.
 # La columna `geometria` viene en WKB (EPSG:4326), que sf lee directamente.
 .leer_geometrias <- function(paths, geo) {
-  rlang::check_installed("sf", reason = "para trabajar con geometrías")
+  rlang::check_installed("sf", reason = "para trabajar con geometr\u00edas")
 
   ds <- arrow::open_dataset(paths, format = "parquet")
   # `filter_dep = TRUE` es imprescindible aquí: las comunidades van en un único
@@ -200,7 +200,7 @@ get_fichas_2024 <- function(
 
   if (nrow(df) == 0) {
     cli::cli_warn(c(
-      "El filtro geográfico no devolvió ninguna unidad.",
+      "El filtro geogr\u00e1fico no devolvi\u00f3 ninguna unidad.",
       "i" = "Revisa los nombres con {.code municipios()}."
     ))
   }
@@ -242,7 +242,7 @@ get_geo_manzanos <- function(
 
   if (verbose && is.null(geo$dep_codes)) {
     cli::cli_inform(c(
-      "i" = "Descargando geometrías de {length(deps)} departamento{?s} (~25 MB).",
+      "i" = "Descargando geometr\u00edas de {length(deps)} departamento{?s} (~25 MB).",
       " " = "Para descargar menos usa el argumento {.arg departamento}."
     ))
   }

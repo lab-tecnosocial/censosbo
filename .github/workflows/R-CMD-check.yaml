@@ -41,9 +41,13 @@ jobs:
           extra-packages: any::rcmdcheck
           needs: check
 
+      # error-on "warning": el paquete va a CRAN, donde un WARNING es un rebote.
+      # Antes era "error", para tolerar el WARNING de caracteres no-ASCII que ya no
+      # existe (los mensajes usan escapes \uXXXX y las etiquetas viven en
+      # sysdata.rda). Si alguien reintroduce texto acentuado en el código de R, el
+      # CI tiene que pararlo aquí y no el equipo de CRAN dos semanas después.
       - uses: r-lib/actions/check-r-package@v2
         with:
           upload-snapshots: true
-          build_args: 'c("--no-manual")'
-          args: 'c("--no-manual", "--no-vignettes")'
-          error-on: '"error"'
+          args: 'c("--no-manual", "--as-cran")'
+          error-on: '"warning"'

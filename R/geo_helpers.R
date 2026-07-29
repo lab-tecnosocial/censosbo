@@ -103,7 +103,7 @@ etiquetar_geografia <- function(df) {
   if (!"idep" %in% cols) {
     cli::cli_abort(c(
       "El data frame no tiene la columna {.field idep}.",
-      "i" = "Usa microdatos con códigos geográficos (p.ej. de {.fn get_personas_2024})."
+      "i" = "Usa microdatos con c\u00f3digos geogr\u00e1ficos (p.ej. de {.fn get_personas_2024})."
     ))
   }
 

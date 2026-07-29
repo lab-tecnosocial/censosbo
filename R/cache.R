@@ -21,11 +21,10 @@
 #' @examples
 #' censosbo_cache_dir()
 #'
-#' # Cambiar a un directorio local (solo para la sesión actual)
-#' \dontrun{
-#' options(censosbo.cache_dir = "data/censosbo")
+#' # Redirigir el caché a una carpeta del proyecto
+#' anterior <- options(censosbo.cache_dir = file.path(tempdir(), "censosbo"))
 #' censosbo_cache_dir()
-#' }
+#' options(anterior)
 censosbo_cache_dir <- function() {
   opt <- getOption("censosbo.cache_dir", default = NULL)
   if (!is.null(opt)) return(as.character(opt))
@@ -45,12 +44,12 @@ censosbo_cache_dir <- function() {
 censosbo_cache_info <- function() {
   cache_dir <- censosbo_cache_dir()
   if (!fs::dir_exists(cache_dir)) {
-    cli::cli_inform("El directorio de caché no existe aún: {.path {cache_dir}}")
+    cli::cli_inform("El directorio de cach\u00e9 no existe a\u00fan: {.path {cache_dir}}")
     return(invisible(NULL))
   }
   files <- fs::dir_info(cache_dir, recurse = TRUE, type = "file")
   if (nrow(files) == 0) {
-    cli::cli_inform("El caché está vacío. Usa {.code get_personas_2024()} o {.code get_censo()} para descargar datos.")
+    cli::cli_inform("El cach\u00e9 est\u00e1 vac\u00edo. Usa {.code get_personas_2024()} o {.code get_censo()} para descargar datos.")
     return(invisible(NULL))
   }
   result <- data.frame(
@@ -77,7 +76,7 @@ censosbo_cache_info <- function() {
 censosbo_cache_clear <- function(ask = TRUE) {
   cache_dir <- censosbo_cache_dir()
   if (!fs::dir_exists(cache_dir)) {
-    cli::cli_inform("No hay caché que limpiar.")
+    cli::cli_inform("No hay cach\u00e9 que limpiar.")
     return(invisible(NULL))
   }
   # Borrar SOLO los parquets de censosbo. El directorio de caché es configurable
@@ -85,19 +84,28 @@ censosbo_cache_clear <- function(ask = TRUE) {
   # otros archivos del usuario: un dir_delete() del directorio raíz los perdería.
   parquets <- fs::dir_ls(cache_dir, recurse = TRUE, type = "file", glob = "*.parquet")
   if (length(parquets) == 0) {
-    cli::cli_inform("El caché ya está vacío (no hay archivos {.file .parquet}).")
+    cli::cli_inform("El cach\u00e9 ya est\u00e1 vac\u00edo (no hay archivos {.file .parquet}).")
     return(invisible(NULL))
   }
   total_size <- sum(fs::file_size(parquets))
   if (ask) {
-    resp <- readline(sprintf(
-      "¿Eliminar %s en %d archivo(s) Parquet de caché en %s? [s/N] ",
+    ok <- .preguntar_si_no(sprintf(
+      "\u00bfEliminar %s en %d archivo(s) Parquet de cach\u00e9 en %s? [s/N] ",
       format(total_size, units = "auto", standard = "SI"),
       length(parquets),
       cache_dir
     ))
-    if (!tolower(trimws(resp)) %in% c("s", "si", "sí", "y", "yes")) {
-      cli::cli_inform("Operación cancelada.")
+    # Borrar es irreversible, asi que sin confirmacion no se borra. Pero cuando no
+    # se puede preguntar hay que DECIRLO: antes esto cancelaba en silencio en
+    # scripts y CI, y el usuario no tenia forma de saber por que no pasaba nada.
+    if (is.na(ok)) {
+      cli::cli_abort(c(
+        "No se puede pedir confirmaci\u00f3n en una sesi\u00f3n no interactiva.",
+        "i" = "Usa {.code censosbo_cache_clear(ask = FALSE)} si de verdad quieres borrar el cach\u00e9."
+      ))
+    }
+    if (!ok) {
+      cli::cli_inform("Operaci\u00f3n cancelada.")
       return(invisible(NULL))
     }
   }
@@ -112,52 +120,63 @@ censosbo_cache_clear <- function(ask = TRUE) {
     }
   }
   cli::cli_alert_success(
-    "Caché eliminado: {length(parquets)} archivo(s), {format(total_size, units = 'auto', standard = 'SI')}."
+    "Cach\u00e9 eliminado: {length(parquets)} archivo(s), {format(total_size, units = 'auto', standard = 'SI')}."
   )
   invisible(NULL)
 }
 
-#' Actualiza el paquete censosbo y limpia el caché
-#'
-#' Reinstala la última versión de `censosbo` desde GitHub y elimina el caché
-#' local de datos Parquet, para que los datos se vuelvan a descargar en su
-#' versión más reciente. Útil cuando se publica una nueva versión que incluye
-#' correcciones en los datos o nuevas variables.
-#'
-#' @param clear_cache Lógico. Si `TRUE` (defecto), limpia el caché local
-#'   automáticamente tras actualizar el paquete. Usa `FALSE` solo si quieres
-#'   conservar los archivos descargados.
-#' @return Invisible `NULL`.
-#' @export
-#' @examples
-#' \dontrun{
-#' # Actualizar paquete y limpiar caché (recomendado)
-#' update_censosbo()
-#'
-#' # Solo actualizar el paquete sin tocar el caché
-#' update_censosbo(clear_cache = FALSE)
-#' }
-update_censosbo <- function(clear_cache = TRUE) {
-  if (!requireNamespace("remotes", quietly = TRUE)) {
-    cli::cli_abort(
-      "El paquete {.pkg remotes} es necesario para actualizar censosbo.
-       Instálalo con: {.code install.packages('remotes')}"
-    )
+# Pregunta sí/no por consola. Devuelve TRUE, FALSE, o NA si no se puede preguntar
+# porque la sesión no es interactiva.
+#
+# Existe como función propia por dos razones. Una: `readline()` en una sesión no
+# interactiva devuelve "" sin mostrar nada, así que un `if (resp == "s")` cancela
+# en silencio —el usuario ve que no pasó nada y no sabe por qué—. Dos: envolverla
+# aquí la hace mockeable en los tests, cosa que `base::readline` no es.
+.preguntar_si_no <- function(prompt) {
+  if (!rlang::is_interactive()) return(NA)
+  resp <- readline(prompt)
+  tolower(trimws(resp)) %in% c("s", "si", "s\u00ed", "y", "yes")
+}
+
+# Crea el directorio de caché, pidiendo permiso la primera vez.
+#
+# La política de CRAN no permite escribir de forma persistente fuera del directorio
+# temporal de la sesión sin consentimiento del usuario. `tools::R_user_dir()` es la
+# ubicación correcta, pero el permiso hay que pedirlo igual.
+#
+# El contrato importante es lo que hace en una sesión NO interactiva: **procede sin
+# preguntar**. De eso dependen los consumidores que corren el paquete headless —la
+# app censos-explorer descarga geometrías dentro de un contenedor sin tty—, y un
+# prompt que abortara ahí rompería la app en silencio. Hay un test que lo fija.
+#
+# Tampoco pregunta cuando ya no hace falta: si el directorio existe, el usuario ya
+# dijo sí en su día; y si fijó `censosbo.cache_dir`, la ruta la eligió él.
+.asegurar_cache_dir <- function(dir_destino) {
+  if (fs::dir_exists(dir_destino)) return(invisible(TRUE))
+
+  raiz          <- censosbo_cache_dir()
+  ruta_elegida  <- !is.null(getOption("censosbo.cache_dir", default = NULL))
+  ya_autorizado <- isTRUE(getOption("censosbo.consent")) || fs::dir_exists(raiz)
+
+  if (!ruta_elegida && !ya_autorizado) {
+    cli::cli_inform(c(
+      "i" = "censosbo guarda los datos descargados en {.path {raiz}} para no volver a bajarlos.",
+      " " = "Se pueden borrar en cualquier momento con {.code censosbo_cache_clear()}."
+    ))
+    ok <- .preguntar_si_no("\u00bfCrear ese directorio de cach\u00e9? [s/N] ")
+    # NA = sesion no interactiva: se procede. De esto dependen los consumidores
+    # headless; ver el comentario de arriba y test-consentimiento.R.
+    if (isFALSE(ok)) {
+      cli::cli_abort(c(
+        "Descarga cancelada: sin cach\u00e9 no se pueden servir los datos.",
+        "i" = "Para autorizarlo de antemano: {.code options(censosbo.consent = TRUE)}.",
+        "i" = "Para usar otra ruta: {.code options(censosbo.cache_dir = \"data/censosbo\")}."
+      ))
+    }
   }
-  cli::cli_h1("Actualizando censosbo")
-  cli::cli_alert_info("Instalando la última versión desde GitHub...")
-  remotes::install_github("lab-tecnosocial/censosbo", quiet = FALSE)
-  cli::cli_alert_success("Paquete actualizado.")
-  if (clear_cache) {
-    cli::cli_alert_warning(
-      "Se eliminará el caché local para que los datos se descarguen en su versión más reciente."
-    )
-    censosbo_cache_clear(ask = FALSE)
-  }
-  cli::cli_alert_success(
-    "Listo. Reinicia R y vuelve a cargar el paquete con {.code library(censosbo)}."
-  )
-  invisible(NULL)
+
+  fs::dir_create(dir_destino, recurse = TRUE)
+  invisible(TRUE)
 }
 
 .cache_path <- function(filename, subdir = NULL) {

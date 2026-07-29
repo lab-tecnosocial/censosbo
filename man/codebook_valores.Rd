@@ -20,8 +20,7 @@ Un data.frame con columnas `codigo` y `etiqueta`, o un mensaje
 Muestra los valores codificados de una variable categórica
 }
 \examples{
-\dontrun{
+# Los diccionarios vienen dentro del paquete: esto no descarga nada.
 codebook_valores("p25_sexo")
 codebook_valores("P23", anio = 2012)
-}
 }

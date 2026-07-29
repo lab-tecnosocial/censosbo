@@ -2,15 +2,31 @@
 # se quede desfasada respecto al paquete (antes estaban fijos en "1.0.0").
 meta <- utils::packageDescription("censosbo")
 
+# El año NO puede salir de `meta$Date`: ese campo se quitó del DESCRIPTION porque
+# CRAN espera que coincida con la fecha real de publicación, y la pone él en
+# `Date/Publication`. Se usa, por orden: la fecha que puso CRAN, la de empaquetado
+# del tarball, y como último recurso el año en curso —así la cita sigue siendo
+# correcta tanto instalado desde CRAN como desde GitHub.
+.anio <- function(meta) {
+  for (campo in c("Date/Publication", "Packaged", "Built")) {
+    valor <- meta[[campo]]
+    if (!is.null(valor)) {
+      anio <- substr(sub("^.*;\\s*", "", valor), 1, 4)
+      if (grepl("^[0-9]{4}$", anio)) return(anio)
+    }
+  }
+  format(Sys.Date(), "%Y")
+}
+
 bibentry(
   bibtype  = "Manual",
-  title    = "censosbo: Paquete de R para el acceso, análisis y visualización de datos censales en Bolivia (1976-2024)",
+  title    = paste0("censosbo: ", meta$Title),
   author   = person("Alex", "Ojeda Copa",
                     email   = "alex@labtecnosocial.org",
                     comment = c(organization = "Lab TecnoSocial")),
   organization = "Lab TecnoSocial",
   address  = "Cochabamba, Bolivia",
-  year     = format(as.Date(meta$Date), "%Y"),
+  year     = .anio(meta),
   note     = paste("R package version", meta$Version),
   url      = "https://lab-tecnosocial.github.io/censosbo/"
 )

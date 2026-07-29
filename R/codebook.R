@@ -125,8 +125,8 @@ codebook <- function(variable = NULL, tabla = NULL, buscar = NULL, anio = 2024,
   } else {
     if (!exists("codebook_historico_meta")) {
       cli::cli_abort(c(
-        "Los diccionarios históricos no están cargados.",
-        "i" = "Asegúrate de tener instalada la versión más reciente del paquete."
+        "Los diccionarios hist\u00f3ricos no est\u00e1n cargados.",
+        "i" = "Aseg\u00farate de tener instalada la versi\u00f3n m\u00e1s reciente del paquete."
       ))
     }
     key <- as.character(anio)
@@ -244,7 +244,7 @@ codebook <- function(variable = NULL, tabla = NULL, buscar = NULL, anio = 2024,
     }))
     cli::cli_abort(c(
       "Tema no reconocido: {.val {desconocidos}}",
-      if (length(sugerencias)) c("i" = "¿Quisiste decir {.val {unique(sugerencias)}}?"),
+      if (length(sugerencias)) c("i" = "\u00bfQuisiste decir {.val {unique(sugerencias)}}?"),
       "i" = "Usa {.code censo_temas()} para ver los {length(validos)} temas disponibles."
     ))
   }
@@ -255,8 +255,8 @@ codebook <- function(variable = NULL, tabla = NULL, buscar = NULL, anio = 2024,
   if (anio != 2024L) {
     cli::cli_abort(c(
       "{.arg capitulo} solo aplica al CPV-2024.",
-      "i" = "Los cuestionarios de {anio} tienen otra estructura y otra numeración; el eje comparable entre censos es {.arg tema}.",
-      "i" = "La estructura oficial de {anio} está en la columna {.field grupo_ine}."
+      "i" = "Los cuestionarios de {anio} tienen otra estructura y otra numeraci\u00f3n; el eje comparable entre censos es {.arg tema}.",
+      "i" = "La estructura oficial de {anio} est\u00e1 en la columna {.field grupo_ine}."
     ))
   }
   caps <- unique(stats::na.omit(meta$capitulo))
@@ -270,9 +270,9 @@ codebook <- function(variable = NULL, tabla = NULL, buscar = NULL, anio = 2024,
     hit <- caps[!is.na(etiquetas) & grepl(p, etiquetas, ignore.case = TRUE)]
     if (length(hit)) return(hit)
     cli::cli_abort(c(
-      "Capítulo no reconocido: {.val {p}}",
+      "Cap\u00edtulo no reconocido: {.val {p}}",
       "i" = "Usa la letra ({.val {caps}}) o parte de su nombre.",
-      "i" = "Los capítulos son los del cuestionario del CPV-2024; míralos con {.code censo_temas()}."
+      "i" = "Los cap\u00edtulos son los del cuestionario del CPV-2024; m\u00edralos con {.code censo_temas()}."
     ))
   }))
   meta[!is.na(meta$capitulo) & meta$capitulo %in% elegidos, ]
@@ -286,7 +286,7 @@ codebook <- function(variable = NULL, tabla = NULL, buscar = NULL, anio = 2024,
   if (length(desconocidos) > 0) {
     cli::cli_abort(c(
       "Origen no reconocido: {.val {desconocidos}}",
-      "i" = "Valores válidos: {.val {validos}}."
+      "i" = "Valores v\u00e1lidos: {.val {validos}}."
     ))
   }
   meta[!is.na(meta$origen) & meta$origen %in% pedidos, ]
@@ -301,10 +301,9 @@ codebook <- function(variable = NULL, tabla = NULL, buscar = NULL, anio = 2024,
 #'   si la variable no tiene categorías.
 #' @export
 #' @examples
-#' \dontrun{
+#' # Los diccionarios vienen dentro del paquete: esto no descarga nada.
 #' codebook_valores("p25_sexo")
 #' codebook_valores("P23", anio = 2012)
-#' }
 codebook_valores <- function(variable, anio = 2024) {
   meta <- codebook(variable = variable, anio = anio)
   if (nrow(meta) == 0) {
@@ -320,7 +319,7 @@ codebook_valores <- function(variable, anio = 2024) {
   vals <- meta$valores_codigos[[1]]
   if (is.null(vals) || nrow(vals) == 0) {
     cli::cli_inform(
-      "La variable {.var {variable}} ({meta$etiqueta[1]}) es {meta$tipo[1]}, sin categorías."
+      "La variable {.var {variable}} ({meta$etiqueta[1]}) es {meta$tipo[1]}, sin categor\u00edas."
     )
     return(invisible(NULL))
   }
@@ -348,7 +347,7 @@ print.censosbo_codebook <- function(x, ...) {
   if ("valores_codigos" %in% names(df)) {
     n <- vapply(df$valores_codigos,
                 function(v) if (is.null(v)) 0L else nrow(v), integer(1))
-    df$valores_codigos <- ifelse(n == 0L, "", paste0(n, " categorías"))
+    df$valores_codigos <- ifelse(n == 0L, "", paste0(n, " categor\u00edas"))
     names(df)[names(df) == "valores_codigos"] <- "categorias"
   }
 
@@ -365,7 +364,7 @@ print.censosbo_codebook <- function(x, ...) {
 
   print(df, ...)
   if (length(ocultas) > 0) {
-    cat(sprintf("\n%d columna%s sin datos aquí: %s\n",
+    cat(sprintf("\n%d columna%s sin datos aqu\u00ed: %s\n",
                 length(ocultas), if (length(ocultas) == 1) "" else "s",
                 paste(ocultas, collapse = ", ")))
   }

@@ -28,9 +28,8 @@ El directorio se crea automáticamente si no existe.
 \examples{
 censosbo_cache_dir()
 
-# Cambiar a un directorio local (solo para la sesión actual)
-\dontrun{
-options(censosbo.cache_dir = "data/censosbo")
+# Redirigir el caché a una carpeta del proyecto
+anterior <- options(censosbo.cache_dir = file.path(tempdir(), "censosbo"))
 censosbo_cache_dir()
-}
+options(anterior)
 }

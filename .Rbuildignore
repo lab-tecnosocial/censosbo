@@ -7,8 +7,16 @@
 ^_pkgdown\.yml$
 ^\.github$
 ^\.gitignore$
+# En un git worktree, .git es un ARCHIVO (con la linea gitdir:), no un directorio,
+# y las exclusiones automaticas de R CMD build solo cubren el directorio: sin esta
+# linea el tarball se lleva el .git dentro y el check lo reporta como NOTE.
+^\.git$
 ^LICENSE\.md$
 ^docs$
 ^pkgdown$
 ^dev-docs$
 ^\.claude$
+^CRAN-SUBMISSION$
+^cran-comments\.md$
+^vignettes/articles$
+^vignettes/.*\.orig$

@@ -40,19 +40,15 @@ pocas columnas o solo columnas geográficas.
 codebook_meta[1:5, c("variable", "etiqueta", "tabla")] |>
   etiquetar_variables()
 
-# Censo 2024: valores y nombres etiquetados
+# Valores y nombres etiquetados a la vez
+data.frame(p25_sexo = c(1, 2), n = c(2894112, 2762418)) |>
+  etiquetar_valores() |>
+  etiquetar_variables()
+
+# El mismo flujo sobre datos reales (requiere descarga)
 \dontrun{
 get_personas_2024(departamento = "Pando") |>
   dplyr::count(p25_sexo, nivel_edu) |>
-  dplyr::collect() |>
-  etiquetar_valores() |>
-  etiquetar_variables()
-}
-
-# Censo 1992: mismo flujo sin especificar año
-\dontrun{
-get_personas_1992(departamento = "07") |>
-  dplyr::count(P25) |>
   dplyr::collect() |>
   etiquetar_valores() |>
   etiquetar_variables()

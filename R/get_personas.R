@@ -92,7 +92,7 @@ get_personas_2024 <- function(
     cli::cli_inform(c(
       "i" = "Descargando datos de {length(files_needed)} departamento(s).",
       " " = "Para descargar menos datos usa el argumento {.arg departamento}.",
-      " " = "Caché en: {.path {censosbo_cache_dir()}}"
+      " " = "Cach\u00e9 en: {.path {censosbo_cache_dir()}}"
     ))
   }
 

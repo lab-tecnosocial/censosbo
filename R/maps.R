@@ -12,11 +12,11 @@
   sin_geo  <- sum(!dat_keys %in% geo_keys)
   if (sin_geo > 0) {
     cli::cli_warn(c(
-      "{sin_geo} municipio(s) en los datos no tienen geometría disponible.",
-      "i" = "No se dibujarán en el mapa.",
+      "{sin_geo} municipio(s) en los datos no tienen geometr\u00eda disponible.",
+      "i" = "No se dibujar\u00e1n en el mapa.",
       "i" = paste("{.var geo_municipios} cubre los 343 municipios del CPV-2024;",
-                  "revisa que los códigos {.field idep}/{.field iprov}/{.field imun}",
-                  "correspondan a la división político-administrativa actual.")
+                  "revisa que los c\u00f3digos {.field idep}/{.field iprov}/{.field imun}",
+                  "correspondan a la divisi\u00f3n pol\u00edtico-administrativa actual.")
     ))
   }
   idx    <- match(geo_keys, dat_keys)
@@ -185,8 +185,8 @@ mapa_mun <- function(datos, variable, departamento = NULL,
   faltantes <- setdiff(claves, names(datos))
   if (length(faltantes) > 0) {
     cli::cli_abort(c(
-      "Los datos no tienen las columnas geográficas: {.val {faltantes}}",
-      "i" = "Asegúrate de que tus datos incluyan {.val idep}, {.val iprov} e {.val imun}."
+      "Los datos no tienen las columnas geogr\u00e1ficas: {.val {faltantes}}",
+      "i" = "Aseg\u00farate de que tus datos incluyan {.val idep}, {.val iprov} e {.val imun}."
     ))
   }
   if (!variable %in% names(datos)) {
@@ -295,7 +295,7 @@ mapa_man <- function(datos, variable, municipio, departamento = NULL,
   if (missing(municipio) || is.null(municipio)) {
     cli::cli_abort(c(
       "{.arg municipio} es obligatorio en {.fn mapa_man}.",
-      "i" = "El país entero son ~268.000 unidades: elige un municipio."
+      "i" = "El pa\u00eds entero son ~268.000 unidades: elige un municipio."
     ))
   }
   if (!"codigo" %in% names(datos)) {
@@ -334,7 +334,7 @@ mapa_man <- function(datos, variable, municipio, departamento = NULL,
   n_total <- sum(vapply(capas, nrow, integer(1)))
   if (n_total == 0) {
     cli::cli_abort(c(
-      "No hay geometrías para el municipio {.val {municipio}}.",
+      "No hay geometr\u00edas para el municipio {.val {municipio}}.",
       "i" = "Revisa el nombre con {.code municipios()}."
     ))
   }

@@ -171,7 +171,7 @@ censo_temas <- function(tema = NULL, capitulo = NULL, tabla = NULL, anio = 2024)
       hit <- out$capitulo[grepl(p, out$capitulo_etiqueta, ignore.case = TRUE)]
       if (length(hit)) return(unique(hit))
       cli::cli_abort(c(
-        "Capítulo no reconocido: {.val {p}}",
+        "Cap\u00edtulo no reconocido: {.val {p}}",
         "i" = "Usa la letra ({.val {unique(out$capitulo)}}) o parte de su nombre."
       ))
     }))
@@ -235,7 +235,7 @@ vars_tema <- function(tema, tabla = NULL, tipo = NULL, origen = NULL,
     if (length(desconocidos) > 0) {
       cli::cli_abort(c(
         "Tipo no reconocido: {.val {desconocidos}}",
-        "i" = "Valores válidos: {.val {tipos_validos}}."
+        "i" = "Valores v\u00e1lidos: {.val {tipos_validos}}."
       ))
     }
     meta <- meta[tolower(meta$tipo) %in% tolower(tipo), ]
@@ -301,7 +301,7 @@ codebook_docs <- function(variable, tabla = NULL, campos = NULL, anio = 2024) {
   if (length(desconocidos) > 0) {
     disponibles <- .ANIOS_CON_TAXONOMIA
     cli::cli_abort(c(
-      "No hay documentación del ANDA para el censo {.val {desconocidos}}.",
+      "No hay documentaci\u00f3n del ANDA para el censo {.val {desconocidos}}.",
       "i" = "Disponible en {.val {disponibles}}."
     ))
   }
@@ -319,7 +319,7 @@ codebook_docs <- function(variable, tabla = NULL, campos = NULL, anio = 2024) {
 
   if (nrow(docs) == 0) {
     cli::cli_inform(c(
-      "Sin documentación para {.var {variable}} en {.val {anio}}.",
+      "Sin documentaci\u00f3n para {.var {variable}} en {.val {anio}}.",
       "i" = "El ANDA no documenta todas las variables; prueba {.code codebook({.str {variable}})}."
     ))
     return(invisible(docs))
@@ -331,7 +331,7 @@ codebook_docs <- function(variable, tabla = NULL, campos = NULL, anio = 2024) {
     desconocidos <- setdiff(campos, validos)
     if (length(desconocidos) > 0) {
       cli::cli_abort(c(
-        "Campo de documentación no reconocido: {.val {desconocidos}}",
+        "Campo de documentaci\u00f3n no reconocido: {.val {desconocidos}}",
         "i" = "Campos disponibles: {.val {validos}}."
       ))
     }

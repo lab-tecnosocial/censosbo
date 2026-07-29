@@ -7,7 +7,7 @@
   if (max(matches) == 0) {
     cli::cli_warn(c(
       "No se pudo detectar el censo por los nombres de columnas. Usando 2024.",
-      "i" = "Especifica el año con {.arg anio}: {.code etiquetar_valores(df, anio = 1992)}"
+      "i" = "Especifica el a\u00f1o con {.arg anio}: {.code etiquetar_valores(df, anio = 1992)}"
     ))
     return(2024L)
   }
@@ -74,23 +74,22 @@
 #' @seealso [etiquetar_variables()] para renombrar columnas con sus descripciones.
 #' @export
 #' @examples
-#' # Censo 2024 — detección automática
+#' # El diccionario viene en el paquete, así que etiquetar no descarga nada: basta
+#' # que las columnas se llamen como en el censo correspondiente.
+#' conteo <- data.frame(p25_sexo = c(1, 2), n = c(2894112, 2762418))
+#' etiquetar_valores(conteo)
+#'
+#' # Censo 1992: los nombres de sus variables identifican el año por sí solos
+#' etiquetar_valores(data.frame(P25 = c(1, 2), n = c(3199490, 3221302)))
+#'
+#' # Año explícito, cuando los nombres son ambiguos entre censos
+#' etiquetar_valores(data.frame(P25 = c(1, 2), n = c(10, 12)), anio = 1992)
+#'
+#' # Sobre datos reales (requiere descarga)
 #' \dontrun{
 #' get_personas_2024(departamento = "Pando", as = "tibble") |>
 #'   etiquetar_valores() |>
 #'   head(3)
-#' }
-#'
-#' # Censo 1992 — detección automática
-#' \dontrun{
-#' get_personas_1992(departamento = "07", as = "tibble") |>
-#'   dplyr::count(P25) |>
-#'   etiquetar_valores()
-#' }
-#'
-#' # Año explícito como escape hatch
-#' \dontrun{
-#' df |> etiquetar_valores(anio = 1992)
 #' }
 etiquetar_valores <- function(df, columnas = NULL, anio = NULL) {
   cols <- if (is.null(columnas)) names(df) else columnas
@@ -162,12 +161,12 @@ etiquetar_valores <- function(df, columnas = NULL, anio = NULL) {
   if (deteccion_auto) {
     if (length(sin_match) > 0) {
       cli::cli_warn(c(
-        "!" = "No se pudo etiquetar {.val {sin_match}}: sus valores no coinciden con los códigos del censo {anio}.",
-        "i" = "Puede que el censo detectado sea incorrecto. Especifícalo con {.arg anio}, p.ej. {.code etiquetar_valores(df, anio = 1992)}."
+        "!" = "No se pudo etiquetar {.val {sin_match}}: sus valores no coinciden con los c\u00f3digos del censo {anio}.",
+        "i" = "Puede que el censo detectado sea incorrecto. Especif\u00edcalo con {.arg anio}, p.ej. {.code etiquetar_valores(df, anio = 1992)}."
       ))
     } else if (etiquetadas == 0L && length(.cols_categoricas_conocidas(cols_presentes)) > 0) {
       cli::cli_warn(c(
-        "!" = "No se etiquetó ninguna columna: ninguna de las categóricas presentes existe en el censo {anio} detectado.",
+        "!" = "No se etiquet\u00f3 ninguna columna: ninguna de las categ\u00f3ricas presentes existe en el censo {anio} detectado.",
         "i" = "Especifica el censo con {.arg anio}, p.ej. {.code etiquetar_valores(df, anio = 1992)}."
       ))
     }
@@ -209,19 +208,15 @@ etiquetar_valores <- function(df, columnas = NULL, anio = NULL) {
 #' codebook_meta[1:5, c("variable", "etiqueta", "tabla")] |>
 #'   etiquetar_variables()
 #'
-#' # Censo 2024: valores y nombres etiquetados
+#' # Valores y nombres etiquetados a la vez
+#' data.frame(p25_sexo = c(1, 2), n = c(2894112, 2762418)) |>
+#'   etiquetar_valores() |>
+#'   etiquetar_variables()
+#'
+#' # El mismo flujo sobre datos reales (requiere descarga)
 #' \dontrun{
 #' get_personas_2024(departamento = "Pando") |>
 #'   dplyr::count(p25_sexo, nivel_edu) |>
-#'   dplyr::collect() |>
-#'   etiquetar_valores() |>
-#'   etiquetar_variables()
-#' }
-#'
-#' # Censo 1992: mismo flujo sin especificar año
-#' \dontrun{
-#' get_personas_1992(departamento = "07") |>
-#'   dplyr::count(P25) |>
 #'   dplyr::collect() |>
 #'   etiquetar_valores() |>
 #'   etiquetar_variables()

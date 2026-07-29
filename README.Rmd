@@ -31,14 +31,20 @@ library(censosbo)
 ## Instalación
 
 ```{r install, eval=FALSE}
+install.packages("censosbo")
+```
+
+La versión en desarrollo, con los cambios que todavía no están en CRAN:
+
+```{r install-dev, eval=FALSE}
 # install.packages("remotes")
 remotes::install_github("lab-tecnosocial/censosbo")
 ```
 
-El paquete se desarrolla continuamente (mejoras, corrección de errores), si lo instalaste anteriormente te recomendamos volver a ejecutar el anterior código y borrar el caché para actualizar a la versión `r packageVersion("censosbo")` o usar la siguiente función:
+Al actualizar a una versión que corrige los datos —no solo el código— conviene borrar el caché para que se vuelvan a descargar:
 
 ```{r update, eval=FALSE}
-update_censosbo()
+censosbo_cache_clear()
 ```
 
 ## Censos disponibles
@@ -111,7 +117,7 @@ El INE **no libera la ficha de las unidades con poca población**, por reserva
 estadística: eso afecta al 47 % de los manzanos, pero la ficha cubre igualmente el 92 %
 de la población. La columna `ficha` indica cuáles la tienen.
 
-Detalles en `vignette("manzanos-comunidades")`.
+Detalles en el artículo [Manzanos y comunidades](https://lab-tecnosocial.github.io/censosbo/articles/manzanos-comunidades.html).
 
 ## Diccionario de variables
 
@@ -273,8 +279,7 @@ censosbo_cache_dir()    # dónde está el caché
 
 ```{r cache, eval=FALSE}
 censosbo_cache_info()   # qué archivos están descargados
-censosbo_cache_clear()  # liberar espacio en disco
-update_censosbo()       # actualizar paquete y limpiar caché
+censosbo_cache_clear()  # liberar espacio en disco y forzar la re-descarga
 ```
 
 ## Fuentes de datos

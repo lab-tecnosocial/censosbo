@@ -58,8 +58,6 @@
 #' `NULL` sin error.
 #'
 #' @importFrom stats setNames
-#' @importFrom DBI dbConnect dbExecute dbGetQuery dbDisconnect
-#' @importFrom duckdb duckdb
 #' @importFrom dplyr as_tibble
 #' @export
 #' @examples
@@ -115,11 +113,11 @@ get_censo <- function(
     # 1976 usa geografía cantonal (columna `can`), no comparable con los
     # municipios del CPV-2024: provincia/municipio solo aceptan códigos.
     if (!is.null(provincia) && any(grepl("[^0-9]", as.character(provincia)))) {
-      cli::cli_abort("En el censo 1976, {.arg provincia} solo acepta códigos numéricos.")
+      cli::cli_abort("En el censo 1976, {.arg provincia} solo acepta c\u00f3digos num\u00e9ricos.")
     }
     if (!is.null(municipio) && any(grepl("[^0-9]", as.character(municipio)))) {
       cli::cli_abort(c(
-        "En el censo 1976, {.arg municipio} solo acepta códigos de cantón numéricos.",
+        "En el censo 1976, {.arg municipio} solo acepta c\u00f3digos de cant\u00f3n num\u00e9ricos.",
         "i" = "El censo 1976 no tiene municipios comparables con el CPV-2024."
       ))
     }

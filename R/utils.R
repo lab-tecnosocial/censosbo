@@ -20,11 +20,9 @@
   "/releases/download/", .FICHAS_RELEASE_TAG, "/"
 )
 
-.DEP_CODES <- c(
-  "01" = "Chuquisaca", "02" = "La Paz",    "03" = "Cochabamba",
-  "04" = "Oruro",      "05" = "Potosí",    "06" = "Tarija",
-  "07" = "Santa Cruz", "08" = "Beni",      "09" = "Pando"
-)
+# .DEP_CODES (código de departamento -> nombre) vive en R/sysdata.rda porque
+# "Potosí" lleva tilde y CRAN exige código ASCII. Se edita en
+# data-raw/build_sysdata.R.
 
 # Convierte nombres o números de departamento a códigos de 2 dígitos
 .resolve_dep_codes <- function(departamento) {
@@ -42,7 +40,7 @@
     if (any(is.na(matched))) {
       cli::cli_abort(c(
         "Departamento no reconocido: {dep[name_mask][is.na(matched)]}",
-        "i" = "Usa {.code departamentos()} para ver los nombres válidos."
+        "i" = "Usa {.code departamentos()} para ver los nombres v\u00e1lidos."
       ))
     }
     dep[name_mask] <- names(.DEP_CODES)[matched]
@@ -51,8 +49,8 @@
   invalid <- !dep %in% names(.DEP_CODES)
   if (any(invalid)) {
     cli::cli_abort(c(
-      "Código(s) de departamento inválido(s): {dep[invalid]}",
-      "i" = "Los departamentos válidos son del 01 al 09."
+      "C\u00f3digo(s) de departamento inv\u00e1lido(s): {dep[invalid]}",
+      "i" = "Los departamentos v\u00e1lidos son del 01 al 09."
     ))
   }
   dep

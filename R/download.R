@@ -38,12 +38,12 @@
 
   if (.is_cached(filename) && !overwrite) {
     if (verbose) {
-      cli::cli_inform(c("v" = "Usando caché: {.file {filename}}"))
+      cli::cli_inform(c("v" = "Usando cach\u00e9: {.file {filename}}"))
     }
     return(invisible(as.character(dest)))
   }
 
-  fs::dir_create(fs::path_dir(dest), recurse = TRUE)
+  .asegurar_cache_dir(fs::path_dir(dest))
   url <- paste0(.CENSOSBO_BASE_URL, filename)
 
   key <- tools::file_path_sans_ext(filename)
@@ -64,7 +64,7 @@
       cli::cli_abort(c(
         "Error al descargar {.file {filename}}.",
         "x" = conditionMessage(e),
-        "i" = "Verifica tu conexión o que el release {.val {release_tag}} exista en GitHub."
+        "i" = "Verifica tu conexi\u00f3n o que el release {.val {release_tag}} exista en GitHub."
       ))
     }
   )
@@ -89,12 +89,12 @@
 
   if (.is_cached(filename, subdir = subdir) && !overwrite) {
     if (verbose) {
-      cli::cli_inform(c("v" = "Usando caché: {.file {filename}}"))
+      cli::cli_inform(c("v" = "Usando cach\u00e9: {.file {filename}}"))
     }
     return(invisible(as.character(dest)))
   }
 
-  fs::dir_create(fs::path_dir(dest), recurse = TRUE)
+  .asegurar_cache_dir(fs::path_dir(dest))
   url <- paste0(.FICHAS_BASE_URL, filename)
 
   est_mb <- .PARQUET_SIZE_MB[[tools::file_path_sans_ext(filename)]]
@@ -114,7 +114,7 @@
       cli::cli_abort(c(
         "Error al descargar {.file {filename}}.",
         "x" = conditionMessage(e),
-        "i" = "Verifica tu conexión o que el release {.val {release_tag}} exista en GitHub."
+        "i" = "Verifica tu conexi\u00f3n o que el release {.val {release_tag}} exista en GitHub."
       ))
     }
   )
@@ -136,12 +136,12 @@
 
   if (.is_cached(filename, subdir = subdir) && !overwrite) {
     if (verbose) {
-      cli::cli_inform(c("v" = "Usando caché: {.file {filename}} (censo {anio})"))
+      cli::cli_inform(c("v" = "Usando cach\u00e9: {.file {filename}} (censo {anio})"))
     }
     return(invisible(as.character(dest)))
   }
 
-  fs::dir_create(fs::path_dir(dest), recurse = TRUE)
+  .asegurar_cache_dir(fs::path_dir(dest))
 
   tag <- .CENSO_RELEASE_TAGS[[as.character(anio)]]
   url <- paste0("https://github.com/", .CENSOSBO_REPO,
@@ -164,7 +164,7 @@
       cli::cli_abort(c(
         "Error al descargar {.file {filename}} del censo {anio}.",
         "x" = conditionMessage(e),
-        "i" = "Verifica tu conexión o que el release {.val {tag}} exista en GitHub."
+        "i" = "Verifica tu conexi\u00f3n o que el release {.val {tag}} exista en GitHub."
       ))
     }
   )

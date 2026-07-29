@@ -168,7 +168,6 @@ reference:
       - censosbo_cache_dir
       - censosbo_cache_info
       - censosbo_cache_clear
-      - update_censosbo
 
   - title: "Datos incluidos en el paquete"
     desc: >
@@ -188,28 +187,34 @@ reference:
     contents:
       - censosbo-package
 
+# Los artículos que viven en vignettes/articles/ se referencian con el prefijo
+# `articles/`: son solo-web y no viajan en el paquete (ver .Rbuildignore), así que
+# CRAN no los reconstruye. Solo `introduccion` y `temas` son viñetas de verdad.
+# Si se mueve un .Rmd entre vignettes/ y vignettes/articles/, hay que cambiar su
+# entrada aquí o pkgdown aborta con "must be a known topic name" — R CMD check no
+# ve nada raro.
 articles:
   - title: "Primeros pasos"
     navbar: ~
     contents:
       - introduccion
       - temas
-      - diccionario
+      - articles/diccionario
   - title: "CPV-2024"
     navbar: Tutoriales
     contents:
-      - analisis-demografico
-      - analisis-vivienda
-      - manzanos-comunidades
-      - analisis-avanzado
+      - articles/analisis-demografico
+      - articles/analisis-vivienda
+      - articles/manzanos-comunidades
+      - articles/analisis-avanzado
   - title: "Censos históricos"
     navbar: Censos históricos
     contents:
-      - censos-historicos
-      - analisis-temporal
+      - articles/censos-historicos
+      - articles/analisis-temporal
   - title: "Mapas y visualización"
     navbar: Mapas
     contents:
-      - visualizacion-mapas
+      - articles/visualizacion-mapas
 
 
