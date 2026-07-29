@@ -24,12 +24,9 @@ ds <- get_personas_2024(
   departamento = "Pando",
   as = "arrow"
 )
-#> ℹ censosbo guarda los datos descargados en /home/runner/.cache/R/censosbo para
-#>   no volver a bajarlos.
-#>   Se pueden borrar en cualquier momento con `censosbo_cache_clear()`.
 #> ℹ Descargando persona_dep09.parquet (~4 MB)...
+#> ✔ Descargado persona_dep09.parquet [360ms]
 #> 
-#> ✔ Descargado persona_dep09.parquet [447ms]
 class(ds)
 #> [1] "FileSystemDataset" "Dataset"           "ArrowObject"      
 #> [4] "R6"
@@ -91,7 +88,7 @@ library(DBI)
 con <- get_personas_2024(departamento = "Pando", as = "duckdb")
 #> ✔ Usando caché: persona_dep09.parquet
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/Rtmp177YkI/duckdb
+#> ℹ /tmp/Rtmpb90aMQ/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
@@ -178,7 +175,7 @@ ggplot(anos_edad, aes(x = factor(grupo_edad), y = anios_edu,
 
 con <- DBI::dbConnect(duckdb::duckdb(), dbdir = ":memory:")
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/Rtmp177YkI/duckdb
+#> ℹ /tmp/Rtmpb90aMQ/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
@@ -198,7 +195,7 @@ duckdb::duckdb_register_arrow(
                 variables = c("idep","iprov","imun","i00","urbrur","v07_aguapro","v09_energia"))
 )
 #> ℹ Descargando vivienda.parquet (~55 MB)...
-#> ✔ Descargado vivienda.parquet [604ms]
+#> ✔ Descargado vivienda.parquet [1.3s]
 #> 
 #> ℹ Universo "viviendas": se excluyen los registros de personas en la calle o en
 #>   tránsito, que el INE no cuenta como viviendas.
