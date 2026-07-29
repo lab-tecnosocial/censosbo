@@ -361,7 +361,7 @@ codebook(tabla = "emigracion")
 ## Mapas coropléticos
 
 El paquete incluye geometrías sf para los 9 departamentos
-(`geo_departamentos`) y 339 de los 343 municipios (`geo_municipios`) de
+(`geo_departamentos`) y los 343 municipios (`geo_municipios`) de
 Bolivia, disponibles sin descarga. La función
 [`mapa_dep()`](https://lab-tecnosocial.github.io/censosbo/reference/mapa_dep.md)
 genera mapas coropléticos a nivel departamental:
@@ -548,7 +548,7 @@ library(DBI)
 
 con <- get_personas_2024(departamento = "Pando", as = "duckdb", verbose = FALSE)
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpDwLVcO/duckdb
+#> ℹ /tmp/RtmpjIlBJp/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
@@ -673,7 +673,7 @@ citation("censosbo")
 #> 
 #>   Ojeda Copa A (2026). _censosbo: Paquete de R para el acceso, análisis
 #>   y visualización de datos censales en Bolivia (1976-2024)_. Lab
-#>   TecnoSocial, Cochabamba, Bolivia. R package version 1.5.1,
+#>   TecnoSocial, Cochabamba, Bolivia. R package version 1.6.0,
 #>   <https://lab-tecnosocial.github.io/censosbo/>.
 #> 
 #> A BibTeX entry for LaTeX users is
@@ -684,7 +684,7 @@ citation("censosbo")
 #>     organization = {Lab TecnoSocial},
 #>     address = {Cochabamba, Bolivia},
 #>     year = {2026},
-#>     note = {R package version 1.5.1},
+#>     note = {R package version 1.6.0},
 #>     url = {https://lab-tecnosocial.github.io/censosbo/},
 #>   }
 ```

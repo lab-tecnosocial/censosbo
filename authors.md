@@ -12,7 +12,7 @@ Source:
 
 Ojeda Copa A (2026). *censosbo: Paquete de R para el acceso, análisis y
 visualización de datos censales en Bolivia (1976-2024)*. Lab
-TecnoSocial, Cochabamba, Bolivia. R package version 1.5.1,
+TecnoSocial, Cochabamba, Bolivia. R package version 1.6.0,
 <https://lab-tecnosocial.github.io/censosbo/>.
 
     @Manual{,
@@ -21,6 +21,6 @@ TecnoSocial, Cochabamba, Bolivia. R package version 1.5.1,
       organization = {Lab TecnoSocial},
       address = {Cochabamba, Bolivia},
       year = {2026},
-      note = {R package version 1.5.1},
+      note = {R package version 1.6.0},
       url = {https://lab-tecnosocial.github.io/censosbo/},
     }

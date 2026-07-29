@@ -18,7 +18,7 @@ remotes::install_github("lab-tecnosocial/censosbo")
 
 El paquete se desarrolla continuamente (mejoras, corrección de errores),
 si lo instalaste anteriormente te recomendamos volver a ejecutar el
-anterior código y borrar el caché para actualizar a la versión 1.5.0 o
+anterior código y borrar el caché para actualizar a la versión 1.6.0 o
 usar la siguiente función:
 
 ``` r
@@ -85,12 +85,12 @@ get_personas_2024(departamento = "Pando", verbose = FALSE) |>
 #> # A tibble: 6 × 3
 #>   grupo_edad p25_sexo     n
 #>        <dbl> <fct>    <int>
-#> 1          0 Hombre    6090
-#> 2          0 Mujer     6091
+#> 1          0 Mujer     6091
+#> 2          0 Hombre    6090
 #> 3          5 Hombre    7894
 #> 4          5 Mujer     7522
-#> 5         10 Hombre    7937
-#> 6         10 Mujer     7590
+#> 5         10 Mujer     7590
+#> 6         10 Hombre    7937
 ```
 
 ## Manzanos y comunidades — el nivel más fino del CPV-2024
@@ -380,8 +380,8 @@ get_personas_2024(departamento = "Cochabamba") |>
 ```
 
 El paquete incluye geometrías sf para los 9 departamentos
-(`geo_departamentos`) y 339 de los 343 municipios (`geo_municipios`) de
-Bolivia. Las funciones
+(`geo_departamentos`) y los 343 municipios (`geo_municipios`) de
+Bolivia, con su capital y superficie. Las funciones
 [`mapa_dep()`](https://lab-tecnosocial.github.io/censosbo/reference/mapa_dep.md)
 y
 [`mapa_mun()`](https://lab-tecnosocial.github.io/censosbo/reference/mapa_mun.md)
@@ -402,9 +402,6 @@ personas_beni <- get_personas_2024(departamento = "Beni", variables = "p26_edad"
 
 mapa_mun(personas_beni, "edad_prom", departamento = "Beni",
          titulo = "Edad promedio por municipio — Beni (CPV-2024)")
-#> Warning: 1 municipio(s) en los datos no tienen geometría disponible.
-#> ℹ Aparecerán como áreas grises en el mapa.
-#> ℹ Son los 4 municipios del CPV-2024 sin cobertura cartográfica en la fuente.
 ```
 
 ![](reference/figures/README-mapa-mun-1.png)
@@ -461,7 +458,7 @@ citation("censosbo")
 #> 
 #>   Ojeda Copa A (2026). _censosbo: Paquete de R para el acceso, análisis
 #>   y visualización de datos censales en Bolivia (1976-2024)_. Lab
-#>   TecnoSocial, Cochabamba, Bolivia. R package version 1.5.0,
+#>   TecnoSocial, Cochabamba, Bolivia. R package version 1.6.0,
 #>   <https://lab-tecnosocial.github.io/censosbo/>.
 #> 
 #> A BibTeX entry for LaTeX users is
@@ -472,12 +469,12 @@ citation("censosbo")
 #>     organization = {Lab TecnoSocial},
 #>     address = {Cochabamba, Bolivia},
 #>     year = {2026},
-#>     note = {R package version 1.5.0},
+#>     note = {R package version 1.6.0},
 #>     url = {https://lab-tecnosocial.github.io/censosbo/},
 #>   }
 ```
 
 > Ojeda Copa A (2026). *censosbo: Paquete de R para el acceso, análisis
 > y visualización de datos censales en Bolivia (1976-2024)*. Lab
-> TecnoSocial, Cochabamba, Bolivia. R package version 1.5.0.
+> TecnoSocial, Cochabamba, Bolivia. R package version 1.6.0.
 > <https://lab-tecnosocial.github.io/censosbo/>

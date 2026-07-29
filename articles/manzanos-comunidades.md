@@ -386,9 +386,6 @@ por_municipio <- unidades |>
 
 mapa_mun(por_municipio, "manzanos",
          titulo = "Manzanos urbanos por municipio (CPV-2024)")
-#> Warning: 4 municipio(s) en los datos no tienen geometría disponible.
-#> ℹ Aparecerán como áreas grises en el mapa.
-#> ℹ Son los 4 municipios del CPV-2024 sin cobertura cartográfica en la fuente.
 ```
 
 ![](manzanos-comunidades_files/figure-html/cruce-1.png)

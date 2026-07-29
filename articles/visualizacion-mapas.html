@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.5.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.6.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -102,7 +102,7 @@ coropléticos</strong> de Bolivia directamente desde R:</p>
 </tr>
 <tr class="even">
 <td><code><a href="../reference/mapa_mun.html">mapa_mun()</a></code></td>
-<td>339 de 343 municipios</td>
+<td>343 municipios</td>
 <td>Sí — <code>geo_municipios</code>
 </td>
 </tr>
@@ -121,21 +121,22 @@ necesidad de descargar nada:</p>
 <span><span class="co">#&gt; Simple feature collection with 3 features and 2 fields</span></span>
 <span><span class="co">#&gt; Geometry type: MULTIPOLYGON</span></span>
 <span><span class="co">#&gt; Dimension:     XY</span></span>
-<span><span class="co">#&gt; Bounding box:  xmin: -69.64504 ymin: -21.51732 xmax: -62.17937 ymax: -11.84968</span></span>
+<span><span class="co">#&gt; Bounding box:  xmin: -69.64423 ymin: -21.51732 xmax: -62.17937 ymax: -11.84968</span></span>
 <span><span class="co">#&gt; Geodetic CRS:  WGS 84</span></span>
 <span><span class="co">#&gt;   idep nombre_dep                       geometry</span></span>
-<span><span class="co">#&gt; 1   01 Chuquisaca MULTIPOLYGON (((-65.34567 -...</span></span>
-<span><span class="co">#&gt; 2   02     La Paz MULTIPOLYGON (((-68.76707 -...</span></span>
-<span><span class="co">#&gt; 3   03 Cochabamba MULTIPOLYGON (((-66.79542 -...</span></span>
+<span><span class="co">#&gt; 1   01 Chuquisaca MULTIPOLYGON (((-65.39291 -...</span></span>
+<span><span class="co">#&gt; 2   02     La Paz MULTIPOLYGON (((-68.77164 -...</span></span>
+<span><span class="co">#&gt; 3   03 Cochabamba MULTIPOLYGON (((-64.82723 -...</span></span>
 <span></span>
-<span><span class="co"># 339 de los 343 municipios del CPV-2024 (objeto sf)</span></span>
+<span><span class="co"># Los 343 municipios del CPV-2024 (objeto sf)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_drop_geometry</a></span><span class="op">(</span><span class="va">geo_municipios</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   idep nombre_dep iprov nombre_prov imun nombre_mun</span></span>
-<span><span class="co">#&gt; 1   01 Chuquisaca    01     Oropeza   01      Sucre</span></span>
-<span><span class="co">#&gt; 2   01 Chuquisaca    01     Oropeza   02     Yotala</span></span>
-<span><span class="co">#&gt; 3   01 Chuquisaca    01     Oropeza   03     Poroma</span></span></code></pre></div>
-<p>La tabla <code>geo_bolivia</code> (sin geometrías) tiene los 343
-municipios con nombres y códigos oficiales:</p>
+<span><span class="co">#&gt;   idep nombre_dep iprov nombre_prov imun nombre_mun capital superficie_km2</span></span>
+<span><span class="co">#&gt; 1   01 Chuquisaca    01     Oropeza   01      Sucre   Sucre         1671.1</span></span>
+<span><span class="co">#&gt; 2   01 Chuquisaca    01     Oropeza   02     Yotala  Yotala          432.2</span></span>
+<span><span class="co">#&gt; 3   01 Chuquisaca    01     Oropeza   03     Poroma  Poroma         1424.6</span></span></code></pre></div>
+<p>La tabla <code>geo_bolivia</code> (sin geometrías) tiene los mismos
+343 municipios con sus nombres y códigos oficiales, y es más ligera
+cuando no hace falta dibujar:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">geo_bolivia</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   idep nombre_dep iprov nombre_prov imun nombre_mun</span></span>
@@ -145,6 +146,58 @@ municipios con nombres y códigos oficiales:</p>
 <span><span class="co">#&gt; 4   01 Chuquisaca    02     Azurduy   01    Azurduy</span></span>
 <span><span class="co">#&gt; 5   01 Chuquisaca    02     Azurduy   02    Tarvita</span></span>
 <span><span class="co">#&gt; 6   01 Chuquisaca    03     Zudáñez   01    Zudáñez</span></span></code></pre></div>
+<p><code>geo_municipios</code> trae además la <code>capital</code> y la
+<code>superficie_km2</code> de cada municipio, así que las densidades
+salen sin recalcular áreas:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_drop_geometry</a></span><span class="op">(</span><span class="va">geo_municipios</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_max</a></span><span class="op">(</span><span class="va">superficie_km2</span>, n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">nombre_mun</span>, <span class="va">nombre_dep</span>, <span class="va">capital</span>, <span class="va">superficie_km2</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                                      nombre_mun nombre_dep     capital</span></span>
+<span><span class="co">#&gt; 1 Charagua (Autonomía Guaraní Charagua Iyambae) Santa Cruz    Charagua</span></span>
+<span><span class="co">#&gt; 2                                   San Ignacio Santa Cruz San Ignacio</span></span>
+<span><span class="co">#&gt; 3                                       Ixiamas     La Paz     Ixiamas</span></span>
+<span><span class="co">#&gt; 4                                    Concepción Santa Cruz  Concepción</span></span>
+<span><span class="co">#&gt; 5                                    San Matías Santa Cruz  San Matías</span></span>
+<span><span class="co">#&gt;   superficie_km2</span></span>
+<span><span class="co">#&gt; 1        70558.7</span></span>
+<span><span class="co">#&gt; 2        49066.3</span></span>
+<span><span class="co">#&gt; 3        36968.2</span></span>
+<span><span class="co">#&gt; 4        28943.0</span></span>
+<span><span class="co">#&gt; 5        26918.9</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="procedencia-de-las-geometrías">Procedencia de las geometrías<a class="anchor" aria-label="anchor" href="#procedencia-de-las-geometr%C3%ADas"></a>
+</h3>
+<p><code>geo_municipios</code> cruza varias fuentes, porque ninguna
+tiene a la vez la geometría de las 343 unidades y la codificación que
+usan los microdatos:</p>
+<ul>
+<li>
+<strong>Límites, capital y superficie</strong> — SDSN Bolivia, capa
+del Atlas Municipal de los ODS, la única pública que cubre las 343
+unidades del CPV-2024 (los 339 municipios más los cuatro GAIOC creados
+entre 2016 y 2023).</li>
+<li>
+<strong>Códigos
+<code>idep</code>/<code>iprov</code>/<code>imun</code> y
+nombres</strong> — INE Bolivia (Redatam, CPV-2024), para que coincidan
+exactamente con los de <code><a href="../reference/get_personas_2024.html">get_personas_2024()</a></code> y compañía.</li>
+<li>
+<strong>Emparejamiento entre ambos</strong> — los puntos de
+comunidades del CPV-2024 (<code><a href="../reference/get_geo_comunidades.html">get_geo_comunidades()</a></code>), que
+llevan el código del INE y sirven de árbitro para asignarle a cada
+polígono el suyo.</li>
+</ul>
+<p><code>geo_departamentos</code> se deriva de
+<code>geo_municipios</code>, de modo que los bordes departamentales caen
+exactamente sobre los municipales.</p>
+<blockquote>
+<p>SDSN Bolivia (2025). <em>Límites Municipales Bolivia 2025</em>
+[Archivo shapefile]. <a href="https://sdsnbolivia.org/datos-espaciales/" class="external-link uri">https://sdsnbolivia.org/datos-espaciales/</a></p>
+</blockquote>
+</div>
 </div>
 <div class="section level2">
 <h2 id="mapa_dep-nivel-departamental">
@@ -156,7 +209,7 @@ departamentos están incluidas en el paquete.</p>
 <div class="section level3">
 <h3 id="número-de-municipios-por-departamento">Número de municipios por departamento<a class="anchor" aria-label="anchor" href="#n%C3%BAmero-de-municipios-por-departamento"></a>
 </h3>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">n_mun</span> <span class="op">&lt;-</span> <span class="va">geo_bolivia</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">idep</span>, name <span class="op">=</span> <span class="st">"n_municipios"</span><span class="op">)</span></span>
 <span></span>
@@ -175,7 +228,7 @@ histórica de asentamientos.</p>
 <div class="section level3">
 <h3 id="porcentaje-de-población-urbana-por-departamento-cpv-2024">Porcentaje de población urbana por departamento (CPV-2024)<a class="anchor" aria-label="anchor" href="#porcentaje-de-poblaci%C3%B3n-urbana-por-departamento-cpv-2024"></a>
 </h3>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">urbano_dep</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span>as <span class="op">=</span> <span class="st">"tibble"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">idep</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>pct_urbano <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">area</span> <span class="op">==</span> <span class="fl">1</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span>, .groups <span class="op">=</span> <span class="st">"drop"</span><span class="op">)</span></span>
@@ -190,7 +243,7 @@ histórica de asentamientos.</p>
 <div class="section level3">
 <h3 id="evolución-del-alfabetismo-19922024">Evolución del alfabetismo 1992–2024<a class="anchor" aria-label="anchor" href="#evoluci%C3%B3n-del-alfabetismo-19922024"></a>
 </h3>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Cambio en tasa de alfabetismo entre el censo 1992 y el CPV-2024</span></span>
 <span><span class="va">alfa_92</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_temporal.html">get_temporal</a></span><span class="op">(</span>variables <span class="op">=</span> <span class="st">"sabe_leer"</span>, anios <span class="op">=</span> <span class="fl">1992</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">departamento</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -225,7 +278,7 @@ departamento.</p>
 </h3>
 <p>El departamento del Beni tiene datos pequeños (~12 MB). Con pocas
 líneas obtenemos un mapa municipal real con datos del CPV-2024:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Descargar personas del Beni (~12 MB, se guarda en caché)</span></span>
 <span><span class="va">personas_beni</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span></span>
 <span>  departamento <span class="op">=</span> <span class="st">"Beni"</span>,</span>
@@ -243,23 +296,20 @@ líneas obtenemos un mapa municipal real con datos del CPV-2024:</p>
 <span>  titulo          <span class="op">=</span> <span class="st">"Edad promedio por municipio — Beni (CPV-2024)"</span>,</span>
 <span>  etiqueta_fill   <span class="op">=</span> <span class="st">"Edad media"</span>,</span>
 <span>  mostrar_nombres <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: 1 municipio(s) en los datos no tienen geometría disponible.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Aparecerán como áreas grises en el mapa.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Son los 4 municipios del CPV-2024 sin cobertura cartográfica en la fuente.</span></span></code></pre></div>
+<span><span class="op">)</span></span></code></pre></div>
 <p><img src="visualizacion-mapas_files/figure-html/mapa-mun-beni-1.png" class="r-plt" alt="" width="672"></p>
 <p>Los municipios más jóvenes del Beni (San Borja, 25,8 años;
 Exaltación, Loreto y San Ignacio, 26) contrastan con Baures y Huacaraje,
 por encima de 30.</p>
-<p>El aviso que aparece al construir el mapa es esperado: el
-TIOC-Territorio Indígena Multiétnico —justamente el municipio más joven
-del departamento, con 24,5 años— es uno de los 4 municipios del CPV-2024
-sin cobertura en la fuente cartográfica, así que sale en gris.</p>
+<p>El municipio más joven del departamento es el TIOC-Territorio
+Indígena Multiétnico, con 24,5 años. Es uno de los cuatro GAIOC creados
+desde 2016 que faltaban en la cartografía anterior del paquete y que
+desde la versión 1.6.0 ya se dibujan.</p>
 </div>
 <div class="section level3">
 <h3 id="acceso-al-agua-por-cañería-santa-cruz">Acceso al agua por cañería — Santa Cruz<a class="anchor" aria-label="anchor" href="#acceso-al-agua-por-ca%C3%B1er%C3%ADa-santa-cruz"></a>
 </h3>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">agua_sc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_viviendas_2024.html">get_viviendas_2024</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Santa Cruz"</span>, as <span class="op">=</span> <span class="st">"tibble"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">idep</span>, <span class="va">iprov</span>, <span class="va">imun</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span></span>
@@ -279,7 +329,7 @@ sin cobertura en la fuente cartográfica, así que sale en gris.</p>
 <div class="section level3">
 <h3 id="tasa-de-alfabetismo-oruro">Tasa de alfabetismo — Oruro<a class="anchor" aria-label="anchor" href="#tasa-de-alfabetismo-oruro"></a>
 </h3>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># `p40_lee` se preguntó a las personas de 5 años o más, pero las tasas oficiales</span></span>
 <span><span class="co"># de alfabetismo se publican sobre 15 años o más. Se pide `p26_edad` para poder</span></span>
 <span><span class="co"># aplicar ese umbral y que el mapa sea comparable con las cifras del INE.</span></span>
@@ -310,7 +360,7 @@ sin cobertura en la fuente cartográfica, así que sale en gris.</p>
 <p>Las funciones devuelven un <strong>objeto <code>ggplot</code>
 estándar</strong> que se puede modificar con cualquier capa de
 ggplot2:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">n_mun</span> <span class="op">&lt;-</span> <span class="va">geo_bolivia</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">idep</span>, name <span class="op">=</span> <span class="st">"n_municipios"</span><span class="op">)</span></span>
 <span></span>
@@ -364,7 +414,7 @@ con <code>paleta</code>:</p>
 <p>El siguiente ejemplo usa una paleta divergente con una variable
 derivada de datos reales: la diferencia entre el número de municipios de
 cada departamento y el promedio nacional.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">n_mun_dif</span> <span class="op">&lt;-</span> <span class="va">geo_bolivia</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">idep</span>, name <span class="op">=</span> <span class="st">"n_municipios"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>diferencia <span class="op">=</span> <span class="va">n_municipios</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">n_municipios</span><span class="op">)</span><span class="op">)</span></span>
@@ -384,7 +434,7 @@ cada departamento y el promedio nacional.</p>
 </h2>
 <p>El patrón habitual es: descargar datos → agregar por unidad
 geográfica → visualizar en mapa:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Porcentaje de personas con educación superior por municipio — Potosí</span></span>
 <span><span class="fu"><a href="../reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span></span>
 <span>  departamento <span class="op">=</span> <span class="st">"Potosí"</span>,</span>

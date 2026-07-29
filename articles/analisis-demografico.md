@@ -18,7 +18,7 @@ personas <- get_personas_2024(
   collect() |>
   etiquetar_valores()
 #> ℹ Descargando persona_dep08.parquet (~12 MB)...
-#> ✔ Descargado persona_dep08.parquet [468ms]
+#> ✔ Descargado persona_dep08.parquet [314ms]
 #> 
 
 nrow(personas)

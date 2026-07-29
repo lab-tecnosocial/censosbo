@@ -6,7 +6,7 @@ Bolivia directamente desde R:
 | Función | Nivel | Geometrías incluidas |
 |----|----|----|
 | [`mapa_dep()`](https://lab-tecnosocial.github.io/censosbo/reference/mapa_dep.md) | 9 departamentos | Sí — `geo_departamentos` |
-| [`mapa_mun()`](https://lab-tecnosocial.github.io/censosbo/reference/mapa_mun.md) | 339 de 343 municipios | Sí — `geo_municipios` |
+| [`mapa_mun()`](https://lab-tecnosocial.github.io/censosbo/reference/mapa_mun.md) | 343 municipios | Sí — `geo_municipios` |
 
 Ambas devuelven un **objeto `ggplot`** que se puede personalizar con
 capas y temas adicionales.
@@ -23,23 +23,24 @@ head(geo_departamentos, 3)
 #> Simple feature collection with 3 features and 2 fields
 #> Geometry type: MULTIPOLYGON
 #> Dimension:     XY
-#> Bounding box:  xmin: -69.64504 ymin: -21.51732 xmax: -62.17937 ymax: -11.84968
+#> Bounding box:  xmin: -69.64423 ymin: -21.51732 xmax: -62.17937 ymax: -11.84968
 #> Geodetic CRS:  WGS 84
 #>   idep nombre_dep                       geometry
-#> 1   01 Chuquisaca MULTIPOLYGON (((-65.34567 -...
-#> 2   02     La Paz MULTIPOLYGON (((-68.76707 -...
-#> 3   03 Cochabamba MULTIPOLYGON (((-66.79542 -...
+#> 1   01 Chuquisaca MULTIPOLYGON (((-65.39291 -...
+#> 2   02     La Paz MULTIPOLYGON (((-68.77164 -...
+#> 3   03 Cochabamba MULTIPOLYGON (((-64.82723 -...
 
-# 339 de los 343 municipios del CPV-2024 (objeto sf)
+# Los 343 municipios del CPV-2024 (objeto sf)
 head(sf::st_drop_geometry(geo_municipios), 3)
-#>   idep nombre_dep iprov nombre_prov imun nombre_mun
-#> 1   01 Chuquisaca    01     Oropeza   01      Sucre
-#> 2   01 Chuquisaca    01     Oropeza   02     Yotala
-#> 3   01 Chuquisaca    01     Oropeza   03     Poroma
+#>   idep nombre_dep iprov nombre_prov imun nombre_mun capital superficie_km2
+#> 1   01 Chuquisaca    01     Oropeza   01      Sucre   Sucre         1671.1
+#> 2   01 Chuquisaca    01     Oropeza   02     Yotala  Yotala          432.2
+#> 3   01 Chuquisaca    01     Oropeza   03     Poroma  Poroma         1424.6
 ```
 
-La tabla `geo_bolivia` (sin geometrías) tiene los 343 municipios con
-nombres y códigos oficiales:
+La tabla `geo_bolivia` (sin geometrías) tiene los mismos 343 municipios
+con sus nombres y códigos oficiales, y es más ligera cuando no hace
+falta dibujar:
 
 ``` r
 
@@ -52,6 +53,55 @@ head(geo_bolivia)
 #> 5   01 Chuquisaca    02     Azurduy   02    Tarvita
 #> 6   01 Chuquisaca    03     Zudáñez   01    Zudáñez
 ```
+
+`geo_municipios` trae además la `capital` y la `superficie_km2` de cada
+municipio, así que las densidades salen sin recalcular áreas:
+
+``` r
+
+library(dplyr)
+
+sf::st_drop_geometry(geo_municipios) |>
+  slice_max(superficie_km2, n = 5) |>
+  select(nombre_mun, nombre_dep, capital, superficie_km2)
+#>                                      nombre_mun nombre_dep     capital
+#> 1 Charagua (Autonomía Guaraní Charagua Iyambae) Santa Cruz    Charagua
+#> 2                                   San Ignacio Santa Cruz San Ignacio
+#> 3                                       Ixiamas     La Paz     Ixiamas
+#> 4                                    Concepción Santa Cruz  Concepción
+#> 5                                    San Matías Santa Cruz  San Matías
+#>   superficie_km2
+#> 1        70558.7
+#> 2        49066.3
+#> 3        36968.2
+#> 4        28943.0
+#> 5        26918.9
+```
+
+### Procedencia de las geometrías
+
+`geo_municipios` cruza varias fuentes, porque ninguna tiene a la vez la
+geometría de las 343 unidades y la codificación que usan los microdatos:
+
+- **Límites, capital y superficie** — SDSN Bolivia, capa del Atlas
+  Municipal de los ODS, la única pública que cubre las 343 unidades del
+  CPV-2024 (los 339 municipios más los cuatro GAIOC creados entre 2016 y
+  2023).
+- **Códigos `idep`/`iprov`/`imun` y nombres** — INE Bolivia (Redatam,
+  CPV-2024), para que coincidan exactamente con los de
+  [`get_personas_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_personas_2024.md)
+  y compañía.
+- **Emparejamiento entre ambos** — los puntos de comunidades del
+  CPV-2024
+  ([`get_geo_comunidades()`](https://lab-tecnosocial.github.io/censosbo/reference/get_geo_comunidades.md)),
+  que llevan el código del INE y sirven de árbitro para asignarle a cada
+  polígono el suyo.
+
+`geo_departamentos` se deriva de `geo_municipios`, de modo que los
+bordes departamentales caen exactamente sobre los municipales.
+
+> SDSN Bolivia (2025). *Límites Municipales Bolivia 2025* \[Archivo
+> shapefile\]. <https://sdsnbolivia.org/datos-espaciales/>
 
 ## `mapa_dep()` — nivel departamental
 
@@ -154,9 +204,6 @@ mapa_mun(
   etiqueta_fill   = "Edad media",
   mostrar_nombres = TRUE
 )
-#> Warning: 1 municipio(s) en los datos no tienen geometría disponible.
-#> ℹ Aparecerán como áreas grises en el mapa.
-#> ℹ Son los 4 municipios del CPV-2024 sin cobertura cartográfica en la fuente.
 ```
 
 ![](visualizacion-mapas_files/figure-html/mapa-mun-beni-1.png)
@@ -165,10 +212,10 @@ Los municipios más jóvenes del Beni (San Borja, 25,8 años; Exaltación,
 Loreto y San Ignacio, 26) contrastan con Baures y Huacaraje, por encima
 de 30.
 
-El aviso que aparece al construir el mapa es esperado: el
-TIOC-Territorio Indígena Multiétnico —justamente el municipio más joven
-del departamento, con 24,5 años— es uno de los 4 municipios del CPV-2024
-sin cobertura en la fuente cartográfica, así que sale en gris.
+El municipio más joven del departamento es el TIOC-Territorio Indígena
+Multiétnico, con 24,5 años. Es uno de los cuatro GAIOC creados desde
+2016 que faltaban en la cartografía anterior del paquete y que desde la
+versión 1.6.0 ya se dibujan.
 
 ### Acceso al agua por cañería — Santa Cruz
 

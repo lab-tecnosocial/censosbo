@@ -63,12 +63,14 @@ Un objeto \`ggplot\` modificable con capas adicionales de ggplot2.
 
 Los datos se unen con \[geo_municipios\] por la clave \`idep + iprov +
 imun\`; los códigos se normalizan a 2 dígitos, así que también funcionan
-si vienen como enteros. Los 4 municipios del CPV-2024 sin cobertura
-cartográfica generan una advertencia informativa y aparecen en gris
-(\`na_color\`).
+si vienen como enteros. La capa cubre los 343 municipios del CPV-2024,
+incluidos los cuatro GAIOC creados entre 2016 y 2023. Los municipios de
+\`datos\` que no emparejen generan una advertencia y los que no tengan
+dato salen en gris (\`na_color\`).
 
-Para el censo 1976 (cantones), usar con precaución: los códigos de
-municipio pueden no corresponder a la división actual.
+Para censos anteriores a 2012, usar con precaución: los códigos de
+municipio pueden no corresponder a la división actual (en 1976 son
+cantones).
 
 ## Examples
 
