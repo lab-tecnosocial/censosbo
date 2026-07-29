@@ -74,21 +74,39 @@ Para variables de vivienda usa \[get_temporal_vivienda()\].
 ## Los universos poblacionales no siempre coinciden
 
 La armonización iguala los \*\*códigos\*\*, no la \*\*población a la que
-se preguntó\*\*. Dos variables cambian de universo entre censos y
-comparar sus distribuciones sin filtrar por edad produce conclusiones
-falsas:
+se preguntó\*\*. Comparar distribuciones sin igualar el universo produce
+conclusiones falsas, y el INE cambió el filtro de edad de varias
+preguntas entre censos.
 
-\- \`nivel_edu\`: en el CPV-2024 la variable derivada del INE solo cubre
-a la población de \*\*19 años o más\*\* residente en el país; en 1992,
-2001 y 2012 cubre desde los 6 años. Por eso 2024 aparece con muchos más
-\`NA\`. Filtra \`edad \>= 19\` en todos los años antes de comparar. -
-\`estado_civil\`: en 1992 se registró para \*\*toda\*\* la población,
-incluidos los menores, que quedan como "Soltero/a"; en 2001 y 2012 se
-aplica desde los 15 años, y en 1976 y 2024 desde los 12. Filtra \`edad
-\>= 15\`.
+\*\*\`get_temporal()\` lo detecta y avisa\*\*: si alguna variable pedida
+no se preguntó a la misma población en todos los años solicitados, emite
+un aviso con el universo de cada censo y la edad mínima que los iguala.
+El dato viene de los diccionarios DDI del catálogo ANDA, así que la
+advertencia es del INE, no una estimación del paquete.
 
-La columna \`notas\` de \[variables_armonizadas()\] recoge estas
-advertencias variable por variable.
+Siete de las variables armonizadas están afectadas. Los casos más
+marcados:
+
+\- \`nivel_edu\`: \*\*19 años o más\*\* en el CPV-2024 (es una derivada
+del INE) frente a 6 años en 1992 y 4 en 2001. Es la mayor divergencia de
+todas: sin filtrar, 2024 aparece con muchos más \`NA\` y da la impresión
+de estar "más educado". - \`sabe_leer\` y \`asistencia_escolar\`: el
+umbral se movió cuatro veces — 5 años (1976), 6 (1992), 4 (2001) y 5
+(2024). - \`estado_civil\`: 12 años en 1976 y 2024, 15 en 2001. -
+\`hijos_nacidos_vivos\` y \`hijos_sobrevivientes\`: mujeres de 12 años o
+más en 1976, 1992 y 2024; personas de 15 años o más en 2001. -
+\`idioma_materno\`: 5 años (1976) frente a 4 (2001) y todas en 2024.
+
+La columna \`notas\` de \[variables_armonizadas()\] recoge, además, las
+advertencias sobre los \*\*códigos\*\* de cada variable.
+
+## Los dos vocabularios temáticos
+
+\`grupo\` acepta los seis grupos de \[grupos_variables()\], que agrupan
+nombres \*\*armonizados\*\*, y también los slugs de \[censo_temas()\],
+que agrupan las variables \*\*crudas\*\* de cada censo. Los seis
+originales son alias permanentes; pasar un slug de tema informa del
+grupo equivalente y devuelve lo mismo.
 
 ## Examples
 

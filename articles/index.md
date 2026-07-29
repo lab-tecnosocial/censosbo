@@ -4,6 +4,8 @@
 
 - [Introducción a
   censosbo](https://lab-tecnosocial.github.io/censosbo/articles/introduccion.md):
+- [Explorar el censo por
+  tema](https://lab-tecnosocial.github.io/censosbo/articles/temas.md):
 - [Diccionario de datos — Censos de Bolivia
   (1976–2024)](https://lab-tecnosocial.github.io/censosbo/articles/diccionario.md):
 

@@ -139,6 +139,34 @@ variables_armonizadas()
 #> 25                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              1976: 1/2=Tiene→1, 3=No→2. 1992: 1/2=Tiene (con/sin descarga)→1, 3=No→2. 2001: 1=Tiene→1, 2=No→2. 2012 P09: 1/2=Tiene (privado/compartido)→1, 3=No→2. 2024: 1/2=Tiene (solo/compartido)→1, 3=No→2.
 #> 26                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            Categorías muy consistentes entre censos. 1→1 (Propia), 2→2 (Alquiler), anticrético/cedida/servicios→3, otro→4. 2024: código 1/2=Propia pagada/pagando→1, código 4=Alquilada→2, códigos 3/5/6/7=Cedida/anticr/servicios→3, 8=Otra→4.
 #> 27                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                Variable numérica en 1976/1992/2001. 2012 P14: valores 1-7 directos, 8='8 y más', 98/99=NA. 2024 v13_habitac codificada como categorías ordinales (1=Una, ..., 8=Ocho o más). Se recomienda tratar como ordinal.
+#>                          tema
+#> 1                   poblacion
+#> 2                   poblacion
+#> 3                   poblacion
+#> 4                   poblacion
+#> 5                   poblacion
+#> 6                   educacion
+#> 7                   educacion
+#> 8                   educacion
+#> 9  caracteristicas_economicas
+#> 10 caracteristicas_economicas
+#> 11 caracteristicas_economicas
+#> 12         autoidentificacion
+#> 13                    idiomas
+#> 14                  migracion
+#> 15                  migracion
+#> 16                 fecundidad
+#> 17                 fecundidad
+#> 18       ubicacion_geografica
+#> 19       ubicacion_geografica
+#> 20    materiales_construccion
+#> 21    materiales_construccion
+#> 22    materiales_construccion
+#> 23          servicios_basicos
+#> 24          servicios_basicos
+#> 25          servicios_basicos
+#> 26             vivienda_hogar
+#> 27             vivienda_hogar
 variables_armonizadas(tabla = "vivienda")
 #>              variable                                etiqueta
 #> 20   material_paredes Material de construcción de las paredes
@@ -176,4 +204,13 @@ variables_armonizadas(tabla = "vivienda")
 #> 25                                                                                                                                1976: 1/2=Tiene→1, 3=No→2. 1992: 1/2=Tiene (con/sin descarga)→1, 3=No→2. 2001: 1=Tiene→1, 2=No→2. 2012 P09: 1/2=Tiene (privado/compartido)→1, 3=No→2. 2024: 1/2=Tiene (solo/compartido)→1, 3=No→2.
 #> 26                                                                                              Categorías muy consistentes entre censos. 1→1 (Propia), 2→2 (Alquiler), anticrético/cedida/servicios→3, otro→4. 2024: código 1/2=Propia pagada/pagando→1, código 4=Alquilada→2, códigos 3/5/6/7=Cedida/anticr/servicios→3, 8=Otra→4.
 #> 27                                                                                                                  Variable numérica en 1976/1992/2001. 2012 P14: valores 1-7 directos, 8='8 y más', 98/99=NA. 2024 v13_habitac codificada como categorías ordinales (1=Una, ..., 8=Ocho o más). Se recomienda tratar como ordinal.
+#>                       tema
+#> 20 materiales_construccion
+#> 21 materiales_construccion
+#> 22 materiales_construccion
+#> 23       servicios_basicos
+#> 24       servicios_basicos
+#> 25       servicios_basicos
+#> 26          vivienda_hogar
+#> 27          vivienda_hogar
 ```

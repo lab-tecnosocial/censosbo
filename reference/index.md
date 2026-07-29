@@ -14,6 +14,13 @@ para convertir códigos numéricos a texto legible.
   : Consulta el diccionario de variables de un censo de Bolivia
 - [`codebook_valores()`](https://lab-tecnosocial.github.io/censosbo/reference/codebook_valores.md)
   : Muestra los valores codificados de una variable categórica
+- [`codebook_docs()`](https://lab-tecnosocial.github.io/censosbo/reference/codebook_docs.md)
+  : Definición, universo y pregunta literal de una variable
+- [`censo_temas()`](https://lab-tecnosocial.github.io/censosbo/reference/censo_temas.md)
+  : Consulta los temas de un censo, con el número de variables de cada
+  uno
+- [`vars_tema()`](https://lab-tecnosocial.github.io/censosbo/reference/vars_tema.md)
+  : Nombres de las variables de un tema
 - [`etiquetar_valores()`](https://lab-tecnosocial.github.io/censosbo/reference/etiquetar_valores.md)
   : Etiqueta los valores de las variables categóricas
 - [`etiquetar_variables()`](https://lab-tecnosocial.github.io/censosbo/reference/etiquetar_variables.md)
@@ -137,6 +144,12 @@ Datasets disponibles sin descarga, incluidos directamente en el paquete.
   : Diccionario de variables del CPV-2024
 - [`codebook_historico_meta`](https://lab-tecnosocial.github.io/censosbo/reference/codebook_historico_meta.md)
   : Diccionarios de variables de los censos históricos de Bolivia
+- [`codebook_docs_meta`](https://lab-tecnosocial.github.io/censosbo/reference/codebook_docs_meta.md)
+  : Documentación conceptual de las variables censales
+- [`censo_temas_meta`](https://lab-tecnosocial.github.io/censosbo/reference/censo_temas_meta.md)
+  : Catálogo de temas de los censos de Bolivia
+- [`censo_bloques_meta`](https://lab-tecnosocial.github.io/censosbo/reference/censo_bloques_meta.md)
+  : Bloques temáticos de los indicadores de manzano y comunidad
 - [`variable_temporal_map`](https://lab-tecnosocial.github.io/censosbo/reference/variable_temporal_map.md)
   : Variables armonizadas para análisis temporal
 - [`geo_bolivia`](https://lab-tecnosocial.github.io/censosbo/reference/geo_bolivia.md)

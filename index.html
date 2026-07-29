@@ -31,7 +31,7 @@
 
     <a class="navbar-brand me-2" href="index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.5.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,7 +45,8 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-art-culos" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Artículos</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-art-culos">
-<li><a class="dropdown-item" href="articles/diccionario.html">Diccionario de datos (1976–2024)</a></li>
+<li><a class="dropdown-item" href="articles/temas.html">Explorar el censo por tema</a></li>
+    <li><a class="dropdown-item" href="articles/diccionario.html">Diccionario de datos (1976–2024)</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>CPV-2024</h6></li>
     <li><a class="dropdown-item" href="articles/analisis-demografico.html">Análisis demográfico</a></li>
@@ -89,7 +90,7 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"lab-tecnosocial/censosbo"</span><span class="op">)</span></span></code></pre></div>
-<p>El paquete se desarrolla continuamente (mejoras, corrección de errores), si lo instalaste anteriormente te recomendamos volver a ejecutar el anterior código y borrar el caché para actualizar a la versión 1.4.1 o usar la siguiente función:</p>
+<p>El paquete se desarrolla continuamente (mejoras, corrección de errores), si lo instalaste anteriormente te recomendamos volver a ejecutar el anterior código y borrar el caché para actualizar a la versión 1.5.0 o usar la siguiente función:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/update_censosbo.html">update_censosbo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -318,16 +319,20 @@
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Buscar variables del CPV-2024</span></span>
 <span><span class="fu"><a href="reference/codebook.html">codebook</a></span><span class="op">(</span>buscar <span class="op">=</span> <span class="st">"educa"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">variable</span>, <span class="va">tabla</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 7 × 2</span></span>
-<span><span class="co">#&gt;   variable       tabla  </span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;          &lt;chr&gt;  </span></span>
-<span><span class="co">#&gt; 1 p39_tipoest    persona</span></span>
-<span><span class="co">#&gt; 2 p41a_nivel     persona</span></span>
-<span><span class="co">#&gt; 3 p41b_curso     persona</span></span>
-<span><span class="co">#&gt; 4 p41a_nivel_act persona</span></span>
-<span><span class="co">#&gt; 5 nivel_edu      persona</span></span>
-<span><span class="co">#&gt; 6 asiste         persona</span></span>
-<span><span class="co">#&gt; 7 gedadedu       persona</span></span>
+<span><span class="co">#&gt; # A tibble: 23 × 2</span></span>
+<span><span class="co">#&gt;    variable       tabla  </span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;          &lt;chr&gt;  </span></span>
+<span><span class="co">#&gt;  1 p38_asiste     persona</span></span>
+<span><span class="co">#&gt;  2 p39_tipoest    persona</span></span>
+<span><span class="co">#&gt;  3 p40_lee        persona</span></span>
+<span><span class="co">#&gt;  4 p41a_nivel     persona</span></span>
+<span><span class="co">#&gt;  5 p41b_curso     persona</span></span>
+<span><span class="co">#&gt;  6 p41a_nivel_act persona</span></span>
+<span><span class="co">#&gt;  7 p41b_curso_act persona</span></span>
+<span><span class="co">#&gt;  8 nivel_edu      persona</span></span>
+<span><span class="co">#&gt;  9 aestudio       persona</span></span>
+<span><span class="co">#&gt; 10 asiste         persona</span></span>
+<span><span class="co">#&gt; # ℹ 13 more rows</span></span>
 <span></span>
 <span><span class="co"># Ver códigos de una variable</span></span>
 <span><span class="fu"><a href="reference/codebook_valores.html">codebook_valores</a></span><span class="op">(</span><span class="st">"p25_sexo"</span><span class="op">)</span>          <span class="co"># CPV-2024</span></span>
@@ -344,11 +349,57 @@
 <code class="sourceCode R"><span><span class="co"># Codebook para censos históricos</span></span>
 <span><span class="fu"><a href="reference/codebook.html">codebook_2012</a></span><span class="op">(</span>buscar <span class="op">=</span> <span class="st">"instruccion"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/codebook.html">codebook_1992</a></span><span class="op">(</span>buscar <span class="op">=</span> <span class="st">"sexo"</span><span class="op">)</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="buscar-por-tema">Buscar por tema<a class="anchor" aria-label="anchor" href="#buscar-por-tema"></a>
+</h3>
+<p>Las 809 variables de los cinco censos están agrupadas en 21 temas, tomados del catálogo oficial del INE. <code><a href="reference/vars_tema.html">vars_tema()</a></code> devuelve los nombres listos para descargar:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/censo_temas.html">censo_temas</a></span><span class="op">(</span>tabla <span class="op">=</span> <span class="st">"persona"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">tema</span>, <span class="va">etiqueta</span>, <span class="va">n_variables</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                     tema                    etiqueta n_variables</span></span>
+<span><span class="co">#&gt; 1   ubicacion_geografica        Ubicación geográfica           4</span></span>
+<span><span class="co">#&gt; 2         identificacion Identificación de registros           1</span></span>
+<span><span class="co">#&gt; 3              poblacion                   Población           7</span></span>
+<span><span class="co">#&gt; 4             ciudadania                  Ciudadanía           2</span></span>
+<span><span class="co">#&gt; 5 salud_seguridad_social    Salud y seguridad social           9</span></span>
+<span></span>
+<span><span class="fu"><a href="reference/vars_tema.html">vars_tema</a></span><span class="op">(</span><span class="st">"educacion"</span>, tabla <span class="op">=</span> <span class="st">"persona"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  [1] "p38_asiste"     "p39_tipoest"    "p40_lee"        "p41a_nivel"    </span></span>
+<span><span class="co">#&gt;  [5] "p41b_curso"     "p41a_nivel_act" "p41b_curso_act" "aestudio"      </span></span>
+<span><span class="co">#&gt;  [9] "asiste"         "gedadedu"       "nivel_edu"</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span></span>
+<span>  departamento <span class="op">=</span> <span class="st">"Cochabamba"</span>,</span>
+<span>  variables <span class="op">=</span> <span class="fu"><a href="reference/vars_tema.html">vars_tema</a></span><span class="op">(</span><span class="st">"educacion"</span>, tabla <span class="op">=</span> <span class="st">"persona"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="a-quién-se-le-preguntó-cada-cosa">A quién se le preguntó cada cosa<a class="anchor" aria-label="anchor" href="#a-qui%C3%A9n-se-le-pregunt%C3%B3-cada-cosa"></a>
+</h3>
+<p>La columna <code>universo</code> evita el error más común en análisis censal: usar el denominador equivocado. <code>nivel_edu</code>, por ejemplo, está construida sobre las personas de 19 años o más, no sobre toda la población.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/codebook.html">codebook</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"p40_lee"</span>, <span class="st">"p54_hvtot"</span>, <span class="st">"nivel_edu"</span><span class="op">)</span>, tabla <span class="op">=</span> <span class="st">"persona"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">variable</span>, <span class="va">universo</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 3 × 2</span></span>
+<span><span class="co">#&gt;   variable  universo       </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt;          </span></span>
+<span><span class="co">#&gt; 1 p40_lee   personas_5_mas </span></span>
+<span><span class="co">#&gt; 2 p54_hvtot mujeres_12_mas </span></span>
+<span><span class="co">#&gt; 3 nivel_edu personas_19_mas</span></span></code></pre></div>
+<p>Y como está en los cinco censos, <code><a href="reference/get_temporal.html">get_temporal()</a></code> avisa cuando una variable armonizada no se preguntó a la misma población en todos los años pedidos:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/get_temporal.html">get_temporal</a></span><span class="op">(</span>variables <span class="op">=</span> <span class="st">"sabe_leer"</span>, anios <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1992</span>, <span class="fl">2001</span>, <span class="fl">2024</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; ! `sabe_leer` no se preguntó a la misma población en todos los censos:</span></span>
+<span><span class="co">#&gt;     1992: personas de 6 años o más</span></span>
+<span><span class="co">#&gt;     2001: personas de 4 años o más</span></span>
+<span><span class="co">#&gt;     2024: personas de 5 años o más</span></span>
+<span><span class="co">#&gt;   i Filtra `edad &gt;= 6` en todos los años antes de comparar.</span></span></code></pre></div>
+<p>Más en <code><a href="articles/temas.html">vignette("temas")</a></code>.</p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="etiquetas-en-los-resultados">Etiquetas en los resultados<a class="anchor" aria-label="anchor" href="#etiquetas-en-los-resultados"></a>
 </h2>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Pando"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">p25_sexo</span>, <span class="va">p40_lee</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -359,17 +410,17 @@
 <span><span class="co">#&gt;   &lt;fct&gt;                   &lt;fct&gt;                      &lt;int&gt;</span></span>
 <span><span class="co">#&gt; 1 Hombre                  Sí                         60578</span></span>
 <span><span class="co">#&gt; 2 Mujer                   Sí                         52972</span></span>
-<span><span class="co">#&gt; 3 Mujer                   No                          2843</span></span>
-<span><span class="co">#&gt; 4 Hombre                  Sin especificar             1503</span></span>
+<span><span class="co">#&gt; 3 Hombre                  No                          2668</span></span>
+<span><span class="co">#&gt; 4 Mujer                   &lt;NA&gt;                        6091</span></span>
 <span><span class="co">#&gt; 5 Hombre                  &lt;NA&gt;                        6090</span></span>
-<span><span class="co">#&gt; 6 Mujer                   &lt;NA&gt;                        6091</span></span>
-<span><span class="co">#&gt; 7 Hombre                  No                          2668</span></span>
+<span><span class="co">#&gt; 6 Hombre                  Sin especificar             1503</span></span>
+<span><span class="co">#&gt; 7 Mujer                   No                          2843</span></span>
 <span><span class="co">#&gt; 8 Mujer                   Sin especificar             1449</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="censos-históricos">Censos históricos<a class="anchor" aria-label="anchor" href="#censos-hist%C3%B3ricos"></a>
 </h2>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Sexo en el censo 2012, Pando</span></span>
 <span><span class="fu"><a href="reference/get_censo.html">get_personas_2012</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Pando"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">P24</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -380,7 +431,7 @@
 <span><span class="co">#&gt;   &lt;fct&gt;  &lt;int&gt;</span></span>
 <span><span class="co">#&gt; 1 Mujer  50685</span></span>
 <span><span class="co">#&gt; 2 Hombre 59751</span></span></code></pre></div>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># API genérica: el mismo argumento `anio` cubre 1976–2024</span></span>
 <span><span class="fu"><a href="reference/get_censo.html">get_censo</a></span><span class="op">(</span><span class="fl">2012</span>, <span class="st">"persona"</span>, departamento <span class="op">=</span> <span class="st">"07"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/get_censo.html">get_censo</a></span><span class="op">(</span><span class="fl">2024</span>, <span class="st">"persona"</span>, departamento <span class="op">=</span> <span class="st">"07"</span><span class="op">)</span>  <span class="co"># = get_personas_2024()</span></span>
@@ -391,7 +442,7 @@
 <div class="section level2">
 <h2 id="análisis-temporal">Análisis temporal<a class="anchor" aria-label="anchor" href="#an%C3%A1lisis-temporal"></a>
 </h2>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Variables comparables entre censos</span></span>
 <span><span class="fu"><a href="reference/variables_armonizadas.html">variables_armonizadas</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">variable</span>, <span class="va">tabla</span>, <span class="va">v1976</span>, <span class="va">v1992</span>, <span class="va">v2001</span>, <span class="va">v2012</span>, <span class="va">v2024</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -408,7 +459,7 @@
 <span><span class="co">#&gt; 6 sabe_leer          persona p10    P10   P36    P35           p40_lee     </span></span>
 <span><span class="co">#&gt; 7 nivel_edu          persona nivela P12   P39NIV P37A_NIVELNUE nivel_edu   </span></span>
 <span><span class="co">#&gt; 8 asistencia_escolar persona p11    P11   P37    P36           p38_asiste</span></span></code></pre></div>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Nivel educativo en todo el país, 1976–2024 (descarga ~400 MB)</span></span>
 <span><span class="va">edu</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_temporal.html">get_temporal</a></span><span class="op">(</span></span>
 <span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sexo"</span>, <span class="st">"nivel_edu"</span><span class="op">)</span>,</span>
@@ -419,7 +470,7 @@
 <div class="section level2">
 <h2 id="geografía-y-mapas">Geografía y mapas<a class="anchor" aria-label="anchor" href="#geograf%C3%ADa-y-mapas"></a>
 </h2>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/departamentos.html">departamentos</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 9 × 2</span></span>
 <span><span class="co">#&gt;   idep  nombre_dep</span></span>
@@ -452,7 +503,7 @@
 <span><span class="co">#&gt; 4 09    Pando      01    Nicolás Suárez 04    Bella Flor </span></span>
 <span><span class="co">#&gt; 5 09    Pando      02    Manuripi       01    Puerto Rico</span></span></code></pre></div>
 <p><code>departamento</code>, <code>provincia</code> y <code>municipio</code> aceptan <strong>código o nombre</strong> en las funciones <code>get_*</code>. Y <code><a href="reference/etiquetar_geografia.html">etiquetar_geografia()</a></code> agrega los nombres legibles a los microdatos sin <code>left_join</code> manual:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Filtrar por nombre (el departamento se infiere si hace falta)</span></span>
 <span><span class="fu"><a href="reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Cochabamba"</span>, municipio <span class="op">=</span> <span class="st">"Cochabamba"</span><span class="op">)</span></span>
 <span></span>
@@ -462,7 +513,7 @@
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/etiquetar_geografia.html">etiquetar_geografia</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>El paquete incluye geometrías sf para los 9 departamentos (<code>geo_departamentos</code>) y 339 de los 343 municipios (<code>geo_municipios</code>) de Bolivia. Las funciones <code><a href="reference/mapa_dep.html">mapa_dep()</a></code> y <code><a href="reference/mapa_mun.html">mapa_mun()</a></code> generan mapas coropléticos a partir de cualquier agregación de datos del censo, y <code><a href="reference/mapa_man.html">mapa_man()</a></code> baja hasta el manzano y la comunidad dentro de un municipio (sus geometrías se descargan al caché la primera vez).</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># mapa_mun(): nivel municipal — geometrías incluidas en el paquete</span></span>
 <span><span class="va">personas_beni</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Beni"</span>, variables <span class="op">=</span> <span class="st">"p26_edad"</span>,</span>
 <span>                                   verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -480,10 +531,10 @@
 <div class="section level2">
 <h2 id="gestión-del-caché">Gestión del caché<a class="anchor" aria-label="anchor" href="#gesti%C3%B3n-del-cach%C3%A9"></a>
 </h2>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/censosbo_cache_dir.html">censosbo_cache_dir</a></span><span class="op">(</span><span class="op">)</span>    <span class="co"># dónde está el caché</span></span>
 <span><span class="co">#&gt; [1] "/Users/alexojeda/Library/Caches/org.R-project.R/R/censosbo"</span></span></code></pre></div>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/censosbo_cache_info.html">censosbo_cache_info</a></span><span class="op">(</span><span class="op">)</span>   <span class="co"># qué archivos están descargados</span></span>
 <span><span class="fu"><a href="reference/censosbo_cache_clear.html">censosbo_cache_clear</a></span><span class="op">(</span><span class="op">)</span>  <span class="co"># liberar espacio en disco</span></span>
 <span><span class="fu"><a href="reference/update_censosbo.html">update_censosbo</a></span><span class="op">(</span><span class="op">)</span>       <span class="co"># actualizar paquete y limpiar caché</span></span></code></pre></div>
@@ -556,13 +607,13 @@
 <div class="section level2">
 <h2 id="citar">Citar<a class="anchor" aria-label="anchor" href="#citar"></a>
 </h2>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"censosbo"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; To cite package 'censosbo' in publications use:</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;   Ojeda Copa A (2026). _censosbo: Paquete de R para el acceso, análisis</span></span>
 <span><span class="co">#&gt;   y visualización de datos censales en Bolivia (1976-2024)_. Lab</span></span>
-<span><span class="co">#&gt;   TecnoSocial, Cochabamba, Bolivia. R package version 1.4.1,</span></span>
+<span><span class="co">#&gt;   TecnoSocial, Cochabamba, Bolivia. R package version 1.5.0,</span></span>
 <span><span class="co">#&gt;   &lt;https://lab-tecnosocial.github.io/censosbo/&gt;.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; A BibTeX entry for LaTeX users is</span></span>
@@ -573,11 +624,11 @@
 <span><span class="co">#&gt;     organization = {Lab TecnoSocial},</span></span>
 <span><span class="co">#&gt;     address = {Cochabamba, Bolivia},</span></span>
 <span><span class="co">#&gt;     year = {2026},</span></span>
-<span><span class="co">#&gt;     note = {R package version 1.4.1},</span></span>
+<span><span class="co">#&gt;     note = {R package version 1.5.0},</span></span>
 <span><span class="co">#&gt;     url = {https://lab-tecnosocial.github.io/censosbo/},</span></span>
 <span><span class="co">#&gt;   }</span></span></code></pre></div>
 <blockquote>
-<p>Ojeda Copa A (2026). <em>censosbo: Paquete de R para el acceso, análisis y visualización de datos censales en Bolivia (1976-2024)</em>. Lab TecnoSocial, Cochabamba, Bolivia. R package version 1.4.1. <a href="https://lab-tecnosocial.github.io/censosbo/" class="uri">https://lab-tecnosocial.github.io/censosbo/</a></p>
+<p>Ojeda Copa A (2026). <em>censosbo: Paquete de R para el acceso, análisis y visualización de datos censales en Bolivia (1976-2024)</em>. Lab TecnoSocial, Cochabamba, Bolivia. R package version 1.5.0. <a href="https://lab-tecnosocial.github.io/censosbo/" class="uri">https://lab-tecnosocial.github.io/censosbo/</a></p>
 </blockquote>
 </div>
 </div>

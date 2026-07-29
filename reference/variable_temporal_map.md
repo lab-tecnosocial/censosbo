@@ -44,6 +44,12 @@ Un data.frame con columnas:
 
   Advertencias sobre diferencias metodológicas entre censos
 
+- tema:
+
+  Tema al que pertenece, con el vocabulario de \[censo_temas_meta\].
+  Permite pasar de la vista armonizada a la temática sin una tabla
+  externa
+
 ## Source
 
 Elaboración propia a partir de los diccionarios oficiales del INE

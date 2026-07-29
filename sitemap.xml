@@ -11,19 +11,26 @@
 <url><loc>https://lab-tecnosocial.github.io/censosbo/articles/index.html</loc></url>
 <url><loc>https://lab-tecnosocial.github.io/censosbo/articles/introduccion.html</loc></url>
 <url><loc>https://lab-tecnosocial.github.io/censosbo/articles/manzanos-comunidades.html</loc></url>
+<url><loc>https://lab-tecnosocial.github.io/censosbo/articles/temas.html</loc></url>
 <url><loc>https://lab-tecnosocial.github.io/censosbo/articles/visualizacion-mapas.html</loc></url>
 <url><loc>https://lab-tecnosocial.github.io/censosbo/authors.html</loc></url>
 <url><loc>https://lab-tecnosocial.github.io/censosbo/index.html</loc></url>
 <url><loc>https://lab-tecnosocial.github.io/censosbo/news/index.html</loc></url>
+<url><loc>https://lab-tecnosocial.github.io/censosbo/reference/censo_bloques_meta.html</loc></url>
+<url><loc>https://lab-tecnosocial.github.io/censosbo/reference/censo_temas.html</loc></url>
+<url><loc>https://lab-tecnosocial.github.io/censosbo/reference/censo_temas_meta.html</loc></url>
 <url><loc>https://lab-tecnosocial.github.io/censosbo/reference/censosbo-package.html</loc></url>
 <url><loc>https://lab-tecnosocial.github.io/censosbo/reference/censosbo_cache_clear.html</loc></url>
 <url><loc>https://lab-tecnosocial.github.io/censosbo/reference/censosbo_cache_dir.html</loc></url>
 <url><loc>https://lab-tecnosocial.github.io/censosbo/reference/censosbo_cache_info.html</loc></url>
 <url><loc>https://lab-tecnosocial.github.io/censosbo/reference/codebook.html</loc></url>
+<url><loc>https://lab-tecnosocial.github.io/censosbo/reference/codebook_docs.html</loc></url>
+<url><loc>https://lab-tecnosocial.github.io/censosbo/reference/codebook_docs_meta.html</loc></url>
 <url><loc>https://lab-tecnosocial.github.io/censosbo/reference/codebook_historico_meta.html</loc></url>
 <url><loc>https://lab-tecnosocial.github.io/censosbo/reference/codebook_meta.html</loc></url>
 <url><loc>https://lab-tecnosocial.github.io/censosbo/reference/codebook_valores.html</loc></url>
 <url><loc>https://lab-tecnosocial.github.io/censosbo/reference/departamentos.html</loc></url>
+<url><loc>https://lab-tecnosocial.github.io/censosbo/reference/dot-avisar_universos.html</loc></url>
 <url><loc>https://lab-tecnosocial.github.io/censosbo/reference/dot-download_censo.html</loc></url>
 <url><loc>https://lab-tecnosocial.github.io/censosbo/reference/dot-download_ficha.html</loc></url>
 <url><loc>https://lab-tecnosocial.github.io/censosbo/reference/dot-download_parquet.html</loc></url>
@@ -54,5 +61,6 @@
 <url><loc>https://lab-tecnosocial.github.io/censosbo/reference/update_censosbo.html</loc></url>
 <url><loc>https://lab-tecnosocial.github.io/censosbo/reference/variable_temporal_map.html</loc></url>
 <url><loc>https://lab-tecnosocial.github.io/censosbo/reference/variables_armonizadas.html</loc></url>
+<url><loc>https://lab-tecnosocial.github.io/censosbo/reference/vars_tema.html</loc></url>
 </urlset>
 

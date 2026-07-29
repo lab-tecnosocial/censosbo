@@ -195,11 +195,15 @@ mapa_mun(
 
 ``` r
 
+# `p40_lee` se preguntó a las personas de 5 años o más, pero las tasas oficiales
+# de alfabetismo se publican sobre 15 años o más. Se pide `p26_edad` para poder
+# aplicar ese umbral y que el mapa sea comparable con las cifras del INE.
 alfa_oruro <- get_personas_2024(
   departamento = "Oruro",
-  variables    = c("p40_lee"),
+  variables    = c("p40_lee", "p26_edad"),
   as           = "tibble"
 ) |>
+  filter(p26_edad >= 15) |>
   group_by(idep, iprov, imun) |>
   summarise(
     alfa    = mean(p40_lee == 1, na.rm = TRUE) * 100,
@@ -210,7 +214,7 @@ mapa_mun(
   alfa_oruro,
   "alfa",
   departamento  = "Oruro",
-  titulo        = "Tasa de alfabetismo por municipio — Oruro (CPV-2024)",
+  titulo        = "Tasa de alfabetismo (15+ años) por municipio — Oruro (CPV-2024)",
   etiqueta_fill = "% sabe leer"
 )
 ```

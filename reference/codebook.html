@@ -9,7 +9,7 @@ las etiquetas."><meta property="og:image" content="https://lab-tecnosocial.githu
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.5.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -21,7 +21,8 @@ las etiquetas."><meta property="og:image" content="https://lab-tecnosocial.githu
 <li class="active nav-item"><a class="nav-link" href="../reference/index.html">Referencia</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-art-culos" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Artículos</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-art-culos"><li><a class="dropdown-item" href="../articles/diccionario.html">Diccionario de datos (1976–2024)</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-art-culos"><li><a class="dropdown-item" href="../articles/temas.html">Explorar el censo por tema</a></li>
+    <li><a class="dropdown-item" href="../articles/diccionario.html">Diccionario de datos (1976–2024)</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>CPV-2024</h6></li>
     <li><a class="dropdown-item" href="../articles/analisis-demografico.html">Análisis demográfico</a></li>
@@ -59,17 +60,56 @@ las etiquetas.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">codebook_1976</span><span class="op">(</span>variable <span class="op">=</span> <span class="cn">NULL</span>, tabla <span class="op">=</span> <span class="cn">NULL</span>, buscar <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">codebook_1976</span><span class="op">(</span></span>
+<span>  variable <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  tabla <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  buscar <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  tema <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  origen <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">codebook_1992</span><span class="op">(</span>variable <span class="op">=</span> <span class="cn">NULL</span>, tabla <span class="op">=</span> <span class="cn">NULL</span>, buscar <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span><span class="fu">codebook_1992</span><span class="op">(</span></span>
+<span>  variable <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  tabla <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  buscar <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  tema <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  origen <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">codebook_2001</span><span class="op">(</span>variable <span class="op">=</span> <span class="cn">NULL</span>, tabla <span class="op">=</span> <span class="cn">NULL</span>, buscar <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span><span class="fu">codebook_2001</span><span class="op">(</span></span>
+<span>  variable <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  tabla <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  buscar <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  tema <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  origen <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">codebook_2012</span><span class="op">(</span>variable <span class="op">=</span> <span class="cn">NULL</span>, tabla <span class="op">=</span> <span class="cn">NULL</span>, buscar <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span><span class="fu">codebook_2012</span><span class="op">(</span></span>
+<span>  variable <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  tabla <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  buscar <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  tema <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  origen <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">codebook_2024</span><span class="op">(</span>variable <span class="op">=</span> <span class="cn">NULL</span>, tabla <span class="op">=</span> <span class="cn">NULL</span>, buscar <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span><span class="fu">codebook_2024</span><span class="op">(</span></span>
+<span>  variable <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  tabla <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  buscar <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  tema <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  capitulo <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  origen <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">codebook</span><span class="op">(</span>variable <span class="op">=</span> <span class="cn">NULL</span>, tabla <span class="op">=</span> <span class="cn">NULL</span>, buscar <span class="op">=</span> <span class="cn">NULL</span>, anio <span class="op">=</span> <span class="fl">2024</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">codebook</span><span class="op">(</span></span>
+<span>  variable <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  tabla <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  buscar <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  anio <span class="op">=</span> <span class="fl">2024</span>,</span>
+<span>  tema <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  capitulo <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  origen <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -88,7 +128,28 @@ Si `NULL`, devuelve todas las tablas.</p></dd>
 
 <dt id="arg-buscar">buscar<a class="anchor" aria-label="anchor" href="#arg-buscar"></a></dt>
 <dd><p>Caracteres. Texto libre para buscar en las etiquetas y nombres
-de variables (no distingue mayúsculas/minúsculas).</p></dd>
+de variables, y también en el tema y el capítulo (no distingue
+mayúsculas/minúsculas). Se interpreta como expresión regular.</p></dd>
+
+
+<dt id="arg-tema">tema<a class="anchor" aria-label="anchor" href="#arg-tema"></a></dt>
+<dd><p>Caracteres. Filtra por tema, con los slugs de [censo_temas_meta]
+(e.g. `"educacion"`, `"servicios_basicos"`). Acepta varios. Disponible en los
+cinco censos; ver [censo_temas()].</p></dd>
+
+
+<dt id="arg-origen">origen<a class="anchor" aria-label="anchor" href="#arg-origen"></a></dt>
+<dd><p>Caracteres. Filtra por procedencia de la variable:
+`"cuestionario"` (pregunta directa), `"derivada"` (construida por el INE),
+`"geografia"`, `"identificador"` o `"indicador"` (agregados de las fichas de
+manzano y comunidad).</p></dd>
+
+
+<dt id="arg-capitulo">capitulo<a class="anchor" aria-label="anchor" href="#arg-capitulo"></a></dt>
+<dd><p>Caracteres. Filtra por capítulo del cuestionario del CPV-2024:
+la letra (`"C"`) o parte de su nombre (`"vivienda"`). Solo aplica a 2024: los
+cuestionarios anteriores tienen otra estructura y varios numeran las secciones
+de vivienda y de persona en paralelo. El eje comparable entre censos es `tema`.</p></dd>
 
 
 <dt id="arg-anio">anio<a class="anchor" aria-label="anchor" href="#arg-anio"></a></dt>
@@ -98,21 +159,40 @@ o `2012`.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>Un data.frame con las variables que coinciden con los filtros.</p>
+    <p>Un data.frame con las variables que coinciden con los filtros. Las
+  columnas son siempre las mismas para los cinco censos.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p>[censo_temas()] para el catálogo de temas, [vars_tema()] para obtener
+  los nombres de variable de un tema, y [codebook_docs()] para la definición
+  conceptual y la pregunta literal de cada variable.</p></div>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Ver etiqueta de una variable específica del CPV-2024</span></span></span>
 <span class="r-in"><span><span class="fu">codebook</span><span class="op">(</span><span class="st">"p25_sexo"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   variable              etiqueta   tabla     valores_codigos       tipo</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 p25_sexo 25. Es mujer u hombre persona 1, 2, Mujer, Hombre categorica</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   variable              etiqueta   tabla   categorias       tipo      tema</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 p25_sexo 25. Es mujer u hombre persona 2 categorías categorica poblacion</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   capitulo pregunta pregunta_num       origen       universo</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1        G       25           25 cuestionario todas_personas</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 columnas sin datos aquí: grupo_ine, bloque, denominador, valores_fuente</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Variables de sexo en el censo 2012</span></span></span>
 <span class="r-in"><span><span class="fu">codebook</span><span class="op">(</span>buscar <span class="op">=</span> <span class="st">"sexo"</span>, anio <span class="op">=</span> <span class="fl">2012</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   variable etiqueta        tabla       tipo     valores_codigos</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     P20E     Sexo   emigracion categorica 1, 2, Mujer, Hombre</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2     P22E     Sexo discapacidad categorica 1, 2, Mujer, Hombre</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   variable etiqueta        tabla   categorias       tipo</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     P20E     Sexo   emigracion 2 categorías categorica</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2     P22E     Sexo discapacidad 2 categorías categorica</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                       tema pregunta pregunta_num       origen       universo</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 emigracion_internacional     20.E           20 cuestionario todas_personas</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2             discapacidad     22.E           22 cuestionario todas_personas</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   valores_fuente</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1        redatam</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2        redatam</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 columnas sin datos aquí: capitulo, grupo_ine, bloque, denominador</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Todas las variables de vivienda del censo 1992</span></span></span>
 <span class="r-in"><span><span class="fu">codebook</span><span class="op">(</span>tabla <span class="op">=</span> <span class="st">"vivienda"</span>, anio <span class="op">=</span> <span class="fl">1992</span><span class="op">)</span></span></span>
@@ -162,98 +242,309 @@ o `2012`.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 43         idep                   Código de departamento (01-09) vivienda</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 44        iprov                              Código de provincia vivienda</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 45         imun                              Código de municipio vivienda</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          tipo</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  categorica</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  categorica</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  categorica</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  categorica</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  categorica</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  categorica</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  categorica</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  categorica</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  categorica</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 categorica</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 categorica</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 categorica</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13 categorica</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14   numerica</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15 categorica</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16 categorica</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17 categorica</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18 categorica</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19 categorica</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20 categorica</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21   numerica</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22 categorica</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23   numerica</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24   numerica</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25   numerica</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26   numerica</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27   numerica</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28   numerica</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29   numerica</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30   numerica</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31   numerica</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 32 categorica</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 33 categorica</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 34   numerica</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 35   numerica</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 36 categorica</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 37   numerica</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 38   numerica</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 39   numerica</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 40 categorica</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 41 categorica</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 42 categorica</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 43 categorica</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 44 categorica</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 45 categorica</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                                                                                                                                                                                                                                                                                                    valores_codigos</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                                                                                                                                                                                                                                                                                                                                                                         SIZE, 16</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                                                                                                                                                                                                                                                                 0, 1, 2, 3, 4, 5, 6, 7, 8, Comunidad, Estancia, Hacienda, Ex-Hacienda, Rancho, Sindicato, Colonia, Barraca, Otra</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, Casa independiente, Departamento, Habitaciones sueltas, Choza, pahuichi, Local no construido para vivienda, Vivienda improvisada, Hotel, residencia o alojamiento, Cuarte, establecimiento militar o policial, Hospital, clínica o sanatorio, Carcel o establecimiento correccional, Convento o internado, Otra colectiva, Ambulante</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4                                                                                                                                                                                         1, 2, 3, 4, 5, 6, Ocupada - ocupantes presentes, Ocupada - ocupantes ausentes, Desocupada - alquiler, venta, Desocupada - en construcción, reparación, Desocupada -  Abandonada, Rechazo</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5                                                                                                                                                                                                                             1, 2, 3, 4, 5, 6, 7, Adobe revocado, Adobe sin revocar o tapial, Ladrillo, bloques de cemento, hormigón, Piedra, Madera, Caña, palma, troncos, Otros</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6                                                                                                                                                                                                                                                                  1, 2, 3, 4, 5, Calamina o plancha, Tejas(cemento, arcilla, etc), Losa hormigón armado, Paja, caña, palma, Otros</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7                                                                                                                                                                                                                                                                                                   1, 2, 3, 4, 5, 6, Madera, Mosaico o baldosas, Ladrillo, Cemento, Tierra, Otros</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8                                                                                                                                                                                      1, 2, 3, 4, Por cañería dentro de la vivienda, Por cañería fuera de la vivienda, pero dentro del edificio, lote o terreno, Por cañería fiera del lote o terreno, No recibe agua por cañería</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9                                                                                                                                                                                                                                                                       1, 2, 3, 4, 5, Red pública o privada, Pozo o noria, Rio, lago, vertiente o acequia, Carro repartidor, Otra</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10                                                                                                                                                                                                                                                                                                   1, 2, 3, Tiene con descarga instantánea de agua, Tiene sin descarga, No Tiene</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11                                                                                                                                                                                                                                                                                                                       1, 2, Privado de este hogar, Compartido con otros hogares</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12                                                                                                                                                                                                                                                                                              1, 2, 3, Alcantarillado público, Cámara séptica, Otro(Pozo ciego, superficie, etc)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13                                                                                                                                                                                                                                                                                                                                                                    1, 2, Si, No</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14                                                                                                                                                                                                                                                                                                                                                                            NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15                                                                                                                                                                                                                                                                                                                                                                   ALIAS, COCINA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16                                                                                                                                                                                                                                                                                                                                                                    1, 2, Si, No</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17                                                                                                                                                                                                                                                               1, 2, 3, 4, 5, 6, 7, 8, Leña, Guano, bosta o taquia, Carbón, Kerosene, Gas licuado, Electricidad, No cocina, Otro</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18                                                                                                                                                                                                                                                 1, 2, 3, 4, 5, 6, 7, Propia, Alquilada, Contrato anticrético, Contrato mixto, Cedida por servicios, Cedida por parentesco, Otra</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19                                                                                                                                                                                                                                                                                                                                                               2037.rbf', SIZE 8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20                                                                                                                                                                                                                                                                                                                                                                          TO, 40</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21                                                                                                                                                                                                                                                                                                                                                                            NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22                                                                                                                                                                                                                                                                                                                                               Curandero,, Kallawaya, Naturista9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23                                                                                                                                                                                                                                                                                                                                                                            NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24                                                                                                                                                                                                                                                                                                                                                                            NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25                                                                                                                                                                                                                                                                                                                                                                            NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26                                                                                                                                                                                                                                                                                                                                                                            NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27                                                                                                                                                                                                                                                                                                                                                                            NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28                                                                                                                                                                                                                                                                                                                                                                            NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29                                                                                                                                                                                                                                                                                                                                                                            NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30                                                                                                                                                                                                                                                                                                                                                                            NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31                                                                                                                                                                                                                                                                                                                                                                            NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 32                                                                                                                                                                                                                                                                                                                                                     POBLACION, ALIAS NO_HOMBRES</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 33                                                                                                                                                                                                                                                                                                                                                                    1, 2, Si, No</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 34                                                                                                                                                                                                                                                                                                                                                                            NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 35                                                                                                                                                                                                                                                                                                                                                                            NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 36                                                                                                                                                                                                                                                                                                                                       0, 9000, POBLACION_TOTAL, POBLACION_TOTAL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 37                                                                                                                                                                                                                                                                                                                                                                            NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 38                                                                                                                                                                                                                                                                                                                                                                            NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 39                                                                                                                                                                                                                                                                                                                                                                            NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 40                                                                                                                                                                                                                                                                                                                                                             1, 2, Urbana, Rural</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 41                                                                                                                                                                                                                                                                                                                       1, 2, 3, 4, 5, NBS, Umbral, Moderada, Indigente, Marginal</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 42                                                                                                                                                                                                                                                                                                                                                         1, 2, No pobres, Pobres</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 43                                                                                                                                                                                                                                                                                                                                                                            NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 44                                                                                                                                                                                                                                                                                                                                                                            NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 45                                                                                                                                                                                                                                                                                                                                                                            NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       categorias       tipo                    tema pregunta pregunta_num</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   1 categorías categorica    ubicacion_geografica     &lt;NA&gt;           NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   9 categorías categorica    ubicacion_geografica     &lt;NA&gt;           NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  13 categorías categorica          vivienda_hogar       01            1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4   6 categorías categorica          vivienda_hogar       02            2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5   7 categorías categorica materiales_construccion       03            3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6   5 categorías categorica materiales_construccion       04            4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7   6 categorías categorica materiales_construccion       05            5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8   4 categorías categorica       servicios_basicos       06            6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9   5 categorías categorica       servicios_basicos       07            7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10  3 categorías categorica       servicios_basicos       08            8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11  2 categorías categorica       servicios_basicos     08.1            8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12  3 categorías categorica       servicios_basicos     08.2            8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13  2 categorías categorica       servicios_basicos       09            9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14                 numerica          vivienda_hogar       10           10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15  1 categorías categorica          vivienda_hogar       11           11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16  2 categorías categorica          vivienda_hogar       12           12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17  8 categorías categorica       servicios_basicos       13           13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18  7 categorías categorica          vivienda_hogar       14           14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19  1 categorías categorica  salud_seguridad_social     15.A           15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20  1 categorías categorica  salud_seguridad_social     15.B           15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21                 numerica  salud_seguridad_social     15.C           15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22  1 categorías categorica  salud_seguridad_social     15.D           15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23                 numerica  salud_seguridad_social     15.E           15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24                 numerica  salud_seguridad_social     15.F           15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25                 numerica  salud_seguridad_social     15.G           15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26                 numerica  salud_seguridad_social     15.H           15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27                 numerica  salud_seguridad_social     15.I           15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28                 numerica                religion       16           16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29                 numerica                religion     16.B           16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30                 numerica                religion     16.C           16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31                 numerica                religion     16.D           16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32  1 categorías categorica                religion     16.E           16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33  2 categorías categorica              mortalidad       17           17</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34                 numerica               poblacion     18.H           18</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35                 numerica               poblacion     18.M           18</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36  2 categorías categorica               poblacion     18.T           18</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37                 numerica          vivienda_hogar       20           20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38                 numerica          vivienda_hogar       21           21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39                 numerica    ubicacion_geografica       22           22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40  2 categorías categorica    ubicacion_geografica     &lt;NA&gt;           NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 41  5 categorías categorica          vivienda_hogar     &lt;NA&gt;           NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 42  2 categorías categorica          vivienda_hogar     &lt;NA&gt;           NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 43               categorica    ubicacion_geografica     &lt;NA&gt;           NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44               categorica    ubicacion_geografica     &lt;NA&gt;           NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 45               categorica    ubicacion_geografica     &lt;NA&gt;           NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          origen        universo                      grupo_ine valores_fuente</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     geografia            &lt;NA&gt;                           &lt;NA&gt;        redatam</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      derivada todas_viviendas Características de la Vivienda        redatam</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  cuestionario todas_viviendas Características de la Vivienda        redatam</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  cuestionario todas_viviendas Características de la Vivienda        redatam</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  cuestionario todas_viviendas Características de la Vivienda        redatam</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  cuestionario todas_viviendas Características de la Vivienda        redatam</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  cuestionario todas_viviendas Características de la Vivienda        redatam</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  cuestionario todas_viviendas              Servicios Básicos        redatam</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  cuestionario todas_viviendas              Servicios Básicos        redatam</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 cuestionario todas_viviendas              Servicios Básicos        redatam</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 cuestionario todas_viviendas              Servicios Básicos        redatam</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 cuestionario todas_viviendas              Servicios Básicos        redatam</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 cuestionario todas_viviendas              Servicios Básicos        redatam</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14 cuestionario todas_viviendas Características de la Vivienda           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15 cuestionario todas_viviendas Características de la Vivienda        redatam</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16 cuestionario todas_viviendas Características de la Vivienda        redatam</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17 cuestionario todas_viviendas              Servicios Básicos        redatam</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18 cuestionario todas_viviendas Características de la Vivienda        redatam</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19 cuestionario todas_viviendas                          Salud        redatam</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20 cuestionario todas_viviendas                          Salud        redatam</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21 cuestionario todas_viviendas                          Salud           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22 cuestionario todas_viviendas                          Salud        redatam</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23 cuestionario todas_viviendas                          Salud           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24 cuestionario todas_viviendas                          Salud           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25 cuestionario todas_viviendas                          Salud           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26 cuestionario todas_viviendas                          Salud           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27 cuestionario            &lt;NA&gt;                           &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28 cuestionario            &lt;NA&gt;                           &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29 cuestionario todas_viviendas                       Religión           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30 cuestionario todas_viviendas                       Religión           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31 cuestionario todas_viviendas                       Religión           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32 cuestionario            &lt;NA&gt;                           &lt;NA&gt;        redatam</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33 cuestionario todas_viviendas                     Mortalidad        redatam</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34 cuestionario todas_viviendas                           &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35 cuestionario todas_viviendas                           &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36 cuestionario todas_viviendas                           &lt;NA&gt;        redatam</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37 cuestionario            &lt;NA&gt;                           &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38 cuestionario            &lt;NA&gt;                           &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39 cuestionario            &lt;NA&gt;                           &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40    geografia            &lt;NA&gt;                           &lt;NA&gt;        redatam</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 41     derivada            &lt;NA&gt;                           &lt;NA&gt;        redatam</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 42     derivada            &lt;NA&gt;                           &lt;NA&gt;        redatam</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 43    geografia            &lt;NA&gt;                           &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44    geografia            &lt;NA&gt;                           &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 45    geografia            &lt;NA&gt;                           &lt;NA&gt;           &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 columnas sin datos aquí: capitulo, bloque, denominador</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Por tema, y comparando entre censos</span></span></span>
+<span class="r-in"><span><span class="fu">codebook</span><span class="op">(</span>tema <span class="op">=</span> <span class="st">"educacion"</span>, tabla <span class="op">=</span> <span class="st">"persona"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          variable</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      p38_asiste</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2     p39_tipoest</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3         p40_lee</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      p41a_nivel</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5      p41b_curso</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  p41a_nivel_act</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  p41b_curso_act</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8       nivel_edu</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9        aestudio</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10         asiste</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11       gedadedu</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                                              etiqueta</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                                                                          38. Actualmente, asiste como estudiante a:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                                                         39. El centro o establecimiento educativo al que asiste es:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                                                                                            40. Sabe leer y escribir</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                                     41.A. Cuál es el último curso o año que aprobó y en que nivel educativo (Nivel)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                               41.B. Cuál es el último curso o año que aprobó y en que nivel educativo (Curso o Año)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                                                    Nivel educativo alcanzado: sistema actual (5 o más años de edad)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7                                                         Curso o año aprobado: sistema actual (5 o más años de edad)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  Nivel educativo alcanzado agrupado (19 o más años de edad, residentes en el país y que respondieron a la pregunta)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9                     Años de estudio (19 o más años de edad, residentes en el país y que respondieron a la pregunta)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10                                      Asistencia educativa (residentes en el país y que respondieron a la pregunta)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11                  Grupo de edad según asistencia educativa (residentes en el país y que respondieron a la pregunta)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      tabla    categorias       tipo      tema capitulo pregunta pregunta_num</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  persona  9 categorías categorica educacion        G       38           38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  persona  3 categorías categorica educacion        G       39           39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  persona  3 categorías categorica educacion        G       40           40</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  persona 14 categorías categorica educacion        G     41.A           41</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  persona                 numerica educacion        G     41.B           41</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  persona 11 categorías categorica educacion        G     41.A           41</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  persona                 numerica educacion        G     41.B           41</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  persona  4 categorías categorica educacion        G     &lt;NA&gt;           NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  persona                 numerica educacion        G     &lt;NA&gt;           NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 persona  2 categorías categorica educacion        G     &lt;NA&gt;           NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 persona  7 categorías categorica educacion        G     &lt;NA&gt;           NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          origen        universo</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  cuestionario  todas_personas</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  cuestionario  todas_personas</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  cuestionario  personas_5_mas</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  cuestionario  personas_5_mas</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  cuestionario  personas_5_mas</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6      derivada  personas_5_mas</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7      derivada  personas_5_mas</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8      derivada personas_19_mas</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9      derivada personas_19_mas</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10     derivada  todas_personas</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11     derivada  todas_personas</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 columnas sin datos aquí: grupo_ine, bloque, denominador, valores_fuente</span>
+<span class="r-in"><span><span class="fu">codebook</span><span class="op">(</span>tema <span class="op">=</span> <span class="st">"educacion"</span>, tabla <span class="op">=</span> <span class="st">"persona"</span>, anio <span class="op">=</span> <span class="fl">2012</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        variable                                 etiqueta   tabla    categorias</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1           P35                     Sabe leer y escribir persona  3 categorías</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2           P36           Asiste a una escuela o colegio persona  5 categorías</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 P37A_NIVELNUE Nivel más alto de instrucción que aprobó persona 14 categorías</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         tipo      tema pregunta pregunta_num       origen       universo</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 categorica educacion       35           35 cuestionario todas_personas</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 categorica educacion       36           36 cuestionario todas_personas</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 categorica educacion     37.A           37 cuestionario todas_personas</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                           grupo_ine valores_fuente</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Características Sociodemográficas        redatam</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Características Sociodemográficas        redatam</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 Características Sociodemográficas        redatam</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 columnas sin datos aquí: capitulo, bloque, denominador</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Por capítulo del cuestionario, solo las preguntas directas</span></span></span>
+<span class="r-in"><span><span class="fu">codebook</span><span class="op">(</span>capitulo <span class="op">=</span> <span class="st">"C"</span>, origen <span class="op">=</span> <span class="st">"cuestionario"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          variable</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1       v03_pared</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2       v04_revoq</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3       v05_techo</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4        v06_piso</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5     v07_aguapro</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6    v08_aguadist</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7     v09_energia</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8      v10_combus</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9      v11_basura</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10     v12_cocina</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11    v13_habitac</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12     v14_dormit</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13    v15_servsan</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14    v16_desague</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15   v17_tenencia</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16      v18a_bici</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17      v18b_moto</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18      v18c_auto</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19   v18d_carreta</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20      v18e_bote</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21     v18f_refri</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22     v18g_micro</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23   v18h_calefon</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24      v18i_aire</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25  v18j_lavadora</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26     v19a_radio</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27        v19b_tv</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28     v19c_compu</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29   v19d_celular</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30  v19e_inetfijo</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31 v19f_inetmovil</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32   v19g_tvcable</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33   v19h_telfijo</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                etiqueta</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  3. Cual es el material de construcción más utilizado en las paredes de esta vivienda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                            4. Las paredes interiores de esta vivienda. Tienen revoque</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3   5. Cuál es el material de construcción más utilizado en los techos de esta vivienda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                    6. Cuál es el material más utilizado en los pisos de esta vivienda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                       7. Principalmente, el agua que usan en la vivienda proviene de:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                                     8. El agua que usan en la vivienda se distribuye:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7                     9. De donde proviene la energía eléctrica que usan en la vivienda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8               10. Cuál es el principal combustible o energía que utiliza para cocinar</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9                                11. Habitualmente. Qué hacen con la basura que generan</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10                                               12. Tienen un cuarto solo para cocinar</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11                  13. Cuántos cuartos o habitaciones ocupan, sin contar baño y cocina</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12            14. De estos cuartos o habitaciones, Cuántos se utilizan solo para dormir</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13                                                           15. Tienen, baño o letrina</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14                                                 16. El baño o letrina tiene desagüe:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15                             17. La vivienda que ocupan es: (Tenencia de la vivienda)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16                                                      18.1. Su hogar tiene: Bicicleta</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17                                      18.2. Su hogar tiene: Motocicleta o cuadratrack</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18                                             18.3. Su hogar tiene: Vehículo automotor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19                                             18.4. Su hogar tiene: Carreta o carretón</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20                                18.5. Su hogar tiene: Deslizador, balsa, canoa o bote</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21                                     18.6. Su hogar tiene: Refrigerador o congeladora</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22                                                     18.7. Su hogar tiene: Microondas</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23                                           18.8. Su hogar tiene: Calefón, termotanque</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24                                             18.9. Su hogar tiene: Aire acondicionado</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25                                              18.10. Su hogar tiene: Lavadora de ropa</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26                                       19.1. Su hogar tiene: Radio o equipo de sonido</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27                                                      19.2. Su hogar tiene: Televisor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28                                   19.3. Su hogar tiene: Computadora, laptop o tablet</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29                                               19.4. Su hogar tiene: Teléfono celular</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30                                   19.5. Su hogar tiene: Internet fijo en la vivienda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31                                 19.6. Su hogar tiene: Internet móvil (megas o datos)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32                               19.7. Su hogar tiene: Servicio de TV cable o satelital</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33                                     19.8. Su hogar tiene: Servicio de telefonía fija</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       tabla   categorias       tipo                    tema capitulo pregunta</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  vivienda 7 categorías categorica materiales_construccion        C        3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  vivienda 2 categorías categorica materiales_construccion        C        4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  vivienda 5 categorías categorica materiales_construccion        C        5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  vivienda 9 categorías categorica materiales_construccion        C        6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  vivienda 9 categorías categorica       servicios_basicos        C        7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  vivienda 3 categorías categorica       servicios_basicos        C        8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  vivienda 5 categorías categorica       servicios_basicos        C        9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  vivienda 8 categorías categorica       servicios_basicos        C       10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  vivienda 7 categorías categorica       servicios_basicos        C       11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 vivienda 2 categorías categorica          vivienda_hogar        C       12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 vivienda 8 categorías categorica          vivienda_hogar        C       13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 vivienda 9 categorías categorica          vivienda_hogar        C       14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 vivienda 3 categorías categorica       servicios_basicos        C       15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14 vivienda 6 categorías categorica       servicios_basicos        C       16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15 vivienda 8 categorías categorica          vivienda_hogar        C       17</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16 vivienda 3 categorías categorica      equipamiento_hogar        C     18.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17 vivienda 3 categorías categorica      equipamiento_hogar        C     18.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18 vivienda 3 categorías categorica      equipamiento_hogar        C     18.3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19 vivienda 3 categorías categorica      equipamiento_hogar        C     18.4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20 vivienda 3 categorías categorica      equipamiento_hogar        C     18.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21 vivienda 3 categorías categorica      equipamiento_hogar        C     18.6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22 vivienda 3 categorías categorica      equipamiento_hogar        C     18.7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23 vivienda 3 categorías categorica      equipamiento_hogar        C     18.8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24 vivienda 3 categorías categorica      equipamiento_hogar        C     18.9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25 vivienda 3 categorías categorica      equipamiento_hogar        C    18.10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26 vivienda 3 categorías categorica                     tic        C     19.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27 vivienda 3 categorías categorica                     tic        C     19.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28 vivienda 3 categorías categorica                     tic        C     19.3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29 vivienda 3 categorías categorica                     tic        C     19.4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30 vivienda 3 categorías categorica                     tic        C     19.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31 vivienda 3 categorías categorica                     tic        C     19.6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32 vivienda 3 categorías categorica                     tic        C     19.7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33 vivienda 3 categorías categorica                     tic        C     19.8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    pregunta_num       origen            universo</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1             3 cuestionario viviendas_presentes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2             4 cuestionario viviendas_presentes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3             5 cuestionario viviendas_presentes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4             6 cuestionario viviendas_presentes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5             7 cuestionario viviendas_presentes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6             8 cuestionario viviendas_presentes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7             9 cuestionario viviendas_presentes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8            10 cuestionario viviendas_presentes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9            11 cuestionario viviendas_presentes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10           12 cuestionario viviendas_presentes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11           13 cuestionario viviendas_presentes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12           14 cuestionario viviendas_presentes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13           15 cuestionario viviendas_presentes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14           16 cuestionario viviendas_presentes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15           17 cuestionario viviendas_presentes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16           18 cuestionario viviendas_presentes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17           18 cuestionario viviendas_presentes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18           18 cuestionario viviendas_presentes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19           18 cuestionario viviendas_presentes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20           18 cuestionario viviendas_presentes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21           18 cuestionario viviendas_presentes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22           18 cuestionario viviendas_presentes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23           18 cuestionario viviendas_presentes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24           18 cuestionario viviendas_presentes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25           18 cuestionario viviendas_presentes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26           19 cuestionario viviendas_presentes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27           19 cuestionario viviendas_presentes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28           19 cuestionario viviendas_presentes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29           19 cuestionario viviendas_presentes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30           19 cuestionario viviendas_presentes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31           19 cuestionario viviendas_presentes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32           19 cuestionario viviendas_presentes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33           19 cuestionario viviendas_presentes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 columnas sin datos aquí: grupo_ine, bloque, denominador, valores_fuente</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

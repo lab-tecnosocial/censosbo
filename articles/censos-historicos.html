@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.5.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,7 +40,8 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-art-culos" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Artículos</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-art-culos">
-<li><a class="dropdown-item" href="../articles/diccionario.html">Diccionario de datos (1976–2024)</a></li>
+<li><a class="dropdown-item" href="../articles/temas.html">Explorar el censo por tema</a></li>
+    <li><a class="dropdown-item" href="../articles/diccionario.html">Diccionario de datos (1976–2024)</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>CPV-2024</h6></li>
     <li><a class="dropdown-item" href="../articles/analisis-demografico.html">Análisis demográfico</a></li>
@@ -382,12 +383,12 @@ se aplica sobre el cantón)</li>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 5</span></span></span>
 <span><span class="co">#&gt;     dep   pro   can  sexo  edad</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     3    29     0     2    34</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     3    29     0     1    10</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     3    29     0     2     9</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>     3    29     0     1     3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>     3    29     0     2    18</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>     3    29     0     1    24</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     3    29     0     1    36</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     3    29     0     2    33</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     3    29     0     2    13</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>     3    29     0     2     9</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>     3    29     0     1     7</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>     3    29     0     1     4</span></span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Viviendas 1976</span></span>
 <span><span class="fu"><a href="../reference/get_censo.html">get_viviendas_1976</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"La Paz"</span><span class="op">)</span></span></code></pre></div>
@@ -533,7 +534,7 @@ puedes especificar el año con el argumento <code>anio</code>:</p>
 <span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_censo.html">get_censo</a></span><span class="op">(</span><span class="fl">2012</span>, <span class="st">"persona"</span>, departamento <span class="op">=</span> <span class="st">"Pando"</span>, as <span class="op">=</span> <span class="st">"duckdb"</span>,</span>
 <span>                 verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; duckdb keeps downloaded extensions and secrets in a temporary directory:</span></span>
-<span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> /tmp/Rtmp9LkhhT/duckdb</span></span>
+<span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> /tmp/RtmpzGYShG/duckdb</span></span>
 <span><span class="co">#&gt; This is removed when the R session ends.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> Extensions are re-downloaded each session.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> Secrets are lost.</span></span>
@@ -623,10 +624,50 @@ año, usa <code><a href="../reference/get_temporal.html">get_temporal()</a></cod
 armonizadas, ver la viñeta <strong><a href="analisis-temporal.html">Análisis temporal</a></strong>.</p>
 </div>
 <div class="section level2">
+<h2 id="metadatos-de-2012-y-2001">Metadatos de 2012 y 2001<a class="anchor" aria-label="anchor" href="#metadatos-de-2012-y-2001"></a>
+</h2>
+<p>Para esos dos censos, además del diccionario de microdatos, el
+paquete incorpora los diccionarios DDI del catálogo ANDA del INE. Eso
+añade tres cosas que no estaban:</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># El tema de cada variable, con el mismo vocabulario que el CPV-2024</span></span>
+<span><span class="fu"><a href="../reference/codebook.html">codebook</a></span><span class="op">(</span>tema <span class="op">=</span> <span class="st">"educacion"</span>, tabla <span class="op">=</span> <span class="st">"persona"</span>, anio <span class="op">=</span> <span class="fl">2012</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># A quién se le preguntó: 2001 es el único censo cuyo DDI declara filtros de edad</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="fu"><a href="../reference/codebook.html">codebook</a></span><span class="op">(</span>anio <span class="op">=</span> <span class="fl">2001</span><span class="op">)</span><span class="op">$</span><span class="va">universo</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># La agrupación oficial del INE de esa época</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="fu"><a href="../reference/codebook.html">codebook</a></span><span class="op">(</span>anio <span class="op">=</span> <span class="fl">2001</span><span class="op">)</span><span class="op">$</span><span class="va">grupo_ine</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Definición conceptual y pregunta literal</span></span>
+<span><span class="fu"><a href="../reference/codebook_docs.html">codebook_docs</a></span><span class="op">(</span><span class="st">"P24"</span>, anio <span class="op">=</span> <span class="fl">2012</span>, campos <span class="op">=</span> <span class="st">"definicion"</span><span class="op">)</span></span></code></pre></div>
+<p>Los capítulos (<code>capitulo</code>) son solo del cuestionario del
+CPV-2024: los de 2012 y 2001 tienen otra estructura. Para 1976 y 1992 no
+hay taxonomía —el ANDA no publica un diccionario estructurado de esos
+censos— pero las columnas existen vacías, de modo que
+<code><a href="../reference/codebook.html">codebook()</a></code> devuelve la misma forma en los cinco años y se
+pueden combinar sin fricción.</p>
+<div class="section level3">
+<h3 id="etiquetas-de-valor-completadas">Etiquetas de valor completadas<a class="anchor" aria-label="anchor" href="#etiquetas-de-valor-completadas"></a>
+</h3>
+<p>Los DDI de 2012 y 2001 traen algunas etiquetas de valor que la
+extracción de REDATAM no recuperó, y se usaron para rellenar huecos. La
+columna <code>valores_fuente</code> indica el origen de cada una
+(<code>"redatam"</code> o <code>"ddi"</code>). <strong>Nada preexistente
+se sobrescribió</strong>: el contraste reveló que el DDI del INE tiene
+errores puntuales —en 2012, la variable de estado civil viene con las
+categorías de otra pregunta— así que las discrepancias se registran para
+revisión en vez de aplicarse.</p>
+<p>En la práctica el aporte fue pequeño: las variables categóricas sin
+códigos son claves geográficas y catálogos de ocupación, que no llevan
+etiquetas enumerables.</p>
+</div>
+</div>
+<div class="section level2">
 <h2 id="tablas-complementarias">Tablas complementarias<a class="anchor" aria-label="anchor" href="#tablas-complementarias"></a>
 </h2>
 <p>Los censos 2012, 2001 y 1992 tienen tablas adicionales:</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Emigración internacional (2012): registros por departamento de origen</span></span>
 <span><span class="fu"><a href="../reference/get_censo.html">get_emigracion_2012</a></span><span class="op">(</span>verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">idep</span><span class="op">)</span> <span class="op">|&gt;</span></span>

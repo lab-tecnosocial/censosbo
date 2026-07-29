@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.5.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,7 +19,8 @@
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Referencia</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-art-culos" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Artículos</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-art-culos"><li><a class="dropdown-item" href="../articles/diccionario.html">Diccionario de datos (1976–2024)</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-art-culos"><li><a class="dropdown-item" href="../articles/temas.html">Explorar el censo por tema</a></li>
+    <li><a class="dropdown-item" href="../articles/diccionario.html">Diccionario de datos (1976–2024)</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>CPV-2024</h6></li>
     <li><a class="dropdown-item" href="../articles/analisis-demografico.html">Análisis demográfico</a></li>
@@ -50,6 +51,89 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.5.0" id="censosbo-150">censosbo 1.5.0<a class="anchor" aria-label="anchor" href="#censosbo-150"></a></h2>
+<div class="section level3">
+<h3 id="un-vocabulario-temático-para-las-variables-censales-1-5-0">Un vocabulario temático para las variables censales<a class="anchor" aria-label="anchor" href="#un-vocabulario-tem%C3%A1tico-para-las-variables-censales-1-5-0"></a></h3>
+<p>Los cinco censos tienen 809 variables entre todos, y el diccionario solo decía nombre, etiqueta, tabla y tipo. No había forma de preguntar «¿qué variables hay de educación?» ni —lo que más importa— <strong>a quién se le preguntó cada cosa</strong>. Esta versión añade las dos cosas, a partir de dos fuentes oficiales del INE: los cuestionarios censales y los diccionarios DDI del catálogo ANDA (estudios 132, 8, 10, 47 y 46, es decir <strong>los cinco censos</strong>).</p>
+<div class="section level4">
+<h4 id="nuevas-columnas-en-el-codebook-1-5-0">Nuevas columnas en el codebook<a class="anchor" aria-label="anchor" href="#nuevas-columnas-en-el-codebook-1-5-0"></a></h4>
+<p><code><a href="../reference/codebook.html">codebook()</a></code> devuelve diez columnas más. Van <strong>al final</strong>, después de las cinco originales, cuyo nombre y orden se conservan:</p>
+<ul><li>
+<code>tema</code> — uno de 21 temas. Diecisiete son los que el propio INE declara en su catálogo; los otros cuatro los añade el paquete (<code>ubicacion_geografica</code>, <code>identificacion</code>, <code>materiales_construccion</code> y <code>religion</code>, esta última porque solo el censo de 1992 preguntó por pertenencia religiosa).</li>
+<li>
+<code>universo</code> — a quién se aplicó la pregunta: <code>personas_5_mas</code>, <code>mujeres_12_mas</code>, <code>viviendas_presentes</code>… <strong>Es la columna que evita el error más frecuente en análisis censal</strong>: calcular un porcentaje sobre el denominador equivocado. Por ejemplo, <code>nivel_edu</code> está construida sobre personas de 19 años o más, no sobre toda la población.</li>
+<li>
+<code>capitulo</code> — los siete capítulos (A–G) del cuestionario del CPV-2024.</li>
+<li>
+<code>pregunta</code> y <code>pregunta_num</code> — el número de pregunta del formulario, para recorrer el censo en el mismo orden en que se aplicó.</li>
+<li>
+<code>origen</code> — distingue una pregunta directa (<code>cuestionario</code>) de una variable que el INE o REDATAM construyeron (<code>derivada</code>), de las claves geográficas y los identificadores.</li>
+<li>
+<code>grupo_ine</code> — la agrupación oficial de cada censo anterior, que 2024 no trae.</li>
+<li>
+<code>bloque</code> y <code>denominador</code> — para los 194 indicadores de manzano y comunidad.</li>
+<li>
+<code>valores_fuente</code> — si las etiquetas de valor vienen de REDATAM o del DDI.</li>
+</ul><p>Los 21 temas se aplican a los cinco censos, así que <code>codebook(tema = "educacion", anio = ...)</code> es comparable entre ellos. Los capítulos son solo de 2024: los cuestionarios anteriores tienen otra estructura y varios numeran las secciones de vivienda y de persona en paralelo.</p>
+</div>
+<div class="section level4">
+<h4 id="funciones-nuevas-1-5-0">Funciones nuevas<a class="anchor" aria-label="anchor" href="#funciones-nuevas-1-5-0"></a></h4>
+<ul><li><p><code><a href="../reference/censo_temas.html">censo_temas()</a></code> — el catálogo de temas con el número de variables de cada uno, contado en vivo y filtrable por tabla y año.</p></li>
+<li>
+<p><code><a href="../reference/vars_tema.html">vars_tema()</a></code> — los nombres de las variables de un tema, en el orden del cuestionario, listos para pasar a <code>variables</code>:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span></span>
+<span>  departamento <span class="op">=</span> <span class="st">"Cochabamba"</span>,</span>
+<span>  variables <span class="op">=</span> <span class="fu"><a href="../reference/vars_tema.html">vars_tema</a></span><span class="op">(</span><span class="st">"educacion"</span>, tabla <span class="op">=</span> <span class="st">"persona"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+</li>
+<li><p><code><a href="../reference/codebook_docs.html">codebook_docs()</a></code> — la documentación conceptual oficial del INE: qué mide la variable, la pregunta tal como se leyó en campo, las instrucciones al censista y, para las derivadas, la regla con que se calcularon. Cubre 445 variables de los cinco censos.</p></li>
+</ul><p><code><a href="../reference/codebook.html">codebook()</a></code> acepta <code>tema</code>, <code>capitulo</code> y <code>origen</code>, añadidos <strong>después</strong> de <code>anio</code> para no romper las llamadas posicionales.</p>
+</div>
+<div class="section level4">
+<h4 id="get_temporal-avisa-cuando-el-universo-cambia-entre-censos-1-5-0">
+<code>get_temporal()</code> avisa cuando el universo cambia entre censos<a class="anchor" aria-label="anchor" href="#get_temporal-avisa-cuando-el-universo-cambia-entre-censos-1-5-0"></a></h4>
+<p>Armonizar los códigos no iguala la población a la que se preguntó, y el INE movió el filtro de edad de varias preguntas entre censos. Ahora <strong>el paquete lo detecta y avisa</strong>:</p>
+<pre><code>! `sabe_leer` no se preguntó a la misma población en todos los censos:
+    1992: personas de 6 años o más
+    2001: personas de 4 años o más
+    2024: personas de 5 años o más
+  i Filtra `edad &gt;= 6` en todos los años antes de comparar.</code></pre>
+<p>Siete variables armonizadas están afectadas. <code>nivel_edu</code> es la más extrema: 6 años en 1992, 4 en 2001 y <strong>19</strong> en 2024. Antes esto estaba escrito en la documentación para dos variables; ahora salta en el punto de uso para todas, con el dato del propio INE.</p>
+<p><code>get_temporal(grupo = )</code> también acepta ya los slugs de <code><a href="../reference/censo_temas.html">censo_temas()</a></code>, para no tener que recordar cuál de los dos vocabularios usa cada función. Los seis grupos originales siguen siendo válidos.</p>
+</div>
+<div class="section level4">
+<h4 id="datasets-nuevos-1-5-0">Datasets nuevos<a class="anchor" aria-label="anchor" href="#datasets-nuevos-1-5-0"></a></h4>
+<p><code>censo_temas_meta</code> (21 temas), <code>censo_bloques_meta</code> (los 15 bloques de las fichas) y <code>codebook_docs_meta</code> (445 filas de documentación conceptual, con la procedencia de los cinco DDI en el atributo <code>"ddi"</code>). <code>variable_temporal_map</code> gana una columna <code>tema</code> que conecta los nombres armonizados con la taxonomía.</p>
+</div>
+<div class="section level4">
+<h4 id="salida-más-legible-1-5-0">Salida más legible<a class="anchor" aria-label="anchor" href="#salida-m%C3%A1s-legible-1-5-0"></a></h4>
+<p>Con quince columnas, imprimir el codebook en consola se había vuelto ilegible. Ahora <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> oculta las columnas que no aplican al subconjunto consultado —y dice cuáles son— y resume <code>valores_codigos</code> por su número de categorías en vez de volcar todas. El objeto sigue siendo un <code>data.frame</code> con todas las columnas.</p>
+</div>
+<div class="section level4">
+<h4 id="correcciones-1-5-0">Correcciones<a class="anchor" aria-label="anchor" href="#correcciones-1-5-0"></a></h4>
+<ul><li><p><strong><code><a href="../reference/etiquetar_valores.html">etiquetar_valores()</a></code> elegía la tabla equivocada.</strong> Cuando una variable existe en varias tablas y solo algunas traen las categorías —<code>idep</code> en el censo 2001 las tiene en <code>persona</code> y no en <code>vivienda</code>—, se cogía la primera fila del diccionario y la columna se quedaba sin etiquetar. Ahora se usa la primera que sí las tiene.</p></li>
+<li><p><strong><code>i00</code> ya está documentada.</strong> El número de vivienda dentro del predio se devolvía en todas las consultas pero no estaba en el diccionario, así que <code><a href="../reference/etiquetar_variables.html">etiquetar_variables()</a></code> no la etiquetaba.</p></li>
+<li><p>Cuando se piden columnas que no existen en la tabla consultada pero sí en otra, el aviso ahora lo dice: <code>"v07_aguapro existe en la tabla vivienda; usa get_viviendas_2024()"</code>.</p></li>
+<li><p>Dos gráficos de las viñetas declaraban un universo que no era el que mostraban. El de nivel educativo decía «15+ años» cuando en realidad era 19+, y el mapa de alfabetismo no aclaraba su umbral; ahora usa 15+, el de las tasas oficiales.</p></li>
+</ul></div>
+<div class="section level4">
+<h4 id="cambios-de-comportamiento-1-5-0">Cambios de comportamiento<a class="anchor" aria-label="anchor" href="#cambios-de-comportamiento-1-5-0"></a></h4>
+<ul><li>
+<code>codebook(buscar = )</code> ahora busca también en el tema, así que <code>codebook(buscar = "salud")</code> devuelve el tema completo y puede dar más filas que antes.</li>
+<li>En los censos 2001 y 1976, un par de variables pasaron a tener etiquetas de valor tomadas del DDI del INE. <code><a href="../reference/etiquetar_valores.html">etiquetar_valores()</a></code> devolverá un factor donde antes devolvía el código: puede afectar a gráficos o tablas ya hechos.</li>
+</ul></div>
+<div class="section level4">
+<h4 id="nota-sobre-las-etiquetas-de-valor-1-5-0">Nota sobre las etiquetas de valor<a class="anchor" aria-label="anchor" href="#nota-sobre-las-etiquetas-de-valor-1-5-0"></a></h4>
+<p>Los DDI de los cuatro censos anteriores traen categorías que el diccionario de microdatos no tiene, y se usaron para rellenar los huecos. <strong>No se sobrescribió nada preexistente</strong>, y con razón: el contraste reveló que el DDI del INE tiene errores puntuales — en el CPV-2012, la variable de estado civil viene con las categorías de otra pregunta. Las discrepancias quedan registradas para revisión en <code>data-raw/ddi/reporte_valores.md</code>, clasificadas por severidad.</p>
+</div>
+<div class="section level4">
+<h4 id="para-quien-consuma-el-paquete-1-5-0">Para quien consuma el paquete<a class="anchor" aria-label="anchor" href="#para-quien-consuma-el-paquete-1-5-0"></a></h4>
+<p>Las columnas nuevas también viajan a los <code>diccionario_variables.parquet</code> publicados en los GitHub Releases. Los consumidores que cacheen ese archivo por nombre —el plugin de QGIS lo hace— tienen que vaciar la caché una vez para verlas. Ver <code>dev-docs/consumidores-taxonomia.md</code>.</p>
+</div>
+</div>
+</div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.4.1" id="censosbo-141">censosbo 1.4.1<a class="anchor" aria-label="anchor" href="#censosbo-141"></a></h2>
 <ul><li>
 <strong>Las descargas reintentan ante fallos transitorios.</strong> GitHub Releases devuelve 500 o 503 esporádicamente, y un único fallo abortaba toda la operación — algo molesto cuando se piden los nueve archivos de persona o los nueve de manzanos. Ahora se reintenta tres veces con espera creciente y solo se aborta si fallan todos los intentos. De paso, los tres descargadores (<code><a href="../reference/dot-download_parquet.html">.download_parquet()</a></code>, <code><a href="../reference/dot-download_ficha.html">.download_ficha()</a></code> y <code><a href="../reference/dot-download_censo.html">.download_censo()</a></code>) comparten un solo helper en vez de repetir la misma lógica de descarga atómica.</li>
@@ -60,7 +144,7 @@
 <h3 id="get_censo-ahora-cubre-también-el-cpv-1-4-0">
 <code>get_censo()</code> ahora cubre también el CPV-2024<a class="anchor" aria-label="anchor" href="#get_censo-ahora-cubre-tambi%C3%A9n-el-cpv-1-4-0"></a></h3>
 <p><code><a href="../reference/get_censo.html">get_censo()</a></code> se presentaba como la API genérica por año, pero rechazaba <code>anio = 2024</code> — y la propia documentación de <code><a href="../reference/get_personas_2024.html">get_personas_2024()</a></code> ofrecía <code>get_censo(2024, "persona", ...)</code> como equivalente, un ejemplo que no funcionaba. Ahora acepta los cinco censos: con <code>anio = 2024</code> delega en <code><a href="../reference/get_personas_2024.html">get_personas_2024()</a></code>, <code><a href="../reference/get_viviendas_2024.html">get_viviendas_2024()</a></code>, <code><a href="../reference/get_emigracion_2024.html">get_emigracion_2024()</a></code> o <code><a href="../reference/get_mortalidad_2024.html">get_mortalidad_2024()</a></code> según <code>tabla</code>, con resultado idéntico al de esas funciones.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/get_censo.html">get_censo</a></span><span class="op">(</span><span class="fl">2024</span>, <span class="st">"persona"</span>, departamento <span class="op">=</span> <span class="st">"07"</span><span class="op">)</span>   <span class="co"># = get_personas_2024()</span></span></code></pre></div>
 </div>
 <div class="section level3">

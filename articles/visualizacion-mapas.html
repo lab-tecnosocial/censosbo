@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.5.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,7 +40,8 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-art-culos" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Artículos</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-art-culos">
-<li><a class="dropdown-item" href="../articles/diccionario.html">Diccionario de datos (1976–2024)</a></li>
+<li><a class="dropdown-item" href="../articles/temas.html">Explorar el censo por tema</a></li>
+    <li><a class="dropdown-item" href="../articles/diccionario.html">Diccionario de datos (1976–2024)</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>CPV-2024</h6></li>
     <li><a class="dropdown-item" href="../articles/analisis-demografico.html">Análisis demográfico</a></li>
@@ -279,11 +280,15 @@ sin cobertura en la fuente cartográfica, así que sale en gris.</p>
 <h3 id="tasa-de-alfabetismo-oruro">Tasa de alfabetismo — Oruro<a class="anchor" aria-label="anchor" href="#tasa-de-alfabetismo-oruro"></a>
 </h3>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">alfa_oruro</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="co"># `p40_lee` se preguntó a las personas de 5 años o más, pero las tasas oficiales</span></span>
+<span><span class="co"># de alfabetismo se publican sobre 15 años o más. Se pide `p26_edad` para poder</span></span>
+<span><span class="co"># aplicar ese umbral y que el mapa sea comparable con las cifras del INE.</span></span>
+<span><span class="va">alfa_oruro</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span></span>
 <span>  departamento <span class="op">=</span> <span class="st">"Oruro"</span>,</span>
-<span>  variables    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"p40_lee"</span><span class="op">)</span>,</span>
+<span>  variables    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"p40_lee"</span>, <span class="st">"p26_edad"</span><span class="op">)</span>,</span>
 <span>  as           <span class="op">=</span> <span class="st">"tibble"</span></span>
 <span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">p26_edad</span> <span class="op">&gt;=</span> <span class="fl">15</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">idep</span>, <span class="va">iprov</span>, <span class="va">imun</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span></span>
 <span>    alfa    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">p40_lee</span> <span class="op">==</span> <span class="fl">1</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span>,</span>
@@ -294,7 +299,7 @@ sin cobertura en la fuente cartográfica, así que sale en gris.</p>
 <span>  <span class="va">alfa_oruro</span>,</span>
 <span>  <span class="st">"alfa"</span>,</span>
 <span>  departamento  <span class="op">=</span> <span class="st">"Oruro"</span>,</span>
-<span>  titulo        <span class="op">=</span> <span class="st">"Tasa de alfabetismo por municipio — Oruro (CPV-2024)"</span>,</span>
+<span>  titulo        <span class="op">=</span> <span class="st">"Tasa de alfabetismo (15+ años) por municipio — Oruro (CPV-2024)"</span>,</span>
 <span>  etiqueta_fill <span class="op">=</span> <span class="st">"% sabe leer"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 </div>

@@ -18,7 +18,7 @@ remotes::install_github("lab-tecnosocial/censosbo")
 
 El paquete se desarrolla continuamente (mejoras, corrección de errores),
 si lo instalaste anteriormente te recomendamos volver a ejecutar el
-anterior código y borrar el caché para actualizar a la versión 1.4.1 o
+anterior código y borrar el caché para actualizar a la versión 1.5.0 o
 usar la siguiente función:
 
 ``` r
@@ -137,16 +137,20 @@ Detalles en
 
 # Buscar variables del CPV-2024
 codebook(buscar = "educa") |> select(variable, tabla) |> as_tibble()
-#> # A tibble: 7 × 2
-#>   variable       tabla  
-#>   <chr>          <chr>  
-#> 1 p39_tipoest    persona
-#> 2 p41a_nivel     persona
-#> 3 p41b_curso     persona
-#> 4 p41a_nivel_act persona
-#> 5 nivel_edu      persona
-#> 6 asiste         persona
-#> 7 gedadedu       persona
+#> # A tibble: 23 × 2
+#>    variable       tabla  
+#>    <chr>          <chr>  
+#>  1 p38_asiste     persona
+#>  2 p39_tipoest    persona
+#>  3 p40_lee        persona
+#>  4 p41a_nivel     persona
+#>  5 p41b_curso     persona
+#>  6 p41a_nivel_act persona
+#>  7 p41b_curso_act persona
+#>  8 nivel_edu      persona
+#>  9 aestudio       persona
+#> 10 asiste         persona
+#> # ℹ 13 more rows
 
 # Ver códigos de una variable
 codebook_valores("p25_sexo")          # CPV-2024
@@ -168,6 +172,73 @@ codebook_2012(buscar = "instruccion")
 codebook_1992(buscar = "sexo")
 ```
 
+### Buscar por tema
+
+Las 809 variables de los cinco censos están agrupadas en 21 temas,
+tomados del catálogo oficial del INE.
+[`vars_tema()`](https://lab-tecnosocial.github.io/censosbo/reference/vars_tema.md)
+devuelve los nombres listos para descargar:
+
+``` r
+
+censo_temas(tabla = "persona") |> select(tema, etiqueta, n_variables) |> head(5)
+#>                     tema                    etiqueta n_variables
+#> 1   ubicacion_geografica        Ubicación geográfica           4
+#> 2         identificacion Identificación de registros           1
+#> 3              poblacion                   Población           7
+#> 4             ciudadania                  Ciudadanía           2
+#> 5 salud_seguridad_social    Salud y seguridad social           9
+
+vars_tema("educacion", tabla = "persona")
+#>  [1] "p38_asiste"     "p39_tipoest"    "p40_lee"        "p41a_nivel"    
+#>  [5] "p41b_curso"     "p41a_nivel_act" "p41b_curso_act" "aestudio"      
+#>  [9] "asiste"         "gedadedu"       "nivel_edu"
+```
+
+``` r
+
+get_personas_2024(
+  departamento = "Cochabamba",
+  variables = vars_tema("educacion", tabla = "persona")
+)
+```
+
+### A quién se le preguntó cada cosa
+
+La columna `universo` evita el error más común en análisis censal: usar
+el denominador equivocado. `nivel_edu`, por ejemplo, está construida
+sobre las personas de 19 años o más, no sobre toda la población.
+
+``` r
+
+codebook(c("p40_lee", "p54_hvtot", "nivel_edu"), tabla = "persona") |>
+  select(variable, universo) |> as_tibble()
+#> # A tibble: 3 × 2
+#>   variable  universo       
+#>   <chr>     <chr>          
+#> 1 p40_lee   personas_5_mas 
+#> 2 p54_hvtot mujeres_12_mas 
+#> 3 nivel_edu personas_19_mas
+```
+
+Y como está en los cinco censos,
+[`get_temporal()`](https://lab-tecnosocial.github.io/censosbo/reference/get_temporal.md)
+avisa cuando una variable armonizada no se preguntó a la misma población
+en todos los años pedidos:
+
+``` r
+
+get_temporal(variables = "sabe_leer", anios = c(1992, 2001, 2024))
+#> ! `sabe_leer` no se preguntó a la misma población en todos los censos:
+#>     1992: personas de 6 años o más
+#>     2001: personas de 4 años o más
+#>     2024: personas de 5 años o más
+#>   i Filtra `edad >= 6` en todos los años antes de comparar.
+```
+
+Más en
+[`vignette("temas")`](https://lab-tecnosocial.github.io/censosbo/articles/temas.md).
+
 ## Etiquetas en los resultados
 
 ``` r
@@ -182,11 +253,11 @@ get_personas_2024(departamento = "Pando", verbose = FALSE) |>
 #>   <fct>                   <fct>                      <int>
 #> 1 Hombre                  Sí                         60578
 #> 2 Mujer                   Sí                         52972
-#> 3 Mujer                   No                          2843
-#> 4 Hombre                  Sin especificar             1503
+#> 3 Hombre                  No                          2668
+#> 4 Mujer                   <NA>                        6091
 #> 5 Hombre                  <NA>                        6090
-#> 6 Mujer                   <NA>                        6091
-#> 7 Hombre                  No                          2668
+#> 6 Hombre                  Sin especificar             1503
+#> 7 Mujer                   No                          2843
 #> 8 Mujer                   Sin especificar             1449
 ```
 
@@ -384,7 +455,7 @@ citation("censosbo")
 #> 
 #>   Ojeda Copa A (2026). _censosbo: Paquete de R para el acceso, análisis
 #>   y visualización de datos censales en Bolivia (1976-2024)_. Lab
-#>   TecnoSocial, Cochabamba, Bolivia. R package version 1.4.1,
+#>   TecnoSocial, Cochabamba, Bolivia. R package version 1.5.0,
 #>   <https://lab-tecnosocial.github.io/censosbo/>.
 #> 
 #> A BibTeX entry for LaTeX users is
@@ -395,14 +466,14 @@ citation("censosbo")
 #>     organization = {Lab TecnoSocial},
 #>     address = {Cochabamba, Bolivia},
 #>     year = {2026},
-#>     note = {R package version 1.4.1},
+#>     note = {R package version 1.5.0},
 #>     url = {https://lab-tecnosocial.github.io/censosbo/},
 #>   }
 ```
 
 > Ojeda Copa A (2026). *censosbo: Paquete de R para el acceso, análisis
 > y visualización de datos censales en Bolivia (1976-2024)*. Lab
-> TecnoSocial, Cochabamba, Bolivia. R package version 1.4.1.
+> TecnoSocial, Cochabamba, Bolivia. R package version 1.5.0.
 > <https://lab-tecnosocial.github.io/censosbo/>
 
 # Package index
@@ -421,6 +492,13 @@ para convertir códigos numéricos a texto legible.
   : Consulta el diccionario de variables de un censo de Bolivia
 - [`codebook_valores()`](https://lab-tecnosocial.github.io/censosbo/reference/codebook_valores.md)
   : Muestra los valores codificados de una variable categórica
+- [`codebook_docs()`](https://lab-tecnosocial.github.io/censosbo/reference/codebook_docs.md)
+  : Definición, universo y pregunta literal de una variable
+- [`censo_temas()`](https://lab-tecnosocial.github.io/censosbo/reference/censo_temas.md)
+  : Consulta los temas de un censo, con el número de variables de cada
+  uno
+- [`vars_tema()`](https://lab-tecnosocial.github.io/censosbo/reference/vars_tema.md)
+  : Nombres de las variables de un tema
 - [`etiquetar_valores()`](https://lab-tecnosocial.github.io/censosbo/reference/etiquetar_valores.md)
   : Etiqueta los valores de las variables categóricas
 - [`etiquetar_variables()`](https://lab-tecnosocial.github.io/censosbo/reference/etiquetar_variables.md)
@@ -544,6 +622,12 @@ Datasets disponibles sin descarga, incluidos directamente en el paquete.
   : Diccionario de variables del CPV-2024
 - [`codebook_historico_meta`](https://lab-tecnosocial.github.io/censosbo/reference/codebook_historico_meta.md)
   : Diccionarios de variables de los censos históricos de Bolivia
+- [`codebook_docs_meta`](https://lab-tecnosocial.github.io/censosbo/reference/codebook_docs_meta.md)
+  : Documentación conceptual de las variables censales
+- [`censo_temas_meta`](https://lab-tecnosocial.github.io/censosbo/reference/censo_temas_meta.md)
+  : Catálogo de temas de los censos de Bolivia
+- [`censo_bloques_meta`](https://lab-tecnosocial.github.io/censosbo/reference/censo_bloques_meta.md)
+  : Bloques temáticos de los indicadores de manzano y comunidad
 - [`variable_temporal_map`](https://lab-tecnosocial.github.io/censosbo/reference/variable_temporal_map.md)
   : Variables armonizadas para análisis temporal
 - [`geo_bolivia`](https://lab-tecnosocial.github.io/censosbo/reference/geo_bolivia.md)
@@ -566,6 +650,8 @@ Datasets disponibles sin descarga, incluidos directamente en el paquete.
 
 - [Introducción a
   censosbo](https://lab-tecnosocial.github.io/censosbo/articles/introduccion.md):
+- [Explorar el censo por
+  tema](https://lab-tecnosocial.github.io/censosbo/articles/temas.md):
 - [Diccionario de datos — Censos de Bolivia
   (1976–2024)](https://lab-tecnosocial.github.io/censosbo/articles/diccionario.md):
 

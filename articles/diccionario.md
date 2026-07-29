@@ -35,13 +35,40 @@ La columna **Tipo** clasifica cada variable como:
 Esta clasificación está disponible también en la columna `tipo` de los
 `diccionario_variables.parquet` publicados.
 
+Además de **Tipo**, el codebook trae dos columnas que este artículo
+muestra en las tablas de 2024, 2012 y 2001:
+
+- **Tema** — uno de los 20 temas de `censo_temas_meta`, tomados en su
+  mayoría del catálogo oficial del INE. Sirve para acotar la búsqueda:
+  `codebook(tema = "educacion")`.
+- **Universo** — a quién se le aplicó la pregunta. Es lo que evita
+  calcular porcentajes sobre el denominador equivocado: `nivel_edu`, por
+  ejemplo, está construida sobre las personas de 19 años o más, no sobre
+  toda la población.
+
+Para 1976 y 1992 esas columnas están vacías: el INE no publica un
+diccionario estructurado de esos censos.
+
+------------------------------------------------------------------------
+
+## Índice temático
+
+Los 20 temas con los que se agrupan las variables, y cuántas tiene cada
+uno en cada censo. La descripción explica qué incluye el tema y, cuando
+la asignación es discutible, por qué se decidió así.
+
+`Fuente` distingue los 17 temas que declara el propio INE en su catálogo
+ANDA de las 3 extensiones que añade el paquete. Los capítulos son los
+del cuestionario del CPV-2024; en 2012 y 2001 la estructura oficial de
+cada época está en la columna `grupo_ine` del codebook.
+
 ------------------------------------------------------------------------
 
 ## CPV-2024
 
 ### Persona (`get_personas_2024`)
 
-Datos de cada persona empadronada: **118** variables. La tabla trae una
+Datos de cada persona empadronada: **119** variables. La tabla trae una
 columna más, `i00` (identificador de vivienda/hogar), que no es una
 variable del cuestionario sino parte de la clave de unión — ver más
 abajo.
@@ -50,20 +77,20 @@ abajo.
 
 ### Vivienda (`get_viviendas_2024`)
 
-Características de cada vivienda: **47** variables, más `i00`.
+Características de cada vivienda: **48** variables, más `i00`.
 
 ------------------------------------------------------------------------
 
 ### Emigración (`get_emigracion_2024`)
 
-Personas que emigraron al exterior en los últimos 5 años: **7**
+Personas que emigraron al exterior en los últimos 5 años: **8**
 variables.
 
 ------------------------------------------------------------------------
 
 ### Mortalidad (`get_mortalidad_2024`)
 
-Fallecimientos en el hogar durante los últimos 12 meses: **9**
+Fallecimientos en el hogar durante los últimos 12 meses: **10**
 variables.
 
 ------------------------------------------------------------------------

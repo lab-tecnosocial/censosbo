@@ -11,7 +11,7 @@ y el CPV-2024."><meta property="og:image" content="https://lab-tecnosocial.githu
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.5.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -23,7 +23,8 @@ y el CPV-2024."><meta property="og:image" content="https://lab-tecnosocial.githu
 <li class="active nav-item"><a class="nav-link" href="../reference/index.html">Referencia</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-art-culos" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Artículos</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-art-culos"><li><a class="dropdown-item" href="../articles/diccionario.html">Diccionario de datos (1976–2024)</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-art-culos"><li><a class="dropdown-item" href="../articles/temas.html">Explorar el censo por tema</a></li>
+    <li><a class="dropdown-item" href="../articles/diccionario.html">Diccionario de datos (1976–2024)</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>CPV-2024</h6></li>
     <li><a class="dropdown-item" href="../articles/analisis-demografico.html">Análisis demográfico</a></li>
@@ -196,6 +197,34 @@ para todas. Por defecto `NULL`.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 25                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              1976: 1/2=Tiene→1, 3=No→2. 1992: 1/2=Tiene (con/sin descarga)→1, 3=No→2. 2001: 1=Tiene→1, 2=No→2. 2012 P09: 1/2=Tiene (privado/compartido)→1, 3=No→2. 2024: 1/2=Tiene (solo/compartido)→1, 3=No→2.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 26                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            Categorías muy consistentes entre censos. 1→1 (Propia), 2→2 (Alquiler), anticrético/cedida/servicios→3, otro→4. 2024: código 1/2=Propia pagada/pagando→1, código 4=Alquilada→2, códigos 3/5/6/7=Cedida/anticr/servicios→3, 8=Otra→4.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 27                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                Variable numérica en 1976/1992/2001. 2012 P14: valores 1-7 directos, 8='8 y más', 98/99=NA. 2024 v13_habitac codificada como categorías ordinales (1=Una, ..., 8=Ocho o más). Se recomienda tratar como ordinal.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                          tema</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                   poblacion</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                   poblacion</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                   poblacion</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                   poblacion</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                   poblacion</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                   educacion</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7                   educacion</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8                   educacion</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  caracteristicas_economicas</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 caracteristicas_economicas</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 caracteristicas_economicas</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12         autoidentificacion</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13                    idiomas</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14                  migracion</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15                  migracion</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16                 fecundidad</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17                 fecundidad</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18       ubicacion_geografica</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19       ubicacion_geografica</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20    materiales_construccion</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21    materiales_construccion</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22    materiales_construccion</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23          servicios_basicos</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24          servicios_basicos</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25          servicios_basicos</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26             vivienda_hogar</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27             vivienda_hogar</span>
 <span class="r-in"><span><span class="fu">variables_armonizadas</span><span class="op">(</span>tabla <span class="op">=</span> <span class="st">"vivienda"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              variable                                etiqueta</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 20   material_paredes Material de construcción de las paredes</span>
@@ -233,6 +262,15 @@ para todas. Por defecto `NULL`.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 25                                                                                                                                1976: 1/2=Tiene→1, 3=No→2. 1992: 1/2=Tiene (con/sin descarga)→1, 3=No→2. 2001: 1=Tiene→1, 2=No→2. 2012 P09: 1/2=Tiene (privado/compartido)→1, 3=No→2. 2024: 1/2=Tiene (solo/compartido)→1, 3=No→2.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 26                                                                                              Categorías muy consistentes entre censos. 1→1 (Propia), 2→2 (Alquiler), anticrético/cedida/servicios→3, otro→4. 2024: código 1/2=Propia pagada/pagando→1, código 4=Alquilada→2, códigos 3/5/6/7=Cedida/anticr/servicios→3, 8=Otra→4.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 27                                                                                                                  Variable numérica en 1976/1992/2001. 2012 P14: valores 1-7 directos, 8='8 y más', 98/99=NA. 2024 v13_habitac codificada como categorías ordinales (1=Una, ..., 8=Ocho o más). Se recomienda tratar como ordinal.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                       tema</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20 materiales_construccion</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21 materiales_construccion</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22 materiales_construccion</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23       servicios_basicos</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24       servicios_basicos</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25       servicios_basicos</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26          vivienda_hogar</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27          vivienda_hogar</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

@@ -153,6 +153,23 @@ Incluye `sexo`, `edad`, `sabe_leer`, `nivel_edu`, `asistencia_escolar`.
 
 edu <- get_temporal(grupo = "educacion", anios = c(1992, 2001, 2012, 2024),
                     departamento = DEP, verbose = FALSE)
+#> Warning: ! `sabe_leer` no se preguntó a la misma población en todos los censos:
+#>   1992: personas de 6 años o más
+#>   2001: personas de 4 años o más
+#>   2024: personas de 5 años o más
+#> ℹ Compararla sin igualar el universo mide poblaciones distintas en cada año.
+#> ℹ Filtra `edad >= 6` en todos los años antes de comparar.
+#> Warning: ! `nivel_edu` no se preguntó a la misma población en todos los censos:
+#>   1992: personas de 6 años o más
+#>   2001: personas de 4 años o más
+#>   2024: personas de 19 años o más
+#> ℹ Compararla sin igualar el universo mide poblaciones distintas en cada año.
+#> ℹ Filtra `edad >= 19` en todos los años antes de comparar.
+#> Warning: ! `asistencia_escolar` no se preguntó a la misma población en todos los censos:
+#>   1992: personas de 6 años o más
+#>   2001: personas de 4 años o más
+#> ℹ Compararla sin igualar el universo mide poblaciones distintas en cada año.
+#> ℹ Filtra `edad >= 6` en todos los años antes de comparar.
 
 # Tasa de alfabetismo por año
 edu |>
@@ -409,6 +426,22 @@ Solo significativo para mujeres 12+.
 
 fert <- get_temporal(grupo = "fertilidad", anios = c(1976, 1992, 2001, 2012, 2024),
                      departamento = DEP, verbose = FALSE)
+#> Warning: ! `hijos_nacidos_vivos` no se preguntó a la misma población en todos los
+#>   censos:
+#>   1976: mujeres de 12 años o más
+#>   1992: mujeres de 12 años o más
+#>   2001: personas de 15 años o más
+#>   2024: mujeres de 12 años o más
+#> ℹ Compararla sin igualar el universo mide poblaciones distintas en cada año.
+#> ℹ Filtra `edad >= 15` en todos los años antes de comparar.
+#> Warning: ! `hijos_sobrevivientes` no se preguntó a la misma población en todos los
+#>   censos:
+#>   1976: mujeres de 12 años o más
+#>   1992: mujeres de 12 años o más
+#>   2001: personas de 15 años o más
+#>   2024: mujeres de 12 años o más
+#> ℹ Compararla sin igualar el universo mide poblaciones distintas en cada año.
+#> ℹ Filtra `edad >= 15` en todos los años antes de comparar.
 
 # Promedio de hijos nacidos vivos por grupo de edad
 fert |>

@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.5.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,7 +40,8 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-art-culos" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Artículos</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-art-culos">
-<li><a class="dropdown-item" href="../articles/diccionario.html">Diccionario de datos (1976–2024)</a></li>
+<li><a class="dropdown-item" href="../articles/temas.html">Explorar el censo por tema</a></li>
+    <li><a class="dropdown-item" href="../articles/diccionario.html">Diccionario de datos (1976–2024)</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>CPV-2024</h6></li>
     <li><a class="dropdown-item" href="../articles/analisis-demografico.html">Análisis demográfico</a></li>
@@ -261,6 +262,23 @@ departamento. <code>NULL</code> = todo el país</td>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">edu</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_temporal.html">get_temporal</a></span><span class="op">(</span>grupo <span class="op">=</span> <span class="st">"educacion"</span>, anios <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1992</span>, <span class="fl">2001</span>, <span class="fl">2012</span>, <span class="fl">2024</span><span class="op">)</span>,</span>
 <span>                    departamento <span class="op">=</span> <span class="va">DEP</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: <span style="color: #BBBB00;">!</span> `sabe_leer` no se preguntó a la misma población en todos los censos:</span></span>
+<span><span class="co">#&gt;   1992: personas de 6 años o más</span></span>
+<span><span class="co">#&gt;   2001: personas de 4 años o más</span></span>
+<span><span class="co">#&gt;   2024: personas de 5 años o más</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Compararla sin igualar el universo mide poblaciones distintas en cada año.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Filtra `edad &gt;= 6` en todos los años antes de comparar.</span></span>
+<span><span class="co">#&gt; Warning: <span style="color: #BBBB00;">!</span> `nivel_edu` no se preguntó a la misma población en todos los censos:</span></span>
+<span><span class="co">#&gt;   1992: personas de 6 años o más</span></span>
+<span><span class="co">#&gt;   2001: personas de 4 años o más</span></span>
+<span><span class="co">#&gt;   2024: personas de 19 años o más</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Compararla sin igualar el universo mide poblaciones distintas en cada año.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Filtra `edad &gt;= 19` en todos los años antes de comparar.</span></span>
+<span><span class="co">#&gt; Warning: <span style="color: #BBBB00;">!</span> `asistencia_escolar` no se preguntó a la misma población en todos los censos:</span></span>
+<span><span class="co">#&gt;   1992: personas de 6 años o más</span></span>
+<span><span class="co">#&gt;   2001: personas de 4 años o más</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Compararla sin igualar el universo mide poblaciones distintas en cada año.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Filtra `edad &gt;= 6` en todos los años antes de comparar.</span></span>
 <span></span>
 <span><span class="co"># Tasa de alfabetismo por año</span></span>
 <span><span class="va">edu</span> <span class="op">|&gt;</span></span>
@@ -509,6 +527,22 @@ Solo significativo para mujeres 12+.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fert</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_temporal.html">get_temporal</a></span><span class="op">(</span>grupo <span class="op">=</span> <span class="st">"fertilidad"</span>, anios <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1976</span>, <span class="fl">1992</span>, <span class="fl">2001</span>, <span class="fl">2012</span>, <span class="fl">2024</span><span class="op">)</span>,</span>
 <span>                     departamento <span class="op">=</span> <span class="va">DEP</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: <span style="color: #BBBB00;">!</span> `hijos_nacidos_vivos` no se preguntó a la misma población en todos los</span></span>
+<span><span class="co">#&gt;   censos:</span></span>
+<span><span class="co">#&gt;   1976: mujeres de 12 años o más</span></span>
+<span><span class="co">#&gt;   1992: mujeres de 12 años o más</span></span>
+<span><span class="co">#&gt;   2001: personas de 15 años o más</span></span>
+<span><span class="co">#&gt;   2024: mujeres de 12 años o más</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Compararla sin igualar el universo mide poblaciones distintas en cada año.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Filtra `edad &gt;= 15` en todos los años antes de comparar.</span></span>
+<span><span class="co">#&gt; Warning: <span style="color: #BBBB00;">!</span> `hijos_sobrevivientes` no se preguntó a la misma población en todos los</span></span>
+<span><span class="co">#&gt;   censos:</span></span>
+<span><span class="co">#&gt;   1976: mujeres de 12 años o más</span></span>
+<span><span class="co">#&gt;   1992: mujeres de 12 años o más</span></span>
+<span><span class="co">#&gt;   2001: personas de 15 años o más</span></span>
+<span><span class="co">#&gt;   2024: mujeres de 12 años o más</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Compararla sin igualar el universo mide poblaciones distintas en cada año.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Filtra `edad &gt;= 15` en todos los años antes de comparar.</span></span>
 <span></span>
 <span><span class="co"># Promedio de hijos nacidos vivos por grupo de edad</span></span>
 <span><span class="va">fert</span> <span class="op">|&gt;</span></span>
