@@ -24,11 +24,18 @@ The package gives access to the population and housing census microdata of
 Bolivia, whose variables, value labels and questionnaires are published in
 Spanish by the national statistics institute. Its users are Bolivian and Latin
 American researchers, public servants and journalists working with those files.
-Translating the variable labels would break the correspondence with the official
-source, which is the whole point of the package.
 
-`Title`, `Description` and this file are in English, and `Language: es` is
-declared in DESCRIPTION.
+The Spanish text is not an interface choice, it is the data: the value labels the
+package returns ("Sin instrucción", "Cañería/Red pública") are the official
+categories of the census questionnaire. Translating them would break the
+correspondence with the source, which is what makes the package useful.
+
+`Title`, `Description` and this file are in English, so that the package is
+intelligible to all CRAN users, and `Language: es` is declared in DESCRIPTION.
+This follows what comparable packages on CRAN do — for instance 'censo2022arg'
+(Argentinian census microdata), 'enaho' (Peruvian household survey) and 'eph'
+(Argentinian household survey), all of which document in Spanish with an English
+Title and Description.
 
 ### 2. Some examples are wrapped in `\dontrun{}`
 
