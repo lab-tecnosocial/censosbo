@@ -64,6 +64,11 @@ estaban.
   documentación, las viñetas y los mensajes siguen íntegramente en
   español.
 
+- **El requisito de versión de R pasa a `>= 4.2`**, que es el mínimo
+  real: lo impone `arrow`. El `>= 4.1.0` que se declaraba antes era una
+  promesa falsa — con R 4.1 la instalación falla al resolver esa
+  dependencia.
+
 ## censosbo 1.7.0
 
 > ⚠️ **Esta versión cambia el número de filas que devuelven las

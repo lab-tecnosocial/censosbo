@@ -71,6 +71,7 @@
 <li><p>Siete viñetas pasan a ser <strong>artículos solo-web</strong>: siguen publicadas en <a href="https://lab-tecnosocial.github.io/censosbo/" class="uri">https://lab-tecnosocial.github.io/censosbo/</a> y no cambian de contenido, pero no viajan dentro del paquete. Las tres que sí lo hacen (<em>Introducción</em>, <em>Diccionario</em>, <em>Temas</em>) vienen precompiladas, así que instalar el paquete ya no descarga nada.</p></li>
 <li><p><code>duckdb</code> y <code>DBI</code> pasan de dependencias obligatorias a opcionales: solo hacen falta para <code>as = "duckdb"</code>, y el paquete avisa de cómo instalarlos si se pide ese backend sin tenerlos. Quien no use SQL se ahorra compilarlos. <code>sf</code> sigue siendo obligatorio, porque las capas <code>geo_*</code> que trae el paquete son objetos <code>sf</code> y sin él no se podrían ni imprimir.</p></li>
 <li><p><code>Title</code> y <code>Description</code> pasan a inglés, como pide CRAN. La documentación, las viñetas y los mensajes siguen íntegramente en español.</p></li>
+<li><p><strong>El requisito de versión de R pasa a <code>&gt;= 4.2</code></strong>, que es el mínimo real: lo impone <code>arrow</code>. El <code>&gt;= 4.1.0</code> que se declaraba antes era una promesa falsa — con R 4.1 la instalación falla al resolver esa dependencia.</p></li>
 </ul></div>
 </div>
     <div class="section level2">
