@@ -10,10 +10,13 @@
 
 library(piggyback)
 
+# Ruta a las fuentes del INE (disco externo, montado solo a demanda).
+source("data-raw/_rutas.R")
+
 REPO <- "lab-tecnosocial/censosbo"
 # Los `diccionario_variables.parquet` de los cuatro censos llevan la taxonomía
 # temática desde la v1.5.0 (el ANDA publica DDI de los cinco estudios).
-BASE <- "original-data/r/censos-historicos"
+BASE <- od("r/censos-historicos")
 
 # Mapa: anio → tag del release + archivos a subir
 # local_name  = nombre del archivo en disco

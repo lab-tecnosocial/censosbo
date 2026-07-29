@@ -18,6 +18,9 @@
 
 library(arrow)
 
+# Ruta a las fuentes del INE (disco externo, montado solo a demanda).
+source("data-raw/_rutas.R")
+
 ## Contrato del diccionario publicado. Estos nombres son públicos y estables: el
 ## plugin debe leerlos por nombre exacto, no con la búsqueda aproximada de
 ## _find_col(). Documentado en dev-docs/pipeline-datos.md y
@@ -84,14 +87,14 @@ agregar_taxonomia <- function(dir, meta, anio) {
 # `original-data/` es un symlink a un volumen externo. Si no está montado, los
 # file.exists() fallan uno a uno y el script termina sin haber hecho nada, con
 # apariencia de éxito. Mejor abortar con un mensaje claro.
-if (!dir.exists("original-data")) {
+if (!dir.exists(od())) {
   stop("`original-data/` no está accesible: monta el volumen externo antes de correr esto.\n",
        "  Es un symlink a /Volumes/eDriveA/. Sin él no hay parquets que actualizar.",
        call. = FALSE)
 }
 
 message("CPV-2024:")
-n <- agregar_taxonomia("original-data/r/cpv-2024/parquets", codebook_meta, 2024)
+n <- agregar_taxonomia(od("r/cpv-2024/parquets"), codebook_meta, 2024)
 if (is.null(n)) {
   stop("No se encontró original-data/r/cpv-2024/parquets/diccionario_variables.parquet.",
        call. = FALSE)
@@ -101,8 +104,8 @@ message("\nCensos históricos:")
 escritos <- 0L
 for (anio in c("1976", "1992", "2001", "2012")) {
   meta <- codebook_historico_meta[[anio]]
-  for (raiz in c("original-data/r/censos-historicos",
-                 "original-data/python/censos-historicos")) {
+  for (raiz in c(od("r/censos-historicos"),
+                 od("python/censos-historicos"))) {
     res <- agregar_taxonomia(file.path(raiz, paste0("censo_", anio)), meta, as.integer(anio))
     if (!is.null(res)) escritos <- escritos + 1L
   }

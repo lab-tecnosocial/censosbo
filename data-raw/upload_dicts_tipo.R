@@ -7,6 +7,9 @@
 
 library(piggyback)
 
+# Ruta a las fuentes del INE (disco externo, montado solo a demanda).
+source("data-raw/_rutas.R")
+
 if (Sys.getenv("GITHUB_PAT") == "" && Sys.getenv("GITHUB_TOKEN") == "") {
   tok <- tryCatch(system2("gh", c("auth", "token"), stdout = TRUE), error = function(e) "")
   if (length(tok) && nzchar(tok)) Sys.setenv(GITHUB_PAT = tok)
@@ -16,11 +19,11 @@ REPO <- "lab-tecnosocial/censosbo"
 
 # tag del release  ->  diccionario_variables.parquet local correspondiente
 DICTS <- list(
-  list(tag = "data-v1.0.0",      path = "original-data/r/cpv-2024/parquets/diccionario_variables.parquet"),
-  list(tag = "data-1976-v1.0.0", path = "original-data/r/censos-historicos/censo_1976/diccionario_variables.parquet"),
-  list(tag = "data-1992-v1.0.0", path = "original-data/r/censos-historicos/censo_1992/diccionario_variables.parquet"),
-  list(tag = "data-2001-v1.0.0", path = "original-data/r/censos-historicos/censo_2001/diccionario_variables.parquet"),
-  list(tag = "data-2012-v1.0.0", path = "original-data/r/censos-historicos/censo_2012/diccionario_variables.parquet")
+  list(tag = "data-v1.0.0",      path = od("r/cpv-2024/parquets/diccionario_variables.parquet")),
+  list(tag = "data-1976-v1.0.0", path = od("r/censos-historicos/censo_1976/diccionario_variables.parquet")),
+  list(tag = "data-1992-v1.0.0", path = od("r/censos-historicos/censo_1992/diccionario_variables.parquet")),
+  list(tag = "data-2001-v1.0.0", path = od("r/censos-historicos/censo_2001/diccionario_variables.parquet")),
+  list(tag = "data-2012-v1.0.0", path = od("r/censos-historicos/censo_2012/diccionario_variables.parquet"))
 )
 
 for (d in DICTS) {

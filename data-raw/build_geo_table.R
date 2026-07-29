@@ -3,7 +3,10 @@
 
 library(xml2)
 
-dicx_path <- "original-data/fuentes/cpv-2024/CEN24.dicX"
+# Ruta a las fuentes del INE (disco externo, montado solo a demanda).
+source("data-raw/_rutas.R")
+
+dicx_path <- od("fuentes/cpv-2024/CEN24.dicX")
 stopifnot(file.exists(dicx_path))
 
 doc <- xml2::read_xml(dicx_path)

@@ -9,6 +9,9 @@
 ## raíz del paquete:  source("data-raw/add_tipo_to_dicts.R")
 
 library(arrow)
+
+# Ruta a las fuentes del INE (disco externo, montado solo a demanda).
+source("data-raw/_rutas.R")
 source("data-raw/clasificar_tipos.R")
 
 # Limpieza de etiquetas equivalente a build_codebooks_historicos.R, para que la
@@ -73,13 +76,13 @@ load("data/codebook_meta.rda")
 load("data/codebook_historico_meta.rda")
 
 message("CPV-2024:")
-agregar_tipo("original-data/r/cpv-2024/parquets", codebook_meta)
+agregar_tipo(od("r/cpv-2024/parquets"), codebook_meta)
 
 message("\nCensos históricos:")
 for (anio in c("1976", "1992", "2001", "2012")) {
   meta <- codebook_historico_meta[[anio]]
-  for (raiz in c("original-data/r/censos-historicos",
-                 "original-data/python/censos-historicos")) {
+  for (raiz in c(od("r/censos-historicos"),
+                 od("python/censos-historicos"))) {
     agregar_tipo(file.path(raiz, paste0("censo_", anio)), meta)
   }
 }

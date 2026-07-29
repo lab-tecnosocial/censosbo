@@ -19,9 +19,12 @@
 library(sf)
 library(censosbo)
 
+# Ruta a las fuentes del INE (disco externo, montado solo a demanda).
+source("data-raw/_rutas.R")
+
 sf::sf_use_s2(FALSE)  # las operaciones de topología van en el plano lon/lat
 
-SHP  <- "original-data/geo/sdsn_limites_2025/limites_2025.shp"
+SHP  <- od("geo/sdsn_limites_2025/limites_2025.shp")
 KEEP <- 0.05  # proporción de vértices que conserva ms_simplify
 
 # `TRUE` compara la población de SDSN con la de los microdatos municipio a

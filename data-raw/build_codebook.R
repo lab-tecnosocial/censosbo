@@ -2,10 +2,13 @@
 ## Requiere: readxl, arrow, usethis
 
 library(readxl)
+
+# Ruta a las fuentes del INE (disco externo, montado solo a demanda).
+source("data-raw/_rutas.R")
 source("data-raw/clasificar_tipos.R")
 source("data-raw/derived_codebook_vars.R")
 
-xlsx_path <- "original-data/fuentes/cpv-2024/Diccionario de variables CPV 2024.xlsx"
+xlsx_path <- od("fuentes/cpv-2024/Diccionario de variables CPV 2024.xlsx")
 stopifnot(file.exists(xlsx_path))
 
 hojas <- readxl::excel_sheets(xlsx_path)
@@ -112,7 +115,7 @@ rownames(codebook_meta) <- NULL
 # Clasificar `tipo` con el clasificador compartido. El tipo de almacenamiento
 # real se lee de los parquets de datos del CPV-2024 (los CSV del INE no traen
 # tipos útiles: el Excel marca todo como "integer").
-dir24 <- "original-data/r/cpv-2024/parquets"
+dir24 <- od("r/cpv-2024/parquets")
 sm24  <- storage_map(c(
   file.path(dir24, "persona_dep01.parquet"),
   file.path(dir24, "vivienda.parquet"),

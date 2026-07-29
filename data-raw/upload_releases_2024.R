@@ -10,9 +10,12 @@
 
 library(piggyback)
 
+# Ruta a las fuentes del INE (disco externo, montado solo a demanda).
+source("data-raw/_rutas.R")
+
 REPO    <- "lab-tecnosocial/censosbo"
 TAG     <- "data-v1.0.0"
-DIR_OUT <- "original-data/r/cpv-2024/parquets"
+DIR_OUT <- od("r/cpv-2024/parquets")
 
 # Archivos a subir (persona_dep01-09 con area; vivienda/emigracion/mortalidad sin cambios)
 PERSONA_DEPS <- sprintf("persona_dep%02d.parquet", 1:9)

@@ -3,9 +3,12 @@
 ## Ejecutar desde la raíz del paquete: source("data-raw/build_codebooks_historicos.R")
 
 library(arrow)
+
+# Ruta a las fuentes del INE (disco externo, montado solo a demanda).
+source("data-raw/_rutas.R")
 source("data-raw/clasificar_tipos.R")
 
-base_dir <- "original-data/r/censos-historicos"
+base_dir <- od("r/censos-historicos")
 
 # Todos los censos usan ahora columnas "entidad" y "label" en el diccionario
 # de variables. La normalización de abajo (tabla→entidad, etiqueta_variable→label)
