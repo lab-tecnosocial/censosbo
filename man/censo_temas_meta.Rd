@@ -5,7 +5,7 @@
 \alias{censo_temas_meta}
 \title{Catálogo de temas de los censos de Bolivia}
 \format{
-Un data.frame de 20 filas:
+Un data.frame de 21 filas:
 \describe{
   \item{tema}{Identificador en snake_case; es la clave que acepta
     `codebook(tema = )` y [vars_tema()]}
@@ -22,25 +22,25 @@ Un data.frame de 20 filas:
 }
 }
 \source{
-INE Bolivia — catálogo ANDA, estudios 132 (CPV-2024), 8 (CPV-2012) y
-  10 (CNPV-2001), elemento `topcClas` del DDI.
+INE Bolivia — catálogo ANDA, estudios 132 (CPV-2024), 8 (CPV-2012),
+  10 (CNPV-2001), 47 (CNPV-1992) y 46 (CNPV-1976), elemento `topcClas` del DDI.
 }
 \usage{
 censo_temas_meta
 }
 \description{
-Los 20 temas con los que `censosbo` agrupa las variables censales. Diecisiete
+Los 21 temas con los que `censosbo` agrupa las variables censales. Diecisiete
 son los `topics` oficiales que el INE declara en el catálogo ANDA del CPV-2024;
-los otros tres (`ubicacion_geografica`, `identificacion` y
-`materiales_construccion`) son extensiones del paquete, marcadas en la columna
-`fuente`.
+los otros cuatro (`ubicacion_geografica`, `identificacion`,
+`materiales_construccion` y `religion`) son extensiones del paquete, marcadas
+en la columna `fuente`.
 }
 \details{
-El mismo vocabulario se aplica a 2024, 2012 y 2001, de modo que
-`codebook(tema = "educacion", anio = ...)` sea comparable entre censos. Los
-ocho temas del vocabulario antiguo del INE (idénticos en 2012 y 2001) se
-mapearon a estos veinte: seis literales coinciden y dos son renombrados
-(`Hogar y/o Vivienda` y `Empleo, Ocupación y Actividad Económica`).
+El mismo vocabulario se aplica a los cinco censos, de modo que
+`codebook(tema = "educacion", anio = ...)` sea comparable entre ellos. Los
+ocho temas del vocabulario antiguo del INE (idénticos en 2012, 2001, 1992 y
+1976) se mapearon a estos veintiuno: seis literales coinciden y dos son
+renombrados (`Hogar y/o Vivienda` y `Empleo, Ocupación y Actividad Económica`).
 }
 \section{Capítulo y tema son dos facetas independientes}{
 
@@ -51,8 +51,8 @@ está anidado en el capítulo: `v01_tipoviv` está en el capítulo B y
 variables) y `capitulos` lista todos aquellos en los que aparece.
 
 Los capítulos son los del cuestionario del CPV-2024 y solo se aplican a ese
-censo; en 2012 y 2001 la columna `capitulo` del codebook queda a `NA` y la
-estructura oficial de cada año vive en `grupo_ine`.
+censo; en los censos anteriores la columna `capitulo` del codebook queda a `NA`
+y la estructura oficial de cada año vive en `grupo_ine`.
 }
 
 \seealso{

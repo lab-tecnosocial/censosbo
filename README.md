@@ -89,12 +89,12 @@ get_personas_2024(departamento = "Pando", verbose = FALSE) |>
 #> # A tibble: 6 × 3
 #>   grupo_edad p25_sexo     n
 #>        <dbl> <fct>    <int>
-#> 1          0 Mujer     6091
-#> 2          0 Hombre    6090
+#> 1          0 Hombre    6090
+#> 2          0 Mujer     6091
 #> 3          5 Hombre    7894
 #> 4          5 Mujer     7522
-#> 5         10 Mujer     7590
-#> 6         10 Hombre    7937
+#> 5         10 Hombre    7937
+#> 6         10 Mujer     7590
 ```
 
 ## Manzanos y comunidades — el nivel más fino del CPV-2024
@@ -226,7 +226,13 @@ get_temporal(variables = "sabe_leer", anios = c(1992, 2001, 2024))
 #>     1992: personas de 6 años o más
 #>     2001: personas de 4 años o más
 #>     2024: personas de 5 años o más
-#>   i Filtra `edad >= 6` en todos los años antes de comparar.
+#>   i Añade "edad" a `variables` y filtra `edad >= 6` antes de comparar.
+
+# Hacerle caso: pedir `edad` es lo que permite igualar el universo
+get_temporal(variables = c("sabe_leer", "edad"), anios = c(1992, 2001, 2024)) |>
+  filter(edad >= 6, !is.na(sabe_leer)) |>
+  group_by(anio) |>
+  summarise(pct_alfabetizado = round(100 * mean(sabe_leer == 1), 1))
 ```
 
 Más en `vignette("temas")`.
@@ -244,11 +250,11 @@ get_personas_2024(departamento = "Pando", verbose = FALSE) |>
 #>   <fct>                   <fct>                      <int>
 #> 1 Hombre                  Sí                         60578
 #> 2 Mujer                   Sí                         52972
-#> 3 Hombre                  No                          2668
-#> 4 Mujer                   <NA>                        6091
+#> 3 Mujer                   No                          2843
+#> 4 Hombre                  Sin especificar             1503
 #> 5 Hombre                  <NA>                        6090
-#> 6 Hombre                  Sin especificar             1503
-#> 7 Mujer                   No                          2843
+#> 6 Mujer                   <NA>                        6091
+#> 7 Hombre                  No                          2668
 #> 8 Mujer                   Sin especificar             1449
 ```
 

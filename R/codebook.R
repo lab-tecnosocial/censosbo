@@ -8,17 +8,38 @@
 #'   \item{variable}{Nombre de la variable (minúsculas, igual que en los datos)}
 #'   \item{etiqueta}{Descripción en español de la variable}
 #'   \item{tabla}{Tabla a la que pertenece: `"persona"`, `"vivienda"`,
-#'     `"emigracion"` o `"mortalidad"`}
+#'     `"emigracion"`, `"mortalidad"`, `"unidad"` o `"ficha"`}
+#'   \item{valores_codigos}{Lista de data.frames con los códigos y etiquetas
+#'     para variables categóricas; `NULL` para variables numéricas o de texto}
 #'   \item{tipo}{Tipo de dato: `"categorica"`, `"numerica"` o `"texto"`.
 #'     Una variable es `"categorica"` si sus valores son códigos con etiquetas
 #'     (aunque sean números, como `sexo` 1/2) o si su nombre indica un código de
 #'     clasificación (sufijo `cod`: códigos geográficos, de ocupación, etc.);
 #'     `"texto"` si almacena texto libre; `"numerica"` en los demás casos
 #'     (conteos y medidas)}
-#'   \item{valores_codigos}{Lista de data.frames con los códigos y etiquetas
-#'     para variables categóricas; `NULL` para variables numéricas o de texto}
+#'   \item{tema}{Uno de los 21 temas de [censo_temas_meta]. Es el eje comparable
+#'     entre censos}
+#'   \item{capitulo}{Capítulo del cuestionario del CPV-2024 (`"A"`–`"G"`); `NA` en
+#'     los censos anteriores, cuya estructura oficial está en `grupo_ine`}
+#'   \item{pregunta, pregunta_num}{Número de pregunta del formulario, como texto y
+#'     como entero, para recorrer el censo en el orden en que se aplicó}
+#'   \item{origen}{Procedencia: `"cuestionario"` (pregunta directa), `"derivada"`
+#'     (construida por el INE o por REDATAM), `"geografia"`, `"identificador"` o
+#'     `"indicador"` (agregados de las fichas de manzano y comunidad)}
+#'   \item{universo}{Población de referencia normalizada (`"personas_5_mas"`,
+#'     `"mujeres_12_mas"`, `"viviendas_presentes"`…). Es el denominador correcto
+#'     de la variable; `NA` cuando el INE no lo declara}
+#'   \item{grupo_ine}{Agrupación oficial del censo de origen; `NA` en 2024, que no
+#'     la publica}
+#'   \item{bloque, denominador}{Bloque de [censo_bloques_meta] y denominador de los
+#'     indicadores de manzano y comunidad; `NA` en el resto de variables}
+#'   \item{valores_fuente}{De dónde salen las etiquetas de valor: `"redatam"`,
+#'     `"ddi"` o el diccionario oficial}
 #' }
-#' @source INE Bolivia, CPV-2024. Diccionario de Variables CPV 2024.xlsx.
+#' @source INE Bolivia, CPV-2024. Diccionario de Variables CPV 2024.xlsx, los
+#'   cuestionarios censales y el DDI del estudio 132 del catálogo ANDA.
+#' @seealso [censo_temas()] y [vars_tema()] para navegar por tema, y
+#'   [codebook_docs_meta] para los textos conceptuales del INE.
 "codebook_meta"
 
 #' Diccionarios de variables de los censos históricos de Bolivia
@@ -27,18 +48,23 @@
 #' 2001 y 2012. Cada elemento es un data.frame con la misma estructura que
 #' [codebook_meta].
 #'
-#' @format Una lista con elementos `"1976"`, `"1992"`, `"2001"` y `"2012"`,
-#'   cada uno un data.frame con columnas:
+#' @format Una lista con elementos `"1976"`, `"1992"`, `"2001"` y `"2012"`, cada
+#'   uno un data.frame con las mismas columnas que [codebook_meta]. Estos objetos
+#'   guardan `tipo` y `valores_codigos` en orden inverso al de `codebook_meta`, por
+#'   razones históricas; [codebook()] reordena las columnas al devolver, así que
+#'   consultado por ahí el esquema es idéntico en los cinco censos. Tres
+#'   particularidades de contenido:
 #' \describe{
-#'   \item{variable}{Nombre original de la variable en el censo}
-#'   \item{etiqueta}{Descripción de la variable}
-#'   \item{tabla}{Tabla/entidad REDATAM de origen}
-#'   \item{tipo}{`"categorica"`, `"numerica"` o `"texto"` (misma regla que en
-#'     [codebook_meta]: códigos con etiquetas o con nombre tipo `cod` son
-#'     categóricos aunque sus valores sean números)}
-#'   \item{valores_codigos}{Lista de data.frames con códigos y etiquetas}
+#'   \item{variable}{Conserva el nombre original del censo, que en los primeros
+#'     años son códigos cortos (`p10`, `anioes1`) y no nombres descriptivos}
+#'   \item{tabla}{Es la entidad REDATAM de origen, así que varía entre censos
+#'     (`"poblacion"` en 1976 donde 2024 usa `"persona"`)}
+#'   \item{capitulo}{Siempre `NA`: los capítulos son los del cuestionario del
+#'     CPV-2024. La estructura oficial de cada año está en `grupo_ine`}
 #' }
-#' @source INE Bolivia. Diccionarios Parquet generados por open-redatam.
+#' @source INE Bolivia. Diccionarios Parquet generados por open-redatam, con el
+#'   tema y el universo añadidos desde los DDI del catálogo ANDA (estudios 8, 10,
+#'   47 y 46) y los cuestionarios de cada censo.
 "codebook_historico_meta"
 
 #' Consulta el diccionario de variables de un censo de Bolivia

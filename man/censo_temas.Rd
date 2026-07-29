@@ -15,7 +15,7 @@ la letra (`"C"`) o parte de su nombre (`"vivienda"`).}
 \item{tabla}{Caracteres. Restringe el conteo a una tabla (e.g. `"persona"`).
 Con este argumento se omiten los temas que no tienen ninguna variable ahí.}
 
-\item{anio}{Entero. `2024` (defecto), `2012` o `2001`.}
+\item{anio}{Entero. `2024` (defecto), `2012`, `2001`, `1992` o `1976`.}
 }
 \value{
 Un data.frame con `tema`, `etiqueta`, `capitulo`, `capitulo_etiqueta`,

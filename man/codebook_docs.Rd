@@ -14,8 +14,9 @@ codebook_docs(variable, tabla = NULL, campos = NULL, anio = 2024)
 \item{campos}{Caracteres. Devuelve solo estas columnas de documentación
 (e.g. `"definicion"`, `"pregunta_literal"`, `"regla_derivacion"`).}
 
-\item{anio}{Entero. Censo o censos: `2024` (defecto), `2012`, `2001`. Acepta
-varios, que es la forma de comparar cómo cambió una definición entre censos.}
+\item{anio}{Entero. Censo o censos: `2024` (defecto), `2012`, `2001`, `1992` o
+`1976`. Acepta varios, que es la forma de comparar cómo cambió una definición
+entre censos.}
 }
 \value{
 Un data.frame con una fila por variable y año encontrados.

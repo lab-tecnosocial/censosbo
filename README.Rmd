@@ -168,7 +168,13 @@ get_temporal(variables = "sabe_leer", anios = c(1992, 2001, 2024))
 #>     1992: personas de 6 años o más
 #>     2001: personas de 4 años o más
 #>     2024: personas de 5 años o más
-#>   i Filtra `edad >= 6` en todos los años antes de comparar.
+#>   i Añade "edad" a `variables` y filtra `edad >= 6` antes de comparar.
+
+# Hacerle caso: pedir `edad` es lo que permite igualar el universo
+get_temporal(variables = c("sabe_leer", "edad"), anios = c(1992, 2001, 2024)) |>
+  filter(edad >= 6, !is.na(sabe_leer)) |>
+  group_by(anio) |>
+  summarise(pct_alfabetizado = round(100 * mean(sabe_leer == 1), 1))
 ```
 
 Más en `vignette("temas")`.

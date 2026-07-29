@@ -5,20 +5,25 @@
 \alias{codebook_historico_meta}
 \title{Diccionarios de variables de los censos históricos de Bolivia}
 \format{
-Una lista con elementos `"1976"`, `"1992"`, `"2001"` y `"2012"`,
-  cada uno un data.frame con columnas:
+Una lista con elementos `"1976"`, `"1992"`, `"2001"` y `"2012"`, cada
+  uno un data.frame con las mismas columnas que [codebook_meta]. Estos objetos
+  guardan `tipo` y `valores_codigos` en orden inverso al de `codebook_meta`, por
+  razones históricas; [codebook()] reordena las columnas al devolver, así que
+  consultado por ahí el esquema es idéntico en los cinco censos. Tres
+  particularidades de contenido:
 \describe{
-  \item{variable}{Nombre original de la variable en el censo}
-  \item{etiqueta}{Descripción de la variable}
-  \item{tabla}{Tabla/entidad REDATAM de origen}
-  \item{tipo}{`"categorica"`, `"numerica"` o `"texto"` (misma regla que en
-    [codebook_meta]: códigos con etiquetas o con nombre tipo `cod` son
-    categóricos aunque sus valores sean números)}
-  \item{valores_codigos}{Lista de data.frames con códigos y etiquetas}
+  \item{variable}{Conserva el nombre original del censo, que en los primeros
+    años son códigos cortos (`p10`, `anioes1`) y no nombres descriptivos}
+  \item{tabla}{Es la entidad REDATAM de origen, así que varía entre censos
+    (`"poblacion"` en 1976 donde 2024 usa `"persona"`)}
+  \item{capitulo}{Siempre `NA`: los capítulos son los del cuestionario del
+    CPV-2024. La estructura oficial de cada año está en `grupo_ine`}
 }
 }
 \source{
-INE Bolivia. Diccionarios Parquet generados por open-redatam.
+INE Bolivia. Diccionarios Parquet generados por open-redatam, con el
+  tema y el universo añadidos desde los DDI del catálogo ANDA (estudios 8, 10,
+  47 y 46) y los cuestionarios de cada censo.
 }
 \usage{
 codebook_historico_meta

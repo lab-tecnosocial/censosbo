@@ -1,3 +1,19 @@
+# censosbo 1.5.1
+
+## Correcciones
+
+* El aviso de universo de `get_temporal()` daba un consejo que no se podía seguir. Decía
+  «Filtra `edad >= 6`», pero la función solo devuelve las variables pedidas, así que sin
+  `"edad"` entre ellas el filtro fallaba con `object 'edad' not found`. Ahora, cuando la
+  columna no está, el aviso dice cómo conseguirla: «Añade "edad" a `variables` y filtra
+  `edad >= 6`». Los grupos predefinidos (`grupo = "educacion"`) ya la incluían, así que
+  esto solo afectaba a quien pedía variables sueltas.
+* Documentación al día con la cobertura real de los cinco censos: los `@format` de
+  `codebook_meta` y `codebook_historico_meta` describían cinco columnas de las quince,
+  y los roxygen de `censo_temas_meta`, `codebook_docs_meta`, `censo_temas()`,
+  `vars_tema()` y `codebook_docs()` seguían diciendo 20 temas y tres censos, junto con
+  las viñetas `diccionario` y `censos-historicos`.
+
 # censosbo 1.5.0
 
 ## Un vocabulario temático para las variables censales
@@ -71,7 +87,7 @@ avisa**:
     1992: personas de 6 años o más
     2001: personas de 4 años o más
     2024: personas de 5 años o más
-  i Filtra `edad >= 6` en todos los años antes de comparar.
+  i Añade "edad" a `variables` y filtra `edad >= 6` antes de comparar.
 ```
 
 Siete variables armonizadas están afectadas. `nivel_edu` es la más extrema: 6 años

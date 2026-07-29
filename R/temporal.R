@@ -1206,6 +1206,12 @@ get_temporal_vivienda <- function(
 #' @return invisible(TRUE); emite un `cli_warn` por cada variable afectada
 #' @keywords internal
 .avisar_universos <- function(variables, anios) {
+  # El consejo del aviso es filtrar por edad, y para eso la columna tiene que
+  # estar en el resultado: `get_temporal()` solo devuelve las variables pedidas,
+  # así que sin `"edad"` entre ellas `filter(edad >= n)` falla con
+  # «object 'edad' not found». Cuando falta, el aviso dice cómo conseguirla.
+  tiene_edad <- "edad" %in% variables
+
   # Solo interesan los universos que restringen la población: los genéricos
   # ("todas las personas") y los geográficos no indican una diferencia real.
   for (v in variables) {
@@ -1218,11 +1224,16 @@ get_temporal_vivienda <- function(
                        ifelse(us %in% names(.UNIVERSO_TEXTO),
                               .UNIVERSO_TEXTO[us], us))
     edad_max <- max(.UNIVERSO_EDAD_MIN[us], na.rm = TRUE)
+    como <- if (tiene_edad) {
+      "Filtra {.code edad >= {edad_max}} en todos los años antes de comparar."
+    } else {
+      "Añade {.val edad} a {.arg variables} y filtra {.code edad >= {edad_max}} antes de comparar."
+    }
     cli::cli_warn(c(
       "!" = "{.var {v}} no se preguntó a la misma población en todos los censos:",
       stats::setNames(detalle, rep(" ", length(detalle))),
       "i" = "Compararla sin igualar el universo mide poblaciones distintas en cada año.",
-      "i" = "Filtra {.code edad >= {edad_max}} en todos los años antes de comparar."
+      "i" = como
     ))
   }
   invisible(TRUE)

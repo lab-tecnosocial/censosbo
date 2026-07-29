@@ -1,16 +1,16 @@
 #' Catálogo de temas de los censos de Bolivia
 #'
-#' Los 20 temas con los que `censosbo` agrupa las variables censales. Diecisiete
+#' Los 21 temas con los que `censosbo` agrupa las variables censales. Diecisiete
 #' son los `topics` oficiales que el INE declara en el catálogo ANDA del CPV-2024;
-#' los otros tres (`ubicacion_geografica`, `identificacion` y
-#' `materiales_construccion`) son extensiones del paquete, marcadas en la columna
-#' `fuente`.
+#' los otros cuatro (`ubicacion_geografica`, `identificacion`,
+#' `materiales_construccion` y `religion`) son extensiones del paquete, marcadas
+#' en la columna `fuente`.
 #'
-#' El mismo vocabulario se aplica a 2024, 2012 y 2001, de modo que
-#' `codebook(tema = "educacion", anio = ...)` sea comparable entre censos. Los
-#' ocho temas del vocabulario antiguo del INE (idénticos en 2012 y 2001) se
-#' mapearon a estos veinte: seis literales coinciden y dos son renombrados
-#' (`Hogar y/o Vivienda` y `Empleo, Ocupación y Actividad Económica`).
+#' El mismo vocabulario se aplica a los cinco censos, de modo que
+#' `codebook(tema = "educacion", anio = ...)` sea comparable entre ellos. Los
+#' ocho temas del vocabulario antiguo del INE (idénticos en 2012, 2001, 1992 y
+#' 1976) se mapearon a estos veintiuno: seis literales coinciden y dos son
+#' renombrados (`Hogar y/o Vivienda` y `Empleo, Ocupación y Actividad Económica`).
 #'
 #' @section Capítulo y tema son dos facetas independientes:
 #' Cada variable tiene exactamente un `capitulo` y un `tema`, pero el tema **no**
@@ -20,10 +20,10 @@
 #' variables) y `capitulos` lista todos aquellos en los que aparece.
 #'
 #' Los capítulos son los del cuestionario del CPV-2024 y solo se aplican a ese
-#' censo; en 2012 y 2001 la columna `capitulo` del codebook queda a `NA` y la
-#' estructura oficial de cada año vive en `grupo_ine`.
+#' censo; en los censos anteriores la columna `capitulo` del codebook queda a `NA`
+#' y la estructura oficial de cada año vive en `grupo_ine`.
 #'
-#' @format Un data.frame de 20 filas:
+#' @format Un data.frame de 21 filas:
 #' \describe{
 #'   \item{tema}{Identificador en snake_case; es la clave que acepta
 #'     `codebook(tema = )` y [vars_tema()]}
@@ -38,8 +38,8 @@
 #'   \item{descripcion}{Qué incluye el tema y, cuando la asignación es
 #'     discutible, por qué se decidió así}
 #' }
-#' @source INE Bolivia — catálogo ANDA, estudios 132 (CPV-2024), 8 (CPV-2012) y
-#'   10 (CNPV-2001), elemento `topcClas` del DDI.
+#' @source INE Bolivia — catálogo ANDA, estudios 132 (CPV-2024), 8 (CPV-2012),
+#'   10 (CNPV-2001), 47 (CNPV-1992) y 46 (CNPV-1976), elemento `topcClas` del DDI.
 #' @seealso [censo_temas()] para consultarlo con conteos de variables.
 "censo_temas_meta"
 
@@ -68,14 +68,13 @@
 #' pasan de los 4.000 caracteres y harían ilegible la salida de [codebook()].
 #' Consúltese con [codebook_docs()].
 #'
-#' Cubre las variables de 2024, 2012 y 2001 que existen en el paquete (316 de las
-#' 383 que documenta el ANDA; el resto son campos de texto abierto e
-#' identificadores que los microdatos publicados no incluyen). Para 1976 y 1992 no
-#' hay datos: el INE no publica un diccionario estructurado de esos censos.
+#' Cubre las variables de los cinco censos que existen en el paquete (445 de las
+#' 539 que documenta el ANDA; el resto son campos de texto abierto e
+#' identificadores que los microdatos publicados no incluyen).
 #'
-#' @format Un data.frame de 316 filas:
+#' @format Un data.frame de 445 filas:
 #' \describe{
-#'   \item{anio}{Censo: 2024, 2012 o 2001}
+#'   \item{anio}{Censo: 2024, 2012, 2001, 1992 o 1976}
 #'   \item{variable, tabla}{Clave; coinciden con [codebook_meta]}
 #'   \item{variable_ddi}{Nombre en el diccionario del ANDA, que no siempre es el
 #'     de los microdatos (en 2012 el ANDA usa `P23_PARENTES` y los datos `P23`)}
@@ -84,7 +83,7 @@
 #'     La versión normalizada y comparable está en `codebook_meta$universo`}
 #'   \item{pregunta_literal}{La pregunta como se formuló, con sus opciones y saltos}
 #'   \item{regla_derivacion}{Cómo construyó el INE la variable; solo en las
-#'     derivadas}
+#'     derivadas de 2024 y 1992}
 #'   \item{notas}{Advertencias del INE, como el significado de los códigos de
 #'     omisión. Solo disponible en 2024}
 #'   \item{informante}{Quién respondía: `"jefe_hogar"`, `"persona_misma"`,
@@ -93,9 +92,10 @@
 #'     términos operativos conceptos como hogar o residencia habitual}
 #' }
 #' @source INE Bolivia — catálogo ANDA, DDI de los estudios 132 (CPV-2024), 8
-#'   (CPV-2012) y 10 (CNPV-2001). El atributo `"ddi"` del objeto registra las URL,
-#'   fechas de descarga y sha256 de los archivos usados. Los textos se reproducen
-#'   literalmente; el INE los publica bajo la condición «Uso público».
+#'   (CPV-2012), 10 (CNPV-2001), 47 (CNPV-1992) y 46 (CNPV-1976). El atributo
+#'   `"ddi"` del objeto registra las URL, fechas de descarga y sha256 de los
+#'   archivos usados. Los textos se reproducen literalmente; el INE los publica
+#'   bajo la condición «Uso público».
 "codebook_docs_meta"
 
 
@@ -110,7 +110,7 @@
 #'   la letra (`"C"`) o parte de su nombre (`"vivienda"`).
 #' @param tabla Caracteres. Restringe el conteo a una tabla (e.g. `"persona"`).
 #'   Con este argumento se omiten los temas que no tienen ninguna variable ahí.
-#' @param anio Entero. `2024` (defecto), `2012` o `2001`.
+#' @param anio Entero. `2024` (defecto), `2012`, `2001`, `1992` o `1976`.
 #'
 #' @return Un data.frame con `tema`, `etiqueta`, `capitulo`, `capitulo_etiqueta`,
 #'   `fuente`, `n_variables` y `descripcion`, ordenado por capítulo y cuestionario.
@@ -203,7 +203,7 @@ censo_temas <- function(tema = NULL, capitulo = NULL, tabla = NULL, anio = 2024)
 #' @param origen Caracteres. Filtra por procedencia: `"cuestionario"`,
 #'   `"derivada"`, `"geografia"`, `"identificador"` o `"indicador"`.
 #' @param capitulo Caracteres. Filtra por capítulo del cuestionario (solo 2024).
-#' @param anio Entero. `2024` (defecto), `2012` o `2001`.
+#' @param anio Entero. `2024` (defecto), `2012`, `2001`, `1992` o `1976`.
 #'
 #' @return Un vector de caracteres, sin duplicados.
 #'
@@ -279,8 +279,9 @@ vars_tema <- function(tema, tabla = NULL, tipo = NULL, origen = NULL,
 #' @param tabla Caracteres. Desambigua cuando la variable existe en varias tablas.
 #' @param campos Caracteres. Devuelve solo estas columnas de documentación
 #'   (e.g. `"definicion"`, `"pregunta_literal"`, `"regla_derivacion"`).
-#' @param anio Entero. Censo o censos: `2024` (defecto), `2012`, `2001`. Acepta
-#'   varios, que es la forma de comparar cómo cambió una definición entre censos.
+#' @param anio Entero. Censo o censos: `2024` (defecto), `2012`, `2001`, `1992` o
+#'   `1976`. Acepta varios, que es la forma de comparar cómo cambió una definición
+#'   entre censos.
 #'
 #' @return Un data.frame con una fila por variable y año encontrados.
 #'

@@ -28,7 +28,7 @@ o `"texto"`.}
 
 \item{capitulo}{Caracteres. Filtra por capítulo del cuestionario (solo 2024).}
 
-\item{anio}{Entero. `2024` (defecto), `2012` o `2001`.}
+\item{anio}{Entero. `2024` (defecto), `2012`, `2001`, `1992` o `1976`.}
 }
 \value{
 Un vector de caracteres, sin duplicados.

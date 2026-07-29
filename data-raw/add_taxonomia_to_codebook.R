@@ -5,11 +5,11 @@
 ## existen. Correrlo dos veces produce archivos byte-idénticos.
 ##
 ## Escribe en data/:
-##   codebook_meta.rda            + 7 columnas (2024)
-##   codebook_historico_meta.rda  + 7 columnas (los 4 años; NA donde no aplica)
-##   censo_temas_meta.rda         nuevo: catálogo de los 20 temas
+##   codebook_meta.rda            + 10 columnas (2024)
+##   codebook_historico_meta.rda  + 10 columnas (los 4 años; NA donde no aplica)
+##   censo_temas_meta.rda         nuevo: catálogo de los 21 temas
 ##   censo_bloques_meta.rda       nuevo: los 15 bloques de las fichas
-##   codebook_docs_meta.rda       nuevo: textos largos del DDI (383 filas)
+##   codebook_docs_meta.rda       nuevo: textos largos del DDI (445 filas)
 ##
 ## Y en data-raw/ddi/:
 ##   reporte_valores.md           discrepancias DDI vs REDATAM (no toca el dato)
@@ -33,13 +33,13 @@ ANIOS_HISTORICOS <- c("1976", "1992", "2001", "2012")
 
 # Columnas nuevas, en este orden. Van SIEMPRE al final, después de las cinco
 # originales, cuyo orden es contrato con censos-explorer. Todos los codebooks
-# reciben las nueve, con NA donde no aplican, para que codebook() devuelva la
+# reciben las diez, con NA donde no aplican, para que codebook() devuelva la
 # misma forma en los cinco censos y un rbind() entre años funcione.
 COLS_TAXONOMIA <- c("tema", "capitulo", "pregunta", "pregunta_num", "origen",
                     "universo", "grupo_ine", "bloque", "denominador",
                     "valores_fuente")
 
-# Garantiza que un codebook tenga las nueve columnas nuevas, en el orden canónico
+# Garantiza que un codebook tenga las diez columnas nuevas, en el orden canónico
 # y al final. Idempotente.
 homogeneizar <- function(cb) {
   for (col in COLS_TAXONOMIA) {
@@ -349,7 +349,7 @@ for (anio in ANIOS_HISTORICOS) {
   codebook_historico_meta[[anio]] <- ordenar_filas(codebook_historico_meta[[anio]])
 }
 
-# Esquema homogéneo: las nueve columnas nuevas, en el mismo orden, al final de
+# Esquema homogéneo: las diez columnas nuevas, en el mismo orden, al final de
 # los cinco codebooks. Se hace justo antes de validar y escribir, después de que
 # completar_valores_codigos() haya añadido `valores_fuente`.
 codebook_meta <- homogeneizar(codebook_meta)

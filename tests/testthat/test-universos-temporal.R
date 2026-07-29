@@ -35,6 +35,19 @@ test_that("el aviso sugiere la edad mínima que iguala los universos", {
                  "edad >= 6")
 })
 
+test_that("el aviso pide añadir `edad` si no está entre las variables", {
+  # get_temporal() solo devuelve las variables pedidas, así que sugerir
+  # `filter(edad >= 6)` a secas produce «object 'edad' not found».
+  expect_warning(censosbo:::.avisar_universos("sabe_leer", c(1992L, 2001L, 2024L)),
+                 "Añade")
+  # Cuando ya la pidió, el consejo es directo y no repite la instrucción.
+  w <- tryCatch(censosbo:::.avisar_universos(c("sabe_leer", "edad"),
+                                            c(1992L, 2001L, 2024L)),
+                warning = function(x) conditionMessage(x))
+  expect_match(w, "Filtra")
+  expect_false(grepl("Añade", w))
+})
+
 test_that("las ocho variables con universo divergente están cubiertas", {
   divergentes <- c("estado_civil", "sabe_leer", "nivel_edu", "asistencia_escolar",
                    "idioma_materno", "hijos_nacidos_vivos", "hijos_sobrevivientes")
