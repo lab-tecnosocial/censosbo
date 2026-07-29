@@ -17,3 +17,4 @@ invisible(TRUE); emite un `cli_warn` por cada variable afectada
 \description{
 Avisa de las variables cuyo universo cambia entre los censos pedidos
 }
+\keyword{internal}

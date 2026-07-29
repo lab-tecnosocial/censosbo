@@ -1204,6 +1204,7 @@ get_temporal_vivienda <- function(
 #' @param variables nombres armonizados
 #' @param anios censos solicitados
 #' @return invisible(TRUE); emite un `cli_warn` por cada variable afectada
+#' @keywords internal
 .avisar_universos <- function(variables, anios) {
   # Solo interesan los universos que restringen la población: los genéricos
   # ("todas las personas") y los geográficos no indican una diferencia real.
