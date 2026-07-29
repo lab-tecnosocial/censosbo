@@ -135,8 +135,6 @@ Los archivos Parquet se descargan una sola vez y quedan en caché local.
   : Información sobre los archivos en caché
 - [`censosbo_cache_clear()`](https://lab-tecnosocial.github.io/censosbo/reference/censosbo_cache_clear.md)
   : Limpia el caché local de datos
-- [`update_censosbo()`](https://lab-tecnosocial.github.io/censosbo/reference/update_censosbo.md)
-  : Actualiza el paquete censosbo y limpia el caché
 
 ## Datos incluidos en el paquete
 
@@ -165,5 +163,4 @@ Datasets disponibles sin descarga, incluidos directamente en el paquete.
 
 - [`censosbo`](https://lab-tecnosocial.github.io/censosbo/reference/censosbo-package.md)
   [`censosbo-package`](https://lab-tecnosocial.github.io/censosbo/reference/censosbo-package.md)
-  : censosbo: Paquete de R para el acceso, análisis y visualización de
-  datos censales en Bolivia (1976-2024)
+  : censosbo: Access and Analysis of Bolivian Census Microdata

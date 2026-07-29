@@ -112,8 +112,8 @@ Ficha resumen del geoportal del INE para las 150.744 unidades que la
 tienen publicada: **199** variables (194 indicadores más las 5 columnas
 de identificación). Todas son **conteos** de personas, viviendas u
 hogares; cada bloque temático trae su propio total, que es el
-denominador correcto. Ver
-[`vignette("manzanos-comunidades")`](https://lab-tecnosocial.github.io/censosbo/articles/manzanos-comunidades.md).
+denominador correcto. Ver [Manzanos y
+comunidades](https://lab-tecnosocial.github.io/censosbo/articles/manzanos-comunidades.md).
 
 ------------------------------------------------------------------------
 

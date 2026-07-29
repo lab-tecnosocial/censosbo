@@ -16,14 +16,12 @@ de mapas.
 remotes::install_github("lab-tecnosocial/censosbo")
 ```
 
-El paquete se desarrolla continuamente (mejoras, corrección de errores),
-si lo instalaste anteriormente te recomendamos volver a ejecutar el
-anterior código y borrar el caché para actualizar a la versión 1.7.0 o
-usar la siguiente función:
+Al actualizar a una versión que corrige los datos —no solo el código—
+conviene borrar el caché para que se vuelvan a descargar:
 
 ``` r
 
-update_censosbo()
+censosbo_cache_clear()
 ```
 
 ## Censos disponibles
@@ -133,8 +131,8 @@ reserva estadística: eso afecta al 47 % de los manzanos, pero la ficha
 cubre igualmente el 92 % de la población. La columna `ficha` indica
 cuáles la tienen.
 
-Detalles en
-[`vignette("manzanos-comunidades")`](https://lab-tecnosocial.github.io/censosbo/articles/manzanos-comunidades.md).
+Detalles en el artículo [Manzanos y
+comunidades](https://lab-tecnosocial.github.io/censosbo/articles/manzanos-comunidades.html).
 
 ## Diccionario de variables
 
@@ -422,8 +420,7 @@ censosbo_cache_dir()    # dónde está el caché
 ``` r
 
 censosbo_cache_info()   # qué archivos están descargados
-censosbo_cache_clear()  # liberar espacio en disco
-update_censosbo()       # actualizar paquete y limpiar caché
+censosbo_cache_clear()  # liberar espacio en disco y forzar la re-descarga
 ```
 
 ## Fuentes de datos
@@ -461,25 +458,24 @@ sin modificación de valores.
 citation("censosbo")
 #> To cite package 'censosbo' in publications use:
 #> 
-#>   Ojeda Copa A (2026). _censosbo: Paquete de R para el acceso, análisis
-#>   y visualización de datos censales en Bolivia (1976-2024)_. Lab
-#>   TecnoSocial, Cochabamba, Bolivia. R package version 1.7.0,
-#>   <https://lab-tecnosocial.github.io/censosbo/>.
+#>   Ojeda Copa A (2026). _censosbo: Access and Analysis of Bolivian
+#>   Census Microdata_. Lab TecnoSocial, Cochabamba, Bolivia. R package
+#>   version 2.0.0, <https://lab-tecnosocial.github.io/censosbo/>.
 #> 
 #> A BibTeX entry for LaTeX users is
 #> 
 #>   @Manual{,
-#>     title = {censosbo: Paquete de R para el acceso, análisis y visualización de datos censales en Bolivia (1976-2024)},
+#>     title = {censosbo: Access and Analysis of Bolivian Census Microdata},
 #>     author = {Alex {Ojeda Copa}},
 #>     organization = {Lab TecnoSocial},
 #>     address = {Cochabamba, Bolivia},
 #>     year = {2026},
-#>     note = {R package version 1.7.0},
+#>     note = {R package version 2.0.0},
 #>     url = {https://lab-tecnosocial.github.io/censosbo/},
 #>   }
 ```
 
 > Ojeda Copa A (2026). *censosbo: Paquete de R para el acceso, análisis
 > y visualización de datos censales en Bolivia (1976-2024)*. Lab
-> TecnoSocial, Cochabamba, Bolivia. R package version 1.7.0.
+> TecnoSocial, Cochabamba, Bolivia. R package version 2.0.0.
 > <https://lab-tecnosocial.github.io/censosbo/>

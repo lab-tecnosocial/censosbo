@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -101,7 +101,7 @@ el departamento de interés.</p>
 <h2 id="instalación">Instalación<a class="anchor" aria-label="anchor" href="#instalaci%C3%B3n"></a>
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"lab-tecnosocial/censosbo"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"censosbo"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="censos-disponibles">Censos disponibles<a class="anchor" aria-label="anchor" href="#censos-disponibles"></a>
@@ -276,13 +276,13 @@ cómodamente en RAM, pero sí se puede filtrar y agregar sobre el Parquet.
 cada uno). Disco y RAM muestran el total; en la práctica se descarga
 solo el/los departamentos necesarios. ³ Datos <strong>agregados</strong>
 por manzano urbano y comunidad rural (no microdatos), del geoportal del
-INE. Ver <code><a href="../articles/manzanos-comunidades.html">vignette("manzanos-comunidades")</a></code>. ⁴ Viviendas en
-el universo oficial del INE, que es lo que devuelven por defecto. La
-entidad cruda de REDATAM trae además registros de personas censadas en
-la calle o en tránsito, que no son viviendas:
-<code>universo = "todos"</code> los incluye (10.287 más en 2024). Ver
-<code><a href="../reference/tipos_vivienda.html">tipos_vivienda()</a></code> y
-<code><a href="../articles/analisis-vivienda.html">vignette("analisis-vivienda")</a></code>.</p>
+INE. Ver el artículo <a href="https://lab-tecnosocial.github.io/censosbo/articles/manzanos-comunidades.html">Manzanos
+y comunidades</a>. ⁴ Viviendas en el universo oficial del INE, que es lo
+que devuelven por defecto. La entidad cruda de REDATAM trae además
+registros de personas censadas en la calle o en tránsito, que no son
+viviendas: <code>universo = "todos"</code> los incluye (10.287 más en
+2024). Ver <code><a href="../reference/tipos_vivienda.html">tipos_vivienda()</a></code> y el artículo <a href="https://lab-tecnosocial.github.io/censosbo/articles/analisis-vivienda.html">Análisis
+de vivienda</a>.</p>
 <p>El formato <strong>Arrow</strong> (defecto) mantiene los datos en
 disco hasta que se llama <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect()</a></code>. Las tablas del CPV-2024
 se unen con la clave compuesta <code>idep + iprov + imun + i00</code>
@@ -311,7 +311,9 @@ necesidad de descargar nada:</p>
 <span>    caption <span class="op">=</span> <span class="st">"Fuente: INE Bolivia, CPV-2024"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">theme_minimal</span><span class="op">(</span>base_size <span class="op">=</span> <span class="fl">12</span><span class="op">)</span></span></code></pre></div>
-<p><img src="introduccion_files/figure-html/codebook-grafico-1.png" class="r-plt" alt="" width="672"></p>
+<div class="float">
+<img src="figuras-introduccion-codebook-grafico-1.png" alt="plot of chunk codebook-grafico"><div class="figcaption">plot of chunk codebook-grafico</div>
+</div>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Buscar variables relacionadas con educación</span></span>
 <span><span class="fu"><a href="../reference/codebook.html">codebook</a></span><span class="op">(</span>buscar <span class="op">=</span> <span class="st">"educa"</span><span class="op">)</span></span>
@@ -470,13 +472,13 @@ igual para el CPV-2024 y para los censos históricos (1976, 1992, 2001,
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/etiquetar_valores.html">etiquetar_valores</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span>    <span class="co"># 1 → "Mujer", 2 → "Hombre"; 1 → "Ninguno", etc.</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 4 × 3</span></span></span>
+<span><span class="co">#&gt; # A tibble: 4 × 3</span></span>
 <span><span class="co">#&gt;   p25_sexo nivel_edu      n</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Hombre   Secundaria <span style="text-decoration: underline;">22</span>987</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Mujer    Secundaria <span style="text-decoration: underline;">17</span>563</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Mujer    <span style="color: #BB0000;">NA</span>         <span style="text-decoration: underline;">27</span>417</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Hombre   <span style="color: #BB0000;">NA</span>         <span style="text-decoration: underline;">29</span>000</span></span>
+<span><span class="co">#&gt;   &lt;fct&gt;    &lt;fct&gt;      &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1 Hombre   Secundaria 22987</span></span>
+<span><span class="co">#&gt; 2 Mujer    Secundaria 17563</span></span>
+<span><span class="co">#&gt; 3 Mujer    &lt;NA&gt;       27417</span></span>
+<span><span class="co">#&gt; 4 Hombre   &lt;NA&gt;       29000</span></span>
 <span></span>
 <span><span class="co"># Para reportes: también renombrar columnas</span></span>
 <span><span class="fu"><a href="../reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Pando"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -484,11 +486,11 @@ igual para el CPV-2024 y para los censos históricos (1976, 1992, 2001,
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/etiquetar_valores.html">etiquetar_valores</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/etiquetar_variables.html">etiquetar_variables</a></span><span class="op">(</span><span class="op">)</span>  <span class="co"># "p25_sexo" → "25. Es mujer u hombre"</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 2</span></span></span>
+<span><span class="co">#&gt; # A tibble: 2 × 2</span></span>
 <span><span class="co">#&gt;   `25. Es mujer u hombre`     n</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>                   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Hombre                  <span style="text-decoration: underline;">70</span>839</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Mujer                   <span style="text-decoration: underline;">63</span>355</span></span></code></pre></div>
+<span><span class="co">#&gt;   &lt;fct&gt;                   &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1 Hombre                  70839</span></span>
+<span><span class="co">#&gt; 2 Mujer                   63355</span></span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Censos históricos: mismo flujo, sin especificar año</span></span>
 <span><span class="fu"><a href="../reference/get_censo.html">get_personas_1992</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"07"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -504,18 +506,18 @@ igual para el CPV-2024 y para los censos históricos (1976, 1992, 2001,
 Bolivia sin necesidad de descargar nada:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/departamentos.html">departamentos</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 9 × 2</span></span></span>
+<span><span class="co">#&gt; # A tibble: 9 × 2</span></span>
 <span><span class="co">#&gt;   idep  nombre_dep</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 01    Chuquisaca</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 02    La Paz    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 03    Cochabamba</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 04    Oruro     </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 05    Potosí    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 06    Tarija    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> 07    Santa Cruz</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> 08    Beni      </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">9</span> 09    Pando</span></span></code></pre></div>
+<span><span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;     </span></span>
+<span><span class="co">#&gt; 1 01    Chuquisaca</span></span>
+<span><span class="co">#&gt; 2 02    La Paz    </span></span>
+<span><span class="co">#&gt; 3 03    Cochabamba</span></span>
+<span><span class="co">#&gt; 4 04    Oruro     </span></span>
+<span><span class="co">#&gt; 5 05    Potosí    </span></span>
+<span><span class="co">#&gt; 6 06    Tarija    </span></span>
+<span><span class="co">#&gt; 7 07    Santa Cruz</span></span>
+<span><span class="co">#&gt; 8 08    Beni      </span></span>
+<span><span class="co">#&gt; 9 09    Pando</span></span></code></pre></div>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">geo_bolivia</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">idep</span>, <span class="va">nombre_dep</span>, name <span class="op">=</span> <span class="st">"municipios"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -530,7 +532,9 @@ Bolivia sin necesidad de descargar nada:</p>
 <span>    caption <span class="op">=</span> <span class="st">"Fuente: INE Bolivia, CPV-2024"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">theme_minimal</span><span class="op">(</span>base_size <span class="op">=</span> <span class="fl">12</span><span class="op">)</span></span></code></pre></div>
-<p><img src="introduccion_files/figure-html/municipios-por-dep-1.png" class="r-plt" alt="" width="672"></p>
+<div class="float">
+<img src="figuras-introduccion-municipios-por-dep-1.png" alt="plot of chunk municipios-por-dep"><div class="figcaption">plot of chunk municipios-por-dep</div>
+</div>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Variables de la tabla de emigración</span></span>
 <span><span class="fu"><a href="../reference/codebook.html">codebook</a></span><span class="op">(</span>tabla <span class="op">=</span> <span class="st">"emigracion"</span><span class="op">)</span></span>
@@ -580,9 +584,12 @@ departamental:</p>
 <span><span class="fu"><a href="../reference/mapa_dep.html">mapa_dep</a></span><span class="op">(</span><span class="va">mun_x_dep</span>, <span class="st">"n_municipios"</span>,</span>
 <span>         titulo          <span class="op">=</span> <span class="st">"Municipios por departamento — Bolivia"</span>,</span>
 <span>         mostrar_nombres <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="introduccion_files/figure-html/mapa-intro-1.png" class="r-plt" alt="" width="672"></p>
+<div class="float">
+<img src="figuras-introduccion-mapa-intro-1.png" alt="plot of chunk mapa-intro"><div class="figcaption">plot of chunk mapa-intro</div>
+</div>
 <p>Para mapas a nivel municipal con ejemplos usando datos reales del
-CPV-2024, ver la viñeta <strong><a href="visualizacion-mapas.html">Visualización en mapas</a></strong>.</p>
+CPV-2024, ver el artículo <strong><a href="https://lab-tecnosocial.github.io/censosbo/articles/visualizacion-mapas.html">Visualización
+en mapas</a></strong>.</p>
 </div>
 <div class="section level2">
 <h2 id="primera-descarga-de-microdatos-cpv-2024">Primera descarga de microdatos (CPV-2024)<a class="anchor" aria-label="anchor" href="#primera-descarga-de-microdatos-cpv-2024"></a>
@@ -590,7 +597,7 @@ CPV-2024, ver la viñeta <strong><a href="visualizacion-mapas.html">Visualizaci�
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Descargar datos de Pando, el departamento más pequeño (~4 MB, queda en caché)</span></span>
 <span><span class="va">personas_pando</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Pando"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Usando caché: <span style="color: #0000BB;">persona_dep09.parquet</span></span></span>
+<span><span class="co">#&gt; ✔ Usando caché: 'persona_dep09.parquet'</span></span>
 <span><span class="va">personas_pando</span></span>
 <span><span class="co">#&gt; FileSystemDataset with 1 Parquet file</span></span>
 <span><span class="co">#&gt; 119 columns</span></span>
@@ -659,14 +666,14 @@ manual con <code><a href="../reference/municipios.html">municipios()</a></code>:
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/etiquetar_geografia.html">etiquetar_geografia</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 7</span></span></span>
+<span><span class="co">#&gt; # A tibble: 5 × 7</span></span>
 <span><span class="co">#&gt;   idep  iprov imun      n nombre_dep nombre_prov    nombre_mun </span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 09    01    01    <span style="text-decoration: underline;">55</span>114 Pando      Nicolás Suárez Cobija     </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 09    05    02     <span style="text-decoration: underline;">2</span>511 Pando      Federico Román Villa Nueva</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 09    04    02     <span style="text-decoration: underline;">2</span>600 Pando      Abuná          Ingavi     </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 09    01    04     <span style="text-decoration: underline;">3</span>630 Pando      Nicolás Suárez Bella Flor </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 09    02    01     <span style="text-decoration: underline;">7</span>367 Pando      Manuripi       Puerto Rico</span></span></code></pre></div>
+<span><span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt; &lt;chr&gt;      &lt;chr&gt;          &lt;chr&gt;      </span></span>
+<span><span class="co">#&gt; 1 09    01    01    55114 Pando      Nicolás Suárez Cobija     </span></span>
+<span><span class="co">#&gt; 2 09    05    02     2511 Pando      Federico Román Villa Nueva</span></span>
+<span><span class="co">#&gt; 3 09    04    02     2600 Pando      Abuná          Ingavi     </span></span>
+<span><span class="co">#&gt; 4 09    01    04     3630 Pando      Nicolás Suárez Bella Flor </span></span>
+<span><span class="co">#&gt; 5 09    02    01     7367 Pando      Manuripi       Puerto Rico</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -706,11 +713,11 @@ manual con <code><a href="../reference/municipios.html">municipios()</a></code>:
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">p25_sexo</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/etiquetar_valores.html">etiquetar_valores</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 2</span></span></span>
+<span><span class="co">#&gt; # A tibble: 2 × 2</span></span>
 <span><span class="co">#&gt;   p25_sexo     n</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Hombre   <span style="text-decoration: underline;">70</span>839</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Mujer    <span style="text-decoration: underline;">63</span>355</span></span>
+<span><span class="co">#&gt;   &lt;fct&gt;    &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1 Hombre   70839</span></span>
+<span><span class="co">#&gt; 2 Mujer    63355</span></span>
 <span></span>
 <span><span class="co"># Grupos quinquenales de edad (usar %/% — cut() no es compatible con Arrow)</span></span>
 <span><span class="fu"><a href="../reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Pando"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -721,15 +728,15 @@ manual con <code><a href="../reference/municipios.html">municipios()</a></code>:
 <span>  <span class="fu"><a href="../reference/etiquetar_valores.html">etiquetar_valores</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">grupo_edad</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">6</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 3</span></span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 3</span></span>
 <span><span class="co">#&gt;   grupo_edad p25_sexo     n</span></span>
-<span><span class="co">#&gt;        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>          0 Mujer     <span style="text-decoration: underline;">6</span>091</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>          0 Hombre    <span style="text-decoration: underline;">6</span>090</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>          5 Hombre    <span style="text-decoration: underline;">7</span>894</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>          5 Mujer     <span style="text-decoration: underline;">7</span>522</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>         10 Mujer     <span style="text-decoration: underline;">7</span>590</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>         10 Hombre    <span style="text-decoration: underline;">7</span>937</span></span></code></pre></div>
+<span><span class="co">#&gt;        &lt;int&gt; &lt;fct&gt;    &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1          0 Mujer     6091</span></span>
+<span><span class="co">#&gt; 2          0 Hombre    6090</span></span>
+<span><span class="co">#&gt; 3          5 Hombre    7894</span></span>
+<span><span class="co">#&gt; 4          5 Mujer     7522</span></span>
+<span><span class="co">#&gt; 5         10 Mujer     7590</span></span>
+<span><span class="co">#&gt; 6         10 Hombre    7937</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="consultas-sql-con-duckdb">Consultas SQL con DuckDB<a class="anchor" aria-label="anchor" href="#consultas-sql-con-duckdb"></a>
@@ -738,14 +745,11 @@ manual con <code><a href="../reference/municipios.html">municipios()</a></code>:
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dbi.r-dbi.org" class="external-link">DBI</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Pando"</span>, as <span class="op">=</span> <span class="st">"duckdb"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; duckdb keeps downloaded extensions and secrets in a temporary directory:</span></span>
-<span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> /tmp/RtmpOIwNwb/duckdb</span></span>
-<span><span class="co">#&gt; This is removed when the R session ends.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> Extensions are re-downloaded each session.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> Secrets are lost.</span></span>
-<span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> Run duckdb(shared_home = TRUE) (or create ~/.duckdb) to keep them (suitable for most users).</span></span>
-<span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> Run duckdb(shared_home = FALSE) to accept the temporary directory (and silence this message).</span></span>
-<span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> See ?duckdb_storage for details and alternatives.</span></span>
+<span><span class="co">#&gt; duckdb is storing downloaded extensions and secrets under ~/.duckdb:</span></span>
+<span><span class="co">#&gt; ℹ /Users/alexojeda/.duckdb</span></span>
+<span><span class="co">#&gt; This persists across sessions and is shared with the DuckDB CLI and other clients.</span></span>
+<span><span class="co">#&gt; ℹ Run duckdb(shared_home = FALSE) to use a temporary directory instead.</span></span>
+<span><span class="co">#&gt; ℹ See ?duckdb_storage for details and alternatives.</span></span>
 <span></span>
 <span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbGetQuery.html" class="external-link">dbGetQuery</a></span><span class="op">(</span><span class="va">con</span>, <span class="st">"</span></span>
 <span><span class="st">  SELECT p25_sexo, COUNT(*) AS total, ROUND(AVG(p26_edad), 1) AS edad_prom</span></span>
@@ -777,7 +781,7 @@ manual con <code><a href="../reference/municipios.html">municipios()</a></code>:
 <span><span class="co"># Codebook para censos históricos</span></span>
 <span><span class="fu"><a href="../reference/codebook.html">codebook_2012</a></span><span class="op">(</span>buscar <span class="op">=</span> <span class="st">"educacion"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/codebook.html">codebook_1976</a></span><span class="op">(</span><span class="op">)</span>  <span class="co"># ver todas las variables del censo 1976</span></span></code></pre></div>
-<p>Ver la viñeta <strong><a href="censos-historicos.html">Censos
+<p>Ver el artículo <strong><a href="https://lab-tecnosocial.github.io/censosbo/articles/censos-historicos.html">Censos
 históricos</a></strong> para ejemplos completos.</p>
 </div>
 <div class="section level2">
@@ -788,7 +792,7 @@ históricos</a></strong> para ejemplos completos.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>censosbo.cache_dir <span class="op">=</span> <span class="st">"data/censosbo"</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/censosbo_cache_dir.html">censosbo_cache_dir</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "/home/runner/.cache/R/censosbo"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "/Users/alexojeda/Library/Caches/org.R-project.R/R/censosbo"</span></span></code></pre></div>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/censosbo_cache_info.html">censosbo_cache_info</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/censosbo_cache_clear.html">censosbo_cache_clear</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
@@ -862,29 +866,29 @@ originales sin modificación de valores.</p>
 </h2>
 <ul>
 <li>
-<strong><a href="censos-historicos.html">Censos
+<strong><a href="https://lab-tecnosocial.github.io/censosbo/articles/censos-historicos.html">Censos
 históricos</a></strong>: acceso a datos de 1976, 1992, 2001 y 2012.</li>
 <li>
-<strong><a href="analisis-temporal.html">Análisis
+<strong><a href="https://lab-tecnosocial.github.io/censosbo/articles/analisis-temporal.html">Análisis
 temporal</a></strong>: comparar variables entre censos históricos.</li>
 <li>
-<strong><a href="analisis-demografico.html">Análisis
+<strong><a href="https://lab-tecnosocial.github.io/censosbo/articles/analisis-demografico.html">Análisis
 demográfico</a></strong>: pirámide de edades, nivel educativo,
 alfabetismo.</li>
 <li>
-<strong><a href="analisis-vivienda.html">Análisis de
-vivienda</a></strong>: agua, energía, hacinamiento, joins
+<strong><a href="https://lab-tecnosocial.github.io/censosbo/articles/analisis-vivienda.html">Análisis
+de vivienda</a></strong>: agua, energía, hacinamiento, joins
 personas-viviendas.</li>
 <li>
-<strong><a href="manzanos-comunidades.html">Manzanos y
-comunidades</a></strong>: el CPV-2024 por unidad censal, el nivel más
+<strong><a href="https://lab-tecnosocial.github.io/censosbo/articles/manzanos-comunidades.html">Manzanos
+y comunidades</a></strong>: el CPV-2024 por unidad censal, el nivel más
 fino disponible.</li>
 <li>
-<strong><a href="analisis-avanzado.html">Análisis
+<strong><a href="https://lab-tecnosocial.github.io/censosbo/articles/analisis-avanzado.html">Análisis
 avanzado</a></strong>: DuckDB, Arrow, datos más grandes que la RAM.</li>
 <li>
-<strong><a href="visualizacion-mapas.html">Visualización en
-mapas</a></strong>: mapas coropléticos por departamento y
+<strong><a href="https://lab-tecnosocial.github.io/censosbo/articles/visualizacion-mapas.html">Visualización
+en mapas</a></strong>: mapas coropléticos por departamento y
 municipio.</li>
 </ul>
 </div>
@@ -895,20 +899,19 @@ municipio.</li>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"censosbo"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; To cite package 'censosbo' in publications use:</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;   Ojeda Copa A (2026). _censosbo: Paquete de R para el acceso, análisis</span></span>
-<span><span class="co">#&gt;   y visualización de datos censales en Bolivia (1976-2024)_. Lab</span></span>
-<span><span class="co">#&gt;   TecnoSocial, Cochabamba, Bolivia. R package version 1.7.0,</span></span>
-<span><span class="co">#&gt;   &lt;https://lab-tecnosocial.github.io/censosbo/&gt;.</span></span>
+<span><span class="co">#&gt;   Ojeda Copa A (2026). _censosbo: Access and Analysis of Bolivian</span></span>
+<span><span class="co">#&gt;   Census Microdata_. Lab TecnoSocial, Cochabamba, Bolivia. R package</span></span>
+<span><span class="co">#&gt;   version 2.0.0, &lt;https://lab-tecnosocial.github.io/censosbo/&gt;.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; A BibTeX entry for LaTeX users is</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;   @Manual{,</span></span>
-<span><span class="co">#&gt;     title = {censosbo: Paquete de R para el acceso, análisis y visualización de datos censales en Bolivia (1976-2024)},</span></span>
+<span><span class="co">#&gt;     title = {censosbo: Access and Analysis of Bolivian Census Microdata},</span></span>
 <span><span class="co">#&gt;     author = {Alex {Ojeda Copa}},</span></span>
 <span><span class="co">#&gt;     organization = {Lab TecnoSocial},</span></span>
 <span><span class="co">#&gt;     address = {Cochabamba, Bolivia},</span></span>
 <span><span class="co">#&gt;     year = {2026},</span></span>
-<span><span class="co">#&gt;     note = {R package version 1.7.0},</span></span>
+<span><span class="co">#&gt;     note = {R package version 2.0.0},</span></span>
 <span><span class="co">#&gt;     url = {https://lab-tecnosocial.github.io/censosbo/},</span></span>
 <span><span class="co">#&gt;   }</span></span></code></pre></div>
 </div>
@@ -919,7 +922,7 @@ municipio.</li>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Alex Ojeda Copa.</p>
+  <p>Developed by Alex Ojeda Copa, Lab TecnoSocial.</p>
 </div>
 
 <div class="pkgdown-footer-right">

@@ -2,17 +2,17 @@ pandoc: 3.8.3
 pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
-  analisis-avanzado: analisis-avanzado.html
-  analisis-demografico: analisis-demografico.html
-  analisis-temporal: analisis-temporal.html
-  analisis-vivienda: analisis-vivienda.html
-  censos-historicos: censos-historicos.html
-  diccionario: diccionario.html
+  articles/analisis-avanzado: analisis-avanzado.html
+  articles/analisis-demografico: analisis-demografico.html
+  articles/analisis-temporal: analisis-temporal.html
+  articles/analisis-vivienda: analisis-vivienda.html
+  articles/censos-historicos: censos-historicos.html
+  articles/diccionario: diccionario.html
   introduccion: introduccion.html
-  manzanos-comunidades: manzanos-comunidades.html
+  articles/manzanos-comunidades: manzanos-comunidades.html
   temas: temas.html
-  visualizacion-mapas: visualizacion-mapas.html
-last_built: 2026-07-29T17:57Z
+  articles/visualizacion-mapas: visualizacion-mapas.html
+last_built: 2026-07-29T22:57Z
 urls:
   reference: https://lab-tecnosocial.github.io/censosbo/reference
   article: https://lab-tecnosocial.github.io/censosbo/articles

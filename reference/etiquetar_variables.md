@@ -66,19 +66,18 @@ codebook_meta[1:5, c("variable", "etiqueta", "tabla")] |>
 #> 4 persona
 #> 5 persona
 
-# Censo 2024: valores y nombres etiquetados
+# Valores y nombres etiquetados a la vez
+data.frame(p25_sexo = c(1, 2), n = c(2894112, 2762418)) |>
+  etiquetar_valores() |>
+  etiquetar_variables()
+#>   25. Es mujer u hombre       n
+#> 1                 Mujer 2894112
+#> 2                Hombre 2762418
+
+# El mismo flujo sobre datos reales (requiere descarga)
 if (FALSE) { # \dontrun{
 get_personas_2024(departamento = "Pando") |>
   dplyr::count(p25_sexo, nivel_edu) |>
-  dplyr::collect() |>
-  etiquetar_valores() |>
-  etiquetar_variables()
-} # }
-
-# Censo 1992: mismo flujo sin especificar año
-if (FALSE) { # \dontrun{
-get_personas_1992(departamento = "07") |>
-  dplyr::count(P25) |>
   dplyr::collect() |>
   etiquetar_valores() |>
   etiquetar_variables()

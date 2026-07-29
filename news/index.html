@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,6 +51,29 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="2.0.0" id="censosbo-200">censosbo 2.0.0<a class="anchor" aria-label="anchor" href="#censosbo-200"></a></h2>
+<p>Esta versión prepara el paquete para <strong>CRAN</strong>. El cambio de mayor a 2.0.0 es por la retirada de <code>update_censosbo()</code>; el resto es infraestructura que no altera ningún resultado.</p>
+<div class="section level3">
+<h3 id="cambio-incompatible-2-0-0">Cambio incompatible<a class="anchor" aria-label="anchor" href="#cambio-incompatible-2-0-0"></a></h3>
+<ul><li>
+<p><strong><code>update_censosbo()</code> se retira.</strong> Una función que reinstala el propio paquete desde GitHub no puede convivir con la distribución por CRAN: evita el canal oficial y modifica la instalación del usuario sin pasar por él.</p>
+<p>Para actualizar, ahora: <code>install.packages("censosbo")</code> (o <code>remotes::install_github("lab-tecnosocial/censosbo")</code> para la versión en desarrollo). Y si la nueva versión corrige <strong>datos</strong> y no solo código, borrar el caché para que se vuelvan a descargar:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/censosbo_cache_clear.html">censosbo_cache_clear</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+</li>
+</ul></div>
+<div class="section level3">
+<h3 id="preparación-para-cran-2-0-0">Preparación para CRAN<a class="anchor" aria-label="anchor" href="#preparaci%C3%B3n-para-cran-2-0-0"></a></h3>
+<p>Nada de esto cambia lo que devuelven las funciones. Se documenta porque explica por qué se movieron archivos que parecían estar bien donde estaban.</p>
+<ul><li><p><strong>Las tablas internas con texto en español pasan a <code>R/sysdata.rda</code></strong> (etiquetas de los códigos armonizados, textos de universo, nombres de departamento). CRAN exige que el código de R sea ASCII puro, y escribir <code>"Sin instrucción"</code> como <code>"Sin instrucci\u00f3n"</code> habría vuelto ilegible un dato que hay que poder leer y editar. Ahora se editan en <code>data-raw/build_sysdata.R</code>, con un test que compara byte a byte contra una referencia para que ninguna máquina con otra codificación pueda corromper las tildes en silencio.</p></li>
+<li><p>Los mensajes de error y aviso se escriben con escapes <code>\uXXXX</code> en el código. El texto que ve el usuario es idéntico.</p></li>
+<li><p><strong>El primer uso del caché pide confirmación</strong> en sesión interactiva, como pide la política de CRAN para escribir fuera del directorio temporal. En scripts, CI o contenedores —cualquier sesión no interactiva— no pregunta y descarga igual. Para autorizarlo de antemano: <code>options(censosbo.consent = TRUE)</code>.</p></li>
+<li><p>Siete viñetas pasan a ser <strong>artículos solo-web</strong>: siguen publicadas en <a href="https://lab-tecnosocial.github.io/censosbo/" class="uri">https://lab-tecnosocial.github.io/censosbo/</a> y no cambian de contenido, pero no viajan dentro del paquete. Las tres que sí lo hacen (<em>Introducción</em>, <em>Diccionario</em>, <em>Temas</em>) vienen precompiladas, así que instalar el paquete ya no descarga nada.</p></li>
+<li><p><code>duckdb</code> y <code>DBI</code> pasan de dependencias obligatorias a opcionales: solo hacen falta para <code>as = "duckdb"</code>, y el paquete avisa de cómo instalarlos si se pide ese backend sin tenerlos. Quien no use SQL se ahorra compilarlos. <code>sf</code> sigue siendo obligatorio, porque las capas <code>geo_*</code> que trae el paquete son objetos <code>sf</code> y sin él no se podrían ni imprimir.</p></li>
+<li><p><code>Title</code> y <code>Description</code> pasan a inglés, como pide CRAN. La documentación, las viñetas y los mensajes siguen íntegramente en español.</p></li>
+</ul></div>
+</div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.7.0" id="censosbo-170">censosbo 1.7.0<a class="anchor" aria-label="anchor" href="#censosbo-170"></a></h2>
 <blockquote>
 <p>⚠️ <strong>Esta versión cambia el número de filas que devuelven las funciones <code>get_viviendas_*()</code></strong>, así que rompe cualquier código que dependiera del conteo anterior. Si necesitas el comportamiento de la 1.6.0, pasa <code>universo = "todos"</code>. Los consumidores que leen <code>vivienda.parquet</code> directamente (sin pasar por las funciones de R) <strong>no</strong> heredan la corrección y hay que arreglarlos aparte: <code>censos-explorer</code> y <code>q-censosbo</code> están en ese caso.</p>
@@ -92,7 +115,7 @@
 <h3 id="tests-de-reconciliación-con-el-ine-1-7-0">Tests de reconciliación con el INE<a class="anchor" aria-label="anchor" href="#tests-de-reconciliaci%C3%B3n-con-el-ine-1-7-0"></a></h3>
 <p><code>tests/testthat/test-reconciliacion-oficial.R</code>, suite nueva. Que la suite pasara demostraba consistencia interna, no que las cifras coincidieran con lo publicado —que es lo que se cita. Ahora quedan fijadas: población total y por sexo, los cuatro universos de vivienda, viviendas por área, el cuadre municipio a municipio con el geoportal, los totales de los censos históricos y el denominador del alfabetismo.</p>
 <p>Necesita los microdatos completos en caché (~1 GB), así que se salta por defecto:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="va">CENSOSBO_TEST_RECONCILIACION</span><span class="op">=</span>true <span class="ex">Rscript</span> <span class="at">-e</span> <span class="st">'devtools::test(filter = "reconciliacion")'</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="va">CENSOSBO_TEST_RECONCILIACION</span><span class="op">=</span>true <span class="ex">Rscript</span> <span class="at">-e</span> <span class="st">'devtools::test(filter = "reconciliacion")'</span></span></code></pre></div>
 </div>
 </div>
     <div class="section level2">
@@ -147,7 +170,7 @@
 <ul><li><p><code><a href="../reference/censo_temas.html">censo_temas()</a></code> — el catálogo de temas con el número de variables de cada uno, contado en vivo y filtrable por tabla y año.</p></li>
 <li>
 <p><code><a href="../reference/vars_tema.html">vars_tema()</a></code> — los nombres de las variables de un tema, en el orden del cuestionario, listos para pasar a <code>variables</code>:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span></span>
 <span>  departamento <span class="op">=</span> <span class="st">"Cochabamba"</span>,</span>
 <span>  variables <span class="op">=</span> <span class="fu"><a href="../reference/vars_tema.html">vars_tema</a></span><span class="op">(</span><span class="st">"educacion"</span>, tabla <span class="op">=</span> <span class="st">"persona"</span><span class="op">)</span></span>
@@ -210,7 +233,7 @@
 <h3 id="get_censo-ahora-cubre-también-el-cpv-1-4-0">
 <code>get_censo()</code> ahora cubre también el CPV-2024<a class="anchor" aria-label="anchor" href="#get_censo-ahora-cubre-tambi%C3%A9n-el-cpv-1-4-0"></a></h3>
 <p><code><a href="../reference/get_censo.html">get_censo()</a></code> se presentaba como la API genérica por año, pero rechazaba <code>anio = 2024</code> — y la propia documentación de <code><a href="../reference/get_personas_2024.html">get_personas_2024()</a></code> ofrecía <code>get_censo(2024, "persona", ...)</code> como equivalente, un ejemplo que no funcionaba. Ahora acepta los cinco censos: con <code>anio = 2024</code> delega en <code><a href="../reference/get_personas_2024.html">get_personas_2024()</a></code>, <code><a href="../reference/get_viviendas_2024.html">get_viviendas_2024()</a></code>, <code><a href="../reference/get_emigracion_2024.html">get_emigracion_2024()</a></code> o <code><a href="../reference/get_mortalidad_2024.html">get_mortalidad_2024()</a></code> según <code>tabla</code>, con resultado idéntico al de esas funciones.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/get_censo.html">get_censo</a></span><span class="op">(</span><span class="fl">2024</span>, <span class="st">"persona"</span>, departamento <span class="op">=</span> <span class="st">"07"</span><span class="op">)</span>   <span class="co"># = get_personas_2024()</span></span></code></pre></div>
 </div>
 <div class="section level3">
@@ -336,7 +359,7 @@
 <li>
 <code><a href="../reference/codebook.html">codebook()</a></code> documenta <code>idep</code>/<code>iprov</code>/<code>imun</code> (tipo <code>categorica</code>) en todos los censos.</li>
 </ul><blockquote>
-<p><strong>Actualización de datos:</strong> esta versión cambia los Parquet publicados. Si ya tenías datos en caché, ejecuta <code><a href="../reference/update_censosbo.html">update_censosbo()</a></code> (o <code><a href="../reference/censosbo_cache_clear.html">censosbo_cache_clear()</a></code>) para descargar la versión con las columnas geográficas.</p>
+<p><strong>Actualización de datos:</strong> esta versión cambia los Parquet publicados. Si ya tenías datos en caché, ejecuta <code>update_censosbo()</code> (o <code><a href="../reference/censosbo_cache_clear.html">censosbo_cache_clear()</a></code>) para descargar la versión con las columnas geográficas.</p>
 </blockquote>
 </div>
 </div>
@@ -431,7 +454,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Alex Ojeda Copa.</p>
+  <p>Developed by Alex Ojeda Copa, Lab TecnoSocial.</p>
 </div>
 
 <div class="pkgdown-footer-right">

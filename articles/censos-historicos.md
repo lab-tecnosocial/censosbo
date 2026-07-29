@@ -381,7 +381,7 @@ library(DBI)
 con <- get_censo(2012, "persona", departamento = "Pando", as = "duckdb",
                  verbose = FALSE)
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpBuS5pD/duckdb
+#> ℹ /tmp/RtmppKpaEg/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.

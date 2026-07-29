@@ -31,9 +31,9 @@ El directorio se crea automáticamente si no existe.
 censosbo_cache_dir()
 #> [1] "/home/runner/.cache/R/censosbo"
 
-# Cambiar a un directorio local (solo para la sesión actual)
-if (FALSE) { # \dontrun{
-options(censosbo.cache_dir = "data/censosbo")
+# Redirigir el caché a una carpeta del proyecto
+anterior <- options(censosbo.cache_dir = file.path(tempdir(), "censosbo"))
 censosbo_cache_dir()
-} # }
+#> [1] "/tmp/RtmpKqktUL/censosbo"
+options(anterior)
 ```

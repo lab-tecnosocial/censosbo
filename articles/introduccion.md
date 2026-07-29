@@ -15,7 +15,7 @@ interés.
 
 ``` r
 
-remotes::install_github("lab-tecnosocial/censosbo")
+install.packages("censosbo")
 ```
 
 ## Censos disponibles
@@ -49,15 +49,15 @@ agregar sobre el Parquet. ² Persona 2024 está particionada en 9 archivos
 por departamento (4–77 MB cada uno). Disco y RAM muestran el total; en
 la práctica se descarga solo el/los departamentos necesarios. ³ Datos
 **agregados** por manzano urbano y comunidad rural (no microdatos), del
-geoportal del INE. Ver
-[`vignette("manzanos-comunidades")`](https://lab-tecnosocial.github.io/censosbo/articles/manzanos-comunidades.md).
+geoportal del INE. Ver el artículo [Manzanos y
+comunidades](https://lab-tecnosocial.github.io/censosbo/articles/manzanos-comunidades.html).
 ⁴ Viviendas en el universo oficial del INE, que es lo que devuelven por
 defecto. La entidad cruda de REDATAM trae además registros de personas
 censadas en la calle o en tránsito, que no son viviendas:
 `universo = "todos"` los incluye (10.287 más en 2024). Ver
 [`tipos_vivienda()`](https://lab-tecnosocial.github.io/censosbo/reference/tipos_vivienda.md)
-y
-[`vignette("analisis-vivienda")`](https://lab-tecnosocial.github.io/censosbo/articles/analisis-vivienda.md).
+y el artículo [Análisis de
+vivienda](https://lab-tecnosocial.github.io/censosbo/articles/analisis-vivienda.html).
 
 El formato **Arrow** (defecto) mantiene los datos en disco hasta que se
 llama [`collect()`](https://dplyr.tidyverse.org/reference/compute.html).
@@ -90,7 +90,10 @@ codebook_meta |>
   theme_minimal(base_size = 12)
 ```
 
-![](introduccion_files/figure-html/codebook-grafico-1.png)
+![plot of chunk
+codebook-grafico](figuras-introduccion-codebook-grafico-1.png)
+
+plot of chunk codebook-grafico
 
 ``` r
 
@@ -263,8 +266,8 @@ get_personas_2024(departamento = "Pando", verbose = FALSE) |>
 #>   <fct>    <fct>      <int>
 #> 1 Hombre   Secundaria 22987
 #> 2 Mujer    Secundaria 17563
-#> 3 Mujer    NA         27417
-#> 4 Hombre   NA         29000
+#> 3 Mujer    <NA>       27417
+#> 4 Hombre   <NA>       29000
 
 # Para reportes: también renombrar columnas
 get_personas_2024(departamento = "Pando", verbose = FALSE) |>
@@ -328,7 +331,10 @@ geo_bolivia |>
   theme_minimal(base_size = 12)
 ```
 
-![](introduccion_files/figure-html/municipios-por-dep-1.png)
+![plot of chunk
+municipios-por-dep](figuras-introduccion-municipios-por-dep-1.png)
+
+plot of chunk municipios-por-dep
 
 ``` r
 
@@ -384,11 +390,13 @@ mapa_dep(mun_x_dep, "n_municipios",
          mostrar_nombres = TRUE)
 ```
 
-![](introduccion_files/figure-html/mapa-intro-1.png)
+![plot of chunk mapa-intro](figuras-introduccion-mapa-intro-1.png)
+
+plot of chunk mapa-intro
 
 Para mapas a nivel municipal con ejemplos usando datos reales del
-CPV-2024, ver la viñeta **[Visualización en
-mapas](https://lab-tecnosocial.github.io/censosbo/articles/visualizacion-mapas.md)**.
+CPV-2024, ver el artículo **[Visualización en
+mapas](https://lab-tecnosocial.github.io/censosbo/articles/visualizacion-mapas.html)**.
 
 ## Primera descarga de microdatos (CPV-2024)
 
@@ -396,7 +404,7 @@ mapas](https://lab-tecnosocial.github.io/censosbo/articles/visualizacion-mapas.m
 
 # Descargar datos de Pando, el departamento más pequeño (~4 MB, queda en caché)
 personas_pando <- get_personas_2024(departamento = "Pando")
-#> ✔ Usando caché: persona_dep09.parquet
+#> ✔ Usando caché: 'persona_dep09.parquet'
 personas_pando
 #> FileSystemDataset with 1 Parquet file
 #> 119 columns
@@ -554,13 +562,10 @@ get_personas_2024(departamento = "Pando", verbose = FALSE) |>
 library(DBI)
 
 con <- get_personas_2024(departamento = "Pando", as = "duckdb", verbose = FALSE)
-#> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpOIwNwb/duckdb
-#> This is removed when the R session ends.
-#> • Extensions are re-downloaded each session.
-#> • Secrets are lost.
-#> ℹ Run duckdb(shared_home = TRUE) (or create ~/.duckdb) to keep them (suitable for most users).
-#> ℹ Run duckdb(shared_home = FALSE) to accept the temporary directory (and silence this message).
+#> duckdb is storing downloaded extensions and secrets under ~/.duckdb:
+#> ℹ /Users/alexojeda/.duckdb
+#> This persists across sessions and is shared with the DuckDB CLI and other clients.
+#> ℹ Run duckdb(shared_home = FALSE) to use a temporary directory instead.
 #> ℹ See ?duckdb_storage for details and alternatives.
 
 DBI::dbGetQuery(con, "
@@ -598,8 +603,8 @@ codebook_2012(buscar = "educacion")
 codebook_1976()  # ver todas las variables del censo 1976
 ```
 
-Ver la viñeta **[Censos
-históricos](https://lab-tecnosocial.github.io/censosbo/articles/censos-historicos.md)**
+Ver el artículo **[Censos
+históricos](https://lab-tecnosocial.github.io/censosbo/articles/censos-historicos.html)**
 para ejemplos completos.
 
 ## Gestión del caché
@@ -613,7 +618,7 @@ options(censosbo.cache_dir = "data/censosbo")
 ``` r
 
 censosbo_cache_dir()
-#> [1] "/home/runner/.cache/R/censosbo"
+#> [1] "/Users/alexojeda/Library/Caches/org.R-project.R/R/censosbo"
 ```
 
 ``` r
@@ -650,25 +655,25 @@ sin modificación de valores.
 ## Siguientes pasos
 
 - **[Censos
-  históricos](https://lab-tecnosocial.github.io/censosbo/articles/censos-historicos.md)**:
+  históricos](https://lab-tecnosocial.github.io/censosbo/articles/censos-historicos.html)**:
   acceso a datos de 1976, 1992, 2001 y 2012.
 - **[Análisis
-  temporal](https://lab-tecnosocial.github.io/censosbo/articles/analisis-temporal.md)**:
+  temporal](https://lab-tecnosocial.github.io/censosbo/articles/analisis-temporal.html)**:
   comparar variables entre censos históricos.
 - **[Análisis
-  demográfico](https://lab-tecnosocial.github.io/censosbo/articles/analisis-demografico.md)**:
+  demográfico](https://lab-tecnosocial.github.io/censosbo/articles/analisis-demografico.html)**:
   pirámide de edades, nivel educativo, alfabetismo.
 - **[Análisis de
-  vivienda](https://lab-tecnosocial.github.io/censosbo/articles/analisis-vivienda.md)**:
+  vivienda](https://lab-tecnosocial.github.io/censosbo/articles/analisis-vivienda.html)**:
   agua, energía, hacinamiento, joins personas-viviendas.
 - **[Manzanos y
-  comunidades](https://lab-tecnosocial.github.io/censosbo/articles/manzanos-comunidades.md)**:
+  comunidades](https://lab-tecnosocial.github.io/censosbo/articles/manzanos-comunidades.html)**:
   el CPV-2024 por unidad censal, el nivel más fino disponible.
 - **[Análisis
-  avanzado](https://lab-tecnosocial.github.io/censosbo/articles/analisis-avanzado.md)**:
+  avanzado](https://lab-tecnosocial.github.io/censosbo/articles/analisis-avanzado.html)**:
   DuckDB, Arrow, datos más grandes que la RAM.
 - **[Visualización en
-  mapas](https://lab-tecnosocial.github.io/censosbo/articles/visualizacion-mapas.md)**:
+  mapas](https://lab-tecnosocial.github.io/censosbo/articles/visualizacion-mapas.html)**:
   mapas coropléticos por departamento y municipio.
 
 ## Cómo citar
@@ -678,20 +683,19 @@ sin modificación de valores.
 citation("censosbo")
 #> To cite package 'censosbo' in publications use:
 #> 
-#>   Ojeda Copa A (2026). _censosbo: Paquete de R para el acceso, análisis
-#>   y visualización de datos censales en Bolivia (1976-2024)_. Lab
-#>   TecnoSocial, Cochabamba, Bolivia. R package version 1.7.0,
-#>   <https://lab-tecnosocial.github.io/censosbo/>.
+#>   Ojeda Copa A (2026). _censosbo: Access and Analysis of Bolivian
+#>   Census Microdata_. Lab TecnoSocial, Cochabamba, Bolivia. R package
+#>   version 2.0.0, <https://lab-tecnosocial.github.io/censosbo/>.
 #> 
 #> A BibTeX entry for LaTeX users is
 #> 
 #>   @Manual{,
-#>     title = {censosbo: Paquete de R para el acceso, análisis y visualización de datos censales en Bolivia (1976-2024)},
+#>     title = {censosbo: Access and Analysis of Bolivian Census Microdata},
 #>     author = {Alex {Ojeda Copa}},
 #>     organization = {Lab TecnoSocial},
 #>     address = {Cochabamba, Bolivia},
 #>     year = {2026},
-#>     note = {R package version 1.7.0},
+#>     note = {R package version 2.0.0},
 #>     url = {https://lab-tecnosocial.github.io/censosbo/},
 #>   }
 ```

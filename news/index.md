@@ -1,5 +1,69 @@
 # Changelog
 
+## censosbo 2.0.0
+
+Esta versión prepara el paquete para **CRAN**. El cambio de mayor a
+2.0.0 es por la retirada de `update_censosbo()`; el resto es
+infraestructura que no altera ningún resultado.
+
+### Cambio incompatible
+
+- **`update_censosbo()` se retira.** Una función que reinstala el propio
+  paquete desde GitHub no puede convivir con la distribución por CRAN:
+  evita el canal oficial y modifica la instalación del usuario sin pasar
+  por él.
+
+  Para actualizar, ahora: `install.packages("censosbo")` (o
+  `remotes::install_github("lab-tecnosocial/censosbo")` para la versión
+  en desarrollo). Y si la nueva versión corrige **datos** y no solo
+  código, borrar el caché para que se vuelvan a descargar:
+
+  ``` r
+
+  censosbo_cache_clear()
+  ```
+
+### Preparación para CRAN
+
+Nada de esto cambia lo que devuelven las funciones. Se documenta porque
+explica por qué se movieron archivos que parecían estar bien donde
+estaban.
+
+- **Las tablas internas con texto en español pasan a `R/sysdata.rda`**
+  (etiquetas de los códigos armonizados, textos de universo, nombres de
+  departamento). CRAN exige que el código de R sea ASCII puro, y
+  escribir `"Sin instrucción"` como `"Sin instrucci\u00f3n"` habría
+  vuelto ilegible un dato que hay que poder leer y editar. Ahora se
+  editan en `data-raw/build_sysdata.R`, con un test que compara byte a
+  byte contra una referencia para que ninguna máquina con otra
+  codificación pueda corromper las tildes en silencio.
+
+- Los mensajes de error y aviso se escriben con escapes `\uXXXX` en el
+  código. El texto que ve el usuario es idéntico.
+
+- **El primer uso del caché pide confirmación** en sesión interactiva,
+  como pide la política de CRAN para escribir fuera del directorio
+  temporal. En scripts, CI o contenedores —cualquier sesión no
+  interactiva— no pregunta y descarga igual. Para autorizarlo de
+  antemano: `options(censosbo.consent = TRUE)`.
+
+- Siete viñetas pasan a ser **artículos solo-web**: siguen publicadas en
+  <https://lab-tecnosocial.github.io/censosbo/> y no cambian de
+  contenido, pero no viajan dentro del paquete. Las tres que sí lo hacen
+  (*Introducción*, *Diccionario*, *Temas*) vienen precompiladas, así que
+  instalar el paquete ya no descarga nada.
+
+- `duckdb` y `DBI` pasan de dependencias obligatorias a opcionales: solo
+  hacen falta para `as = "duckdb"`, y el paquete avisa de cómo
+  instalarlos si se pide ese backend sin tenerlos. Quien no use SQL se
+  ahorra compilarlos. `sf` sigue siendo obligatorio, porque las capas
+  `geo_*` que trae el paquete son objetos `sf` y sin él no se podrían ni
+  imprimir.
+
+- `Title` y `Description` pasan a inglés, como pide CRAN. La
+  documentación, las viñetas y los mensajes siguen íntegramente en
+  español.
+
 ## censosbo 1.7.0
 
 > ⚠️ **Esta versión cambia el número de filas que devuelven las
@@ -665,8 +729,7 @@ de un territorio, usa
   censos.
 
 > **Actualización de datos:** esta versión cambia los Parquet
-> publicados. Si ya tenías datos en caché, ejecuta
-> [`update_censosbo()`](https://lab-tecnosocial.github.io/censosbo/reference/update_censosbo.md)
+> publicados. Si ya tenías datos en caché, ejecuta `update_censosbo()`
 > (o
 > [`censosbo_cache_clear()`](https://lab-tecnosocial.github.io/censosbo/reference/censosbo_cache_clear.md))
 > para descargar la versión con las columnas geográficas.
