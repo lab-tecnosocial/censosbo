@@ -109,6 +109,7 @@ reference:
       - get_viviendas_2024
       - get_emigracion_2024
       - get_mortalidad_2024
+      - tipos_vivienda
 
   - title: "CPV-2024: manzanos y comunidades"
     desc: >

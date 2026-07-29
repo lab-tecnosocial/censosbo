@@ -19,10 +19,13 @@ get_poblacion_1976 <- function(departamento = NULL, provincia = NULL,
 #' @export
 get_viviendas_1976 <- function(departamento = NULL, provincia = NULL,
                                 municipio = NULL, variables = NULL,
+                                universo = c("viviendas", "particulares",
+                                             "colectivas", "todos"),
                                 as = c("arrow", "tibble", "duckdb"),
                                 overwrite = FALSE, verbose = TRUE) {
   get_censo(1976L, "vivienda", departamento = departamento, provincia = provincia,
             municipio = municipio, variables = variables,
+            universo = match.arg(universo),
             as = match.arg(as), overwrite = overwrite, verbose = verbose)
 }
 
@@ -43,10 +46,13 @@ get_personas_1992 <- function(departamento = NULL, provincia = NULL,
 #' @export
 get_viviendas_1992 <- function(departamento = NULL, provincia = NULL,
                                 municipio = NULL, variables = NULL,
+                                universo = c("viviendas", "particulares",
+                                             "colectivas", "todos"),
                                 as = c("arrow", "tibble", "duckdb"),
                                 overwrite = FALSE, verbose = TRUE) {
   get_censo(1992L, "vivienda", departamento = departamento, provincia = provincia,
             municipio = municipio, variables = variables,
+            universo = match.arg(universo),
             as = match.arg(as), overwrite = overwrite, verbose = verbose)
 }
 
@@ -78,10 +84,13 @@ get_personas_2001 <- function(departamento = NULL, provincia = NULL,
 #' @export
 get_viviendas_2001 <- function(departamento = NULL, provincia = NULL,
                                 municipio = NULL, variables = NULL,
+                                universo = c("viviendas", "particulares",
+                                             "colectivas", "todos"),
                                 as = c("arrow", "tibble", "duckdb"),
                                 overwrite = FALSE, verbose = TRUE) {
   get_censo(2001L, "vivienda", departamento = departamento, provincia = provincia,
             municipio = municipio, variables = variables,
+            universo = match.arg(universo),
             as = match.arg(as), overwrite = overwrite, verbose = verbose)
 }
 
@@ -102,10 +111,13 @@ get_personas_2012 <- function(departamento = NULL, provincia = NULL,
 #' @export
 get_viviendas_2012 <- function(departamento = NULL, provincia = NULL,
                                 municipio = NULL, variables = NULL,
+                                universo = c("viviendas", "particulares",
+                                             "colectivas", "todos"),
                                 as = c("arrow", "tibble", "duckdb"),
                                 overwrite = FALSE, verbose = TRUE) {
   get_censo(2012L, "vivienda", departamento = departamento, provincia = provincia,
             municipio = municipio, variables = variables,
+            universo = match.arg(universo),
             as = match.arg(as), overwrite = overwrite, verbose = verbose)
 }
 

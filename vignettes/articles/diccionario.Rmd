@@ -209,7 +209,7 @@ Ficha resumen del geoportal del INE para las 150.744 unidades que la tienen
 publicada: **`r nrow(codebook_meta[codebook_meta$tabla=="ficha",])`** variables
 (194 indicadores más las 5 columnas de identificación). Todas son **conteos** de
 personas, viviendas u hogares; cada bloque temático trae su propio total, que es
-el denominador correcto. Ver `vignette("manzanos-comunidades")`.
+el denominador correcto. Ver [Manzanos y comunidades](manzanos-comunidades.html).
 
 ```{r tabla-2024-ficha}
 hacer_datatable(prep_tabla_2024("ficha"))

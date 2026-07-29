@@ -127,6 +127,29 @@ ggplot(alfa, aes(x = p25_sexo, y = pct, fill = p40_lee)) +
   theme(legend.position = "bottom")
 ```
 
+### El denominador de la tasa oficial
+
+La distribución de arriba usa como denominador **todas** las personas de 15 años o más, incluidas las que no declararon si sabían leer. Eso no es lo que hace el INE, y la diferencia se nota: a nivel nacional son 80.297 registros con `p40_lee = 9` (*Sin especificar*) sobre 8.301.489 personas de 15+.
+
+```{r alfabetismo-denominador, eval=FALSE}
+lee <- get_personas_2024(variables = c("p26_edad", "p40_lee")) |>
+  filter(p26_edad >= 15) |>
+  count(p40_lee) |>
+  collect()
+
+alfabetos <- lee$n[lee$p40_lee == 1]
+
+# Dividiendo entre todas las personas de 15+: 94,94%
+100 * alfabetos / sum(lee$n)
+
+# Excluyendo a quienes no declararon: 95,86%, casi un punto más
+100 * alfabetos / sum(lee$n[lee$p40_lee %in% c(1, 2)])
+```
+
+El tabulado oficial publica **95,8633%**. Excluir a los no declarados llega a 95,8630% y explica prácticamente toda la brecha; el resto (0,0003 puntos) viene de algún filtro adicional del universo metodológico del INE que no está documentado en el diccionario.
+
+La lección es general y no se limita al alfabetismo: **una tasa oficial no es dividir una categoría entre todas las filas disponibles**. Antes de citar una cifra como oficial hay que revisar qué códigos de no respuesta lleva la variable (`codebook_valores("p40_lee")`) y decidir explícitamente si entran en el denominador. `censosbo` entrega los microdatos tal como los publicó el INE y no impone esa decisión.
+
 ## Auto-identificación con pueblos indígenas
 
 ```{r indigenas}

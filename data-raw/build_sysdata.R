@@ -92,7 +92,10 @@ library(usethis)
   personas_19_mas = "personas de 19 años o más",
   mujeres_12_mas = "mujeres de 12 años o más",
   mujeres_15_49 = "mujeres de 15 a 49 años",
-  todas_viviendas = "todas las viviendas",
+  # Nombre del DDI. Abarca todos los registros de la entidad `vivienda`, así que
+  # incluye a las personas censadas en la calle o en tránsito, que no son
+  # viviendas (ver tipos_vivienda()).
+  todas_viviendas = "todos los registros de la entidad vivienda (incluye personas en la calle o en tránsito)",
   viviendas_particulares = "viviendas particulares",
   viviendas_presentes = "viviendas con personas presentes",
   hogares = "todos los hogares"

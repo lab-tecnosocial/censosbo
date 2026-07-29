@@ -24,6 +24,39 @@ library(ggplot2)
 
 Esta vignette analiza las condiciones habitacionales usando los datos de viviendas del CPV-2024. La tabla de viviendas se descarga como un único archivo (~55 MB) que incluye todos los departamentos.
 
+## Qué cuenta como vivienda
+
+La entidad `vivienda` de REDATAM tiene 4.490.488 registros, pero **10.287 de ellos no son viviendas**: son personas censadas fuera de una vivienda, en la calle o en tránsito. El INE no las cuenta como viviendas en ningún tabulado, y descontarlas da exactamente su total oficial de **4.480.201 viviendas**.
+
+Por eso `get_viviendas_2024()` devuelve por defecto el universo oficial. El argumento `universo` da acceso a los demás:
+
+```{r universos}
+tipos_vivienda(2024)
+```
+
+| `universo`       | Registros   | Qué es                                                |
+|------------------|------------:|-------------------------------------------------------|
+| `"viviendas"`    | 4.480.201   | El universo oficial del INE (defecto)                 |
+| `"particulares"` | 4.463.773   | Casas, departamentos, chozas, cuartos sueltos…        |
+| `"colectivas"`   | 16.428      | Hoteles, hospitales, cuarteles, recintos penitenciarios… |
+| `"todos"`        | 4.490.488   | La entidad cruda, con calle y tránsito                |
+
+```{r universo-conteos, eval=FALSE}
+# El total oficial
+nrow(get_viviendas_2024())
+
+# La entidad completa, como la devuelve REDATAM
+nrow(get_viviendas_2024(universo = "todos"))
+
+# Solo viviendas colectivas
+get_viviendas_2024(universo = "colectivas", variables = "v01_tipoviv") |>
+  collect() |>
+  count(v01_tipoviv) |>
+  etiquetar_valores()
+```
+
+Este es también el motivo de una diferencia que aparecía al comparar con el geoportal (`get_unidades_2024()`): agregando por municipio, sus viviendas cuadran con el universo oficial en los 343 municipios, no con la entidad cruda.
+
 ```{r descarga}
 # Descargar viviendas con variables de habitabilidad
 # (se filtra por Oruro después de descargar el archivo completo)
