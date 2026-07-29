@@ -31,7 +31,7 @@
 
     <a class="navbar-brand me-2" href="index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.5.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -281,12 +281,12 @@
 <span><span class="co">#&gt; # A tibble: 6 × 3</span></span>
 <span><span class="co">#&gt;   grupo_edad p25_sexo     n</span></span>
 <span><span class="co">#&gt;        &lt;dbl&gt; &lt;fct&gt;    &lt;int&gt;</span></span>
-<span><span class="co">#&gt; 1          0 Mujer     6091</span></span>
-<span><span class="co">#&gt; 2          0 Hombre    6090</span></span>
+<span><span class="co">#&gt; 1          0 Hombre    6090</span></span>
+<span><span class="co">#&gt; 2          0 Mujer     6091</span></span>
 <span><span class="co">#&gt; 3          5 Hombre    7894</span></span>
 <span><span class="co">#&gt; 4          5 Mujer     7522</span></span>
-<span><span class="co">#&gt; 5         10 Mujer     7590</span></span>
-<span><span class="co">#&gt; 6         10 Hombre    7937</span></span></code></pre></div>
+<span><span class="co">#&gt; 5         10 Hombre    7937</span></span>
+<span><span class="co">#&gt; 6         10 Mujer     7590</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="manzanos-y-comunidades--el-nivel-más-fino-del-cpv-2024">Manzanos y comunidades — el nivel más fino del CPV-2024<a class="anchor" aria-label="anchor" href="#manzanos-y-comunidades--el-nivel-m%C3%A1s-fino-del-cpv-2024"></a>
@@ -392,7 +392,13 @@
 <span><span class="co">#&gt;     1992: personas de 6 años o más</span></span>
 <span><span class="co">#&gt;     2001: personas de 4 años o más</span></span>
 <span><span class="co">#&gt;     2024: personas de 5 años o más</span></span>
-<span><span class="co">#&gt;   i Filtra `edad &gt;= 6` en todos los años antes de comparar.</span></span></code></pre></div>
+<span><span class="co">#&gt;   i Añade "edad" a `variables` y filtra `edad &gt;= 6` antes de comparar.</span></span>
+<span></span>
+<span><span class="co"># Hacerle caso: pedir `edad` es lo que permite igualar el universo</span></span>
+<span><span class="fu"><a href="reference/get_temporal.html">get_temporal</a></span><span class="op">(</span>variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sabe_leer"</span>, <span class="st">"edad"</span><span class="op">)</span>, anios <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1992</span>, <span class="fl">2001</span>, <span class="fl">2024</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">edad</span> <span class="op">&gt;=</span> <span class="fl">6</span>, <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">sabe_leer</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">anio</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>pct_alfabetizado <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fl">100</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">sabe_leer</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Más en <code><a href="articles/temas.html">vignette("temas")</a></code>.</p>
 </div>
 </div>
@@ -410,11 +416,11 @@
 <span><span class="co">#&gt;   &lt;fct&gt;                   &lt;fct&gt;                      &lt;int&gt;</span></span>
 <span><span class="co">#&gt; 1 Hombre                  Sí                         60578</span></span>
 <span><span class="co">#&gt; 2 Mujer                   Sí                         52972</span></span>
-<span><span class="co">#&gt; 3 Hombre                  No                          2668</span></span>
-<span><span class="co">#&gt; 4 Mujer                   &lt;NA&gt;                        6091</span></span>
+<span><span class="co">#&gt; 3 Mujer                   No                          2843</span></span>
+<span><span class="co">#&gt; 4 Hombre                  Sin especificar             1503</span></span>
 <span><span class="co">#&gt; 5 Hombre                  &lt;NA&gt;                        6090</span></span>
-<span><span class="co">#&gt; 6 Hombre                  Sin especificar             1503</span></span>
-<span><span class="co">#&gt; 7 Mujer                   No                          2843</span></span>
+<span><span class="co">#&gt; 6 Mujer                   &lt;NA&gt;                        6091</span></span>
+<span><span class="co">#&gt; 7 Hombre                  No                          2668</span></span>
 <span><span class="co">#&gt; 8 Mujer                   Sin especificar             1449</span></span></code></pre></div>
 </div>
 <div class="section level2">

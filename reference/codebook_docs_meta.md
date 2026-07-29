@@ -13,11 +13,11 @@ codebook_docs_meta
 
 ## Format
 
-Un data.frame de 316 filas:
+Un data.frame de 445 filas:
 
 - anio:
 
-  Censo: 2024, 2012 o 2001
+  Censo: 2024, 2012, 2001, 1992 o 1976
 
 - variable, tabla:
 
@@ -43,7 +43,8 @@ Un data.frame de 316 filas:
 
 - regla_derivacion:
 
-  Cómo construyó el INE la variable; solo en las derivadas
+  Cómo construyó el INE la variable; solo en las derivadas de 2024 y
+  1992
 
 - notas:
 
@@ -63,10 +64,10 @@ Un data.frame de 316 filas:
 ## Source
 
 INE Bolivia — catálogo ANDA, DDI de los estudios 132 (CPV-2024), 8
-(CPV-2012) y 10 (CNPV-2001). El atributo \`"ddi"\` del objeto registra
-las URL, fechas de descarga y sha256 de los archivos usados. Los textos
-se reproducen literalmente; el INE los publica bajo la condición «Uso
-público».
+(CPV-2012), 10 (CNPV-2001), 47 (CNPV-1992) y 46 (CNPV-1976). El atributo
+\`"ddi"\` del objeto registra las URL, fechas de descarga y sha256 de
+los archivos usados. Los textos se reproducen literalmente; el INE los
+publica bajo la condición «Uso público».
 
 ## Details
 
@@ -74,8 +75,6 @@ Va en una tabla aparte de \[codebook_meta\] a propósito: algunos de
 estos textos pasan de los 4.000 caracteres y harían ilegible la salida
 de \[codebook()\]. Consúltese con \[codebook_docs()\].
 
-Cubre las variables de 2024, 2012 y 2001 que existen en el paquete (316
-de las 383 que documenta el ANDA; el resto son campos de texto abierto e
-identificadores que los microdatos publicados no incluyen). Para 1976 y
-1992 no hay datos: el INE no publica un diccionario estructurado de esos
-censos.
+Cubre las variables de los cinco censos que existen en el paquete (445
+de las 539 que documenta el ANDA; el resto son campos de texto abierto e
+identificadores que los microdatos publicados no incluyen).

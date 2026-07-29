@@ -548,7 +548,7 @@ library(DBI)
 
 con <- get_personas_2024(departamento = "Pando", as = "duckdb", verbose = FALSE)
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/Rtmp5fKqPZ/duckdb
+#> ℹ /tmp/RtmpDwLVcO/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
@@ -673,7 +673,7 @@ citation("censosbo")
 #> 
 #>   Ojeda Copa A (2026). _censosbo: Paquete de R para el acceso, análisis
 #>   y visualización de datos censales en Bolivia (1976-2024)_. Lab
-#>   TecnoSocial, Cochabamba, Bolivia. R package version 1.5.0,
+#>   TecnoSocial, Cochabamba, Bolivia. R package version 1.5.1,
 #>   <https://lab-tecnosocial.github.io/censosbo/>.
 #> 
 #> A BibTeX entry for LaTeX users is
@@ -684,7 +684,7 @@ citation("censosbo")
 #>     organization = {Lab TecnoSocial},
 #>     address = {Cochabamba, Bolivia},
 #>     year = {2026},
-#>     note = {R package version 1.5.0},
+#>     note = {R package version 1.5.1},
 #>     url = {https://lab-tecnosocial.github.io/censosbo/},
 #>   }
 ```

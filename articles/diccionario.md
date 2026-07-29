@@ -36,9 +36,9 @@ Esta clasificación está disponible también en la columna `tipo` de los
 `diccionario_variables.parquet` publicados.
 
 Además de **Tipo**, el codebook trae dos columnas que este artículo
-muestra en las tablas de 2024, 2012 y 2001:
+muestra en las tablas de los cinco censos:
 
-- **Tema** — uno de los 20 temas de `censo_temas_meta`, tomados en su
+- **Tema** — uno de los 21 temas de `censo_temas_meta`, tomados en su
   mayoría del catálogo oficial del INE. Sirve para acotar la búsqueda:
   `codebook(tema = "educacion")`.
 - **Universo** — a quién se le aplicó la pregunta. Es lo que evita
@@ -46,21 +46,24 @@ muestra en las tablas de 2024, 2012 y 2001:
   ejemplo, está construida sobre las personas de 19 años o más, no sobre
   toda la población.
 
-Para 1976 y 1992 esas columnas están vacías: el INE no publica un
-diccionario estructurado de esos censos.
+El universo se toma de los cuestionarios y de los diccionarios DDI del
+catálogo ANDA, que no lo declaran para todas las variables; donde falta,
+la columna queda vacía. Los textos completos del INE —definición,
+pregunta literal, instrucciones al censista— están en
+[`codebook_docs()`](https://lab-tecnosocial.github.io/censosbo/reference/codebook_docs.md).
 
 ------------------------------------------------------------------------
 
 ## Índice temático
 
-Los 20 temas con los que se agrupan las variables, y cuántas tiene cada
+Los 21 temas con los que se agrupan las variables, y cuántas tiene cada
 uno en cada censo. La descripción explica qué incluye el tema y, cuando
 la asignación es discutible, por qué se decidió así.
 
 `Fuente` distingue los 17 temas que declara el propio INE en su catálogo
-ANDA de las 3 extensiones que añade el paquete. Los capítulos son los
-del cuestionario del CPV-2024; en 2012 y 2001 la estructura oficial de
-cada época está en la columna `grupo_ine` del codebook.
+ANDA de las 4 extensiones que añade el paquete. Los capítulos son los
+del cuestionario del CPV-2024; en los censos anteriores la estructura
+oficial de cada época está en la columna `grupo_ine` del codebook.
 
 ------------------------------------------------------------------------
 

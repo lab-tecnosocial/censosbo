@@ -27,9 +27,9 @@ codebook_docs(variable, tabla = NULL, campos = NULL, anio = 2024)
 
 - anio:
 
-  Entero. Censo o censos: \`2024\` (defecto), \`2012\`, \`2001\`. Acepta
-  varios, que es la forma de comparar cómo cambió una definición entre
-  censos.
+  Entero. Censo o censos: \`2024\` (defecto), \`2012\`, \`2001\`,
+  \`1992\` o \`1976\`. Acepta varios, que es la forma de comparar cómo
+  cambió una definición entre censos.
 
 ## Value
 

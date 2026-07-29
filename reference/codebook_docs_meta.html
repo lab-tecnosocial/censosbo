@@ -11,7 +11,7 @@ censista y —para las variables que el INE construyó— cómo se calcularon.">
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.5.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -68,8 +68,8 @@ censista y —para las variables que el INE construyó— cómo se calcularon.</
 
     <div class="section level2">
     <h2 id="format">Format<a class="anchor" aria-label="anchor" href="#format"></a></h2>
-    <p>Un data.frame de 316 filas:</p><dl><dt>anio</dt>
-<dd><p>Censo: 2024, 2012 o 2001</p></dd>
+    <p>Un data.frame de 445 filas:</p><dl><dt>anio</dt>
+<dd><p>Censo: 2024, 2012, 2001, 1992 o 1976</p></dd>
 
   <dt>variable, tabla</dt>
 <dd><p>Clave; coinciden con [codebook_meta]</p></dd>
@@ -90,7 +90,7 @@ censista y —para las variables que el INE construyó— cómo se calcularon.</
 
   <dt>regla_derivacion</dt>
 <dd><p>Cómo construyó el INE la variable; solo en las
-    derivadas</p></dd>
+    derivadas de 2024 y 1992</p></dd>
 
   <dt>notas</dt>
 <dd><p>Advertencias del INE, como el significado de los códigos de
@@ -109,19 +109,19 @@ censista y —para las variables que el INE construyó— cómo se calcularon.</
     <div class="section level2">
     <h2 id="source">Source<a class="anchor" aria-label="anchor" href="#source"></a></h2>
     <p>INE Bolivia — catálogo ANDA, DDI de los estudios 132 (CPV-2024), 8
-  (CPV-2012) y 10 (CNPV-2001). El atributo `"ddi"` del objeto registra las URL,
-  fechas de descarga y sha256 de los archivos usados. Los textos se reproducen
-  literalmente; el INE los publica bajo la condición «Uso público».</p>
+  (CPV-2012), 10 (CNPV-2001), 47 (CNPV-1992) y 46 (CNPV-1976). El atributo
+  `"ddi"` del objeto registra las URL, fechas de descarga y sha256 de los
+  archivos usados. Los textos se reproducen literalmente; el INE los publica
+  bajo la condición «Uso público».</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Va en una tabla aparte de [codebook_meta] a propósito: algunos de estos textos
 pasan de los 4.000 caracteres y harían ilegible la salida de [codebook()].
 Consúltese con [codebook_docs()].</p>
-<p>Cubre las variables de 2024, 2012 y 2001 que existen en el paquete (316 de las
-383 que documenta el ANDA; el resto son campos de texto abierto e
-identificadores que los microdatos publicados no incluyen). Para 1976 y 1992 no
-hay datos: el INE no publica un diccionario estructurado de esos censos.</p>
+<p>Cubre las variables de los cinco censos que existen en el paquete (445 de las
+539 que documenta el ANDA; el resto son campos de texto abierto e
+identificadores que los microdatos publicados no incluyen).</p>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

@@ -13,30 +13,29 @@ codebook_historico_meta
 ## Format
 
 Una lista con elementos \`"1976"\`, \`"1992"\`, \`"2001"\` y \`"2012"\`,
-cada uno un data.frame con columnas:
+cada uno un data.frame con las mismas columnas que \[codebook_meta\].
+Estos objetos guardan \`tipo\` y \`valores_codigos\` en orden inverso al
+de \`codebook_meta\`, por razones históricas; \[codebook()\] reordena
+las columnas al devolver, así que consultado por ahí el esquema es
+idéntico en los cinco censos. Tres particularidades de contenido:
 
 - variable:
 
-  Nombre original de la variable en el censo
-
-- etiqueta:
-
-  Descripción de la variable
+  Conserva el nombre original del censo, que en los primeros años son
+  códigos cortos (\`p10\`, \`anioes1\`) y no nombres descriptivos
 
 - tabla:
 
-  Tabla/entidad REDATAM de origen
+  Es la entidad REDATAM de origen, así que varía entre censos
+  (\`"poblacion"\` en 1976 donde 2024 usa \`"persona"\`)
 
-- tipo:
+- capitulo:
 
-  \`"categorica"\`, \`"numerica"\` o \`"texto"\` (misma regla que en
-  \[codebook_meta\]: códigos con etiquetas o con nombre tipo \`cod\` son
-  categóricos aunque sus valores sean números)
-
-- valores_codigos:
-
-  Lista de data.frames con códigos y etiquetas
+  Siempre \`NA\`: los capítulos son los del cuestionario del CPV-2024.
+  La estructura oficial de cada año está en \`grupo_ine\`
 
 ## Source
 
-INE Bolivia. Diccionarios Parquet generados por open-redatam.
+INE Bolivia. Diccionarios Parquet generados por open-redatam, con el
+tema y el universo añadidos desde los DDI del catálogo ANDA (estudios 8,
+10, 47 y 46) y los cuestionarios de cada censo.

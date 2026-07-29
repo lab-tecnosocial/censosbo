@@ -381,7 +381,7 @@ library(DBI)
 con <- get_censo(2012, "persona", departamento = "Pando", as = "duckdb",
                  verbose = FALSE)
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpzGYShG/duckdb
+#> ℹ /tmp/RtmpsHFg04/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
@@ -478,18 +478,20 @@ Para comparaciones sistemáticas entre múltiples censos con variables
 armonizadas, ver la viñeta **[Análisis
 temporal](https://lab-tecnosocial.github.io/censosbo/articles/analisis-temporal.md)**.
 
-## Metadatos de 2012 y 2001
+## Metadatos de los cuatro censos históricos
 
-Para esos dos censos, además del diccionario de microdatos, el paquete
-incorpora los diccionarios DDI del catálogo ANDA del INE. Eso añade tres
-cosas que no estaban:
+Para los cuatro, además del diccionario de microdatos, el paquete
+incorpora los diccionarios DDI del catálogo ANDA del INE (estudios 8,
+10, 47 y 46). Eso añade tres cosas que no estaban:
 
 ``` r
 
 # El tema de cada variable, con el mismo vocabulario que el CPV-2024
 codebook(tema = "educacion", tabla = "persona", anio = 2012)
+codebook(tema = "educacion", tabla = "poblacion", anio = 1976)
 
-# A quién se le preguntó: 2001 es el único censo cuyo DDI declara filtros de edad
+# A quién se le preguntó. 2012 es el único censo cuyo DDI no declara filtros de edad;
+# 2001, 1992 y 1976 sí los traen
 table(codebook(anio = 2001)$universo)
 
 # La agrupación oficial del INE de esa época
@@ -499,23 +501,23 @@ table(codebook(anio = 2001)$grupo_ine)
 codebook_docs("P24", anio = 2012, campos = "definicion")
 ```
 
-Los capítulos (`capitulo`) son solo del cuestionario del CPV-2024: los
-de 2012 y 2001 tienen otra estructura. Para 1976 y 1992 no hay taxonomía
-—el ANDA no publica un diccionario estructurado de esos censos— pero las
-columnas existen vacías, de modo que
+Los capítulos (`capitulo`) son la única columna solo-2024: los
+cuestionarios anteriores tienen otra estructura, y los de 1976 y 1992
+numeran vivienda y persona en paralelo. La columna existe vacía en los
+cuatro censos históricos, de modo que
 [`codebook()`](https://lab-tecnosocial.github.io/censosbo/reference/codebook.md)
 devuelve la misma forma en los cinco años y se pueden combinar sin
 fricción.
 
 ### Etiquetas de valor completadas
 
-Los DDI de 2012 y 2001 traen algunas etiquetas de valor que la
-extracción de REDATAM no recuperó, y se usaron para rellenar huecos. La
-columna `valores_fuente` indica el origen de cada una (`"redatam"` o
-`"ddi"`). **Nada preexistente se sobrescribió**: el contraste reveló que
-el DDI del INE tiene errores puntuales —en 2012, la variable de estado
-civil viene con las categorías de otra pregunta— así que las
-discrepancias se registran para revisión en vez de aplicarse.
+Los DDI traen algunas etiquetas de valor que la extracción de REDATAM no
+recuperó, y se usaron para rellenar huecos. La columna `valores_fuente`
+indica el origen de cada una (`"redatam"` o `"ddi"`). **Nada
+preexistente se sobrescribió**: el contraste reveló que el DDI del INE
+tiene errores puntuales —en 2012, la variable de estado civil viene con
+las categorías de otra pregunta— así que las discrepancias se registran
+para revisión en vez de aplicarse.
 
 En la práctica el aporte fue pequeño: las variables categóricas sin
 códigos son claves geográficas y catálogos de ocupación, que no llevan

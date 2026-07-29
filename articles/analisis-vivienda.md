@@ -151,7 +151,7 @@ library(DBI)
 
 con <- DBI::dbConnect(duckdb::duckdb(), dbdir = ":memory:")
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpKu23Wj/duckdb
+#> ℹ /tmp/RtmpeIlX8u/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
@@ -165,7 +165,7 @@ duckdb::duckdb_register_arrow(
                variables = c("idep","iprov","imun","i00","p25_sexo","p26_edad","nivel_edu"))
 )
 #> ℹ Descargando persona_dep04.parquet (~14 MB)...
-#> ✔ Descargado persona_dep04.parquet [450ms]
+#> ✔ Descargado persona_dep04.parquet [494ms]
 duckdb::duckdb_register_arrow(
   con, "viviendas",
   get_viviendas_2024(departamento = "Oruro",

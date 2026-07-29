@@ -443,6 +443,21 @@ for (anio in c(1976, 1992, 2001, 2024)) {
 avisa de esto automáticamente cuando se piden variables armonizadas cuyo
 universo no coincide entre los años solicitados.
 
+Para poder hacerle caso al aviso hace falta la columna `edad` en el
+resultado, y
+[`get_temporal()`](https://lab-tecnosocial.github.io/censosbo/reference/get_temporal.md)
+solo devuelve lo que se le pide. Los grupos predefinidos
+(`grupo = "educacion"`) ya la incluyen; si pides variables sueltas,
+añádela:
+
+``` r
+
+get_temporal(variables = c("sabe_leer", "edad"), anios = c(1992, 2001, 2024)) |>
+  filter(edad >= 6, !is.na(sabe_leer)) |>       # el universo comparable: 6+
+  group_by(anio) |>
+  summarise(pct_alfabetizado = round(100 * mean(sabe_leer == 1), 1))
+```
+
 ## Los indicadores de manzano y comunidad
 
 Las fichas del geoportal tienen su propio desglose, más fino que el

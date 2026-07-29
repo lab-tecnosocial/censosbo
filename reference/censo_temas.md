@@ -29,7 +29,7 @@ censo_temas(tema = NULL, capitulo = NULL, tabla = NULL, anio = 2024)
 
 - anio:
 
-  Entero. \`2024\` (defecto), \`2012\` o \`2001\`.
+  Entero. \`2024\` (defecto), \`2012\`, \`2001\`, \`1992\` o \`1976\`.
 
 ## Value
 

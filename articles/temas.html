@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.5.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -464,6 +464,16 @@ poblaciones distintas en cada punto.</p>
 <p><code><a href="../reference/get_temporal.html">get_temporal()</a></code> avisa de esto automáticamente cuando se
 piden variables armonizadas cuyo universo no coincide entre los años
 solicitados.</p>
+<p>Para poder hacerle caso al aviso hace falta la columna
+<code>edad</code> en el resultado, y <code><a href="../reference/get_temporal.html">get_temporal()</a></code> solo
+devuelve lo que se le pide. Los grupos predefinidos
+(<code>grupo = "educacion"</code>) ya la incluyen; si pides variables
+sueltas, añádela:</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/get_temporal.html">get_temporal</a></span><span class="op">(</span>variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sabe_leer"</span>, <span class="st">"edad"</span><span class="op">)</span>, anios <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1992</span>, <span class="fl">2001</span>, <span class="fl">2024</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">edad</span> <span class="op">&gt;=</span> <span class="fl">6</span>, <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">sabe_leer</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span>       <span class="co"># el universo comparable: 6+</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">anio</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>pct_alfabetizado <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fl">100</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">sabe_leer</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -472,7 +482,7 @@ solicitados.</p>
 <p>Las fichas del geoportal tienen su propio desglose, más fino que el
 tema: 15 bloques. Conviven con la taxonomía, así que puedes usar el que
 te convenga.</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">censo_bloques_meta</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"bloque"</span>, <span class="st">"etiqueta"</span>, <span class="st">"tema"</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="co">#&gt;          bloque                  etiqueta                       tema</span></span>
 <span><span class="co">#&gt; 1        unidad             Unidad censal             identificacion</span></span>
@@ -493,7 +503,7 @@ te convenga.</p>
 <p>Cada indicador es un conteo, y para leerlo como porcentaje hace falta
 el total sobre el que se calcula. Eso está en
 <code>denominador</code>:</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/codebook.html">codebook</a></span><span class="op">(</span>tabla <span class="op">=</span> <span class="st">"ficha"</span><span class="op">)</span><span class="op">[</span><span class="fl">3</span><span class="op">:</span><span class="fl">8</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"variable"</span>, <span class="st">"bloque"</span>, <span class="st">"denominador"</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="co">#&gt;          variable    bloque denominador</span></span>
 <span><span class="co">#&gt; 3            idep    unidad        &lt;NA&gt;</span></span>
@@ -523,7 +533,7 @@ reglas de derivación.</li>
 <p>Los textos de <code>codebook_docs_meta</code> se reproducen
 literalmente; el INE los publica bajo la condición «Uso público». El
 objeto guarda la procedencia exacta de los archivos usados:</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">codebook_docs_meta</span>, <span class="st">"ddi"</span><span class="op">)</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"anio"</span>, <span class="st">"estudio"</span>, <span class="st">"idno"</span>, <span class="st">"fecha"</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="co">#&gt;   anio estudio                 idno      fecha</span></span>
 <span><span class="co">#&gt; 1 2024     132     BOL-INE-CPV-2024 2026-07-29</span></span>
