@@ -1,17 +1,34 @@
-# La versión y el año se leen del DESCRIPTION instalado para que la cita nunca
-# se quede desfasada respecto al paquete (antes estaban fijos en "1.0.0").
-meta <- utils::packageDescription("censosbo")
+# Este archivo se mantiene en ASCII puro, comentarios incluidos. No es purismo:
+# readCitationFile() aborta con "non-ASCII input in a CITATION file without a declared
+# encoding" si el archivo lleva tildes y el `meta` que recibe no trae el campo
+# Encoding. Con el DESCRIPTION completo no pasa, pero un archivo ASCII no depende de
+# eso en absoluto, y aqui no se pierde nada: son comentarios tecnicos.
+#
+# NO llamar a utils::packageDescription() aqui: cuando el paquete no esta instalado
+# devuelve NA, y `NA$Version` aborta con "$ operator is invalid for atomic vectors".
+# Eso es exactamente lo que hace R CMD check al leer el CITATION desde el tarball, asi
+# que el fallo solo aparece en las maquinas de CRAN y nunca en la del autor, donde el
+# paquete siempre esta instalado. Lo reporto win-builder en el primer envio de la 2.0.0.
+#
+# readCitationFile() ya inyecta `meta` con el DESCRIPTION -del tarball o del paquete
+# instalado, segun el caso-, asi que la llamada sobraba. Se accede con `[[` y con
+# comprobacion previa, para que un campo ausente tampoco rompa la lectura.
 
-# El año NO puede salir de `meta$Date`: ese campo se quitó del DESCRIPTION porque
-# CRAN espera que coincida con la fecha real de publicación, y la pone él en
-# `Date/Publication`. Se usa, por orden: la fecha que puso CRAN, la de empaquetado
-# del tarball, y como último recurso el año en curso —así la cita sigue siendo
-# correcta tanto instalado desde CRAN como desde GitHub.
-.anio <- function(meta) {
+.campo <- function(nombre, defecto = "") {
+  valor <- if (is.list(meta) || is.environment(meta)) meta[[nombre]] else NULL
+  if (is.null(valor) || is.na(valor[1]) || !nzchar(valor[1])) defecto else valor[1]
+}
+
+# El anio no puede salir de `Date`: ese campo se quito del DESCRIPTION porque CRAN
+# espera que coincida con la publicacion real, y la pone el en `Date/Publication`.
+# Se usa, por orden: la fecha que puso CRAN, la de empaquetado del tarball, la de
+# instalacion, y como ultimo recurso el anio en curso - asi la cita es correcta tanto
+# instalado desde CRAN como desde GitHub.
+.anio <- function() {
   for (campo in c("Date/Publication", "Packaged", "Built")) {
-    valor <- meta[[campo]]
-    if (!is.null(valor)) {
-      anio <- substr(sub("^.*;\\s*", "", valor), 1, 4)
+    valor <- .campo(campo)
+    if (nzchar(valor)) {
+      anio <- substr(sub("^.*;[[:space:]]*", "", valor), 1, 4)
       if (grepl("^[0-9]{4}$", anio)) return(anio)
     }
   }
@@ -20,13 +37,14 @@ meta <- utils::packageDescription("censosbo")
 
 bibentry(
   bibtype  = "Manual",
-  title    = paste0("censosbo: ", meta$Title),
+  title    = paste0("censosbo: ",
+                    .campo("Title", "Access and Analysis of Bolivian Census Microdata")),
   author   = person("Alex", "Ojeda Copa",
                     email   = "alex@labtecnosocial.org",
                     comment = c(organization = "Lab TecnoSocial")),
   organization = "Lab TecnoSocial",
   address  = "Cochabamba, Bolivia",
-  year     = .anio(meta),
-  note     = paste("R package version", meta$Version),
+  year     = .anio(),
+  note     = paste("R package version", .campo("Version", "2.0.0")),
   url      = "https://lab-tecnosocial.github.io/censosbo/"
 )
