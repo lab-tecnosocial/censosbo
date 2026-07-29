@@ -82,13 +82,17 @@ departamento ni el municipio. Por eso las columnas \`idep\`, \`iprov\` e
 \`imun\` vienen desnormalizadas, y se pueden etiquetar con
 \[etiquetar_geografia()\].
 
-La columna \`personas\` agregada por municipio coincide
-\*\*exactamente\*\* con \[get_personas_2024()\] en los 343 municipios.
-En cambio \`viviendas\` da un 0,23 déficit es sistemático —323
-municipios por debajo, ninguno por encima— y procede del propio INE, que
-cuenta las viviendas de forma distinta en el geoportal y en los
-microdatos. Para el total de viviendas de un territorio conviene usar
-\[get_viviendas_2024()\].
+Agregadas por municipio, \`personas\` y \`viviendas\` coinciden
+\*\*exactamente\*\* con \[get_personas_2024()\] y
+\[get_viviendas_2024()\] en los 343 municipios: 11.365.333 personas y
+4.480.201 viviendas. Cualquiera de las dos fuentes sirve para el total
+de un territorio.
+
+Ojo con la comparación de viviendas: el geoportal cuadra con el universo
+oficial, no con la entidad cruda de REDATAM. Si pides
+\`get_viviendas_2024(universo = "todos")\` saldrán 4.490.488, un 0,23
+porque esa entidad incluye 10.287 registros de personas en la calle o en
+tránsito que no son viviendas (ver \[tipos_vivienda()\]).
 
 ## See also
 

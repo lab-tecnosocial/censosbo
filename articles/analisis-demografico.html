@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.6.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -102,7 +102,7 @@ en caché local tras la primera descarga.</p>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/etiquetar_valores.html">etiquetar_valores</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Descargando <span style="color: #0000BB;">persona_dep08.parquet</span> (~12 MB)...</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Descargado <span style="color: #0000BB;">persona_dep08.parquet</span> <span style="color: #B2B2B2;">[314ms]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Descargado <span style="color: #0000BB;">persona_dep08.parquet</span> <span style="color: #B2B2B2;">[283ms]</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">personas</span><span class="op">)</span></span>
@@ -200,11 +200,44 @@ en caché local tras la primera descarga.</p>
 <span>  <span class="fu">theme_minimal</span><span class="op">(</span>base_size <span class="op">=</span> <span class="fl">12</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">theme</span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"bottom"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="analisis-demografico_files/figure-html/alfabetismo-1.png" class="r-plt" alt="" width="672"></p>
+<div class="section level3">
+<h3 id="el-denominador-de-la-tasa-oficial">El denominador de la tasa oficial<a class="anchor" aria-label="anchor" href="#el-denominador-de-la-tasa-oficial"></a>
+</h3>
+<p>La distribución de arriba usa como denominador <strong>todas</strong>
+las personas de 15 años o más, incluidas las que no declararon si sabían
+leer. Eso no es lo que hace el INE, y la diferencia se nota: a nivel
+nacional son 80.297 registros con <code>p40_lee = 9</code> (<em>Sin
+especificar</em>) sobre 8.301.489 personas de 15+.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">lee</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span>variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"p26_edad"</span>, <span class="st">"p40_lee"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">p26_edad</span> <span class="op">&gt;=</span> <span class="fl">15</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">p40_lee</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">alfabetos</span> <span class="op">&lt;-</span> <span class="va">lee</span><span class="op">$</span><span class="va">n</span><span class="op">[</span><span class="va">lee</span><span class="op">$</span><span class="va">p40_lee</span> <span class="op">==</span> <span class="fl">1</span><span class="op">]</span></span>
+<span></span>
+<span><span class="co"># Dividiendo entre todas las personas de 15+: 94,94%</span></span>
+<span><span class="fl">100</span> <span class="op">*</span> <span class="va">alfabetos</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">lee</span><span class="op">$</span><span class="va">n</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Excluyendo a quienes no declararon: 95,86%, casi un punto más</span></span>
+<span><span class="fl">100</span> <span class="op">*</span> <span class="va">alfabetos</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">lee</span><span class="op">$</span><span class="va">n</span><span class="op">[</span><span class="va">lee</span><span class="op">$</span><span class="va">p40_lee</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<p>El tabulado oficial publica <strong>95,8633%</strong>. Excluir a los
+no declarados llega a 95,8630% y explica prácticamente toda la brecha;
+el resto (0,0003 puntos) viene de algún filtro adicional del universo
+metodológico del INE que no está documentado en el diccionario.</p>
+<p>La lección es general y no se limita al alfabetismo: <strong>una tasa
+oficial no es dividir una categoría entre todas las filas
+disponibles</strong>. Antes de citar una cifra como oficial hay que
+revisar qué códigos de no respuesta lleva la variable
+(<code>codebook_valores("p40_lee")</code>) y decidir explícitamente si
+entran en el denominador. <code>censosbo</code> entrega los microdatos
+tal como los publicó el INE y no impone esa decisión.</p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="auto-identificación-con-pueblos-indígenas">Auto-identificación con pueblos indígenas<a class="anchor" aria-label="anchor" href="#auto-identificaci%C3%B3n-con-pueblos-ind%C3%ADgenas"></a>
 </h2>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ind</span> <span class="op">&lt;-</span> <span class="va">personas</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">p32_pueblo_per</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">p32_pueblo_per</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -229,7 +262,7 @@ en caché local tras la primera descarga.</p>
 </h2>
 <p>El siguiente ejemplo descarga los nueve departamentos (~282 MB en
 total). Ejecuta en tu sesión de R cuando necesites datos nacionales.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Edad promedio por departamento (todos los datos del país)</span></span>
 <span><span class="va">edad_dep</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span>variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"idep"</span>, <span class="st">"p26_edad"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">p26_edad</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>

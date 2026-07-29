@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.6.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -135,7 +135,7 @@ el departamento de interés.</p>
 <tr class="even">
 <td align="center"><strong>1976</strong></td>
 <td><code><a href="../reference/get_censo.html">get_viviendas_1976()</a></code></td>
-<td align="right">1,158,482</td>
+<td align="right">1,158,482⁴</td>
 <td align="right">29</td>
 <td align="right">5 MB</td>
 <td align="right">~135 MB</td>
@@ -151,7 +151,7 @@ el departamento de interés.</p>
 <tr class="even">
 <td align="center"><strong>1992</strong></td>
 <td><code><a href="../reference/get_censo.html">get_viviendas_1992()</a></code></td>
-<td align="right">1,706,107</td>
+<td align="right">1,701,168⁴</td>
 <td align="right">47</td>
 <td align="right">20 MB</td>
 <td align="right">~330 MB</td>
@@ -175,7 +175,7 @@ el departamento de interés.</p>
 <tr class="odd">
 <td align="center"><strong>2001</strong></td>
 <td><code><a href="../reference/get_censo.html">get_viviendas_2001()</a></code></td>
-<td align="right">2,290,414</td>
+<td align="right">2,281,022⁴</td>
 <td align="right">42</td>
 <td align="right">21 MB</td>
 <td align="right">~390 MB</td>
@@ -191,7 +191,7 @@ el departamento de interés.</p>
 <tr class="odd">
 <td align="center"><strong>2012</strong></td>
 <td><code><a href="../reference/get_censo.html">get_viviendas_2012()</a></code></td>
-<td align="right">3,172,321</td>
+<td align="right">3,159,350⁴</td>
 <td align="right">35</td>
 <td align="right">26 MB</td>
 <td align="right">~455 MB</td>
@@ -225,7 +225,7 @@ el departamento de interés.</p>
 <td align="center">
 <strong>2024</strong>²</td>
 <td><code><a href="../reference/get_viviendas_2024.html">get_viviendas_2024()</a></code></td>
-<td align="right">4,490,488</td>
+<td align="right">4,480,201⁴</td>
 <td align="right">48</td>
 <td align="right">55 MB</td>
 <td align="right">~1,0 GB</td>
@@ -276,7 +276,13 @@ cómodamente en RAM, pero sí se puede filtrar y agregar sobre el Parquet.
 cada uno). Disco y RAM muestran el total; en la práctica se descarga
 solo el/los departamentos necesarios. ³ Datos <strong>agregados</strong>
 por manzano urbano y comunidad rural (no microdatos), del geoportal del
-INE. Ver <code><a href="../articles/manzanos-comunidades.html">vignette("manzanos-comunidades")</a></code>.</p>
+INE. Ver <code><a href="../articles/manzanos-comunidades.html">vignette("manzanos-comunidades")</a></code>. ⁴ Viviendas en
+el universo oficial del INE, que es lo que devuelven por defecto. La
+entidad cruda de REDATAM trae además registros de personas censadas en
+la calle o en tránsito, que no son viviendas:
+<code>universo = "todos"</code> los incluye (10.287 más en 2024). Ver
+<code><a href="../reference/tipos_vivienda.html">tipos_vivienda()</a></code> y
+<code><a href="../articles/analisis-vivienda.html">vignette("analisis-vivienda")</a></code>.</p>
 <p>El formato <strong>Arrow</strong> (defecto) mantiene los datos en
 disco hasta que se llama <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect()</a></code>. Las tablas del CPV-2024
 se unen con la clave compuesta <code>idep + iprov + imun + i00</code>
@@ -733,7 +739,7 @@ manual con <code><a href="../reference/municipios.html">municipios()</a></code>:
 <span></span>
 <span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Pando"</span>, as <span class="op">=</span> <span class="st">"duckdb"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; duckdb keeps downloaded extensions and secrets in a temporary directory:</span></span>
-<span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> /tmp/RtmpjIlBJp/duckdb</span></span>
+<span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> /tmp/RtmpOIwNwb/duckdb</span></span>
 <span><span class="co">#&gt; This is removed when the R session ends.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> Extensions are re-downloaded each session.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> Secrets are lost.</span></span>
@@ -891,7 +897,7 @@ municipio.</li>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;   Ojeda Copa A (2026). _censosbo: Paquete de R para el acceso, análisis</span></span>
 <span><span class="co">#&gt;   y visualización de datos censales en Bolivia (1976-2024)_. Lab</span></span>
-<span><span class="co">#&gt;   TecnoSocial, Cochabamba, Bolivia. R package version 1.6.0,</span></span>
+<span><span class="co">#&gt;   TecnoSocial, Cochabamba, Bolivia. R package version 1.7.0,</span></span>
 <span><span class="co">#&gt;   &lt;https://lab-tecnosocial.github.io/censosbo/&gt;.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; A BibTeX entry for LaTeX users is</span></span>
@@ -902,7 +908,7 @@ municipio.</li>
 <span><span class="co">#&gt;     organization = {Lab TecnoSocial},</span></span>
 <span><span class="co">#&gt;     address = {Cochabamba, Bolivia},</span></span>
 <span><span class="co">#&gt;     year = {2026},</span></span>
-<span><span class="co">#&gt;     note = {R package version 1.6.0},</span></span>
+<span><span class="co">#&gt;     note = {R package version 1.7.0},</span></span>
 <span><span class="co">#&gt;     url = {https://lab-tecnosocial.github.io/censosbo/},</span></span>
 <span><span class="co">#&gt;   }</span></span></code></pre></div>
 </div>

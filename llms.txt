@@ -18,7 +18,7 @@ remotes::install_github("lab-tecnosocial/censosbo")
 
 El paquete se desarrolla continuamente (mejoras, corrección de errores),
 si lo instalaste anteriormente te recomendamos volver a ejecutar el
-anterior código y borrar el caché para actualizar a la versión 1.6.0 o
+anterior código y borrar el caché para actualizar a la versión 1.7.0 o
 usar la siguiente función:
 
 ``` r
@@ -31,18 +31,18 @@ update_censosbo()
 | Año | Función | Registros | Columnas | Disco (Parquet) | RAM (aprox.)¹ |
 |:--:|----|---:|---:|---:|---:|
 | **1976** | [`get_poblacion_1976()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md) | 4,613,419 | 48 | 46 MB | ~890 MB |
-| **1976** | [`get_viviendas_1976()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md) | 1,158,482 | 29 | 5 MB | ~135 MB |
+| **1976** | [`get_viviendas_1976()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md) | 1,158,482⁴ | 29 | 5 MB | ~135 MB |
 | **1992** | [`get_personas_1992()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md) | 6,420,792 | 58 | 99 MB | ~1,5 GB |
-| **1992** | [`get_viviendas_1992()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md) | 1,706,107 | 47 | 20 MB | ~330 MB |
+| **1992** | [`get_viviendas_1992()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md) | 1,701,168⁴ | 47 | 20 MB | ~330 MB |
 | **1992** | [`get_mortalidad_1992()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md) | 1,706,107 | 17 | 11 MB | ~125 MB |
 | **2001** | [`get_personas_2001()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md) | 8,274,325 | 70 | 135 MB | ~2,5 GB |
-| **2001** | [`get_viviendas_2001()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md) | 2,290,414 | 42 | 21 MB | ~390 MB |
+| **2001** | [`get_viviendas_2001()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md) | 2,281,022⁴ | 42 | 21 MB | ~390 MB |
 | **2012** | [`get_personas_2012()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md) | 10,059,856 | 41 | 120 MB | ~1,7 GB |
-| **2012** | [`get_viviendas_2012()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md) | 3,172,321 | 35 | 26 MB | ~455 MB |
+| **2012** | [`get_viviendas_2012()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md) | 3,159,350⁴ | 35 | 26 MB | ~455 MB |
 | **2012** | [`get_emigracion_2012()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md) | 489,559 | 9 | 4 MB | ~20 MB |
 | **2012** | [`get_discapacidad_2012()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md) | 342,929 | 11 | 3 MB | ~17 MB |
 | **2024**² | [`get_personas_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_personas_2024.md) | 11,365,333 | 119 | 282 MB | ~5,6 GB |
-| **2024**² | [`get_viviendas_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_viviendas_2024.md) | 4,490,488 | 48 | 55 MB | ~1,0 GB |
+| **2024**² | [`get_viviendas_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_viviendas_2024.md) | 4,480,201⁴ | 48 | 55 MB | ~1,0 GB |
 | **2024**² | [`get_emigracion_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_emigracion_2024.md) | 500,914 | 8 | 2 MB | ~39 MB |
 | **2024**² | [`get_mortalidad_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_mortalidad_2024.md) | 382,731 | 10 | 2 MB | ~33 MB |
 | **2024**³ | [`get_unidades_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_unidades_2024.md) | 268,604 | 9 | 2 MB | ~16 MB |
@@ -58,7 +58,12 @@ Parquet. ² Persona 2024 está particionada en 9 archivos por departamento
 (4–77 MB cada uno). Disco y RAM muestran el total; en la práctica se
 descarga solo el/los departamentos necesarios. ³ Datos **agregados** por
 manzano urbano y comunidad rural (no microdatos), del geoportal del INE.
-Ver la sección siguiente.
+Ver la sección siguiente. ⁴ Viviendas en el universo oficial del INE,
+que es lo que devuelven por defecto. La entidad cruda de REDATAM trae
+además registros de personas censadas en la calle o en tránsito, que no
+son viviendas: `universo = "todos"` los incluye (10.287 más en 2024).
+Ver
+[`tipos_vivienda()`](https://lab-tecnosocial.github.io/censosbo/reference/tipos_vivienda.md).
 
 El formato **Arrow** (por defecto) mantiene los datos en el disco hasta
 que ejecutas
@@ -458,7 +463,7 @@ citation("censosbo")
 #> 
 #>   Ojeda Copa A (2026). _censosbo: Paquete de R para el acceso, análisis
 #>   y visualización de datos censales en Bolivia (1976-2024)_. Lab
-#>   TecnoSocial, Cochabamba, Bolivia. R package version 1.6.0,
+#>   TecnoSocial, Cochabamba, Bolivia. R package version 1.7.0,
 #>   <https://lab-tecnosocial.github.io/censosbo/>.
 #> 
 #> A BibTeX entry for LaTeX users is
@@ -469,14 +474,14 @@ citation("censosbo")
 #>     organization = {Lab TecnoSocial},
 #>     address = {Cochabamba, Bolivia},
 #>     year = {2026},
-#>     note = {R package version 1.6.0},
+#>     note = {R package version 1.7.0},
 #>     url = {https://lab-tecnosocial.github.io/censosbo/},
 #>   }
 ```
 
 > Ojeda Copa A (2026). *censosbo: Paquete de R para el acceso, análisis
 > y visualización de datos censales en Bolivia (1976-2024)*. Lab
-> TecnoSocial, Cochabamba, Bolivia. R package version 1.6.0.
+> TecnoSocial, Cochabamba, Bolivia. R package version 1.7.0.
 > <https://lab-tecnosocial.github.io/censosbo/>
 
 # Package index
@@ -523,6 +528,8 @@ tibble, o una conexión DuckDB.
   : Accede a los microdatos de emigración internacional del CPV-2024
 - [`get_mortalidad_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_mortalidad_2024.md)
   : Accede a los microdatos de mortalidad del CPV-2024
+- [`tipos_vivienda()`](https://lab-tecnosocial.github.io/censosbo/reference/tipos_vivienda.md)
+  : Tipos de vivienda de un censo y su grupo
 
 ## CPV-2024: manzanos y comunidades
 

@@ -13,7 +13,7 @@ opcionales. Es la API genérica por año; para el CPV-2024 delega en
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.6.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -81,6 +81,7 @@ opcionales. Es la API genérica por año; para el CPV-2024 delega en
 <span>  provincia <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  municipio <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  variables <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  universo <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"viviendas"</span>, <span class="st">"particulares"</span>, <span class="st">"colectivas"</span>, <span class="st">"todos"</span><span class="op">)</span>,</span>
 <span>  as <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"arrow"</span>, <span class="st">"tibble"</span>, <span class="st">"duckdb"</span><span class="op">)</span>,</span>
 <span>  overwrite <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
@@ -101,6 +102,7 @@ opcionales. Es la API genérica por año; para el CPV-2024 delega en
 <span>  provincia <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  municipio <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  variables <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  universo <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"viviendas"</span>, <span class="st">"particulares"</span>, <span class="st">"colectivas"</span>, <span class="st">"todos"</span><span class="op">)</span>,</span>
 <span>  as <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"arrow"</span>, <span class="st">"tibble"</span>, <span class="st">"duckdb"</span><span class="op">)</span>,</span>
 <span>  overwrite <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
@@ -131,6 +133,7 @@ opcionales. Es la API genérica por año; para el CPV-2024 delega en
 <span>  provincia <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  municipio <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  variables <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  universo <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"viviendas"</span>, <span class="st">"particulares"</span>, <span class="st">"colectivas"</span>, <span class="st">"todos"</span><span class="op">)</span>,</span>
 <span>  as <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"arrow"</span>, <span class="st">"tibble"</span>, <span class="st">"duckdb"</span><span class="op">)</span>,</span>
 <span>  overwrite <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
@@ -151,6 +154,7 @@ opcionales. Es la API genérica por año; para el CPV-2024 delega en
 <span>  provincia <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  municipio <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  variables <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  universo <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"viviendas"</span>, <span class="st">"particulares"</span>, <span class="st">"colectivas"</span>, <span class="st">"todos"</span><span class="op">)</span>,</span>
 <span>  as <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"arrow"</span>, <span class="st">"tibble"</span>, <span class="st">"duckdb"</span><span class="op">)</span>,</span>
 <span>  overwrite <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
@@ -183,6 +187,7 @@ opcionales. Es la API genérica por año; para el CPV-2024 delega en
 <span>  provincia <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  municipio <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  variables <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  universo <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"viviendas"</span>, <span class="st">"particulares"</span>, <span class="st">"colectivas"</span>, <span class="st">"todos"</span><span class="op">)</span>,</span>
 <span>  as <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"arrow"</span>, <span class="st">"tibble"</span>, <span class="st">"duckdb"</span><span class="op">)</span>,</span>
 <span>  overwrite <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
@@ -230,6 +235,13 @@ Si `NULL`, devuelve todas las columnas.</p></dd>
 <dd><p>Lógico. Mostrar mensajes de progreso. Por defecto `TRUE`.</p></dd>
 
 
+<dt id="arg-universo">universo<a class="anchor" aria-label="anchor" href="#arg-universo"></a></dt>
+<dd><p>Solo para `tabla = "vivienda"`. Qué registros de la entidad
+devolver: `"viviendas"` (por defecto, el universo oficial del INE),
+`"particulares"`, `"colectivas"` o `"todos"` (la entidad cruda de REDATAM).
+Ver [get_viviendas_2024()] y [tipos_vivienda()].</p></dd>
+
+
 <dt id="arg-anio">anio<a class="anchor" aria-label="anchor" href="#arg-anio"></a></dt>
 <dd><p>Entero. Año del censo: `1976`, `1992`, `2001`, `2012` o `2024`.</p></dd>
 
@@ -275,6 +287,26 @@ en plural, a diferencia de los censos históricos).</p>
 2012 puede no existir en 1992. En ese caso se emite una advertencia y se retorna
 `NULL` sin error.</p>
     </div>
+    <div class="section level2">
+    <h2 id="el-universo-de-vivienda">El universo de vivienda<a class="anchor" aria-label="anchor" href="#el-universo-de-vivienda"></a></h2>
+
+
+<p>Con `tabla = "vivienda"`, todos los censos desde 1992 traen en la entidad de
+REDATAM registros que **no son viviendas**: personas censadas en la calle o en
+tránsito. El defecto `universo = "viviendas"` los descuenta, que es cómo
+cuenta el INE. Los códigos afectados de cada censo están en
+[tipos_vivienda()]:</p>
+<p>| Censo | Variable      | Códigos que no son vivienda                        | Registros |
+|——:|—————|—————————————————-|———-:|
+| 1976  | `v01`         | (no se preguntó)                                   |         0 |
+| 1992  | `V01`         | 13 Ambulante                                       |     4.939 |
+| 2001  | `V04`         | 24 Transeúntes                                     |     9.392 |
+| 2012  | `P01`         | 7 En tránsito, 8 Persona que vive en la calle      |    12.971 |
+| 2024  | `v01_tipoviv` | 15 Persona vive en la calle, 16 En tránsito        |    10.287 |</p>
+<p>La reconciliación con los tabulados oficiales está comprobada para el
+CPV-2024 (ver [get_viviendas_2024()]). Para los censos anteriores el criterio
+es el mismo, tomado del diccionario de cada año.</p>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
@@ -284,6 +316,9 @@ en plural, a diferencia de los censos históricos).</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Viviendas del censo 1992 en La Paz</span></span></span>
 <span class="r-in"><span><span class="fu">get_censo</span><span class="op">(</span><span class="fl">1992</span>, <span class="st">"vivienda"</span>, departamento <span class="op">=</span> <span class="st">"La Paz"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># La entidad cruda de vivienda del censo 2012, con calle y tránsito</span></span></span>
+<span class="r-in"><span><span class="fu">get_censo</span><span class="op">(</span><span class="fl">2012</span>, <span class="st">"vivienda"</span>, universo <span class="op">=</span> <span class="st">"todos"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Todas las personas del censo 1976 (descarga completa ~46 MB)</span></span></span>
 <span class="r-in"><span><span class="fu">get_censo</span><span class="op">(</span><span class="fl">1976</span>, <span class="st">"poblacion"</span><span class="op">)</span></span></span>

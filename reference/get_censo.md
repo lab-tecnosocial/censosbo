@@ -23,6 +23,7 @@ get_viviendas_1976(
   provincia = NULL,
   municipio = NULL,
   variables = NULL,
+  universo = c("viviendas", "particulares", "colectivas", "todos"),
   as = c("arrow", "tibble", "duckdb"),
   overwrite = FALSE,
   verbose = TRUE
@@ -43,6 +44,7 @@ get_viviendas_1992(
   provincia = NULL,
   municipio = NULL,
   variables = NULL,
+  universo = c("viviendas", "particulares", "colectivas", "todos"),
   as = c("arrow", "tibble", "duckdb"),
   overwrite = FALSE,
   verbose = TRUE
@@ -73,6 +75,7 @@ get_viviendas_2001(
   provincia = NULL,
   municipio = NULL,
   variables = NULL,
+  universo = c("viviendas", "particulares", "colectivas", "todos"),
   as = c("arrow", "tibble", "duckdb"),
   overwrite = FALSE,
   verbose = TRUE
@@ -93,6 +96,7 @@ get_viviendas_2012(
   provincia = NULL,
   municipio = NULL,
   variables = NULL,
+  universo = c("viviendas", "particulares", "colectivas", "todos"),
   as = c("arrow", "tibble", "duckdb"),
   overwrite = FALSE,
   verbose = TRUE
@@ -125,6 +129,7 @@ get_censo(
   provincia = NULL,
   municipio = NULL,
   variables = NULL,
+  universo = c("viviendas", "particulares", "colectivas", "todos"),
   as = c("arrow", "tibble", "duckdb"),
   overwrite = FALSE,
   verbose = TRUE
@@ -169,6 +174,13 @@ get_censo(
 - verbose:
 
   Lógico. Mostrar mensajes de progreso. Por defecto \`TRUE\`.
+
+- universo:
+
+  Solo para \`tabla = "vivienda"\`. Qué registros de la entidad
+  devolver: \`"viviendas"\` (por defecto, el universo oficial del INE),
+  \`"particulares"\`, \`"colectivas"\` o \`"todos"\` (la entidad cruda
+  de REDATAM). Ver \[get_viviendas_2024()\] y \[tipos_vivienda()\].
 
 - anio:
 
@@ -219,6 +231,26 @@ El número de municipios cambió entre censos. Un código de municipio
 válido en 2012 puede no existir en 1992. En ese caso se emite una
 advertencia y se retorna \`NULL\` sin error.
 
+## El universo de vivienda
+
+Con \`tabla = "vivienda"\`, todos los censos desde 1992 traen en la
+entidad de REDATAM registros que \*\*no son viviendas\*\*: personas
+censadas en la calle o en tránsito. El defecto \`universo =
+"viviendas"\` los descuenta, que es cómo cuenta el INE. Los códigos
+afectados de cada censo están en \[tipos_vivienda()\]:
+
+\| Censo \| Variable \| Códigos que no son vivienda \| Registros \|
+\|——:\|—————\|—————————————————-\|———-:\| \| 1976 \| \`v01\` \| (no se
+preguntó) \| 0 \| \| 1992 \| \`V01\` \| 13 Ambulante \| 4.939 \| \| 2001
+\| \`V04\` \| 24 Transeúntes \| 9.392 \| \| 2012 \| \`P01\` \| 7 En
+tránsito, 8 Persona que vive en la calle \| 12.971 \| \| 2024 \|
+\`v01_tipoviv\` \| 15 Persona vive en la calle, 16 En tránsito \| 10.287
+\|
+
+La reconciliación con los tabulados oficiales está comprobada para el
+CPV-2024 (ver \[get_viviendas_2024()\]). Para los censos anteriores el
+criterio es el mismo, tomado del diccionario de cada año.
+
 ## Examples
 
 ``` r
@@ -228,6 +260,9 @@ get_censo(2012, "persona", departamento = "07")
 
 # Viviendas del censo 1992 en La Paz
 get_censo(1992, "vivienda", departamento = "La Paz")
+
+# La entidad cruda de vivienda del censo 2012, con calle y tránsito
+get_censo(2012, "vivienda", universo = "todos")
 
 # Todas las personas del censo 1976 (descarga completa ~46 MB)
 get_censo(1976, "poblacion")

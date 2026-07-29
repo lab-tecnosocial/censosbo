@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.6.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,6 +50,51 @@
       <small>Source: <a href="https://github.com/lab-tecnosocial/censosbo/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.7.0" id="censosbo-170">censosbo 1.7.0<a class="anchor" aria-label="anchor" href="#censosbo-170"></a></h2>
+<blockquote>
+<p>⚠️ <strong>Esta versión cambia el número de filas que devuelven las funciones <code>get_viviendas_*()</code></strong>, así que rompe cualquier código que dependiera del conteo anterior. Si necesitas el comportamiento de la 1.6.0, pasa <code>universo = "todos"</code>. Los consumidores que leen <code>vivienda.parquet</code> directamente (sin pasar por las funciones de R) <strong>no</strong> heredan la corrección y hay que arreglarlos aparte: <code>censos-explorer</code> y <code>q-censosbo</code> están en ese caso.</p>
+</blockquote>
+<div class="section level3">
+<h3 id="el-universo-de-vivienda-get_viviendas_2024-ya-cuenta-como-el-ine-1-7-0">El universo de vivienda: <code>get_viviendas_2024()</code> ya cuenta como el INE<a class="anchor" aria-label="anchor" href="#el-universo-de-vivienda-get_viviendas_2024-ya-cuenta-como-el-ine-1-7-0"></a></h3>
+<p><strong>Cambio de comportamiento.</strong> <code><a href="../reference/get_viviendas_2024.html">get_viviendas_2024()</a></code> devolvía 4.490.488 filas y las llamaba viviendas. 10.287 de ellas no lo son: son personas censadas fuera de una vivienda, marcadas en <code>v01_tipoviv</code> como <em>persona que vive en la calle</em> (código 15, 3.311 registros) o <em>en tránsito: terminal, aeropuerto, puerto u otro</em> (código 16, 6.976). El INE no las cuenta como viviendas en ningún tabulado.</p>
+<p>Ahora el defecto es el universo oficial: <strong>4.480.201 viviendas</strong>, la cifra de los tabulados del CPV-2024. También cuadra por área (2.898.140 urbanas, 1.582.061 rurales) y, agregando por municipio, coincide al registro con las viviendas del geoportal en <strong>los 343 municipios</strong> —con la entidad cruda solo coincidían 20.</p>
+<ul><li>
+<p><strong>Argumento <code>universo</code> nuevo</strong> en <code><a href="../reference/get_viviendas_2024.html">get_viviendas_2024()</a></code>, <code>get_censo(anio, "vivienda")</code> y los atajos <code><a href="../reference/get_censo.html">get_viviendas_1976()</a></code>/<code>_1992()</code>/<code>_2001()</code>/<code>_2012()</code>:</p>
+<table class="table"><colgroup><col width="22%"><col width="13%"><col width="63%"></colgroup><thead><tr><th><code>universo</code></th>
+<th align="right">2024</th>
+<th>Qué es</th>
+</tr></thead><tbody><tr><td><code>"viviendas"</code></td>
+<td align="right">4.480.201</td>
+<td>El universo oficial del INE (defecto)</td>
+</tr><tr><td><code>"particulares"</code></td>
+<td align="right">4.463.773</td>
+<td>Casas, departamentos, chozas, cuartos sueltos…</td>
+</tr><tr><td><code>"colectivas"</code></td>
+<td align="right">16.428</td>
+<td>Hoteles, hospitales, cuarteles, penitenciarías…</td>
+</tr><tr><td><code>"todos"</code></td>
+<td align="right">4.490.488</td>
+<td>La entidad cruda de REDATAM, como antes</td>
+</tr></tbody></table><p><strong>Si necesitas el comportamiento anterior, usa <code>universo = "todos"</code>.</strong></p>
+</li>
+<li><p><strong>Los censos anteriores tienen el mismo problema y el mismo arreglo.</strong> Cada uno nombra la categoría a su manera: 1992 <em>Ambulante</em> (4.939 registros), 2001 <em>Transeúntes</em> (9.392), 2012 <em>En tránsito</em> y <em>Persona que vive en la calle</em> (12.971). Los totales por defecto pasan a 1.701.168, 2.281.022 y 3.159.350. El censo 1976 no preguntó por calle ni tránsito: ahí no cambia nada.</p></li>
+<li><p><strong><code><a href="../reference/tipos_vivienda.html">tipos_vivienda()</a></code></strong>, función nueva: los códigos de tipo de vivienda de un censo con su etiqueta, su grupo (<code>particular</code>, <code>colectiva</code>, <code>no_vivienda</code>, <code>sin_clasificar</code>) y si entran en el universo oficial. Sirve para auditar qué descarta cada valor de <code>universo</code> en vez de tener que confiar en la documentación.</p></li>
+<li><p>Los códigos que aparecen en los microdatos pero no en el diccionario del censo (el 88 de 1976, el 0 de 1992) <strong>se conservan</strong> en <code>"viviendas"</code>: no consta que sean calle ni tránsito, así que descartarlos sería una decisión sin respaldo. <code><a href="../reference/tipos_vivienda.html">tipos_vivienda()</a></code> los muestra como <code>sin_clasificar</code> en vez de esconderlos.</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="documentación-corregida-1-7-0">Documentación corregida<a class="anchor" aria-label="anchor" href="#documentaci%C3%B3n-corregida-1-7-0"></a></h3>
+<ul><li><p><strong><code><a href="../reference/get_unidades_2024.html">get_unidades_2024()</a></code> decía algo falso.</strong> Afirmaba que la diferencia del 0,23% entre las viviendas del geoportal y las de los microdatos «procede del propio INE, que cuenta las viviendas de forma distinta en el geoportal y en los microdatos», y recomendaba <code><a href="../reference/get_viviendas_2024.html">get_viviendas_2024()</a></code> para el total de un territorio —justo la cifra inflada. No eran dos formas de contar: eran los registros de calle y tránsito. Con el universo oficial las dos fuentes cuadran exactamente. Lo mismo estaba escrito en <code>dev-docs/fuentes-ine-geoportal.md</code>.</p></li>
+<li><p><strong>El universo <code>todas_viviendas</code> del diccionario induce a error</strong> y ahora se describe como lo que es: todos los registros de la entidad <code>vivienda</code>, incluidas las personas en la calle o en tránsito.</p></li>
+<li><p><strong>Una tasa oficial no es dividir una categoría entre todas las filas.</strong> La viñeta de análisis demográfico calculaba el alfabetismo de 15+ años sobre toda la población de esa edad y daba 94,94%; el tabulado oficial publica 95,8633%. La diferencia son los 80.297 registros con <code>p40_lee = 9</code> (<em>Sin especificar</em>), que el INE deja fuera del denominador: excluirlos da 95,8630% y explica la brecha salvo 0,0003 puntos. La viñeta ahora enseña la receta y por qué hace falta.</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="tests-de-reconciliación-con-el-ine-1-7-0">Tests de reconciliación con el INE<a class="anchor" aria-label="anchor" href="#tests-de-reconciliaci%C3%B3n-con-el-ine-1-7-0"></a></h3>
+<p><code>tests/testthat/test-reconciliacion-oficial.R</code>, suite nueva. Que la suite pasara demostraba consistencia interna, no que las cifras coincidieran con lo publicado —que es lo que se cita. Ahora quedan fijadas: población total y por sexo, los cuatro universos de vivienda, viviendas por área, el cuadre municipio a municipio con el geoportal, los totales de los censos históricos y el denominador del alfabetismo.</p>
+<p>Necesita los microdatos completos en caché (~1 GB), así que se salta por defecto:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="va">CENSOSBO_TEST_RECONCILIACION</span><span class="op">=</span>true <span class="ex">Rscript</span> <span class="at">-e</span> <span class="st">'devtools::test(filter = "reconciliacion")'</span></span></code></pre></div>
+</div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.6.0" id="censosbo-160">censosbo 1.6.0<a class="anchor" aria-label="anchor" href="#censosbo-160"></a></h2>
 <div class="section level3">
@@ -102,7 +147,7 @@
 <ul><li><p><code><a href="../reference/censo_temas.html">censo_temas()</a></code> — el catálogo de temas con el número de variables de cada uno, contado en vivo y filtrable por tabla y año.</p></li>
 <li>
 <p><code><a href="../reference/vars_tema.html">vars_tema()</a></code> — los nombres de las variables de un tema, en el orden del cuestionario, listos para pasar a <code>variables</code>:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span></span>
 <span>  departamento <span class="op">=</span> <span class="st">"Cochabamba"</span>,</span>
 <span>  variables <span class="op">=</span> <span class="fu"><a href="../reference/vars_tema.html">vars_tema</a></span><span class="op">(</span><span class="st">"educacion"</span>, tabla <span class="op">=</span> <span class="st">"persona"</span><span class="op">)</span></span>
@@ -165,7 +210,7 @@
 <h3 id="get_censo-ahora-cubre-también-el-cpv-1-4-0">
 <code>get_censo()</code> ahora cubre también el CPV-2024<a class="anchor" aria-label="anchor" href="#get_censo-ahora-cubre-tambi%C3%A9n-el-cpv-1-4-0"></a></h3>
 <p><code><a href="../reference/get_censo.html">get_censo()</a></code> se presentaba como la API genérica por año, pero rechazaba <code>anio = 2024</code> — y la propia documentación de <code><a href="../reference/get_personas_2024.html">get_personas_2024()</a></code> ofrecía <code>get_censo(2024, "persona", ...)</code> como equivalente, un ejemplo que no funcionaba. Ahora acepta los cinco censos: con <code>anio = 2024</code> delega en <code><a href="../reference/get_personas_2024.html">get_personas_2024()</a></code>, <code><a href="../reference/get_viviendas_2024.html">get_viviendas_2024()</a></code>, <code><a href="../reference/get_emigracion_2024.html">get_emigracion_2024()</a></code> o <code><a href="../reference/get_mortalidad_2024.html">get_mortalidad_2024()</a></code> según <code>tabla</code>, con resultado idéntico al de esas funciones.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/get_censo.html">get_censo</a></span><span class="op">(</span><span class="fl">2024</span>, <span class="st">"persona"</span>, departamento <span class="op">=</span> <span class="st">"07"</span><span class="op">)</span>   <span class="co"># = get_personas_2024()</span></span></code></pre></div>
 </div>
 <div class="section level3">

@@ -13,7 +13,7 @@ ficha de indicadores. Es el nivel geográfico más fino disponible del Censo
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.6.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -138,13 +138,15 @@ excluidas son las pequeñas.</p>
 <p>Los códigos de unidad (`codigo`) no son jerárquicos: no contienen el
 departamento ni el municipio. Por eso las columnas `idep`, `iprov` e `imun`
 vienen desnormalizadas, y se pueden etiquetar con [etiquetar_geografia()].</p>
-<p>La columna `personas` agregada por municipio coincide **exactamente** con
-[get_personas_2024()] en los 343 municipios. En cambio `viviendas` da un
-0,23<!-- % menos que [get_viviendas_2024()] (4.480.201 frente a 4.490.488): el -->
-déficit es sistemático —323 municipios por debajo, ninguno por encima— y
-procede del propio INE, que cuenta las viviendas de forma distinta en el
-geoportal y en los microdatos. Para el total de viviendas de un territorio
-conviene usar [get_viviendas_2024()].</p>
+<p>Agregadas por municipio, `personas` y `viviendas` coinciden **exactamente**
+con [get_personas_2024()] y [get_viviendas_2024()] en los 343 municipios:
+11.365.333 personas y 4.480.201 viviendas. Cualquiera de las dos fuentes sirve
+para el total de un territorio.</p>
+<p>Ojo con la comparación de viviendas: el geoportal cuadra con el universo
+oficial, no con la entidad cruda de REDATAM. Si pides
+`get_viviendas_2024(universo = "todos")` saldrán 4.490.488, un 0,23<!-- % más, -->
+porque esa entidad incluye 10.287 registros de personas en la calle o en
+tránsito que no son viviendas (ver [tipos_vivienda()]).</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

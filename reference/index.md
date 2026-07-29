@@ -42,6 +42,8 @@ tibble, o una conexión DuckDB.
   : Accede a los microdatos de emigración internacional del CPV-2024
 - [`get_mortalidad_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_mortalidad_2024.md)
   : Accede a los microdatos de mortalidad del CPV-2024
+- [`tipos_vivienda()`](https://lab-tecnosocial.github.io/censosbo/reference/tipos_vivienda.md)
+  : Tipos de vivienda de un censo y su grupo
 
 ## CPV-2024: manzanos y comunidades
 

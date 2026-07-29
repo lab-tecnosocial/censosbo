@@ -6,6 +6,86 @@ Esta vignette analiza las condiciones habitacionales usando los datos de
 viviendas del CPV-2024. La tabla de viviendas se descarga como un único
 archivo (~55 MB) que incluye todos los departamentos.
 
+## Qué cuenta como vivienda
+
+La entidad `vivienda` de REDATAM tiene 4.490.488 registros, pero
+**10.287 de ellos no son viviendas**: son personas censadas fuera de una
+vivienda, en la calle o en tránsito. El INE no las cuenta como viviendas
+en ningún tabulado, y descontarlas da exactamente su total oficial de
+**4.480.201 viviendas**.
+
+Por eso
+[`get_viviendas_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_viviendas_2024.md)
+devuelve por defecto el universo oficial. El argumento `universo` da
+acceso a los demás:
+
+``` r
+
+tipos_vivienda(2024)
+#>    codigo                                         etiqueta       grupo
+#> 1       1                                             Casa  particular
+#> 2       2                                  Choza, pahuichi  particular
+#> 3       3                                     Departamento  particular
+#> 4       4             Cuarto(s) o habitación(es) suelta(s)  particular
+#> 5       5            Vivienda improvisada o vivienda móvil  particular
+#> 6       6       Establecimiento no destinado para vivienda  particular
+#> 7       7         Hotel, hostal, residencial o alojamiento   colectiva
+#> 8       8               Hospital o clínica con internación   colectiva
+#> 9       9     Cuartel o establecimiento militar o policial   colectiva
+#> 10     10             Residencia u otro de adultos mayores   colectiva
+#> 11     11             Albergue de niñas(os) y adolescentes   colectiva
+#> 12     12         Recinto penitenciario o de reintegración   colectiva
+#> 13     13                            Campamento de trabajo   colectiva
+#> 14     14     Otra (Instituto de rehabilitación, convento)   colectiva
+#> 15     15                     Persona que vive en la calle no_vivienda
+#> 16     16 En tránsito: terminal, aeropuerto, puerto u otro no_vivienda
+#>    en_universo_viviendas
+#> 1                   TRUE
+#> 2                   TRUE
+#> 3                   TRUE
+#> 4                   TRUE
+#> 5                   TRUE
+#> 6                   TRUE
+#> 7                   TRUE
+#> 8                   TRUE
+#> 9                   TRUE
+#> 10                  TRUE
+#> 11                  TRUE
+#> 12                  TRUE
+#> 13                  TRUE
+#> 14                  TRUE
+#> 15                 FALSE
+#> 16                 FALSE
+```
+
+| `universo` | Registros | Qué es |
+|----|---:|----|
+| `"viviendas"` | 4.480.201 | El universo oficial del INE (defecto) |
+| `"particulares"` | 4.463.773 | Casas, departamentos, chozas, cuartos sueltos… |
+| `"colectivas"` | 16.428 | Hoteles, hospitales, cuarteles, recintos penitenciarios… |
+| `"todos"` | 4.490.488 | La entidad cruda, con calle y tránsito |
+
+``` r
+
+# El total oficial
+nrow(get_viviendas_2024())
+
+# La entidad completa, como la devuelve REDATAM
+nrow(get_viviendas_2024(universo = "todos"))
+
+# Solo viviendas colectivas
+get_viviendas_2024(universo = "colectivas", variables = "v01_tipoviv") |>
+  collect() |>
+  count(v01_tipoviv) |>
+  etiquetar_valores()
+```
+
+Este es también el motivo de una diferencia que aparecía al comparar con
+el geoportal
+([`get_unidades_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_unidades_2024.md)):
+agregando por municipio, sus viviendas cuadran con el universo oficial
+en los 343 municipios, no con la entidad cruda.
+
 ``` r
 
 # Descargar viviendas con variables de habitabilidad
@@ -20,9 +100,12 @@ viviendas <- get_viviendas_2024(
   etiquetar_valores(columnas = c("urbrur", "v03_pared", "v05_techo", "v06_piso",
                                   "v07_aguapro", "v09_energia", "v11_basura"))
 #> ✔ Usando caché: vivienda.parquet
+#> ℹ Universo "viviendas": se excluyen los registros de personas en la calle o en
+#>   tránsito, que el INE no cuenta como viviendas.
+#> ℹ Con `universo = "todos"` obtienes la entidad completa de REDATAM.
 
 nrow(viviendas)
-#> [1] 271078
+#> [1] 270705
 ```
 
 ## Fuente de agua potable
@@ -151,7 +234,7 @@ library(DBI)
 
 con <- DBI::dbConnect(duckdb::duckdb(), dbdir = ":memory:")
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpzwnmHu/duckdb
+#> ℹ /tmp/Rtmp9rEd82/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
@@ -165,7 +248,7 @@ duckdb::duckdb_register_arrow(
                variables = c("idep","iprov","imun","i00","p25_sexo","p26_edad","nivel_edu"))
 )
 #> ℹ Descargando persona_dep04.parquet (~14 MB)...
-#> ✔ Descargado persona_dep04.parquet [311ms]
+#> ✔ Descargado persona_dep04.parquet [324ms]
 duckdb::duckdb_register_arrow(
   con, "viviendas",
   get_viviendas_2024(departamento = "Oruro",

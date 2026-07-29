@@ -31,7 +31,7 @@
 
     <a class="navbar-brand me-2" href="index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.6.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -90,7 +90,7 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"lab-tecnosocial/censosbo"</span><span class="op">)</span></span></code></pre></div>
-<p>El paquete se desarrolla continuamente (mejoras, corrección de errores), si lo instalaste anteriormente te recomendamos volver a ejecutar el anterior código y borrar el caché para actualizar a la versión 1.6.0 o usar la siguiente función:</p>
+<p>El paquete se desarrolla continuamente (mejoras, corrección de errores), si lo instalaste anteriormente te recomendamos volver a ejecutar el anterior código y borrar el caché para actualizar a la versión 1.7.0 o usar la siguiente función:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/update_censosbo.html">update_censosbo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -126,7 +126,7 @@
 <tr>
 <td align="center"><strong>1976</strong></td>
 <td><code><a href="reference/get_censo.html">get_viviendas_1976()</a></code></td>
-<td align="right">1,158,482</td>
+<td align="right">1,158,482⁴</td>
 <td align="right">29</td>
 <td align="right">5 MB</td>
 <td align="right">~135 MB</td>
@@ -142,7 +142,7 @@
 <tr>
 <td align="center"><strong>1992</strong></td>
 <td><code><a href="reference/get_censo.html">get_viviendas_1992()</a></code></td>
-<td align="right">1,706,107</td>
+<td align="right">1,701,168⁴</td>
 <td align="right">47</td>
 <td align="right">20 MB</td>
 <td align="right">~330 MB</td>
@@ -166,7 +166,7 @@
 <tr>
 <td align="center"><strong>2001</strong></td>
 <td><code><a href="reference/get_censo.html">get_viviendas_2001()</a></code></td>
-<td align="right">2,290,414</td>
+<td align="right">2,281,022⁴</td>
 <td align="right">42</td>
 <td align="right">21 MB</td>
 <td align="right">~390 MB</td>
@@ -182,7 +182,7 @@
 <tr>
 <td align="center"><strong>2012</strong></td>
 <td><code><a href="reference/get_censo.html">get_viviendas_2012()</a></code></td>
-<td align="right">3,172,321</td>
+<td align="right">3,159,350⁴</td>
 <td align="right">35</td>
 <td align="right">26 MB</td>
 <td align="right">~455 MB</td>
@@ -216,7 +216,7 @@
 <td align="center">
 <strong>2024</strong>²</td>
 <td><code><a href="reference/get_viviendas_2024.html">get_viviendas_2024()</a></code></td>
-<td align="right">4,490,488</td>
+<td align="right">4,480,201⁴</td>
 <td align="right">48</td>
 <td align="right">55 MB</td>
 <td align="right">~1,0 GB</td>
@@ -259,7 +259,7 @@
 </tr>
 </tbody>
 </table>
-<p>¹ Tamaño al cargar la tabla <strong>completa</strong> con <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect()</a></code> sin filtros. Por eso el formato Arrow es el predeterminado: para el país entero, <code><a href="reference/get_personas_2024.html">get_personas_2024()</a></code> no cabe cómodamente en RAM, pero sí se puede filtrar y agregar sobre el Parquet. ² Persona 2024 está particionada en 9 archivos por departamento (4–77 MB cada uno). Disco y RAM muestran el total; en la práctica se descarga solo el/los departamentos necesarios. ³ Datos <strong>agregados</strong> por manzano urbano y comunidad rural (no microdatos), del geoportal del INE. Ver la sección siguiente.</p>
+<p>¹ Tamaño al cargar la tabla <strong>completa</strong> con <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect()</a></code> sin filtros. Por eso el formato Arrow es el predeterminado: para el país entero, <code><a href="reference/get_personas_2024.html">get_personas_2024()</a></code> no cabe cómodamente en RAM, pero sí se puede filtrar y agregar sobre el Parquet. ² Persona 2024 está particionada en 9 archivos por departamento (4–77 MB cada uno). Disco y RAM muestran el total; en la práctica se descarga solo el/los departamentos necesarios. ³ Datos <strong>agregados</strong> por manzano urbano y comunidad rural (no microdatos), del geoportal del INE. Ver la sección siguiente. ⁴ Viviendas en el universo oficial del INE, que es lo que devuelven por defecto. La entidad cruda de REDATAM trae además registros de personas censadas en la calle o en tránsito, que no son viviendas: <code>universo = "todos"</code> los incluye (10.287 más en 2024). Ver <code><a href="reference/tipos_vivienda.html">tipos_vivienda()</a></code>.</p>
 <p>El formato <strong>Arrow</strong> (por defecto) mantiene los datos en el disco hasta que ejecutas <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect()</a></code>. Las tablas del CPV-2024 se pueden unir por la clave <code>idep + iprov + imun + i00</code> (identificador de hogar).</p>
 </div>
 <div class="section level2">
@@ -616,7 +616,7 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;   Ojeda Copa A (2026). _censosbo: Paquete de R para el acceso, análisis</span></span>
 <span><span class="co">#&gt;   y visualización de datos censales en Bolivia (1976-2024)_. Lab</span></span>
-<span><span class="co">#&gt;   TecnoSocial, Cochabamba, Bolivia. R package version 1.6.0,</span></span>
+<span><span class="co">#&gt;   TecnoSocial, Cochabamba, Bolivia. R package version 1.7.0,</span></span>
 <span><span class="co">#&gt;   &lt;https://lab-tecnosocial.github.io/censosbo/&gt;.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; A BibTeX entry for LaTeX users is</span></span>
@@ -627,11 +627,11 @@
 <span><span class="co">#&gt;     organization = {Lab TecnoSocial},</span></span>
 <span><span class="co">#&gt;     address = {Cochabamba, Bolivia},</span></span>
 <span><span class="co">#&gt;     year = {2026},</span></span>
-<span><span class="co">#&gt;     note = {R package version 1.6.0},</span></span>
+<span><span class="co">#&gt;     note = {R package version 1.7.0},</span></span>
 <span><span class="co">#&gt;     url = {https://lab-tecnosocial.github.io/censosbo/},</span></span>
 <span><span class="co">#&gt;   }</span></span></code></pre></div>
 <blockquote>
-<p>Ojeda Copa A (2026). <em>censosbo: Paquete de R para el acceso, análisis y visualización de datos censales en Bolivia (1976-2024)</em>. Lab TecnoSocial, Cochabamba, Bolivia. R package version 1.6.0. <a href="https://lab-tecnosocial.github.io/censosbo/" class="uri">https://lab-tecnosocial.github.io/censosbo/</a></p>
+<p>Ojeda Copa A (2026). <em>censosbo: Paquete de R para el acceso, análisis y visualización de datos censales en Bolivia (1976-2024)</em>. Lab TecnoSocial, Cochabamba, Bolivia. R package version 1.7.0. <a href="https://lab-tecnosocial.github.io/censosbo/" class="uri">https://lab-tecnosocial.github.io/censosbo/</a></p>
 </blockquote>
 </div>
 </div>
