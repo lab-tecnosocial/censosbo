@@ -6,8 +6,15 @@
 
 * This is a new release.
 
-Checked locally with `R CMD check --as-cran --run-donttest` on R 4.6.0 (macOS),
-and on GitHub Actions for Ubuntu, macOS and Windows.
+Checked with `--as-cran --run-donttest` on:
+
+| Platform | R | Result |
+|---|---|---|
+| macOS builder (mac.R-project.org) | 4.6.1 Patched | OK |
+| win-builder | R-devel (r90317) | 1 NOTE (new submission) |
+| win-builder | 4.5.3 (oldrelease) | 1 NOTE (new submission) |
+| GitHub Actions: Ubuntu, macOS, Windows | release | OK |
+| Local (macOS 14.5, arm64) | 4.6.0 | 1 NOTE (new submission) |
 
 ## Reverse dependencies
 
@@ -26,13 +33,13 @@ Spanish by the national statistics institute. Its users are Bolivian and Latin
 American researchers, public servants and journalists working with those files.
 
 The Spanish text is not an interface choice, it is the data: the value labels the
-package returns ("Sin instrucción", "Cañería/Red pública") are the official
-categories of the census questionnaire. Translating them would break the
-correspondence with the source, which is what makes the package useful.
+package returns are the official category names of the census questionnaire, accents
+included. Translating them would break the correspondence with the source, which is
+what makes the package useful.
 
 `Title`, `Description` and this file are in English, so that the package is
 intelligible to all CRAN users, and `Language: es` is declared in DESCRIPTION.
-This follows what comparable packages on CRAN do — for instance 'censo2022arg'
+This follows what comparable packages on CRAN do -- for instance 'censo2022arg'
 (Argentinian census microdata), 'enaho' (Peruvian household survey) and 'eph'
 (Argentinian household survey), all of which document in Spanish with an English
 Title and Description.
@@ -46,8 +53,8 @@ on data shipped inside the package, and their examples are executable.
 The ones left in `\dontrun{}` are those that call the `get_*()` download
 functions. They cannot run on a check machine: each one fetches tens to hundreds
 of megabytes of census microdata over the network. Two examples
-(`censosbo_cache_clear()`) are also destructive — they delete the user's cached
-files — so running them automatically would be wrong even with a network
+(`censosbo_cache_clear()`) are also destructive -- they delete the user's cached
+files -- so running them automatically would be wrong even with a network
 available.
 
 ### 3. The package downloads data on demand, and caches it
@@ -72,8 +79,8 @@ geographic subset.
 ### 4. Included data and its provenance
 
 The package ships variable dictionaries and municipal/departmental geometries
-derived from public data published by the Instituto Nacional de Estadística de
-Bolivia (<https://www.ine.gob.bo/>), its 2024 census portal and its ANDA
+derived from public data published by the Bolivian National Statistics Institute
+(INE, <https://www.ine.gob.bo/>), its 2024 census portal and its ANDA
 microdata catalogue. These are official public statistics, published for free
 reuse; the source of each dataset is documented in its `@source` field. The
 package redistributes them in a tidier form, without altering their content.
@@ -81,7 +88,7 @@ package redistributes them in a tidier form, without altering their content.
 ### 5. Non-ASCII text
 
 The R code is pure ASCII: user-facing messages use `\uXXXX` escapes. The Spanish
-label tables — the census category names the user sees in their results — are
-stored in `R/sysdata.rda` instead, because writing `"Sin instrucción"` in
-source would make a piece of data unreadable for the maintainer. `checking data
-for non-ASCII characters` passes.
+label tables -- the census category names the user sees in their results -- are
+stored in `R/sysdata.rda` instead, because rewriting accented category names as
+escape sequences would make a piece of data unreadable for the maintainer.
+`checking data for non-ASCII characters` passes.
