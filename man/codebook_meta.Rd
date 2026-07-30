@@ -30,7 +30,12 @@ Un data.frame con las siguientes columnas:
     `"indicador"` (agregados de las fichas de manzano y comunidad)}
   \item{universo}{Población de referencia normalizada (`"personas_5_mas"`,
     `"mujeres_12_mas"`, `"viviendas_presentes"`…). Es el denominador correcto
-    de la variable; `NA` cuando el INE no lo declara}
+    de la variable; `NA` cuando el INE no lo declara. **El censo 2012 es la
+    excepción:** su DDI solo distingue `"todas_personas"` y
+    `"todas_viviendas"`, así que sus variables de universo restringido (como
+    `P37A_NIVELNUE`) no lo declaran, y el aviso automático de universo no salta
+    para ese censo. Al comparar 2012 con otro año, toma el universo del año que
+    sí lo declara}
   \item{grupo_ine}{Agrupación oficial del censo de origen; `NA` en 2024, que no
     la publica}
   \item{bloque, denominador}{Bloque de [censo_bloques_meta] y denominador de los

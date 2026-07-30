@@ -25,10 +25,14 @@ Si `NULL`, incluye todos los departamentos (descarga ~282 MB).}
 existentes producen un error (en vez de un resultado vacío silencioso).}
 
 \item{municipio}{Vector de caracteres. Código(s) (`"01"`) o nombre(s)
-(`"Cochabamba"`) de municipio. Si `NULL`, incluye todos. Si se especifica
-`provincia`/`municipio` sin `departamento`, este se infiere del catálogo
-para no descargar todo el país. Un nombre repetido entre departamentos
-requiere indicar `departamento` para desambiguar.}
+  (`"Cochabamba"`) de municipio. Si `NULL`, incluye todos. Si se especifica
+  `provincia`/`municipio` sin `departamento`, este se infiere del catálogo
+  para no descargar todo el país. Un nombre repetido entre departamentos
+  requiere indicar `departamento` para desambiguar.
+
+  Los nombres de los tres niveles se comparan sin distinguir
+  mayúsculas/minúsculas ni acentos, así que `"Potosi"` y `"Zudanez"` valen
+  igual que `"Potosí"` y `"Zudáñez"`.}
 
 \item{variables}{Vector de caracteres. Nombres de columnas a seleccionar.
 Si `NULL`, devuelve todas (119 columnas). Las columnas geográficas

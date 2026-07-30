@@ -211,7 +211,7 @@ get_censo <- function(
   if (!is.null(mun_codes))  ds <- dplyr::filter(ds, .data$can %in% as.integer(mun_codes))
 
   variables <- .con_columna_universo(variables, 1976L, universo)
-  ds <- .apply_variable_selection(ds, variables)
+  ds <- .apply_variable_selection(ds, variables, anio = 1976L, verbose = verbose)
   ds <- .filtrar_universo_vivienda(ds, 1976L, universo, verbose = verbose)
 
   # Contrato uniforme: si el filtro geográfico no deja filas, avisar y devolver
@@ -239,7 +239,7 @@ get_censo <- function(
   ds <- .apply_geo(ds, geo)
 
   variables <- .con_columna_universo(variables, anio, universo)
-  ds <- .apply_variable_selection(ds, variables)
+  ds <- .apply_variable_selection(ds, variables, anio = anio, verbose = verbose)
   if (identical(tabla, "vivienda")) {
     ds <- .filtrar_universo_vivienda(ds, anio, universo, verbose = verbose)
   }

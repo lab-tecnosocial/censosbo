@@ -1,0 +1,97 @@
+# Reconciliación con las cifras oficiales del INE.
+#
+# Vive aparte de R-CMD-check.yaml porque necesita descargar ~1 GB de microdatos, y
+# eso no puede colgarse de cada push: haría el CI de los PR inviable.
+#
+# Qué protege que el resto de la suite no: los 1460 tests normales prueban
+# consistencia interna —que los filtros, joins y formatos hagan lo que dicen— con
+# fixtures pequeños. Ninguno comprueba que los totales coincidan con lo que el INE
+# publicó, que es justo lo que un usuario del paquete va a citar. Si un release de
+# datos se regenera mal, o el INE corrige una cifra, sin este workflow nadie se
+# enteraría hasta que lo notara alguien de fuera.
+#
+# Ojo con la doble guardia de test-reconciliacion-oficial.R: además de la variable
+# de entorno, cada test se salta si sus parquet no están YA en el caché (no los
+# descarga). Por eso el paso de descarga es imprescindible, y por eso el paso final
+# falla explícitamente si los tests acabaron "skipped": un workflow verde porque no
+# comprobó nada es peor que uno rojo.
+name: reconciliacion.yaml
+
+on:
+  schedule:
+    # Mensual, el día 1 a las 06:00 UTC (02:00 en Bolivia).
+    - cron: '0 6 1 * *'
+  workflow_dispatch:
+  # También al tocar los universos o las cifras esperadas: ahí es donde un cambio
+  # puede desviar un total sin que ningún otro test lo note.
+  push:
+    paths:
+      - 'R/universos_vivienda.R'
+      - 'R/get_viviendas.R'
+      - 'R/get_personas.R'
+      - 'R/get_fichas.R'
+      - 'tests/testthat/test-reconciliacion-oficial.R'
+
+permissions: read-all
+
+jobs:
+  reconciliacion:
+    runs-on: ubuntu-latest
+    # Descargar 1 GB y agregar 11 millones de filas no es instantáneo, pero tampoco
+    # debe colgarse indefinidamente si un endpoint deja de responder.
+    timeout-minutes: 60
+
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      CENSOSBO_TEST_RECONCILIACION: 'true'
+      # Fija el caché en el workspace para poder cachearlo entre ejecuciones:
+      # es la variable que consulta tools::R_user_dir().
+      R_USER_CACHE_DIR: ${{ github.workspace }}/.cache-censosbo
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: 'release'
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::testthat, any::devtools
+          needs: check
+
+      # Los parquet vienen de un release fijo del repo, así que solo cambian cuando
+      # se publica un release de datos: la clave incluye el tag para que publicar
+      # uno nuevo invalide el caché en vez de validar cifras viejas.
+      - name: Restaurar cache de microdatos
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/.cache-censosbo
+          key: microdatos-${{ hashFiles('R/utils.R') }}
+
+      # El script lee del propio test qué archivos exige y aborta con sus nombres si
+      # alguno falta, en vez de dejar que el test se salte veinte líneas después.
+      # Vive en un archivo, y no aquí embebido, para poder ejecutarlo en local antes
+      # de subirlo: la primera versión llevaba la lista escrita a mano, se
+      # desincronizó del test y solo se vio en CI.
+      - name: Descargar los microdatos que necesitan los tests
+        run: Rscript .github/scripts/reconciliacion-descargar.R
+
+      - name: Correr la reconciliacion
+        run: |
+          Rscript -e '
+            res <- as.data.frame(testthat::test_local(
+              filter = "reconciliacion", reporter = "summary", stop_on_failure = FALSE
+            ))
+            cat(sprintf("\npass: %d  fail: %d  skip: %d\n",
+                        sum(res$passed), sum(res$failed), sum(res$skipped)))
+            if (sum(res$failed) > 0) {
+              stop("La reconciliacion con las cifras del INE fallo.")
+            }
+            # Un skip aqui significa que la guardia de cache o de entorno se activo,
+            # es decir que el workflow no comprobo nada. Verde silencioso = falso verde.
+            if (sum(res$skipped) > 0 || sum(res$passed) == 0) {
+              stop("La reconciliacion no se ejecuto (skipped). Revisa la descarga y CENSOSBO_TEST_RECONCILIACION.")
+            }
+          '

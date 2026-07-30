@@ -99,6 +99,40 @@
 "codebook_docs_meta"
 
 
+# Los temas de la taxonomía que existen en un censo concreto, según la columna
+# `anios` de censo_temas_meta, que es la fuente de verdad. No todos los temas están
+# en todos los censos: `religion` solo se preguntó en 1992 y `movilidad_trabajo`
+# solo en 2024. Validar contra la lista completa de 21 tenía dos consecuencias
+# visibles: `codebook(tema = "religion", anio = 2024)` devolvía cero filas sin
+# explicar por qué, y el mensaje de tema no reconocido prometía "21 temas
+# disponibles" cuando `censo_temas()` mostraba 20.
+.temas_del_anio <- function(anio) {
+  presente <- vapply(
+    strsplit(censo_temas_meta$anios, ","),
+    function(a) as.character(anio) %in% trimws(a),
+    logical(1)
+  )
+  censo_temas_meta$tema[presente]
+}
+
+# Aborta si el tema existe en la taxonomía pero no en el censo pedido, diciendo en
+# qué años sí está. Compartido por censo_temas() y .filtrar_tema() para que las dos
+# puertas de entrada al mismo dato den el mismo diagnóstico.
+.exigir_tema_del_anio <- function(pedidos, anio) {
+  validos <- .temas_del_anio(anio)
+  fuera <- setdiff(
+    intersect(pedidos, tolower(censo_temas_meta$tema)),
+    tolower(validos)
+  )
+  if (length(fuera) == 0) return(invisible(NULL))
+  anios_tema <- censo_temas_meta$anios[match(fuera, tolower(censo_temas_meta$tema))]
+  cli::cli_abort(c(
+    "El tema {.val {fuera}} no se pregunt\u00f3 en el censo {anio}.",
+    "i" = "Se pregunt\u00f3 en: {.val {unlist(strsplit(anios_tema, ','))}}.",
+    "i" = "Usa {.code censo_temas(anio = {anio})} para ver los {length(validos)} temas de este censo."
+  ))
+}
+
 #' Consulta los temas de un censo, con el número de variables de cada uno
 #'
 #' Devuelve el catálogo de [censo_temas_meta] contando, en vivo, cuántas variables
@@ -150,19 +184,20 @@ censo_temas <- function(tema = NULL, capitulo = NULL, tabla = NULL, anio = 2024)
 
   # Sin filtro de tabla se listan todos los temas del año; con filtro, solo los
   # que efectivamente tienen variables ahí (un catálogo lleno de ceros no informa).
-  del_anio <- vapply(strsplit(out$anios, ","), function(a) as.character(anio) %in% a, logical(1))
-  out <- out[del_anio & (is.null(tabla) | out$n_variables > 0), ]
+  out <- out[out$tema %in% .temas_del_anio(anio) &
+               (is.null(tabla) | out$n_variables > 0), ]
 
   if (!is.null(tema)) {
-    pedidos <- tolower(trimws(tema))
-    desconocidos <- setdiff(pedidos, tolower(censo_temas_meta$tema))
+    pedidos <- .norm_nombre(tema)
+    desconocidos <- setdiff(pedidos, .norm_nombre(censo_temas_meta$tema))
     if (length(desconocidos) > 0) {
       cli::cli_abort(c(
         "Tema no reconocido: {.val {desconocidos}}",
         "i" = "Usa {.code censo_temas()} sin argumentos para ver los disponibles."
       ))
     }
-    out <- out[tolower(out$tema) %in% pedidos, ]
+    .exigir_tema_del_anio(pedidos, anio)
+    out <- out[.norm_nombre(out$tema) %in% pedidos, ]
   }
   if (!is.null(capitulo)) {
     pedidos <- trimws(capitulo)

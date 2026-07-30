@@ -32,7 +32,7 @@
     if (grepl("^[0-9]+$", v)) {
       m <- geo[[code_col]] == sprintf("%02d", as.integer(v))
     } else {
-      m <- tolower(trimws(geo[[name_col]])) == tolower(trimws(v))
+      m <- .norm_nombre(geo[[name_col]]) == .norm_nombre(v)
     }
     if (!any(m)) {
       cli::cli_abort(c(
@@ -150,9 +150,56 @@
   .apply_geo(ds, geo)
 }
 
+# Avisa, una sola vez por llamada, si alguna variable pedida se preguntó a una parte
+# de la población y no a toda.
+#
+# El paquete ya publicaba el universo en `codebook()`, pero solo lo *avisaba* en
+# `get_temporal()`, y ahí únicamente cuando difería entre censos. El caso de riesgo
+# quedaba fuera: pedir `nivel_edu` de un solo censo y dividir por el total de filas.
+# Le pasó a censos-explorer, que declaraba «personas de 19 años o más» y calculaba
+# sobre la población entera: 21,59% donde correspondía 33,38%. Doce puntos. Publicar
+# el dato no basta si el momento en que hace falta es otro.
+#
+# Dos decisiones para que informe sin volverse ruido:
+#   - Solo cuando el usuario pide variables EXPLÍCITAMENTE. Con `variables = NULL` se
+#     devuelven todas y aún no se sabe qué se va a analizar; avisar de las decenas de
+#     variables con universo estrecho sería un muro que se aprende a ignorar.
+#   - Respeta `verbose`, como el resto de los mensajes de progreso, así que los
+#     consumidores headless no lo ven.
+# Es `cli_inform` y no `cli_warn`: no hay nada mal en pedir la variable, y un warning
+# en un pipeline limpio invita a envolver la llamada en `suppressWarnings()`, que es
+# peor que no avisar.
+.avisar_universo_pedido <- function(variables, anio, verbose = TRUE) {
+  if (!isTRUE(verbose) || is.null(variables) || !length(variables)) {
+    return(invisible(NULL))
+  }
+  meta <- tryCatch(.get_codebook_for_anio(anio), error = function(e) NULL)
+  if (is.null(meta) || !"universo" %in% names(meta)) return(invisible(NULL))
+
+  # Primera coincidencia por variable: una misma variable puede estar en varias
+  # tablas, pero su universo es el mismo.
+  us <- meta$universo[match(.norm_nombre(variables), .norm_nombre(meta$variable))]
+  names(us) <- variables
+  # Solo los universos que de verdad restringen. Los genéricos ("todas las
+  # personas") y los que no están tabulados no dicen nada útil aquí.
+  us <- us[!is.na(us) & us %in% names(.UNIVERSO_EDAD_MIN)]
+  if (!length(us)) return(invisible(NULL))
+
+  detalle <- sprintf("%s: %s", names(us),
+                     ifelse(us %in% names(.UNIVERSO_TEXTO), .UNIVERSO_TEXTO[us], us))
+  cli::cli_inform(c(
+    "i" = "{cli::qty(length(us))}No toda la poblaci\u00f3n respondi\u00f3 {?esta variable/estas variables}:",
+    stats::setNames(detalle, rep(" ", length(detalle))),
+    "i" = "Un porcentaje sobre el total de filas usar\u00eda un denominador mayor que ese universo; filtra por el universo antes de calcularlo.",
+    "i" = "El universo de cada variable est\u00e1 en {.code codebook(variable)$universo}."
+  ))
+  invisible(TRUE)
+}
+
 # Selecciona variables preservando siempre las columnas geográficas cuando existen
-.apply_variable_selection <- function(ds, variables) {
+.apply_variable_selection <- function(ds, variables, anio = NULL, verbose = TRUE) {
   if (is.null(variables)) return(ds)
+  if (!is.null(anio)) .avisar_universo_pedido(variables, anio, verbose)
   geo_always <- c("idep", "iprov", "imun", "i00")
   cols <- unique(c(geo_always, variables))
   available <- names(ds)

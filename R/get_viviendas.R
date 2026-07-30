@@ -82,7 +82,7 @@ get_viviendas_2024 <- function(
   # filtro no vería la columna. Se añade a `variables` y se conserva: es un dato
   # del universo, y ocultarla haría el resultado imposible de auditar.
   variables <- .con_columna_universo(variables, 2024L, universo)
-  ds <- .apply_variable_selection(ds, variables)
+  ds <- .apply_variable_selection(ds, variables, anio = 2024L, verbose = verbose)
   ds <- .filtrar_universo_vivienda(ds, 2024L, universo, verbose = verbose)
   .return_as(ds, as, table_name = "viviendas", verbose = verbose)
 }

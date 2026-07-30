@@ -24,6 +24,35 @@
 # "Potosí" lleva tilde y CRAN exige código ASCII. Se edita en
 # data-raw/build_sysdata.R.
 
+# Quita tildes y diéresis, y convierte la eñe. Quien escribe en una consola de R
+# teclea "Potosi" o "Zudanez", no "Potosí" ni "Zudáñez": 55 de los 343 municipios
+# llevan tilde o eñe, y las etiquetas del diccionario dicen cosas como "Nivel más
+# alto de instrucción". Sin plegar los acentos, `municipio = "Zudanez"` abortaba y
+# `buscar = "instruccion"` devolvía cero filas, en los dos casos sin ninguna pista
+# de que lo único que faltaba era un acento.
+#
+# chartr() y no iconv(to = "ASCII//TRANSLIT"): iconv depende de la locale y de la
+# implementación de iconv del sistema, y en algunas plataformas devuelve "?" o NA
+# -- convertiría un fallo de búsqueda en un error incomprensible, y solo en las
+# máquinas de algunos usuarios. El juego de caracteres del español es cerrado y
+# pequeño, así que la tabla explícita es más segura y no depende del entorno.
+.plegar_acentos <- function(x) {
+  # Escapado con \uXXXX porque el código del paquete es ASCII puro (los comentarios
+  # no cuentan: `R CMD check` ignora los tokens COMMENT). El orden es
+  # a-e-i-o-u-dieresis-enie, primero minusculas y luego mayusculas.
+  chartr(
+    "\u00e1\u00e9\u00ed\u00f3\u00fa\u00fc\u00f1\u00c1\u00c9\u00cd\u00d3\u00da\u00dc\u00d1",
+    "aeiouunAEIOUUN",
+    x
+  )
+}
+
+# Forma canónica para comparar un nombre que escribió el usuario con uno del
+# catálogo: sin acentos, sin mayúsculas y sin espacios sobrantes.
+.norm_nombre <- function(x) {
+  tolower(trimws(.plegar_acentos(as.character(x))))
+}
+
 # Convierte nombres o números de departamento a códigos de 2 dígitos
 .resolve_dep_codes <- function(departamento) {
   if (is.null(departamento)) return(NULL)
@@ -36,7 +65,7 @@
   # Resolver nombres a códigos
   name_mask <- !numeric_mask
   if (any(name_mask)) {
-    matched <- match(tolower(dep[name_mask]), tolower(.DEP_CODES))
+    matched <- match(.norm_nombre(dep[name_mask]), .norm_nombre(.DEP_CODES))
     if (any(is.na(matched))) {
       cli::cli_abort(c(
         "Departamento no reconocido: {dep[name_mask][is.na(matched)]}",

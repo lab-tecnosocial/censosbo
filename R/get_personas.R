@@ -14,6 +14,10 @@
 #'   `provincia`/`municipio` sin `departamento`, este se infiere del catálogo
 #'   para no descargar todo el país. Un nombre repetido entre departamentos
 #'   requiere indicar `departamento` para desambiguar.
+#'
+#'   Los nombres de los tres niveles se comparan sin distinguir
+#'   mayúsculas/minúsculas ni acentos, así que `"Potosi"` y `"Zudanez"` valen
+#'   igual que `"Potosí"` y `"Zudáñez"`.
 #' @param variables Vector de caracteres. Nombres de columnas a seleccionar.
 #'   Si `NULL`, devuelve todas (119 columnas). Las columnas geográficas
 #'   (`idep`, `iprov`, `imun`, `i00`) siempre se incluyen.
@@ -104,7 +108,7 @@ get_personas_2024 <- function(
   # El departamento ya está acotado por la selección de archivos; solo resta
   # aplicar el filtro fino de provincia/municipio (tupla idep/iprov/imun).
   ds <- .apply_geo(ds, geo, filter_dep = FALSE)
-  ds <- .apply_variable_selection(ds, variables)
+  ds <- .apply_variable_selection(ds, variables, anio = 2024L, verbose = verbose)
   .return_as(ds, as, table_name = "personas", verbose = verbose)
 }
 

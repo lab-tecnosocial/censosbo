@@ -28,7 +28,12 @@
 #'     `"indicador"` (agregados de las fichas de manzano y comunidad)}
 #'   \item{universo}{Población de referencia normalizada (`"personas_5_mas"`,
 #'     `"mujeres_12_mas"`, `"viviendas_presentes"`…). Es el denominador correcto
-#'     de la variable; `NA` cuando el INE no lo declara}
+#'     de la variable; `NA` cuando el INE no lo declara. **El censo 2012 es la
+#'     excepción:** su DDI solo distingue `"todas_personas"` y
+#'     `"todas_viviendas"`, así que sus variables de universo restringido (como
+#'     `P37A_NIVELNUE`) no lo declaran, y el aviso automático de universo no salta
+#'     para ese censo. Al comparar 2012 con otro año, toma el universo del año que
+#'     sí lo declara}
 #'   \item{grupo_ine}{Agrupación oficial del censo de origen; `NA` en 2024, que no
 #'     la publica}
 #'   \item{bloque, denominador}{Bloque de [censo_bloques_meta] y denominador de los
@@ -77,13 +82,16 @@
 #' @param tabla Caracteres. Filtra por tabla (e.g., `"persona"`, `"vivienda"`).
 #'   Si `NULL`, devuelve todas las tablas.
 #' @param buscar Caracteres. Texto libre para buscar en las etiquetas y nombres
-#'   de variables, y también en el tema y el capítulo (no distingue
-#'   mayúsculas/minúsculas). Se interpreta como expresión regular.
+#'   de variables, y también en el tema y el capítulo. No distingue
+#'   mayúsculas/minúsculas **ni acentos**: `"instruccion"` encuentra
+#'   `"Nivel más alto de instrucción"`. Se interpreta como expresión regular.
 #' @param anio Entero. Año del censo: `2024` (defecto), `1976`, `1992`, `2001`
 #'   o `2012`.
 #' @param tema Caracteres. Filtra por tema, con los slugs de [censo_temas_meta]
 #'   (e.g. `"educacion"`, `"servicios_basicos"`). Acepta varios. Disponible en los
-#'   cinco censos; ver [censo_temas()].
+#'   cinco censos, pero no todos los temas están en todos: pedir uno que no se
+#'   preguntó en `anio` es un error que indica en qué censos sí está. Ver
+#'   [censo_temas()].
 #' @param capitulo Caracteres. Filtra por capítulo del cuestionario del CPV-2024:
 #'   la letra (`"C"`) o parte de su nombre (`"vivienda"`). Solo aplica a 2024: los
 #'   cuestionarios anteriores tienen otra estructura y varios numeran las secciones
@@ -157,16 +165,21 @@ codebook <- function(variable = NULL, tabla = NULL, buscar = NULL, anio = 2024,
   if (!is.null(origen)) meta <- .filtrar_origen(meta, origen, anio)
 
   if (!is.null(buscar)) {
-    mask <- grepl(buscar, meta$etiqueta, ignore.case = TRUE) |
-      grepl(buscar, meta$variable, ignore.case = TRUE)
+    # Se pliegan los acentos del patrón Y de los campos, para que `buscar` no
+    # dependa de que el usuario teclee las tildes: la etiqueta real es "Nivel más
+    # alto de instrucción", y quien busca "instruccion" espera encontrarla.
+    # Plegar no rompe el uso como expresión regular: solo cambia letras acentuadas.
+    patron <- .plegar_acentos(buscar)
+    mask <- grepl(patron, .plegar_acentos(meta$etiqueta), ignore.case = TRUE) |
+      grepl(patron, .plegar_acentos(meta$variable), ignore.case = TRUE)
     # `buscar` alcanza también al tema y al capítulo, para que
     # codebook(buscar = "salud") encuentre el tema completo y no solo las
     # variables cuya etiqueta contiene la palabra.
     if ("tema" %in% names(meta)) {
       etiq_tema <- censo_temas_meta$etiqueta[match(meta$tema, censo_temas_meta$tema)]
       mask <- mask |
-        (!is.na(meta$tema) & grepl(buscar, meta$tema, ignore.case = TRUE)) |
-        (!is.na(etiq_tema) & grepl(buscar, etiq_tema, ignore.case = TRUE))
+        (!is.na(meta$tema) & grepl(patron, .plegar_acentos(meta$tema), ignore.case = TRUE)) |
+        (!is.na(etiq_tema) & grepl(patron, .plegar_acentos(etiq_tema), ignore.case = TRUE))
     }
     meta <- meta[mask, ]
   }
@@ -230,9 +243,13 @@ codebook <- function(variable = NULL, tabla = NULL, buscar = NULL, anio = 2024,
 
 .filtrar_tema <- function(meta, tema, anio) {
   .exigir_taxonomia(anio, "tema")
-  validos <- censo_temas_meta$tema
-  pedidos <- tolower(trimws(tema))
-  desconocidos <- setdiff(pedidos, tolower(validos))
+  # Los temas de ESTE censo, no los 21 de la taxonomía completa: así el mensaje
+  # cuenta lo mismo que muestra `censo_temas(anio)`, y un tema de otro censo
+  # (`religion` en 2024) aborta explicando en qué años está en vez de devolver
+  # cero filas en silencio.
+  validos <- .temas_del_anio(anio)
+  pedidos <- .norm_nombre(tema)
+  desconocidos <- setdiff(pedidos, .norm_nombre(censo_temas_meta$tema))
   if (length(desconocidos) > 0) {
     # Distancia de edición en vez de agrep(): agrep busca subcadenas aproximadas,
     # y ante "educacon" proponía "ubicacion_geografica" (que contiene algo
@@ -248,7 +265,8 @@ codebook <- function(variable = NULL, tabla = NULL, buscar = NULL, anio = 2024,
       "i" = "Usa {.code censo_temas()} para ver los {length(validos)} temas disponibles."
     ))
   }
-  meta[!is.na(meta$tema) & tolower(meta$tema) %in% pedidos, ]
+  .exigir_tema_del_anio(pedidos, anio)
+  meta[!is.na(meta$tema) & .norm_nombre(meta$tema) %in% pedidos, ]
 }
 
 .filtrar_capitulo <- function(meta, capitulo, anio) {

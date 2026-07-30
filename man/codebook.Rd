@@ -68,12 +68,15 @@ Si `NULL`, devuelve todas.}
 Si `NULL`, devuelve todas las tablas.}
 
 \item{buscar}{Caracteres. Texto libre para buscar en las etiquetas y nombres
-de variables, y también en el tema y el capítulo (no distingue
-mayúsculas/minúsculas). Se interpreta como expresión regular.}
+de variables, y también en el tema y el capítulo. No distingue
+mayúsculas/minúsculas **ni acentos**: `"instruccion"` encuentra
+`"Nivel más alto de instrucción"`. Se interpreta como expresión regular.}
 
 \item{tema}{Caracteres. Filtra por tema, con los slugs de [censo_temas_meta]
 (e.g. `"educacion"`, `"servicios_basicos"`). Acepta varios. Disponible en los
-cinco censos; ver [censo_temas()].}
+cinco censos, pero no todos los temas están en todos: pedir uno que no se
+preguntó en `anio` es un error que indica en qué censos sí está. Ver
+[censo_temas()].}
 
 \item{origen}{Caracteres. Filtra por procedencia de la variable:
 `"cuestionario"` (pregunta directa), `"derivada"` (construida por el INE),

@@ -25,11 +25,16 @@ de mapas.
 ``` r
 # install.packages("remotes")
 remotes::install_github("lab-tecnosocial/censosbo")
+
+# Con las viñetas incluidas, para poder leerlas con vignette("introduccion").
+# Tarda algo más porque las construye; también se leen online, en el enlace de abajo.
+remotes::install_github("lab-tecnosocial/censosbo", build_vignettes = TRUE)
 ```
 
 <!-- Cuando CRAN acepte el paquete, esta sección pasa a:
      install.packages("censosbo")
-     y install_github() queda como la vía para la versión en desarrollo. -->
+     y install_github() queda como la vía para la versión en desarrollo.
+     Desde CRAN las viñetas vienen siempre, así que el segundo comando sobra. -->
 
 Al actualizar a una versión que corrige los datos —no solo el código—
 conviene borrar el caché para que se vuelvan a descargar:
@@ -174,9 +179,21 @@ codebook_valores("P24", anio = 2012)  # Censo 2012
 ```
 
 ``` r
-# Codebook para censos históricos
-codebook_2012(buscar = "instruccion")
-codebook_1992(buscar = "sexo")
+# Codebook para censos históricos. `buscar` ignora tildes y mayúsculas:
+# "instruccion" encuentra "Nivel más alto de instrucción que aprobó"
+codebook_2012(buscar = "instruccion") |> select(variable, etiqueta) |> as_tibble()
+#> # A tibble: 1 × 2
+#>   variable      etiqueta                                
+#>   <chr>         <chr>                                   
+#> 1 P37A_NIVELNUE Nivel más alto de instrucción que aprobó
+
+# Ojo: cada censo usa su propia redacción. En 1992 la variable de sexo es P03,
+# y su etiqueta no contiene la palabra "sexo"
+codebook_1992(variable = "P03") |> select(variable, etiqueta) |> as_tibble()
+#> # A tibble: 1 × 2
+#>   variable etiqueta         
+#>   <chr>    <chr>            
+#> 1 P03      Es hombre o mujer
 ```
 
 ### Buscar por tema
@@ -243,7 +260,10 @@ get_temporal(variables = c("sabe_leer", "edad"), anios = c(1992, 2001, 2024)) |>
   summarise(pct_alfabetizado = round(100 * mean(sabe_leer == 1), 1))
 ```
 
-Más en `vignette("temas")`.
+Más en la viñeta
+[Temas](https://lab-tecnosocial.github.io/censosbo/articles/temas.html),
+o con `vignette("temas")` si instalaste el paquete con
+`build_vignettes = TRUE`.
 
 ## Etiquetas en los resultados
 
@@ -441,7 +461,7 @@ citation("censosbo")
 #> 
 #>   Ojeda Copa A (2026). _censosbo: Access and Analysis of Bolivian
 #>   Census Microdata_. Lab TecnoSocial, Cochabamba, Bolivia. R package
-#>   version 2.0.0, <https://lab-tecnosocial.github.io/censosbo/>.
+#>   version 2.0.1, <https://lab-tecnosocial.github.io/censosbo/>.
 #> 
 #> A BibTeX entry for LaTeX users is
 #> 
@@ -451,12 +471,12 @@ citation("censosbo")
 #>     organization = {Lab TecnoSocial},
 #>     address = {Cochabamba, Bolivia},
 #>     year = {2026},
-#>     note = {R package version 2.0.0},
+#>     note = {R package version 2.0.1},
 #>     url = {https://lab-tecnosocial.github.io/censosbo/},
 #>   }
 ```
 
 > Ojeda Copa A (2026). *censosbo: Paquete de R para el acceso, análisis
 > y visualización de datos censales en Bolivia (1976-2024)*. Lab
-> TecnoSocial, Cochabamba, Bolivia. R package version 2.0.0.
+> TecnoSocial, Cochabamba, Bolivia. R package version 2.0.1.
 > <https://lab-tecnosocial.github.io/censosbo/>

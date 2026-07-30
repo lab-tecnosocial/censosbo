@@ -39,7 +39,7 @@ get_mortalidad_2024 <- function(
   local_path <- .download_parquet("mortalidad.parquet", overwrite = overwrite, verbose = verbose)
   ds <- arrow::open_dataset(local_path, format = "parquet")
   ds <- .apply_geo_filters(ds, departamento, provincia, municipio)
-  ds <- .apply_variable_selection(ds, variables)
+  ds <- .apply_variable_selection(ds, variables, anio = 2024L, verbose = verbose)
   .return_as(ds, as, table_name = "mortalidad", verbose = verbose)
 }
 
