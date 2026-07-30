@@ -9,7 +9,7 @@ de Bolivia, extraídos del Diccionario de Variables oficial del INE."><meta prop
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -107,7 +107,12 @@ de Bolivia, extraídos del Diccionario de Variables oficial del INE.</p>
   <dt>universo</dt>
 <dd><p>Población de referencia normalizada (`"personas_5_mas"`,
     `"mujeres_12_mas"`, `"viviendas_presentes"`…). Es el denominador correcto
-    de la variable; `NA` cuando el INE no lo declara</p></dd>
+    de la variable; `NA` cuando el INE no lo declara. **El censo 2012 es la
+    excepción:** su DDI solo distingue `"todas_personas"` y
+    `"todas_viviendas"`, así que sus variables de universo restringido (como
+    `P37A_NIVELNUE`) no lo declaran, y el aviso automático de universo no salta
+    para ese censo. Al comparar 2012 con otro año, toma el universo del año que
+    sí lo declara</p></dd>
 
   <dt>grupo_ine</dt>
 <dd><p>Agrupación oficial del censo de origen; `NA` en 2024, que no

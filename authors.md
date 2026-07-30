@@ -14,7 +14,7 @@ Source:
 
 Ojeda Copa A (2026). *censosbo: Access and Analysis of Bolivian Census
 Microdata*. Lab TecnoSocial, Cochabamba, Bolivia. R package version
-2.0.1, <https://lab-tecnosocial.github.io/censosbo/>.
+2.0.2, <https://lab-tecnosocial.github.io/censosbo/>.
 
     @Manual{,
       title = {censosbo: Access and Analysis of Bolivian Census Microdata},
@@ -22,6 +22,6 @@ Microdata*. Lab TecnoSocial, Cochabamba, Bolivia. R package version
       organization = {Lab TecnoSocial},
       address = {Cochabamba, Bolivia},
       year = {2026},
-      note = {R package version 2.0.1},
+      note = {R package version 2.0.2},
       url = {https://lab-tecnosocial.github.io/censosbo/},
     }

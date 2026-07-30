@@ -40,6 +40,10 @@ get_emigracion_2024(
   repetido entre departamentos requiere indicar \`departamento\` para
   desambiguar.
 
+  Los nombres de los tres niveles se comparan sin distinguir
+  mayúsculas/minúsculas ni acentos, así que \`"Potosi"\` y \`"Zudanez"\`
+  valen igual que \`"Potosí"\` y \`"Zudáñez"\`.
+
 - variables:
 
   Vector de caracteres. Nombres de columnas a seleccionar. Si \`NULL\`,

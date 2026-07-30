@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,6 +51,27 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="2.0.2" id="censosbo-202">censosbo 2.0.2<a class="anchor" aria-label="anchor" href="#censosbo-202"></a></h2>
+<p>Tres correcciones salidas de probar el paquete como lo estrena alguien nuevo: instalado desde GitHub, con el caché vacío. Ninguna cambia resultados; las tres quitan fricción donde el paquete parecía no tener el dato que sí tenía.</p>
+<ul><li>
+<p><strong>Los nombres y las búsquedas ya no dependen de las tildes.</strong> <code>municipio = "Zudanez"</code> abortaba con «no encontrado en el catálogo» y <code>buscar = "instruccion"</code> devolvía cero filas, en los dos casos sin pista de que lo único que faltaba era un acento. Ahora <code>departamento</code>, <code>provincia</code> y <code>municipio</code> aceptan los nombres con o sin acentos —55 de los 343 municipios llevan tilde o eñe, y <code>"Potosi"</code> ya vale por <code>"Potosí"</code>— y <code>buscar</code> encuentra <code>"Nivel más alto de instrucción"</code> escribiendo <code>instruccion</code>.</p>
+<p>No se pierde precisión: los nueve nombres de municipio que colisionan al ignorar los acentos (<code>Entre Ríos</code>, <code>San Pedro</code>, <code>Totora</code>…) son los nueve que ya estaban repetidos entre departamentos, así que siguen pidiendo <code>departamento</code> para desambiguar, como antes.</p>
+</li>
+<li><p><strong>Pedir un tema que no se preguntó en ese censo ahora lo dice.</strong> <code>codebook(tema = "religion", anio = 2024)</code> devolvía cero filas en silencio; <code>religion</code> está en la taxonomía pero solo se preguntó en 1992. Ahora aborta indicando en qué censos sí está. Como efecto colateral se corrige el mensaje de tema no reconocido, que prometía «21 temas disponibles» mientras <code><a href="../reference/censo_temas.html">censo_temas()</a></code> mostraba 20: contaba la taxonomía completa en vez de los temas del censo consultado.</p></li>
+<li><p><strong>README:</strong> dos ejemplos de la sección de censos históricos no funcionaban (<code>codebook_1992(buscar = "sexo")</code> no encuentra nada porque en 1992 la etiqueta es «Es hombre o mujer»). Corregidos, y el bloque pasa a evaluarse al construir el README para que no vuelva a pasar. Se documenta también que <code>install_github()</code> no trae las viñetas a menos que se pida <code>build_vignettes = TRUE</code>, con enlace a la versión online.</p></li>
+</ul><p>Y tres más salidas de la revisión del consumidor <code>censos-explorer</code>:</p>
+<ul><li>
+<p><strong>Las funciones de un censo avisan del universo de las variables que pides.</strong> El universo estaba publicado en <code><a href="../reference/codebook.html">codebook()</a></code> desde hace versiones, pero solo se <em>avisaba</em> en <code><a href="../reference/get_temporal.html">get_temporal()</a></code>, y ahí únicamente cuando difería entre censos. Faltaba justo el caso de riesgo: pedir <code>nivel_edu</code> de un solo año y dividir por el total de filas, que es un error de doce puntos porcentuales. Ahora <code><a href="../reference/get_personas_2024.html">get_personas_2024()</a></code>, <code><a href="../reference/get_censo.html">get_censo()</a></code> y las demás informan una vez por llamada:</p>
+<pre><code>ℹ No toda la población respondió esta variable:
+  nivel_edu: personas de 19 años o más
+ℹ Un porcentaje sobre el total de filas usaría un denominador mayor que ese universo.</code></pre>
+<p>Solo cuando pides variables explícitamente (con <code>variables = NULL</code> serían decenas de avisos) y solo con <code>verbose = TRUE</code>, así que los consumidores headless no lo ven. Es un mensaje informativo, no un warning.</p>
+<p>Limitación heredada del INE: el DDI de <strong>2012</strong> solo declara <code>todas_personas</code> y <code>todas_viviendas</code>, así que para ese censo el aviso no salta. Queda documentado en <code><a href="../reference/codebook_meta.html">?codebook_meta</a></code>.</p>
+</li>
+<li><p><strong>La viñeta de manzanos y comunidades explicaba mal un desfase que ya no existe.</strong> Afirmaba que el INE cuenta las viviendas distinto en el geoportal y en los microdatos. No era así: la diferencia eran los 10.287 registros de calle y tránsito, y desde la 1.7.0 las dos fuentes cuadran en los 343 municipios. Reescrita como lo que es —una validación cruzada— y el artículo ahora <strong>comprueba</strong> esa igualdad al construirse, en vez de afirmarla.</p></li>
+<li><p><strong>CI:</strong> las seis pruebas de reconciliación contra las cifras oficiales del INE no se ejecutaban nunca de forma automática. Nuevo workflow mensual (y a demanda) que descarga los microdatos y las corre, y que falla si acaban en <code>skipped</code> en vez de dar un verde que no comprobó nada.</p></li>
+</ul></div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.0.1" id="censosbo-201">censosbo 2.0.1<a class="anchor" aria-label="anchor" href="#censosbo-201"></a></h2>
 <ul><li>
 <p><strong>El caché vuelve a crearse sin pedir confirmación.</strong> La 2.0.0 preguntaba la primera vez, en sesión interactiva, siguiendo una lectura conservadora de la política de CRAN. Instalando desde GitHub eso es fricción por un requisito que todavía no aplica, así que se retira: descargar implica cachear, como siempre.</p>
@@ -66,7 +87,7 @@
 <ul><li>
 <p><strong><code>update_censosbo()</code> se retira.</strong> Una función que reinstala el propio paquete desde GitHub no puede convivir con la distribución por CRAN: evita el canal oficial y modifica la instalación del usuario sin pasar por él.</p>
 <p>Para actualizar, ahora: <code>install.packages("censosbo")</code> (o <code>remotes::install_github("lab-tecnosocial/censosbo")</code> para la versión en desarrollo). Y si la nueva versión corrige <strong>datos</strong> y no solo código, borrar el caché para que se vuelvan a descargar:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/censosbo_cache_clear.html">censosbo_cache_clear</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </li>
 </ul></div>
@@ -124,7 +145,7 @@
 <h3 id="tests-de-reconciliación-con-el-ine-1-7-0">Tests de reconciliación con el INE<a class="anchor" aria-label="anchor" href="#tests-de-reconciliaci%C3%B3n-con-el-ine-1-7-0"></a></h3>
 <p><code>tests/testthat/test-reconciliacion-oficial.R</code>, suite nueva. Que la suite pasara demostraba consistencia interna, no que las cifras coincidieran con lo publicado —que es lo que se cita. Ahora quedan fijadas: población total y por sexo, los cuatro universos de vivienda, viviendas por área, el cuadre municipio a municipio con el geoportal, los totales de los censos históricos y el denominador del alfabetismo.</p>
 <p>Necesita los microdatos completos en caché (~1 GB), así que se salta por defecto:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="va">CENSOSBO_TEST_RECONCILIACION</span><span class="op">=</span>true <span class="ex">Rscript</span> <span class="at">-e</span> <span class="st">'devtools::test(filter = "reconciliacion")'</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="va">CENSOSBO_TEST_RECONCILIACION</span><span class="op">=</span>true <span class="ex">Rscript</span> <span class="at">-e</span> <span class="st">'devtools::test(filter = "reconciliacion")'</span></span></code></pre></div>
 </div>
 </div>
     <div class="section level2">
@@ -179,7 +200,7 @@
 <ul><li><p><code><a href="../reference/censo_temas.html">censo_temas()</a></code> — el catálogo de temas con el número de variables de cada uno, contado en vivo y filtrable por tabla y año.</p></li>
 <li>
 <p><code><a href="../reference/vars_tema.html">vars_tema()</a></code> — los nombres de las variables de un tema, en el orden del cuestionario, listos para pasar a <code>variables</code>:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span></span>
 <span>  departamento <span class="op">=</span> <span class="st">"Cochabamba"</span>,</span>
 <span>  variables <span class="op">=</span> <span class="fu"><a href="../reference/vars_tema.html">vars_tema</a></span><span class="op">(</span><span class="st">"educacion"</span>, tabla <span class="op">=</span> <span class="st">"persona"</span><span class="op">)</span></span>
@@ -242,7 +263,7 @@
 <h3 id="get_censo-ahora-cubre-también-el-cpv-1-4-0">
 <code>get_censo()</code> ahora cubre también el CPV-2024<a class="anchor" aria-label="anchor" href="#get_censo-ahora-cubre-tambi%C3%A9n-el-cpv-1-4-0"></a></h3>
 <p><code><a href="../reference/get_censo.html">get_censo()</a></code> se presentaba como la API genérica por año, pero rechazaba <code>anio = 2024</code> — y la propia documentación de <code><a href="../reference/get_personas_2024.html">get_personas_2024()</a></code> ofrecía <code>get_censo(2024, "persona", ...)</code> como equivalente, un ejemplo que no funcionaba. Ahora acepta los cinco censos: con <code>anio = 2024</code> delega en <code><a href="../reference/get_personas_2024.html">get_personas_2024()</a></code>, <code><a href="../reference/get_viviendas_2024.html">get_viviendas_2024()</a></code>, <code><a href="../reference/get_emigracion_2024.html">get_emigracion_2024()</a></code> o <code><a href="../reference/get_mortalidad_2024.html">get_mortalidad_2024()</a></code> según <code>tabla</code>, con resultado idéntico al de esas funciones.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/get_censo.html">get_censo</a></span><span class="op">(</span><span class="fl">2024</span>, <span class="st">"persona"</span>, departamento <span class="op">=</span> <span class="st">"07"</span><span class="op">)</span>   <span class="co"># = get_personas_2024()</span></span></code></pre></div>
 </div>
 <div class="section level3">

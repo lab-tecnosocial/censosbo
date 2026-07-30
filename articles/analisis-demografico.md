@@ -18,8 +18,14 @@ personas <- get_personas_2024(
   collect() |>
   etiquetar_valores()
 #> ℹ Descargando persona_dep08.parquet (~12 MB)...
-#> ✔ Descargado persona_dep08.parquet [503ms]
+#> ✔ Descargado persona_dep08.parquet [235ms]
 #> 
+#> ℹ No toda la población respondió estas variables:
+#>   nivel_edu: personas de 19 años o más
+#>   p40_lee: personas de 5 años o más
+#> ℹ Un porcentaje sobre el total de filas usaría un denominador mayor que ese
+#>   universo; filtra por el universo antes de calcularlo.
+#> ℹ El universo de cada variable está en `codebook(variable)$universo`.
 
 nrow(personas)
 #> [1] 488260

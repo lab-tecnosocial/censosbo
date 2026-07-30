@@ -1,5 +1,85 @@
 # Changelog
 
+## censosbo 2.0.2
+
+Tres correcciones salidas de probar el paquete como lo estrena alguien
+nuevo: instalado desde GitHub, con el caché vacío. Ninguna cambia
+resultados; las tres quitan fricción donde el paquete parecía no tener
+el dato que sí tenía.
+
+- **Los nombres y las búsquedas ya no dependen de las tildes.**
+  `municipio = "Zudanez"` abortaba con «no encontrado en el catálogo» y
+  `buscar = "instruccion"` devolvía cero filas, en los dos casos sin
+  pista de que lo único que faltaba era un acento. Ahora `departamento`,
+  `provincia` y `municipio` aceptan los nombres con o sin acentos —55 de
+  los 343 municipios llevan tilde o eñe, y `"Potosi"` ya vale por
+  `"Potosí"`— y `buscar` encuentra `"Nivel más alto de instrucción"`
+  escribiendo `instruccion`.
+
+  No se pierde precisión: los nueve nombres de municipio que colisionan
+  al ignorar los acentos (`Entre Ríos`, `San Pedro`, `Totora`…) son los
+  nueve que ya estaban repetidos entre departamentos, así que siguen
+  pidiendo `departamento` para desambiguar, como antes.
+
+- **Pedir un tema que no se preguntó en ese censo ahora lo dice.**
+  `codebook(tema = "religion", anio = 2024)` devolvía cero filas en
+  silencio; `religion` está en la taxonomía pero solo se preguntó
+  en 1992. Ahora aborta indicando en qué censos sí está. Como efecto
+  colateral se corrige el mensaje de tema no reconocido, que prometía
+  «21 temas disponibles» mientras
+  [`censo_temas()`](https://lab-tecnosocial.github.io/censosbo/reference/censo_temas.md)
+  mostraba 20: contaba la taxonomía completa en vez de los temas del
+  censo consultado.
+
+- **README:** dos ejemplos de la sección de censos históricos no
+  funcionaban (`codebook_1992(buscar = "sexo")` no encuentra nada porque
+  en 1992 la etiqueta es «Es hombre o mujer»). Corregidos, y el bloque
+  pasa a evaluarse al construir el README para que no vuelva a pasar. Se
+  documenta también que `install_github()` no trae las viñetas a menos
+  que se pida `build_vignettes = TRUE`, con enlace a la versión online.
+
+Y tres más salidas de la revisión del consumidor `censos-explorer`:
+
+- **Las funciones de un censo avisan del universo de las variables que
+  pides.** El universo estaba publicado en
+  [`codebook()`](https://lab-tecnosocial.github.io/censosbo/reference/codebook.md)
+  desde hace versiones, pero solo se *avisaba* en
+  [`get_temporal()`](https://lab-tecnosocial.github.io/censosbo/reference/get_temporal.md),
+  y ahí únicamente cuando difería entre censos. Faltaba justo el caso de
+  riesgo: pedir `nivel_edu` de un solo año y dividir por el total de
+  filas, que es un error de doce puntos porcentuales. Ahora
+  [`get_personas_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_personas_2024.md),
+  [`get_censo()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md)
+  y las demás informan una vez por llamada:
+
+      ℹ No toda la población respondió esta variable:
+        nivel_edu: personas de 19 años o más
+      ℹ Un porcentaje sobre el total de filas usaría un denominador mayor que ese universo.
+
+  Solo cuando pides variables explícitamente (con `variables = NULL`
+  serían decenas de avisos) y solo con `verbose = TRUE`, así que los
+  consumidores headless no lo ven. Es un mensaje informativo, no un
+  warning.
+
+  Limitación heredada del INE: el DDI de **2012** solo declara
+  `todas_personas` y `todas_viviendas`, así que para ese censo el aviso
+  no salta. Queda documentado en
+  [`?codebook_meta`](https://lab-tecnosocial.github.io/censosbo/reference/codebook_meta.md).
+
+- **La viñeta de manzanos y comunidades explicaba mal un desfase que ya
+  no existe.** Afirmaba que el INE cuenta las viviendas distinto en el
+  geoportal y en los microdatos. No era así: la diferencia eran los
+  10.287 registros de calle y tránsito, y desde la 1.7.0 las dos fuentes
+  cuadran en los 343 municipios. Reescrita como lo que es —una
+  validación cruzada— y el artículo ahora **comprueba** esa igualdad al
+  construirse, en vez de afirmarla.
+
+- **CI:** las seis pruebas de reconciliación contra las cifras oficiales
+  del INE no se ejecutaban nunca de forma automática. Nuevo workflow
+  mensual (y a demanda) que descarga los microdatos y las corre, y que
+  falla si acaban en `skipped` en vez de dar un verde que no comprobó
+  nada.
+
 ## censosbo 2.0.1
 
 - **El caché vuelve a crearse sin pedir confirmación.** La 2.0.0

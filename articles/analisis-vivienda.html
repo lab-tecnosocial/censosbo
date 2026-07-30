@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -328,7 +328,7 @@ municipios, no con la entidad cruda.</p>
 <span></span>
 <span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html" class="external-link">dbConnect</a></span><span class="op">(</span><span class="fu">duckdb</span><span class="fu">::</span><span class="fu"><a href="https://r.duckdb.org/reference/duckdb.html" class="external-link">duckdb</a></span><span class="op">(</span><span class="op">)</span>, dbdir <span class="op">=</span> <span class="st">":memory:"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; duckdb keeps downloaded extensions and secrets in a temporary directory:</span></span>
-<span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> /tmp/RtmpL7rR44/duckdb</span></span>
+<span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> /tmp/Rtmp0w53VK/duckdb</span></span>
 <span><span class="co">#&gt; This is removed when the R session ends.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> Extensions are re-downloaded each session.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> Secrets are lost.</span></span>
@@ -342,7 +342,13 @@ municipios, no con la entidad cruda.</p>
 <span>               variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"idep"</span>,<span class="st">"iprov"</span>,<span class="st">"imun"</span>,<span class="st">"i00"</span>,<span class="st">"p25_sexo"</span>,<span class="st">"p26_edad"</span>,<span class="st">"nivel_edu"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Descargando <span style="color: #0000BB;">persona_dep04.parquet</span> (~14 MB)...</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Descargado <span style="color: #0000BB;">persona_dep04.parquet</span> <span style="color: #B2B2B2;">[516ms]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Descargado <span style="color: #0000BB;">persona_dep04.parquet</span> <span style="color: #B2B2B2;">[401ms]</span></span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> No toda la población respondió esta variable:</span></span>
+<span><span class="co">#&gt;   nivel_edu: personas de 19 años o más</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Un porcentaje sobre el total de filas usaría un denominador mayor que ese</span></span>
+<span><span class="co">#&gt;   universo; filtra por el universo antes de calcularlo.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> El universo de cada variable está en `codebook(variable)$universo`.</span></span>
 <span><span class="fu">duckdb</span><span class="fu">::</span><span class="fu"><a href="https://r.duckdb.org/reference/duckdb_register_arrow.html" class="external-link">duckdb_register_arrow</a></span><span class="op">(</span></span>
 <span>  <span class="va">con</span>, <span class="st">"viviendas"</span>,</span>
 <span>  <span class="fu"><a href="../reference/get_viviendas_2024.html">get_viviendas_2024</a></span><span class="op">(</span>departamento <span class="op">=</span> <span class="st">"Oruro"</span>,</span>

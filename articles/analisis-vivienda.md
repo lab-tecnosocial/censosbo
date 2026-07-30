@@ -234,7 +234,7 @@ library(DBI)
 
 con <- DBI::dbConnect(duckdb::duckdb(), dbdir = ":memory:")
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpL7rR44/duckdb
+#> ℹ /tmp/Rtmp0w53VK/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
@@ -248,7 +248,13 @@ duckdb::duckdb_register_arrow(
                variables = c("idep","iprov","imun","i00","p25_sexo","p26_edad","nivel_edu"))
 )
 #> ℹ Descargando persona_dep04.parquet (~14 MB)...
-#> ✔ Descargado persona_dep04.parquet [516ms]
+#> ✔ Descargado persona_dep04.parquet [401ms]
+#> 
+#> ℹ No toda la población respondió esta variable:
+#>   nivel_edu: personas de 19 años o más
+#> ℹ Un porcentaje sobre el total de filas usaría un denominador mayor que ese
+#>   universo; filtra por el universo antes de calcularlo.
+#> ℹ El universo de cada variable está en `codebook(variable)$universo`.
 duckdb::duckdb_register_arrow(
   con, "viviendas",
   get_viviendas_2024(departamento = "Oruro",

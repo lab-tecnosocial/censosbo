@@ -9,7 +9,7 @@ y Vivienda 2024 de Bolivia."><meta property="og:image" content="https://lab-tecn
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -89,10 +89,13 @@ existentes producen un error (en vez de un resultado vacío silencioso).</p></dd
 
 <dt id="arg-municipio">municipio<a class="anchor" aria-label="anchor" href="#arg-municipio"></a></dt>
 <dd><p>Vector de caracteres. Código(s) (`"01"`) o nombre(s)
-(`"Cochabamba"`) de municipio. Si `NULL`, incluye todos. Si se especifica
-`provincia`/`municipio` sin `departamento`, este se infiere del catálogo
-para no descargar todo el país. Un nombre repetido entre departamentos
-requiere indicar `departamento` para desambiguar.</p></dd>
+  (`"Cochabamba"`) de municipio. Si `NULL`, incluye todos. Si se especifica
+  `provincia`/`municipio` sin `departamento`, este se infiere del catálogo
+  para no descargar todo el país. Un nombre repetido entre departamentos
+  requiere indicar `departamento` para desambiguar.</p>
+<p>Los nombres de los tres niveles se comparan sin distinguir
+  mayúsculas/minúsculas ni acentos, así que `"Potosi"` y `"Zudanez"` valen
+  igual que `"Potosí"` y `"Zudáñez"`.</p></dd>
 
 
 <dt id="arg-variables">variables<a class="anchor" aria-label="anchor" href="#arg-variables"></a></dt>

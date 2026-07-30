@@ -398,11 +398,13 @@ uno a uno**.
 
 ``` r
 
+unidades <- get_unidades_2024(departamento = "Pando", as = "tibble", verbose = FALSE)
+
 pob_micro <- get_personas_2024(departamento = "Pando", verbose = FALSE) |>
   count(idep, iprov, imun, name = "microdatos") |>
   collect()
 
-get_unidades_2024(departamento = "Pando", as = "tibble", verbose = FALSE) |>
+unidades |>
   group_by(idep, iprov, imun) |>
   summarise(agregado = sum(personas), .groups = "drop") |>
   full_join(pob_micro, by = c("idep", "iprov", "imun")) |>
@@ -417,6 +419,30 @@ get_unidades_2024(departamento = "Pando", as = "tibble", verbose = FALSE) |>
 #> 1         15             15    134194
 ```
 
+Y lo mismo con las viviendas, que es la comprobación que destapó el
+problema de universo que se explica más abajo:
+
+``` r
+
+viv_micro <- get_viviendas_2024(departamento = "Pando", verbose = FALSE) |>
+  count(idep, iprov, imun, name = "microdatos") |>
+  collect()
+
+unidades |>
+  group_by(idep, iprov, imun) |>
+  summarise(agregado = sum(viviendas), .groups = "drop") |>
+  full_join(viv_micro, by = c("idep", "iprov", "imun")) |>
+  summarise(
+    municipios     = n(),
+    cuadran_exacto = sum(agregado == microdatos),
+    viviendas      = sum(agregado)
+  )
+#> # A tibble: 1 × 3
+#>   municipios cuadran_exacto viviendas
+#>        <int>          <int>     <int>
+#> 1         15             15     42658
+```
+
 ## De dónde salen estos datos
 
 Del geoportal del INE, que genera una ficha por unidad censal a demanda.
@@ -429,14 +455,36 @@ Cuatro notas sobre la fuente:
 - Los conteos corresponden a residentes habituales y **no incluyen a las
   personas que residen en el exterior**, por lo que difieren ligeramente
   de otros totales del censo.
+
 - La población agregada por municipio coincide exactamente con
   [`get_personas_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_personas_2024.md),
-  como se acaba de comprobar. Las **viviendas** dan un 0,23% menos que
-  [`get_viviendas_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_viviendas_2024.md),
-  con un déficit sistemático (323 municipios por debajo, ninguno por
-  encima): el INE las cuenta distinto en el geoportal y en los
-  microdatos. Para el total de viviendas de un territorio, usa
-  [`get_viviendas_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_viviendas_2024.md).
+  como se acaba de comprobar. Y las **viviendas también**: 4.480.201 en
+  las dos fuentes, cuadrando en los 343 municipios. Que dos productos
+  independientes del INE —el geoportal y los microdatos— den la misma
+  cifra hasta el último municipio es la mejor evidencia de que el
+  universo aplicado es el correcto.
+
+  Conviene saber por qué esto no era así antes, porque es un error fácil
+  de repetir. Hasta la versión 1.6.0 el paquete devolvía los 4.490.488
+  registros crudos de la entidad de vivienda, y entonces el geoportal
+  daba un 0,23% menos, con un déficit sistemático: 323 municipios por
+  debajo y ninguno por encima. La lectura tentadora era que el INE
+  cuenta las viviendas distinto en cada producto. Era falsa. Los 10.287
+  registros de diferencia son exactamente los de personas censadas **en
+  la calle y en tránsito** (códigos 15 y 16 de `v01_tipoviv`), que no
+  son viviendas y que el geoportal ya excluía. Lo delató la forma del
+  desfase: un error de conteo se reparte en las dos direcciones,
+  mientras que un universo mal aplicado va siempre en la misma. Desde la
+  1.7.0 el argumento `universo` de
+  [`get_viviendas_2024()`](https://lab-tecnosocial.github.io/censosbo/reference/get_viviendas_2024.html)
+  aplica el criterio oficial por defecto, y las dos fuentes cuadran.
+
+  La moraleja, que vale más allá de este caso: **cuando dos fuentes de
+  la misma institución no cuadran, sospecha del universo antes de
+  concluir que la institución es inconsistente.**
+
+&nbsp;
+
 - El INE cambió su geoportal durante 2026 y la versión nueva
   (`idg.ine.gob.bo`) exige captcha para estos endpoints. Los datos
   provienen del servicio que atiende a `geoportal.ine.gob.bo`.

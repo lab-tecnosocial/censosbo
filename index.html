@@ -31,7 +31,7 @@
 
     <a class="navbar-brand me-2" href="index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -89,10 +89,15 @@
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"lab-tecnosocial/censosbo"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"lab-tecnosocial/censosbo"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Con las viñetas incluidas, para poder leerlas con vignette("introduccion").</span></span>
+<span><span class="co"># Tarda algo más porque las construye; también se leen online, en el enlace de abajo.</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"lab-tecnosocial/censosbo"</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <!-- Cuando CRAN acepte el paquete, esta sección pasa a:
      install.packages("censosbo")
-     y install_github() queda como la vía para la versión en desarrollo. -->
+     y install_github() queda como la vía para la versión en desarrollo.
+     Desde CRAN las viñetas vienen siempre, así que el segundo comando sobra. -->
 <p>Al actualizar a una versión que corrige los datos —no solo el código— conviene borrar el caché para que se vuelvan a descargar:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/censosbo_cache_clear.html">censosbo_cache_clear</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
@@ -349,9 +354,21 @@
 <span><span class="co">#&gt; 1 1      Mujer   </span></span>
 <span><span class="co">#&gt; 2 2      Hombre</span></span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Codebook para censos históricos</span></span>
-<span><span class="fu"><a href="reference/codebook.html">codebook_2012</a></span><span class="op">(</span>buscar <span class="op">=</span> <span class="st">"instruccion"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/codebook.html">codebook_1992</a></span><span class="op">(</span>buscar <span class="op">=</span> <span class="st">"sexo"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Codebook para censos históricos. `buscar` ignora tildes y mayúsculas:</span></span>
+<span><span class="co"># "instruccion" encuentra "Nivel más alto de instrucción que aprobó"</span></span>
+<span><span class="fu"><a href="reference/codebook.html">codebook_2012</a></span><span class="op">(</span>buscar <span class="op">=</span> <span class="st">"instruccion"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">variable</span>, <span class="va">etiqueta</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1 × 2</span></span>
+<span><span class="co">#&gt;   variable      etiqueta                                </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;         &lt;chr&gt;                                   </span></span>
+<span><span class="co">#&gt; 1 P37A_NIVELNUE Nivel más alto de instrucción que aprobó</span></span>
+<span></span>
+<span><span class="co"># Ojo: cada censo usa su propia redacción. En 1992 la variable de sexo es P03,</span></span>
+<span><span class="co"># y su etiqueta no contiene la palabra "sexo"</span></span>
+<span><span class="fu"><a href="reference/codebook.html">codebook_1992</a></span><span class="op">(</span>variable <span class="op">=</span> <span class="st">"P03"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">variable</span>, <span class="va">etiqueta</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1 × 2</span></span>
+<span><span class="co">#&gt;   variable etiqueta         </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt;            </span></span>
+<span><span class="co">#&gt; 1 P03      Es hombre o mujer</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="buscar-por-tema">Buscar por tema<a class="anchor" aria-label="anchor" href="#buscar-por-tema"></a>
 </h3>
@@ -402,7 +419,7 @@
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">edad</span> <span class="op">&gt;=</span> <span class="fl">6</span>, <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">sabe_leer</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">anio</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>pct_alfabetizado <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fl">100</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">sabe_leer</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>Más en <code><a href="articles/temas.html">vignette("temas")</a></code>.</p>
+<p>Más en la viñeta <a href="https://lab-tecnosocial.github.io/censosbo/articles/temas.html">Temas</a>, o con <code><a href="articles/temas.html">vignette("temas")</a></code> si instalaste el paquete con <code>build_vignettes = TRUE</code>.</p>
 </div>
 </div>
 <div class="section level2">
@@ -618,7 +635,7 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;   Ojeda Copa A (2026). _censosbo: Access and Analysis of Bolivian</span></span>
 <span><span class="co">#&gt;   Census Microdata_. Lab TecnoSocial, Cochabamba, Bolivia. R package</span></span>
-<span><span class="co">#&gt;   version 2.0.0, &lt;https://lab-tecnosocial.github.io/censosbo/&gt;.</span></span>
+<span><span class="co">#&gt;   version 2.0.1, &lt;https://lab-tecnosocial.github.io/censosbo/&gt;.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; A BibTeX entry for LaTeX users is</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -628,11 +645,11 @@
 <span><span class="co">#&gt;     organization = {Lab TecnoSocial},</span></span>
 <span><span class="co">#&gt;     address = {Cochabamba, Bolivia},</span></span>
 <span><span class="co">#&gt;     year = {2026},</span></span>
-<span><span class="co">#&gt;     note = {R package version 2.0.0},</span></span>
+<span><span class="co">#&gt;     note = {R package version 2.0.1},</span></span>
 <span><span class="co">#&gt;     url = {https://lab-tecnosocial.github.io/censosbo/},</span></span>
 <span><span class="co">#&gt;   }</span></span></code></pre></div>
 <blockquote>
-<p>Ojeda Copa A (2026). <em>censosbo: Paquete de R para el acceso, análisis y visualización de datos censales en Bolivia (1976-2024)</em>. Lab TecnoSocial, Cochabamba, Bolivia. R package version 2.0.0. <a href="https://lab-tecnosocial.github.io/censosbo/" class="uri">https://lab-tecnosocial.github.io/censosbo/</a></p>
+<p>Ojeda Copa A (2026). <em>censosbo: Paquete de R para el acceso, análisis y visualización de datos censales en Bolivia (1976-2024)</em>. Lab TecnoSocial, Cochabamba, Bolivia. R package version 2.0.1. <a href="https://lab-tecnosocial.github.io/censosbo/" class="uri">https://lab-tecnosocial.github.io/censosbo/</a></p>
 </blockquote>
 </div>
 </div>

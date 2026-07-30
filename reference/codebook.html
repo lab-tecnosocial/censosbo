@@ -9,7 +9,7 @@ las etiquetas."><meta property="og:image" content="https://lab-tecnosocial.githu
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -128,14 +128,17 @@ Si `NULL`, devuelve todas las tablas.</p></dd>
 
 <dt id="arg-buscar">buscar<a class="anchor" aria-label="anchor" href="#arg-buscar"></a></dt>
 <dd><p>Caracteres. Texto libre para buscar en las etiquetas y nombres
-de variables, y también en el tema y el capítulo (no distingue
-mayúsculas/minúsculas). Se interpreta como expresión regular.</p></dd>
+de variables, y también en el tema y el capítulo. No distingue
+mayúsculas/minúsculas **ni acentos**: `"instruccion"` encuentra
+`"Nivel más alto de instrucción"`. Se interpreta como expresión regular.</p></dd>
 
 
 <dt id="arg-tema">tema<a class="anchor" aria-label="anchor" href="#arg-tema"></a></dt>
 <dd><p>Caracteres. Filtra por tema, con los slugs de [censo_temas_meta]
 (e.g. `"educacion"`, `"servicios_basicos"`). Acepta varios. Disponible en los
-cinco censos; ver [censo_temas()].</p></dd>
+cinco censos, pero no todos los temas están en todos: pedir uno que no se
+preguntó en `anio` es un error que indica en qué censos sí está. Ver
+[censo_temas()].</p></dd>
 
 
 <dt id="arg-origen">origen<a class="anchor" aria-label="anchor" href="#arg-origen"></a></dt>
