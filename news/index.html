@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">censosbo</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,6 +50,14 @@
       <small>Source: <a href="https://github.com/lab-tecnosocial/censosbo/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="2.0.1" id="censosbo-201">censosbo 2.0.1<a class="anchor" aria-label="anchor" href="#censosbo-201"></a></h2>
+<ul><li>
+<p><strong>El caché vuelve a crearse sin pedir confirmación.</strong> La 2.0.0 preguntaba la primera vez, en sesión interactiva, siguiendo una lectura conservadora de la política de CRAN. Instalando desde GitHub eso es fricción por un requisito que todavía no aplica, así que se retira: descargar implica cachear, como siempre.</p>
+<p>Nada más cambia. <code><a href="../reference/censosbo_cache_dir.html">censosbo_cache_dir()</a></code>, <code><a href="../reference/censosbo_cache_info.html">censosbo_cache_info()</a></code> y <code><a href="../reference/censosbo_cache_clear.html">censosbo_cache_clear()</a></code> funcionan igual, y las opciones <code>censosbo.cache_dir</code> y <code>censosbo.consent</code> se siguen reconociendo.</p>
+<p>La política de CRAN tiene además una vía que <strong>no</strong> exige consentimiento: guardar el caché en <code><a href="https://rdrr.io/r/tools/userdir.html" class="external-link">tools::R_user_dir()</a></code> declarando <code>R &gt;= 4.0</code>, siempre que el contenido se gestione activamente. Cuando lleguen los comentarios de la revisión se decidirá por cuál ir. El estado exacto que se envió a CRAN está preservado en la rama <code>cran-2.0.0</code>.</p>
+</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.0.0" id="censosbo-200">censosbo 2.0.0<a class="anchor" aria-label="anchor" href="#censosbo-200"></a></h2>
 <p>Esta versión prepara el paquete para <strong>CRAN</strong>. El cambio de mayor a 2.0.0 es por la retirada de <code>update_censosbo()</code>; el resto es infraestructura que no altera ningún resultado.</p>
