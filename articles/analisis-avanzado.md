@@ -25,7 +25,7 @@ ds <- get_personas_2024(
   as = "arrow"
 )
 #> ℹ Descargando persona_dep09.parquet (~4 MB)...
-#> ✔ Descargado persona_dep09.parquet [206ms]
+#> ✔ Descargado persona_dep09.parquet [284ms]
 #> 
 class(ds)
 #> [1] "FileSystemDataset" "Dataset"           "ArrowObject"      
@@ -88,7 +88,7 @@ library(DBI)
 con <- get_personas_2024(departamento = "Pando", as = "duckdb")
 #> ✔ Usando caché: persona_dep09.parquet
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpgzD959/duckdb
+#> ℹ /tmp/Rtmp6kS5WD/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
@@ -175,7 +175,7 @@ ggplot(anos_edad, aes(x = factor(grupo_edad), y = anios_edu,
 
 con <- DBI::dbConnect(duckdb::duckdb(), dbdir = ":memory:")
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpgzD959/duckdb
+#> ℹ /tmp/Rtmp6kS5WD/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
@@ -200,7 +200,7 @@ duckdb::duckdb_register_arrow(
                 variables = c("idep","iprov","imun","i00","urbrur","v07_aguapro","v09_energia"))
 )
 #> ℹ Descargando vivienda.parquet (~55 MB)...
-#> ✔ Descargado vivienda.parquet [324ms]
+#> ✔ Descargado vivienda.parquet [605ms]
 #> 
 #> ℹ Universo "viviendas": se excluyen los registros de personas en la calle o en
 #>   tránsito, que el INE no cuenta como viviendas.
