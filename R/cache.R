@@ -138,48 +138,62 @@ censosbo_cache_clear <- function(ask = TRUE) {
   tolower(trimws(resp)) %in% c("s", "si", "s\u00ed", "y", "yes")
 }
 
-# Crea el directorio de caché, pidiendo permiso la primera vez.
+# Crea el directorio de cache. No pregunta nada: descargar implica cachear, y ese es
+# el comportamiento que el paquete ha tenido siempre.
 #
-# La política de CRAN no permite escribir de forma persistente fuera del directorio
-# temporal de la sesión sin consentimiento del usuario. `tools::R_user_dir()` es la
-# ubicación correcta, pero el permiso hay que pedirlo igual.
+# POR QUE ESTA FUNCION EXISTE SI NO HACE MAS QUE dir_create()
 #
-# El contrato importante es lo que hace en una sesión NO interactiva: **procede sin
-# preguntar**. De eso dependen los consumidores que corren el paquete headless —la
-# app censos-explorer descarga geometrías dentro de un contenedor sin tty—, y un
-# prompt que abortara ahí rompería la app en silencio. Hay un test que lo fija.
+# Es el unico punto del paquete donde nace el cache persistente, y eso la convierte en
+# el sitio donde se conecta o desconecta una politica de consentimiento sin tocar
+# download.R. La 2.0.0 enviada a CRAN si pedia confirmacion aqui, en una lectura
+# conservadora de la politica. Se retiro en la 2.0.0.9000 porque:
 #
-# Tampoco pregunta cuando ya no hace falta: si el directorio existe, el usuario ya
-# dijo sí en su día; y si fijó `censosbo.cache_dir`, la ruta la eligió él.
+#   - Mientras el paquete se distribuye por GitHub, el prompt es friccion real (un
+#     usuario nuevo, en sesion interactiva) por un requisito que todavia no aplica.
+#   - La politica de CRAN tiene una via explicita que NO exige consentimiento:
+#     "packages may store user-specific data, configuration and cache files in their
+#     respective user directories obtained from tools::R_user_dir(), provided that by
+#     default sizes are kept as small as possible and the contents are actively
+#     managed (including removing outdated material)". Declaramos R >= 4.2, asi que la
+#     via esta disponible; lo que falta para acogerse a ella del todo es la gestion de
+#     material obsoleto (ver dev-docs/cran-viabilidad.md).
+#
+# COMO SE REACTIVA, si CRAN lo pide en la revision
+#
+# Descomentar el bloque de abajo. Las tres salidas que ofrecia siguen reconocidas por
+# el resto del codigo, asi que no hay que tocar nada mas: censosbo.consent autoriza de
+# antemano, censosbo.cache_dir elige otra ruta, y un cache que ya existe no vuelve a
+# preguntar.
+#
+# El contrato que NO se puede romper al reactivarlo: en sesion no interactiva hay que
+# proceder sin preguntar. La app censos-explorer descarga geometrias en un contenedor
+# sin tty, y un prompt que abortara ahi la romperia en silencio. Lo fija
+# test-consentimiento.R, que sigue vivo justamente para eso.
 .asegurar_cache_dir <- function(dir_destino) {
   if (fs::dir_exists(dir_destino)) return(invisible(TRUE))
 
-  raiz          <- censosbo_cache_dir()
-  ruta_elegida  <- !is.null(getOption("censosbo.cache_dir", default = NULL))
-  ya_autorizado <- isTRUE(getOption("censosbo.consent")) || fs::dir_exists(raiz)
-
-  # La condicion incluye is_interactive() para no llegar siquiera a informar ni a
-  # preguntar en una sesion sin tty: un "\u00bfquieres crearlo?" impreso en el log de un
-  # contenedor, seguido de la creacion igual, es ruido que confunde.
-  if (!ruta_elegida && !ya_autorizado && rlang::is_interactive()) {
-    cli::cli_inform(c(
-      "i" = "censosbo guarda los datos descargados en {.path {raiz}} para no volver a bajarlos.",
-      " " = "Se pueden borrar en cualquier momento con {.code censosbo_cache_clear()}."
-    ))
-    ok <- .preguntar_si_no("\u00bfCrear ese directorio de cach\u00e9? [s/N] ")
-    if (isFALSE(ok)) {
-      cli::cli_abort(c(
-        "Descarga cancelada: sin cach\u00e9 no se pueden servir los datos.",
-        "i" = "Para autorizarlo de antemano: {.code options(censosbo.consent = TRUE)}.",
-        "i" = "Para usar otra ruta: {.code options(censosbo.cache_dir = \"data/censosbo\")}."
-      ))
-    }
-  }
+  # raiz          <- censosbo_cache_dir()
+  # ruta_elegida  <- !is.null(getOption("censosbo.cache_dir", default = NULL))
+  # ya_autorizado <- isTRUE(getOption("censosbo.consent")) || fs::dir_exists(raiz)
+  #
+  # if (!ruta_elegida && !ya_autorizado && rlang::is_interactive()) {
+  #   cli::cli_inform(c(
+  #     "i" = "censosbo guarda los datos descargados en {.path {raiz}}.",
+  #     " " = "Se pueden borrar con {.code censosbo_cache_clear()}."
+  #   ))
+  #   ok <- .preguntar_si_no("\u00bfCrear ese directorio de cach\u00e9? [s/N] ")
+  #   if (isFALSE(ok)) {
+  #     cli::cli_abort(c(
+  #       "Descarga cancelada: sin cach\u00e9 no se pueden servir los datos.",
+  #       "i" = "Para autorizarlo: {.code options(censosbo.consent = TRUE)}.",
+  #       "i" = "Para otra ruta: {.code options(censosbo.cache_dir = \"data/censosbo\")}."
+  #     ))
+  #   }
+  # }
 
   fs::dir_create(dir_destino, recurse = TRUE)
   invisible(TRUE)
 }
-
 .cache_path <- function(filename, subdir = NULL) {
   if (is.null(subdir)) {
     fs::path(censosbo_cache_dir(), filename)

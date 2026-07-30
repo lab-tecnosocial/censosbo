@@ -1,3 +1,20 @@
+# censosbo 2.0.1
+
+* **El caché vuelve a crearse sin pedir confirmación.** La 2.0.0 preguntaba la primera
+  vez, en sesión interactiva, siguiendo una lectura conservadora de la política de CRAN.
+  Instalando desde GitHub eso es fricción por un requisito que todavía no aplica, así
+  que se retira: descargar implica cachear, como siempre.
+
+  Nada más cambia. `censosbo_cache_dir()`, `censosbo_cache_info()` y
+  `censosbo_cache_clear()` funcionan igual, y las opciones `censosbo.cache_dir` y
+  `censosbo.consent` se siguen reconociendo.
+
+  La política de CRAN tiene además una vía que **no** exige consentimiento: guardar el
+  caché en `tools::R_user_dir()` declarando `R >= 4.0`, siempre que el contenido se
+  gestione activamente. Cuando lleguen los comentarios de la revisión se decidirá por
+  cuál ir. El estado exacto que se envió a CRAN está preservado en la rama
+  `cran-2.0.0`.
+
 # censosbo 2.0.0
 
 Esta versión prepara el paquete para **CRAN**. El cambio de mayor a 2.0.0 es por
