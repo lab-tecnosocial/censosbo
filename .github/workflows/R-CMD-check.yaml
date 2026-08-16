@@ -21,10 +21,10 @@ jobs:
           - {os: ubuntu-latest,  r: 'release'}
           - {os: macos-latest,   r: 'release'}
           - {os: windows-latest, r: 'release'}
-          # r-devel y oldrel replican los flavors que CRAN corre y nosotros no
-          # veriamos hasta recibir su correo: devel adelanta los cambios de la
-          # proxima R, oldrel defiende el minimo declarado en Depends.
-          - {os: ubuntu-latest,  r: 'devel', http-user-agent: 'release'}
+          # oldrel-1 defiende el minimo declarado en Depends (R >= 4.2), que hasta
+          # ahora no comprobaba nadie. Tiene binarios en P3M, asi que cuesta lo
+          # mismo que un release. El flavor r-devel, que si es caro (compila arrow
+          # desde C++), vive en R-CMD-check-devel.yaml y corre una vez por semana.
           - {os: ubuntu-latest,  r: 'oldrel-1'}
 
     env:

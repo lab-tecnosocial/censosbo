@@ -1,0 +1,50 @@
+# Chequeo contra R-devel, separado del R-CMD-check de cada push.
+#
+# Por que aparte y no una fila mas en aquella matriz: en Ubuntu, r-devel no tiene
+# binarios en Posit Package Manager, asi que arrow y sus dependencias se compilan
+# desde C++ y el job pasa de ~4 minutos a 20-40. Pagarlo en cada push no compensa;
+# no correrlo nunca tampoco, porque r-devel es donde CRAN detecta primero lo que
+# rompera el paquete, y su aviso llega con dos semanas de plazo antes de archivarlo.
+#
+# El punto medio: una vez por semana, y a demanda antes de preparar un envio a CRAN
+# (pestania Actions -> este workflow -> Run workflow).
+on:
+  schedule:
+    - cron: '0 6 * * 1'   # lunes 06:00 UTC
+  workflow_dispatch:
+
+name: R-CMD-check-devel.yaml
+
+permissions: read-all
+
+jobs:
+  R-CMD-check-devel:
+    runs-on: ubuntu-latest
+
+    name: ubuntu-latest (devel)
+
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      R_KEEP_PKG_SOURCE: yes
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: r-lib/actions/setup-pandoc@v2
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: 'devel'
+          http-user-agent: 'release'
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::rcmdcheck
+          needs: check
+
+      - uses: r-lib/actions/check-r-package@v2
+        with:
+          upload-snapshots: true
+          args: 'c("--no-manual", "--as-cran")'
+          error-on: '"warning"'

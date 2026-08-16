@@ -4,9 +4,13 @@ on:
   push:
     branches: [main, master]
   pull_request:
-  release:
-    types: [published]
   workflow_dispatch:
+
+# Sin el disparador `release: published` que trae el ejemplo de r-lib: construye el
+# sitio desde el codigo del TAG, no desde main, y el sitio documenta la version en
+# desarrollo. Publicar un release de una version anterior —o el propio bump a .9000
+# justo despues de etiquetar— dejaba el sitio una version atras sin que nada fallara.
+# El sitio lo publica main, que es donde vive la documentacion vigente.
 
 name: pkgdown.yaml
 
