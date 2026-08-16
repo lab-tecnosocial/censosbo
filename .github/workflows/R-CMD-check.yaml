@@ -24,7 +24,8 @@ jobs:
           # oldrel-1 defiende el minimo declarado en Depends (R >= 4.2), que hasta
           # ahora no comprobaba nadie. Tiene binarios en P3M, asi que cuesta lo
           # mismo que un release. El flavor r-devel, que si es caro (compila arrow
-          # desde C++), vive en R-CMD-check-devel.yaml y corre una vez por semana.
+          # desde C++: 1h 8min medida), vive en R-CMD-check-devel.yaml y corre una
+          # vez por semana.
           - {os: ubuntu-latest,  r: 'oldrel-1'}
 
     env:

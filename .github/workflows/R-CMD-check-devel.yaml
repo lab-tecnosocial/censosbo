@@ -2,7 +2,8 @@
 #
 # Por que aparte y no una fila mas en aquella matriz: en Ubuntu, r-devel no tiene
 # binarios en Posit Package Manager, asi que arrow y sus dependencias se compilan
-# desde C++ y el job pasa de ~4 minutos a 20-40. Pagarlo en cada push no compensa;
+# desde C++. Medido el 2026-08-16: 1h 8min, contra los 2-4 minutos de los demas
+# flavors, y casi todo se va en instalar dependencias. Pagarlo en cada push no compensa;
 # no correrlo nunca tampoco, porque r-devel es donde CRAN detecta primero lo que
 # rompera el paquete, y su aviso llega con dos semanas de plazo antes de archivarlo.
 #
