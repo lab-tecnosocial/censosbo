@@ -1,5 +1,11 @@
 # Changelog
 
+## censosbo (development version)
+
+Los cambios de esta sección están en GitHub pero todavía no en CRAN, que
+recibe una actualización agrupada cada uno o dos meses. Para tenerlos:
+`remotes::install_github("lab-tecnosocial/censosbo")`.
+
 ## censosbo 2.0.2
 
 Tres correcciones salidas de probar el paquete como lo estrena alguien
@@ -105,6 +111,8 @@ Y tres más salidas de la revisión del consumidor `censos-explorer`:
   la rama `cran-2.0.0`.
 
 ## censosbo 2.0.0
+
+CRAN release: 2026-08-07
 
 Esta versión prepara el paquete para **CRAN**. El cambio de mayor a
 2.0.0 es por la retirada de `update_censosbo()`; el resto es
