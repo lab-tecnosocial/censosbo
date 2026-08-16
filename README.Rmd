@@ -21,6 +21,8 @@ library(censosbo)
 # censosbo <img src="man/figures/logo.png" align="right" height="139" alt="" />
 
 <!-- badges: start -->
+[![CRAN status](https://www.r-pkg.org/badges/version/censosbo)](https://CRAN.R-project.org/package=censosbo)
+[![CRAN downloads](https://cranlogs.r-pkg.org/badges/grand-total/censosbo)](https://CRAN.R-project.org/package=censosbo)
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![R-CMD-check](https://github.com/lab-tecnosocial/censosbo/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/lab-tecnosocial/censosbo/actions/workflows/R-CMD-check.yaml)
@@ -30,20 +32,21 @@ library(censosbo)
 
 ## Instalación
 
+La versión estable está en CRAN:
+
 ```{r install, eval=FALSE}
+install.packages("censosbo")
+```
+
+La versión en desarrollo, con los cambios que todavía no han llegado a CRAN (ver [NEWS](https://lab-tecnosocial.github.io/censosbo/news/)), se instala desde GitHub. Ahí las viñetas no vienen construidas a menos que se pidan; también se leen online, en el enlace del final.
+
+```{r install-dev, eval=FALSE}
 # install.packages("remotes")
 remotes::install_github("lab-tecnosocial/censosbo")
 
 # Con las viñetas incluidas, para poder leerlas con vignette("introduccion").
-# Tarda algo más porque las construye; también se leen online, en el enlace de abajo.
 remotes::install_github("lab-tecnosocial/censosbo", build_vignettes = TRUE)
 ```
-
-<!-- Cuando CRAN acepte el paquete, esta sección pasa a:
-     install.packages("censosbo")
-     y install_github() queda como la vía para la versión en desarrollo.
-     Desde CRAN las viñetas vienen siempre, así que el segundo comando sobra. -->
-
 
 Al actualizar a una versión que corrige los datos —no solo el código— conviene borrar el caché para que se vuelvan a descargar:
 
