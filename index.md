@@ -10,13 +10,24 @@ de mapas.
 
 ## Instalación
 
+La versión estable está en CRAN:
+
+``` r
+
+install.packages("censosbo")
+```
+
+La versión en desarrollo, con los cambios que todavía no han llegado a
+CRAN (ver [NEWS](https://lab-tecnosocial.github.io/censosbo/news/)), se
+instala desde GitHub. Ahí las viñetas no vienen construidas a menos que
+se pidan; también se leen online, en el enlace del final.
+
 ``` r
 
 # install.packages("remotes")
 remotes::install_github("lab-tecnosocial/censosbo")
 
 # Con las viñetas incluidas, para poder leerlas con vignette("introduccion").
-# Tarda algo más porque las construye; también se leen online, en el enlace de abajo.
 remotes::install_github("lab-tecnosocial/censosbo", build_vignettes = TRUE)
 ```
 
@@ -479,7 +490,7 @@ citation("censosbo")
 #> 
 #>   Ojeda Copa A (2026). _censosbo: Access and Analysis of Bolivian
 #>   Census Microdata_. Lab TecnoSocial, Cochabamba, Bolivia. R package
-#>   version 2.0.1, <https://lab-tecnosocial.github.io/censosbo/>.
+#>   version 2.0.2, <https://lab-tecnosocial.github.io/censosbo/>.
 #> 
 #> A BibTeX entry for LaTeX users is
 #> 
@@ -489,12 +500,12 @@ citation("censosbo")
 #>     organization = {Lab TecnoSocial},
 #>     address = {Cochabamba, Bolivia},
 #>     year = {2026},
-#>     note = {R package version 2.0.1},
+#>     note = {R package version 2.0.2},
 #>     url = {https://lab-tecnosocial.github.io/censosbo/},
 #>   }
 ```
 
 > Ojeda Copa A (2026). *censosbo: Paquete de R para el acceso, análisis
 > y visualización de datos censales en Bolivia (1976-2024)*. Lab
-> TecnoSocial, Cochabamba, Bolivia. R package version 2.0.1.
+> TecnoSocial, Cochabamba, Bolivia. R package version 2.0.2.
 > <https://lab-tecnosocial.github.io/censosbo/>
