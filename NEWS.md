@@ -1,6 +1,10 @@
 <!-- El encabezado de abajo va en inglés a propósito: pkgdown solo reconoce como
      sección de desarrollo el literal "(development version)". Traducido, la
-     sección desaparece del sitio sin dar ningún error. El texto sí va en español. -->
+     sección desaparece del sitio sin dar ningún error. El texto sí va en español.
+
+     Ojo: `usethis::use_version("dev")` inserta su encabezado en la primera línea
+     del archivo, así que al subir el cuarto componente deja este comentario en
+     medio y el encabezado duplicado. Hay que juntarlos a mano. -->
 
 # censosbo (development version)
 
