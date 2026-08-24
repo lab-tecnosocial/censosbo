@@ -141,11 +141,11 @@ test_that("el denominador de la tasa de alfabetismo excluye a los no declarados"
   # El tabulado oficial da 95,8633% de alfabetismo en la población de 15 años o
   # más. Dividir los alfabetos entre TODAS las personas de 15+ da 94,9357%, casi
   # un punto por debajo: el INE deja fuera del denominador los 80.297 registros
-  # con `p40_lee = 9` (Sin especificar). Hacerlo da 95,8630%, que explica la
-  # diferencia salvo 0,0003 pp (unos 29 registros de denominador), así que la
-  # receta oficial lleva algún filtro más que no está documentado. La conclusión
-  # práctica es la del test: no se puede inferir una tasa oficial dividiendo una
-  # categoría entre todas las filas.
+  # con `p40_lee = 9` (Sin especificar). Hacerlo da 95,8630%, a 0,0003 pp del
+  # oficial. Ese resto lo cierra `universo_ine()`, al final de este archivo: la
+  # receta del INE lleva además la exclusión de quienes residen habitualmente en
+  # el exterior. La conclusión práctica es la del test: no se puede inferir una
+  # tasa oficial dividiendo una categoría entre todas las filas.
   lee <- dplyr::collect(dplyr::count(
     dplyr::filter(get_personas_2024(variables = c("p26_edad", "p40_lee"),
                                     verbose = FALSE),
@@ -169,4 +169,124 @@ test_that("el denominador de la tasa de alfabetismo excluye a los no declarados"
   # oficial; dividir entre todas las filas se queda a casi un punto.
   expect_lt(abs(tasa_declarados - 95.8633), 0.001)
   expect_gt(abs(tasa_cruda - 95.8633), 0.9)
+})
+
+# --- El universo de los tabulados temáticos --------------------------------
+
+test_that("universo_ine() reproduce el total de los cuadros de idioma", {
+  skip_reconciliacion(sprintf("persona_dep%02d.parquet", 1:9))
+
+  # Los cuadros de idioma del CPV-2024 (INE, «Idiomas», nimbus.ine.gob.bo) llevan
+  # dos recortes que ninguna variable derivada trae: la edad mínima que anuncia
+  # el título y la nota al pie «No incluye personas que residen habitualmente en
+  # el exterior». Sin ellos sobran 98.649 personas en el universo de 4+, sin que
+  # se note dónde: la diferencia es de ~1% repartida por los 343 municipios.
+  personas <- get_personas_2024(
+    variables = c("p26_edad", "p36_lugres", "idioma_mat", "idioma_mayor_uso"),
+    verbose = FALSE
+  )
+
+  expect_equal(.n(universo_ine(personas, 2024, edad_min = 4)), 10605217L)
+  expect_equal(.n(universo_ine(personas, 2024, edad_min = 6)), 10216385L)
+
+  # Sin el recorte de residencia el total ya no es el del cuadro.
+  expect_equal(.n(dplyr::filter(personas, p26_edad >= 4)), 10703866L)
+})
+
+test_that("el idioma materno por lengua coincide con el cuadro oficial", {
+  skip_reconciliacion(sprintf("persona_dep%02d.parquet", 1:9))
+
+  # Cuadro 3.09.10.02, bloque 2024, fila País.
+  mat <- dplyr::collect(dplyr::count(
+    universo_ine(
+      get_personas_2024(variables = c("p26_edad", "p36_lugres", "idioma_mat"),
+                        verbose = FALSE),
+      2024, edad_min = 4
+    ),
+    idioma_mat
+  ))
+  n <- function(cod) as.integer(mat$n[!is.na(mat$idioma_mat) & mat$idioma_mat == cod])
+
+  expect_equal(n(6L),   8141600L)   # castellano
+  expect_equal(n(27L),  1395229L)   # quechua
+  expect_equal(n(2L),    774874L)   # aymara
+  expect_equal(n(12L),    43870L)   # guaraní
+  expect_equal(n(998L),   21443L)   # no habla
+  # «Sin especificar» del cuadro: los NA de la derivada, dentro del universo.
+  expect_equal(as.integer(sum(mat$n[is.na(mat$idioma_mat)])), 74589L)
+})
+
+test_that("el idioma de mayor uso por lengua coincide con el cuadro oficial", {
+  skip_reconciliacion(sprintf("persona_dep%02d.parquet", 1:9))
+
+  uso <- dplyr::collect(dplyr::count(
+    universo_ine(
+      get_personas_2024(variables = c("p26_edad", "p36_lugres", "idioma_mayor_uso"),
+                        verbose = FALSE),
+      2024, edad_min = 6
+    ),
+    idioma_mayor_uso
+  ))
+  n <- function(cod) {
+    as.integer(uso$n[!is.na(uso$idioma_mayor_uso) & uso$idioma_mayor_uso == cod])
+  }
+
+  expect_equal(n(6L),  8385257L)
+  expect_equal(n(27L), 1033963L)
+  expect_equal(n(2L),   576798L)
+  expect_equal(as.integer(sum(uso$n[is.na(uso$idioma_mayor_uso)])), 34293L)
+})
+
+test_that("los idiomas hablados coinciden con el cuadro oficial", {
+  skip_reconciliacion(sprintf("persona_dep%02d.parquet", 1:9))
+
+  # Respuesta múltiple: cada persona cuenta una vez por lengua DISTINTA de las
+  # tres casillas. Los códigos crudos son texto con ceros a la izquierda y 999
+  # es «sin especificar», no una lengua.
+  hab <- dplyr::collect(dplyr::select(
+    universo_ine(
+      get_personas_2024(
+        variables = c("p26_edad", "p36_lugres", "p331_idiohab1_cod",
+                      "p332_idiohab2_cod", "p333_idiohab3_cod"),
+        verbose = FALSE),
+      2024, edad_min = 6
+    ),
+    dplyr::starts_with("p33")
+  ))
+  a_codigo <- function(x) {
+    n <- suppressWarnings(as.integer(x))
+    ifelse(is.na(n) | n == 999L, NA_integer_, n)
+  }
+  cuenta <- function(cod) {
+    h1 <- a_codigo(hab$p331_idiohab1_cod)
+    h2 <- a_codigo(hab$p332_idiohab2_cod)
+    h3 <- a_codigo(hab$p333_idiohab3_cod)
+    sum(!is.na(h1) & h1 == cod |
+        !is.na(h2) & h2 == cod & (is.na(h1) | h1 != cod) |
+        !is.na(h3) & h3 == cod & (is.na(h1) | h1 != cod) & (is.na(h2) | h2 != cod))
+  }
+
+  expect_equal(cuenta(6L),  9771097L)   # castellano
+  expect_equal(cuenta(27L), 2308726L)   # quechua
+  expect_equal(cuenta(2L),  1477654L)   # aymara
+})
+
+test_that("universo_ine() cierra la brecha de la tasa de alfabetismo", {
+  skip_reconciliacion(sprintf("persona_dep%02d.parquet", 1:9))
+
+  # El test de arriba se quedaba a 0,0003 pp del 95,8633% oficial y lo dejaba
+  # anotado como «algún filtro más que no está documentado». Es este: con el
+  # universo del INE la tasa sale exacta.
+  lee <- dplyr::collect(dplyr::count(
+    universo_ine(
+      get_personas_2024(variables = c("p26_edad", "p36_lugres", "p40_lee"),
+                        verbose = FALSE),
+      2024, edad_min = 15
+    ),
+    p40_lee
+  ))
+  declarados <- sum(lee$n[lee$p40_lee %in% c(1L, 2L)])
+  tasa <- 100 * lee$n[lee$p40_lee == 1] / declarados
+
+  expect_equal(round(tasa, 4), 95.8633)
 })

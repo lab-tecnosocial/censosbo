@@ -22,3 +22,17 @@ test_that("get_censo() falla con tabla no disponible para el año", {
   err <- expect_error(get_censo(2001, "mortalidad"))
   expect_match(conditionMessage(err), "no disponible")
 })
+
+test_that("los catálogos geográficos de cada censo histórico son accesibles", {
+  # Estaban en los releases desde el principio pero no declarados, así que
+  # get_censo() los rechazaba como «tabla no disponible». Hacen falta para
+  # traducir códigos entre censos: la numeración municipal cambió.
+  for (anio in c(1992L, 2001L, 2012L)) {
+    for (tabla in c("depto", "provin", "munic")) {
+      expect_no_error(.validate_censo_args(anio, tabla))
+    }
+  }
+  # 1976 se codificó por cantones y no publica estos catálogos.
+  expect_error(get_censo(1976, "munic"), "no disponible")
+  expect_error(get_censo(2024, "munic"), "no disponible")
+})

@@ -150,6 +150,15 @@ reference:
       - get_discapacidad_2012
 
 
+  - title: "Reproducir los tabulados oficiales"
+    desc: >
+      Los cuadros publicados por el INE se calculan sobre un universo más
+      estrecho que el de los microdatos: una edad mínima y solo residentes
+      habituales en el país. Sin ese recorte las cifras no cuadran aunque el
+      cálculo sea correcto.
+    contents:
+      - universo_ine
+
   - title: "Geografía y visualización en mapas"
     desc: >
       Funciones para consultar la división político-administrativa del país

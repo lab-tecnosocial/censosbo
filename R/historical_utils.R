@@ -4,11 +4,18 @@
 # funciones get_*_2024() (ver .get_censo_2024), no desde los releases históricos.
 .CENSOS_DISPONIBLES <- c(.CENSOS_HISTORICOS, 2024L)
 
+# `depto`, `provin` y `munic` son los catalogos geograficos con que se codifico
+# CADA censo, y no son intercambiables entre anios: los codigos municipales se
+# renumeraron. En 2012, por ejemplo, "071104" es San Julian, mientras que en
+# 2001 y 2024 es San Antonio de Lomerio. Sin el catalogo del ano, cruzar los
+# microdatos historicos con la geografia actual pone los datos en el municipio
+# equivocado sin dar ningun error.
 .CENSO_TABLAS <- list(
   "1976" = c("poblacion", "vivienda"),
-  "1992" = c("persona", "vivienda", "mortalidad"),
-  "2001" = c("persona", "vivienda"),
-  "2012" = c("persona", "vivienda", "emigracion", "discapacidad"),
+  "1992" = c("persona", "vivienda", "mortalidad", "depto", "provin", "munic"),
+  "2001" = c("persona", "vivienda", "depto", "provin", "munic"),
+  "2012" = c("persona", "vivienda", "emigracion", "discapacidad",
+             "depto", "provin", "munic"),
   "2024" = c("persona", "vivienda", "emigracion", "mortalidad")
 )
 

@@ -8,6 +8,48 @@ Los cambios de esta sección están en GitHub pero todavía no en CRAN, que reci
 actualización agrupada cada uno o dos meses. Para tenerlos:
 `remotes::install_github("lab-tecnosocial/censosbo")`.
 
+* **`universo_ine()`: el recorte que hace falta para que las cifras cuadren con el
+  INE.** Los cuadros publicados no se calculan sobre todos los microdatos. Llevan la
+  edad mínima que anuncia su título —4 años para idioma materno, 6 para idioma de mayor
+  uso e idiomas hablados, 5 para discapacidad, 14 para empleo— y una nota al pie que es
+  fácil pasar por alto: *«No incluye personas que residen habitualmente en el
+  exterior»*. Esa segunda exclusión no está en ninguna variable derivada y hay que
+  aplicarla sobre la pregunta de residencia habitual, que se llama distinto en cada
+  censo (`p36_lugres` en 2024, `P33A` en 2012 y 2001).
+
+  Sin ella sobran 98.649 personas en el universo de 4 años o más del CPV-2024, y el
+  exceso no se ve: es alrededor del 1%, repartido por los 343 municipios y por todos los
+  grupos de edad. Con `universo_ine()`, los conteos de idioma materno, idioma de mayor
+  uso, idiomas hablados y multilingüismo por municipio, área y lengua coinciden
+  **exactamente** con los cuadros del INE, celda a celda. Los tests de reconciliación lo
+  fijan.
+
+  ```r
+  get_personas_2024(variables = c("p26_edad", "p36_lugres", "idioma_mat")) |>
+    universo_ine(2024, edad_min = 4) |>
+    count(idioma_mat) |>
+    collect()
+  ```
+
+  De paso cierra un cabo suelto que el paquete tenía anotado: la tasa de alfabetismo
+  reconstruida se quedaba a 0,0003 pp de la oficial y no se sabía por qué. Era esto; con
+  el universo aplicado da 95,8633% exacto.
+
+* **Los catálogos geográficos de los censos históricos ya se pueden pedir.** `depto`,
+  `provin` y `munic` estaban en los releases de 1992, 2001 y 2012 desde el principio,
+  pero no figuraban entre las tablas válidas, así que `get_censo(2012, "munic")`
+  respondía «tabla no disponible».
+
+  No son un detalle de catálogo: **la numeración municipal cambió entre censos**. En los
+  microdatos de 2012, `071104` es San Julián; en 2001 y 2024, San Antonio de Lomerío. Sin
+  el catálogo del año, cruzar los microdatos históricos con la geografía actual coloca
+  los datos en el municipio equivocado y no da ningún error —el código existe en los dos
+  censos, solo que nombra a otro sitio—. Son 21 municipios afectados en 2012.
+
+  ```r
+  get_censo(2012, "munic") |> collect()   # 339 municipios, con su REDCODEN de 2012
+  ```
+
 # censosbo 2.0.2
 
 Tres correcciones salidas de probar el paquete como lo estrena alguien nuevo: instalado
