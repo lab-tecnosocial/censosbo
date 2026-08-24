@@ -34,6 +34,6 @@ censosbo_cache_dir()
 # Redirigir el caché a una carpeta del proyecto
 anterior <- options(censosbo.cache_dir = file.path(tempdir(), "censosbo"))
 censosbo_cache_dir()
-#> [1] "/tmp/RtmpclUHvQ/censosbo"
+#> [1] "/tmp/Rtmp6Dv5C5/censosbo"
 options(anterior)
 ```

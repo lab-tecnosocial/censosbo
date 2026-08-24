@@ -619,6 +619,16 @@ Funciones cortas equivalentes a `get_censo(anio, tabla, ...)`.
   [`get_censo()`](https://lab-tecnosocial.github.io/censosbo/reference/get_censo.md)
   : Accede a los microdatos de cualquier censo de Bolivia
 
+## Reproducir los tabulados oficiales
+
+Los cuadros publicados por el INE se calculan sobre un universo más
+estrecho que el de los microdatos: una edad mínima y solo residentes
+habituales en el país. Sin ese recorte las cifras no cuadran aunque el
+cálculo sea correcto.
+
+- [`universo_ine()`](https://lab-tecnosocial.github.io/censosbo/reference/universo_ine.md)
+  : Aplica el universo de los tabulados oficiales del INE
+
 ## Geografía y visualización en mapas
 
 Funciones para consultar la división político-administrativa del país y

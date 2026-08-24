@@ -18,7 +18,7 @@ personas <- get_personas_2024(
   collect() |>
   etiquetar_valores()
 #> ℹ Descargando persona_dep08.parquet (~12 MB)...
-#> ✔ Descargado persona_dep08.parquet [539ms]
+#> ✔ Descargado persona_dep08.parquet [730ms]
 #> 
 #> ℹ No toda la población respondió estas variables:
 #>   nivel_edu: personas de 19 años o más

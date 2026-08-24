@@ -53,7 +53,23 @@
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="censosbo-development-version">censosbo (development version)<a class="anchor" aria-label="anchor" href="#censosbo-development-version"></a></h2>
 <p>Los cambios de esta sección están en GitHub pero todavía no en CRAN, que recibe una actualización agrupada cada uno o dos meses. Para tenerlos: <code>remotes::install_github("lab-tecnosocial/censosbo")</code>.</p>
-</div>
+<ul><li>
+<p><strong><code><a href="../reference/universo_ine.html">universo_ine()</a></code>: el recorte que hace falta para que las cifras cuadren con el INE.</strong> Los cuadros publicados no se calculan sobre todos los microdatos. Llevan la edad mínima que anuncia su título —4 años para idioma materno, 6 para idioma de mayor uso e idiomas hablados, 5 para discapacidad, 14 para empleo— y una nota al pie que es fácil pasar por alto: <em>«No incluye personas que residen habitualmente en el exterior»</em>. Esa segunda exclusión no está en ninguna variable derivada y hay que aplicarla sobre la pregunta de residencia habitual, que se llama distinto en cada censo (<code>p36_lugres</code> en 2024, <code>P33A</code> en 2012 y 2001).</p>
+<p>Sin ella sobran 98.649 personas en el universo de 4 años o más del CPV-2024, y el exceso no se ve: es alrededor del 1%, repartido por los 343 municipios y por todos los grupos de edad. Con <code><a href="../reference/universo_ine.html">universo_ine()</a></code>, los conteos de idioma materno, idioma de mayor uso, idiomas hablados y multilingüismo por municipio, área y lengua coinciden <strong>exactamente</strong> con los cuadros del INE, celda a celda. Los tests de reconciliación lo fijan.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span>variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"p26_edad"</span>, <span class="st">"p36_lugres"</span>, <span class="st">"idioma_mat"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/universo_ine.html">universo_ine</a></span><span class="op">(</span><span class="fl">2024</span>, edad_min <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">idioma_mat</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>De paso cierra un cabo suelto que el paquete tenía anotado: la tasa de alfabetismo reconstruida se quedaba a 0,0003 pp de la oficial y no se sabía por qué. Era esto; con el universo aplicado da 95,8633% exacto.</p>
+</li>
+<li>
+<p><strong>Los catálogos geográficos de los censos históricos ya se pueden pedir.</strong> <code>depto</code>, <code>provin</code> y <code>munic</code> estaban en los releases de 1992, 2001 y 2012 desde el principio, pero no figuraban entre las tablas válidas, así que <code>get_censo(2012, "munic")</code> respondía «tabla no disponible».</p>
+<p>No son un detalle de catálogo: <strong>la numeración municipal cambió entre censos</strong>. En los microdatos de 2012, <code>071104</code> es San Julián; en 2001 y 2024, San Antonio de Lomerío. Sin el catálogo del año, cruzar los microdatos históricos con la geografía actual coloca los datos en el municipio equivocado y no da ningún error —el código existe en los dos censos, solo que nombra a otro sitio—. Son 21 municipios afectados en 2012.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/get_censo.html">get_censo</a></span><span class="op">(</span><span class="fl">2012</span>, <span class="st">"munic"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span>   <span class="co"># 339 municipios, con su REDCODEN de 2012</span></span></code></pre></div>
+</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.0.2" id="censosbo-202">censosbo 2.0.2<a class="anchor" aria-label="anchor" href="#censosbo-202"></a></h2>
 <p>Tres correcciones salidas de probar el paquete como lo estrena alguien nuevo: instalado desde GitHub, con el caché vacío. Ninguna cambia resultados; las tres quitan fricción donde el paquete parecía no tener el dato que sí tenía.</p>
@@ -91,7 +107,7 @@
 <ul><li>
 <p><strong><code>update_censosbo()</code> se retira.</strong> Una función que reinstala el propio paquete desde GitHub no puede convivir con la distribución por CRAN: evita el canal oficial y modifica la instalación del usuario sin pasar por él.</p>
 <p>Para actualizar, ahora: <code>install.packages("censosbo")</code> (o <code>remotes::install_github("lab-tecnosocial/censosbo")</code> para la versión en desarrollo). Y si la nueva versión corrige <strong>datos</strong> y no solo código, borrar el caché para que se vuelvan a descargar:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/censosbo_cache_clear.html">censosbo_cache_clear</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </li>
 </ul></div>
@@ -149,7 +165,7 @@
 <h3 id="tests-de-reconciliación-con-el-ine-1-7-0">Tests de reconciliación con el INE<a class="anchor" aria-label="anchor" href="#tests-de-reconciliaci%C3%B3n-con-el-ine-1-7-0"></a></h3>
 <p><code>tests/testthat/test-reconciliacion-oficial.R</code>, suite nueva. Que la suite pasara demostraba consistencia interna, no que las cifras coincidieran con lo publicado —que es lo que se cita. Ahora quedan fijadas: población total y por sexo, los cuatro universos de vivienda, viviendas por área, el cuadre municipio a municipio con el geoportal, los totales de los censos históricos y el denominador del alfabetismo.</p>
 <p>Necesita los microdatos completos en caché (~1 GB), así que se salta por defecto:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="va">CENSOSBO_TEST_RECONCILIACION</span><span class="op">=</span>true <span class="ex">Rscript</span> <span class="at">-e</span> <span class="st">'devtools::test(filter = "reconciliacion")'</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="va">CENSOSBO_TEST_RECONCILIACION</span><span class="op">=</span>true <span class="ex">Rscript</span> <span class="at">-e</span> <span class="st">'devtools::test(filter = "reconciliacion")'</span></span></code></pre></div>
 </div>
 </div>
     <div class="section level2">
@@ -204,7 +220,7 @@
 <ul><li><p><code><a href="../reference/censo_temas.html">censo_temas()</a></code> — el catálogo de temas con el número de variables de cada uno, contado en vivo y filtrable por tabla y año.</p></li>
 <li>
 <p><code><a href="../reference/vars_tema.html">vars_tema()</a></code> — los nombres de las variables de un tema, en el orden del cuestionario, listos para pasar a <code>variables</code>:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/get_personas_2024.html">get_personas_2024</a></span><span class="op">(</span></span>
 <span>  departamento <span class="op">=</span> <span class="st">"Cochabamba"</span>,</span>
 <span>  variables <span class="op">=</span> <span class="fu"><a href="../reference/vars_tema.html">vars_tema</a></span><span class="op">(</span><span class="st">"educacion"</span>, tabla <span class="op">=</span> <span class="st">"persona"</span><span class="op">)</span></span>
@@ -267,7 +283,7 @@
 <h3 id="get_censo-ahora-cubre-también-el-cpv-1-4-0">
 <code>get_censo()</code> ahora cubre también el CPV-2024<a class="anchor" aria-label="anchor" href="#get_censo-ahora-cubre-tambi%C3%A9n-el-cpv-1-4-0"></a></h3>
 <p><code><a href="../reference/get_censo.html">get_censo()</a></code> se presentaba como la API genérica por año, pero rechazaba <code>anio = 2024</code> — y la propia documentación de <code><a href="../reference/get_personas_2024.html">get_personas_2024()</a></code> ofrecía <code>get_censo(2024, "persona", ...)</code> como equivalente, un ejemplo que no funcionaba. Ahora acepta los cinco censos: con <code>anio = 2024</code> delega en <code><a href="../reference/get_personas_2024.html">get_personas_2024()</a></code>, <code><a href="../reference/get_viviendas_2024.html">get_viviendas_2024()</a></code>, <code><a href="../reference/get_emigracion_2024.html">get_emigracion_2024()</a></code> o <code><a href="../reference/get_mortalidad_2024.html">get_mortalidad_2024()</a></code> según <code>tabla</code>, con resultado idéntico al de esas funciones.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/get_censo.html">get_censo</a></span><span class="op">(</span><span class="fl">2024</span>, <span class="st">"persona"</span>, departamento <span class="op">=</span> <span class="st">"07"</span><span class="op">)</span>   <span class="co"># = get_personas_2024()</span></span></code></pre></div>
 </div>
 <div class="section level3">
